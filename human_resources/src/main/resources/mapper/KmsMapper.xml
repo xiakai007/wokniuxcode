@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.isoftstone.humanresources.dao.KmsDao">
+	<!-- 返回值映射map -->
+	<resultMap id="kmsMapper" type="com.isoftstone.humanresources.domain.gather.KmsModel">
+			<result property="id" column="id" />
+			<result property="subject" column="subject" />
+			<result property="content" column="content" />
+			<result property="createbody" column="createbody" />
+			<result property="createName" column="createName" />
+			<result property="createImg" column="createImg" />
+			<result property="imgs" column="imgs" />
+			<result property="status" column="status" />
+			<result property="kmtype" column="kmtype" />
+			<result property="createtime" column="createtime" />
+			<result property="updatetime" column="updatetime" />
+			<result property="bak" column="bak" />
+		<result property="approved" column="approved" />
+		<result property="approveduser" column="approveduser" />
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from t_kms record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 id, 
+				 subject, 
+				 content, 
+				 createbody, 
+				 imgs, 
+				 status, 
+				 kmtype, 
+				 createtime, 
+				 updatetime, 
+				 bak,
+				 approved,
+				 approveduser
+			]]>
+	  	</if>
+	     FROM t_kms record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+					<if test = "entity.id != null and entity.id != ''">
+						<![CDATA[ and record.id  = #{entity.id} ]]>
+					</if>
+					<if test = "entity.subject != null and entity.subject != ''">
+						<![CDATA[ and record.subject  = #{entity.subject} ]]>
+					</if>
+					<if test = "entity.content != null and entity.content != ''">
+						<![CDATA[ and record.content  = #{entity.content} ]]>
+					</if>
+					<if test = "entity.createbody != null and entity.createbody != ''">
+						<![CDATA[ and record.createbody  = #{entity.createbody} ]]>
+					</if>
+					<if test = "entity.imgs != null and entity.imgs != ''">
+						<![CDATA[ and record.imgs  = #{entity.imgs} ]]>
+					</if>
+					<if test = "entity.status != null and entity.status != ''">
+						<![CDATA[ and record.status  = #{entity.status} ]]>
+					</if>
+					<if test = "entity.kmtype != null and entity.kmtype != ''">
+						<![CDATA[ and record.kmtype  = #{entity.kmtype} ]]>
+					</if>
+					<if test = "entity.createtime != null and entity.createtime != ''">
+						<![CDATA[ and record.createtime  = #{entity.createtime} ]]>
+					</if>
+					<if test = "entity.updatetime != null and entity.updatetime != ''">
+						<![CDATA[ and record.updatetime  = #{entity.updatetime} ]]>
+					</if>
+					<if test = "entity.bak != null and entity.bak != ''">
+						<![CDATA[ and record.bak  = #{entity.bak} ]]>
+					</if>
+					<if test = "entity.approved != null and entity.approved != ''">
+						<![CDATA[ and record.approved  = #{entity.approved} ]]>
+					</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by id desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPageKms" resultMap="kmsMapper" >
+		select  record.id,
+		te.employeeName as createName ,
+		record.subject,
+		record.createbody,
+		record.imgs,
+		record.status,
+		record.kmtype,
+		record.createtime,
+		record.updatetime,
+		record.bak,
+		record.approved,
+		record.approveduser
+		FROM t_kms record
+		left join t_employee te on te.employeeID = record.createbody
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListKms" resultMap="kmsMapper" >
+		select  record.id,
+		te.employeeName as createName ,
+		record.subject,
+		record.createbody,
+		record.imgs,
+		record.status,
+		record.kmtype,
+		record.createtime,
+		record.updatetime,
+		record.bak,
+		record.approved,
+		record.approveduser
+		FROM t_kms record
+		left join t_employee te on te.employeeID = record.createbody
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountKms" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryKmsById" resultMap="kmsMapper" >
+		select  record.id,
+		te.employeeName as createName ,
+		te.imgURL as createImg,
+		record.subject,
+		record.content,
+		record.createbody,
+		record.imgs,
+		record.status,
+		record.kmtype,
+		record.createtime,
+		record.updatetime,
+		record.bak
+		FROM t_kms record
+		left join t_employee te on te.employeeID = record.createbody
+		 where 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="subject != null">subject,</if>
+			<if test="content != null">content,</if>
+			<if test="createbody != null">createbody,</if>
+			<if test="imgs != null">imgs,</if>
+			<if test="status != null">status,</if>
+			<if test="kmtype != null">kmtype,</if>
+			<if test="createtime != null">createtime,</if>
+			<if test="updatetime != null">updatetime,</if>
+			<if test="bak != null">bak,</if>
+			<if test="approved != null">approved,</if>
+			<if test="approveduser != null">approveduser,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+				<if test="id != null">#{id},</if>
+				<if test="subject != null">#{subject},</if>
+				<if test="content != null">#{content},</if>
+				<if test="createbody != null">#{createbody},</if>
+				<if test="imgs != null">#{imgs},</if>
+				<if test="status != null">#{status},</if>
+				<if test="kmtype != null">#{kmtype},</if>
+				<if test="createtime != null">#{createtime},</if>
+				<if test="updatetime != null">#{updatetime},</if>
+				<if test="bak != null">#{bak},</if>
+				<if test="approved != null">#{approved},</if>
+				<if test="approveduser != null">#{approveduser},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="addKms" parameterType="com.isoftstone.humanresources.domain.gather.KmsModel">
+		insert into t_kms(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="updateKms" parameterType="com.isoftstone.humanresources.domain.gather.KmsModel">
+		update t_kms record 
+			<set>
+				<trim suffixOverrides=",">
+					<if test = "subject != null ">
+						record.subject = #{subject},
+					</if>
+					<if test = "content != null ">
+						record.content = #{content},
+					</if>
+					<if test = "createbody != null ">
+						record.createbody = #{createbody},
+					</if>
+					<if test = "imgs != null ">
+						record.imgs = #{imgs},
+					</if>
+					<if test = "status != null ">
+						record.status = #{status},
+					</if>
+					<if test = "kmtype != null ">
+						record.kmtype = #{kmtype},
+					</if>
+					<if test = "createtime != null ">
+						record.createtime = #{createtime},
+					</if>
+					<if test = "updatetime != null ">
+						record.updatetime = #{updatetime},
+					</if>
+					<if test = "approved != null ">
+						record.approved = #{approved},
+					</if>
+					<if test = "bak != null ">
+						record.bak = #{bak}
+					</if>
+				</trim>
+			</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="removeKmsByIds" parameterType="java.util.List">
+		delete from t_kms 
+			where id in
+			<foreach collection="list" open="(" separator="," close=")" item="code">
+				#{code}
+			</foreach>
+	</delete>
+
+	<delete id="removeKmsById">
+		delete from t_kms 
+		<if test=" id != null and id != ''">
+			where id = #{id}
+		</if>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--配置扫描包的路径-->
+    <context:component-scan base-package="com.woniu">
+        <!--不扫描@Controller注解-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+    </context:component-scan>
+    <!--引入外部的数据库配置信息-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+    <!--配置druid数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--mysql驱动-->
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <!--驱动路径-->
+        <property name="url" value="${jdbc.url}"></property>
+        <!--mysql用户姓名-->
+        <property name="username" value="${jdbc.username}"></property>
+        <!--mysql用户密码-->
+        <property name="password" value="${jdbc.password}"></property>
+        <!--druid连接池初始数量-->
+        <property name="initialSize" value="${initialSize}"></property>
+        <!--druid连接池最小数量-->
+        <property name="minIdle" value="${minIdle}"></property>
+        <!--druid连接池最大数量-->
+        <property name="maxActive" value="${maxActive}"></property>
+        <!--druid连接池最大等待毫秒数-->
+        <property name="maxWait" value="${maxWait}"></property>
+    </bean>
+    <!--配置SqlSessionFactoryBean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--注入数据源dataSource-->
+        <property name="dataSource" ref="dataSource"></property>
+        <!--注入别名-->
+        <property name="typeAliasesPackage" value="com.woniu.pojo"></property>
+        <!--注入mybatis运行参数-->
+        <property name="configuration">
+            <bean class="org.apache.ibatis.session.Configuration">
+                <!--延迟加载-->
+                <property name="lazyLoadingEnabled" value="true"></property>
+                <!--属性延迟加载-->
+                <property name="aggressiveLazyLoading" value="false"></property>
+                <!--获取数据库自增列的值-->
+                <property name="useGeneratedKeys" value="true"></property>
+            </bean>
+        </property>
+        <!--注入sql映射文件的路径-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <!--注入插件-->
+        <property name="plugins">
+            <array>
+                <!--分页插件：PageHelper-->
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            <!--指定mysql-->
+                            dialect=mysql
+                            <!--分页合理化参数-->
+                            reasonable=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+    <!--注入映射器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.woniu.mapper"></property>
+    </bean>
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!--注入事务驱动注解-->
+    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+</beans>

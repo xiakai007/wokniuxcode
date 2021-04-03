@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/myrbac/myrbac.iml" filepath="$PROJECT_DIR$/myrbac/myrbac.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rbac.iml" filepath="$PROJECT_DIR$/rbac.iml" />
+    </modules>
+  </component>
+</project>

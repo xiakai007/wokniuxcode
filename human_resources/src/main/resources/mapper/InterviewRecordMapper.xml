@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.isoftstone.humanresources.dao.InterviewRecordDao">
+	<!-- 返回值映射map -->
+	<resultMap id="interviewRecordMapper" type="com.isoftstone.humanresources.domain.recruit.InterviewRecordModel">
+			<result property="recordid" column="recordID" />
+			<result property="candidateid" column="candidateID" />
+			<result property="candidateName" column="candidateName" />
+			<result property="employeeName" column="employeeName" />
+			<result property="employeeid" column="employeeID" />
+			<result property="candidatemanager" column="candidateManager" />
+			<result property="projectteam" column="projectTeam" />
+			<result property="interviewtime" column="interviewTime" />
+			<result property="interviewresult" column="interviewResult" />
+			<result property="interviewtype" column="interviewType" />
+			<result property="bak" column="bak" />
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from t_interview_record record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 recordID, 
+				 candidateID, 
+				 employeeID, 
+				 candidateManager, 
+				 projectTeam, 
+				 interviewTime, 
+				 interviewResult, 
+				 interviewType, 
+				 bak 
+			]]>
+	  	</if>
+	     FROM t_interview_record record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+					<if test = "entity.recordid != null and entity.recordid != ''">
+						<![CDATA[ and record.recordID  = #{entity.recordid} ]]>
+					</if>
+					<if test = "entity.candidateid != null and entity.candidateid != ''">
+						<![CDATA[ and record.candidateID  = #{entity.candidateid} ]]>
+					</if>
+					<if test = "entity.employeeid != null and entity.employeeid != ''">
+						<![CDATA[ and record.employeeID  = #{entity.employeeid} ]]>
+					</if>
+					<if test = "entity.candidatemanager != null and entity.candidatemanager != ''">
+						<![CDATA[ and record.candidateManager  = #{entity.candidatemanager} ]]>
+					</if>
+					<if test = "entity.projectteam != null and entity.projectteam != ''">
+						<![CDATA[ and record.projectTeam  = #{entity.projectteam} ]]>
+					</if>
+					<if test = "entity.interviewtime != null and entity.interviewtime != ''">
+						<![CDATA[ and record.interviewTime  = #{entity.interviewtime} ]]>
+					</if>
+					<if test = "entity.interviewresult != null and entity.interviewresult != ''">
+						<![CDATA[ and record.interviewResult  = #{entity.interviewresult} ]]>
+					</if>
+					<if test = "entity.interviewtype != null and entity.interviewtype != ''">
+						<![CDATA[ and record.interviewType  = #{entity.interviewtype} ]]>
+					</if>
+					<if test = "entity.bak != null and entity.bak != ''">
+						<![CDATA[ and record.bak  = #{entity.bak} ]]>
+					</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by create_time desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPageInterviewRecord" resultMap="interviewRecordMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListInterviewRecord" resultMap="interviewRecordMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountInterviewRecord" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryInterviewRecordById" resultMap="interviewRecordMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.recordID = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="recordid != null">recordID,</if>
+			<if test="candidateid != null">candidateID,</if>
+			<if test="employeeid != null">employeeID,</if>
+			<if test="candidatemanager != null">candidateManager,</if>
+			<if test="projectteam != null">projectTeam,</if>
+			<if test="interviewtime != null">interviewTime,</if>
+			<if test="interviewresult != null">interviewResult,</if>
+			<if test="interviewtype != null">interviewType,</if>
+			<if test="bak != null">bak,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+				<if test="recordid != null">#{recordid},</if>
+				<if test="candidateid != null">#{candidateid},</if>
+				<if test="employeeid != null">#{employeeid},</if>
+				<if test="candidatemanager != null">#{candidatemanager},</if>
+				<if test="projectteam != null">#{projectteam},</if>
+				<if test="interviewtime != null">#{interviewtime},</if>
+				<if test="interviewresult != null">#{interviewresult},</if>
+				<if test="interviewtype != null">#{interviewtype},</if>
+				<if test="bak != null">#{bak},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="addInterviewRecord" parameterType="com.isoftstone.humanresources.domain.recruit.InterviewRecordModel">
+		replace into t_interview_record(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="updateInterviewRecord" parameterType="com.isoftstone.humanresources.domain.recruit.InterviewRecordModel">
+		update t_interview_record record 
+			<set>
+					<if test = "recordid != null ">
+						record.recordID = #{recordid},
+					</if>
+					<if test = "candidateid != null ">
+						record.candidateID = #{candidateid},
+					</if>
+					<if test = "employeeid != null ">
+						record.employeeID = #{employeeid},
+					</if>
+					<if test = "candidatemanager != null ">
+						record.candidateManager = #{candidatemanager},
+					</if>
+					<if test = "projectteam != null ">
+						record.projectTeam = #{projectteam},
+					</if>
+					<if test = "interviewtime != null ">
+						record.interviewTime = #{interviewtime},
+					</if>
+					<if test = "interviewresult != null ">
+						record.interviewResult = #{interviewresult},
+					</if>
+					<if test = "interviewtype != null ">
+						record.interviewType = #{interviewtype},
+					</if>
+					<if test = "bak != null ">
+						record.bak = #{bak}
+					</if>
+			</set>
+		where recordID = #{recordID}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="removeInterviewRecordByIds" parameterType="java.util.List">
+		delete from t_interview_record 
+			where recordID in
+			<foreach collection="list" open="(" separator="," close=")" item="code">
+				#{code}
+			</foreach>
+	</delete>
+
+	<delete id="removeInterviewRecordById">
+		delete from t_interview_record 
+		<if test=" id != null and id != ''">
+			where recordID = #{id}
+		</if>
+	</delete>
+
+
+	<!-- 根据候选人ID查询面试信息 -->
+	<select id="queryByCandidateID" resultMap="interviewRecordMapper" >
+		select   record.recordID,
+				 record.candidateID,
+				 tc.candidateName,
+				 record.employeeID,
+				 record.candidateManager,
+				 record.projectTeam,
+				 DATE_FORMAT(record.interviewTime ,'%Y-%m-%d') as interviewTime,
+				 record.interviewResult,
+				 record.interviewType,
+				 record.bak
+				 from t_interview_record  record,t_candidate tc
+				where
+				record.candidateID = tc.candidateID
+				and record.candidateID = #{candidateID}
+	</select>
+
+	<!-- 根据员工ID查询面试信息 -->
+	<select id="queryByEmployeeID" resultMap="interviewRecordMapper" >
+		select   record.recordID,
+				 record.candidateID,
+				 te.employeeName ,
+				 record.employeeID,
+				 record.candidateManager,
+				 record.projectTeam,
+				 record.interviewTime,
+				 record.interviewResult,
+				 record.interviewType,
+				 record.bak
+				 from  t_interview_record  record,t_employee te
+		where
+		record.employeeID = te.employeeID and
+		record.employeeID = #{employeeID}
+	</select>
+	
+</mapper>

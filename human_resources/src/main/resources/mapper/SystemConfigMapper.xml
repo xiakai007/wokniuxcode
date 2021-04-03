@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isoftstone.humanresources.dao.SystemConfigDao" >
+    <sql id="BASE_TABLE">
+       t_system_config
+    </sql>
+
+    <sql id="BASE_COLUMN">
+       systemID,configType,configName,configValue ,createTime,updateTime,createEmployeeID,updateEmployeeID,bak
+    </sql>
+
+    <resultMap id="systemConfig" type="com.isoftstone.humanresources.domain.SystemConfigInformation">
+        <result column="systemID" jdbcType="INTEGER" property="systemID" />
+        <result column="configType" jdbcType="VARCHAR" property="configType" />
+        <result column="configName" jdbcType="VARCHAR" property="configName" />
+        <result column="configValue" jdbcType="VARCHAR" property="configValue" />
+        <result column="createTime" jdbcType="VARCHAR" property="createTime" />
+        <result column="updateTime" jdbcType="VARCHAR" property="updateTime" />
+        <result column="createEmployeeID" jdbcType="VARCHAR" property="createEmployeeID" />
+        <result column="updateEmployeeID" jdbcType="VARCHAR" property="updateEmployeeID" />
+        <result column="bak" jdbcType="VARCHAR" property="bak" />
+    </resultMap>
+
+    <select id="queryConfigByType" parameterType="java.lang.String" resultMap="systemConfig">
+        SELECT
+         <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        where configType = #{configType,jdbcType =VARCHAR}
+    </select>
+
+	<select id="queryConfigByValue" parameterType="java.lang.String" resultMap="systemConfig">
+        SELECT
+         <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        where configType = #{configType,jdbcType =VARCHAR}
+        and configValue = #{configValue,jdbcType =VARCHAR}
+    </select>
+</mapper>

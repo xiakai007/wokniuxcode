@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isoftstone.humanresources.dao.PortraitProjectManagerDao">
+	<!-- 新增印象 -->
+	<insert id="addImpressionRecord"
+		parameterType="com.isoftstone.humanresources.domain.ImpressionRecordInformation">
+		INSERT INTO T_IMPRESSION_RECORD
+		(
+		employeeID,
+		labelImpre,
+		labelImpreScore,
+		scoreEmployeeId,
+		createTime,
+		bak
+		)
+		values
+		(
+		#{impressionRecord.employeeID},
+		#{impressionRecord.labelImpre},
+		#{impressionRecord.labelImpreScore},
+		#{impressionRecord.scoreEmployeeId},
+		now(),
+		#{impressionRecord.bak}
+		)
+	</insert>
+	<!-- 查询印象标签 -->
+	<select id="queryImpression" parameterType="String"
+		resultType="com.isoftstone.humanresources.domain.portraitprojectmanager.ImpressionRecordRes">
+		select
+		labelImpre,
+		count(1) as impreCount
+		FROM
+		t_impression_record
+		WHERE
+		employeeID = #{employeeID}
+		GROUP BY labelImpre
+	</select>
+	<!-- 新增基础加分项 -->
+	<insert id="addBasicRecord"
+		parameterType="com.isoftstone.humanresources.domain.EmployeeBasicRecordInformation">
+		INSERT INTO T_EMPLOYEE_BASIC_RECORD
+		(
+		employeeID,
+		basicType,
+		basicScore,
+		scoreEmployeeId,
+		planStartTime,
+		planEndTime,
+		startTime,
+		endTime,
+		createTime,
+		bak
+		)
+		VALUES
+		(
+		#{employeeBasicRecordInfo.employeeID},
+		#{employeeBasicRecordInfo.basicType},
+		#{employeeBasicRecordInfo.basicScore},
+		#{employeeBasicRecordInfo.scoreEmployeeId},
+		#{employeeBasicRecordInfo.planStartTime},
+		#{employeeBasicRecordInfo.planEndTime},
+		#{employeeBasicRecordInfo.startTime},
+		#{employeeBasicRecordInfo.endTime},
+		now(),
+		#{employeeBasicRecordInfo.bak}
+		)
+	</insert>
+	<!-- 修改基础加分项 -->
+	<update id="updateBasicRecord"
+		parameterType="com.isoftstone.humanresources.domain.EmployeeBasicRecordInformation">
+		UPDATE t_employee_basic_record
+		SET
+		basicScore =
+		#{employeeBasicRecordInfo.basicScore},
+		scoreEmployeeId =
+		#{employeeBasicRecordInfo.scoreEmployeeId},
+		planStartTime =
+		#{employeeBasicRecordInfo.planStartTime},
+		planEndTime =
+		#{employeeBasicRecordInfo.planEndTime},
+		startTime =
+		#{employeeBasicRecordInfo.startTime},
+		endTime =
+		#{employeeBasicRecordInfo.endTime},
+		updateTime = NOW(),
+		updateEmployeeID = #{employeeBasicRecordInfo.updateEmployeeID},
+		bak =
+		#{employeeBasicRecordInfo.bak}
+		WHERE employeeID =
+		#{employeeBasicRecordInfo.employeeID}
+	</update>
+	<!-- 基础分详情 -->
+	<select id="queryBasicById" parameterType="String"
+		resultType="com.isoftstone.humanresources.domain.EmployeeBasicRecordInformation">
+		SELECT
+		teb.ID as id,
+		teb.employeeID,
+		t.employeeName as employeeName,
+		teb.basicType,
+		teb.basicScore,
+		teb.scoreEmployeeId,
+		t1.employeeName as
+		scoreName,
+		teb.planStartTime,
+		teb.planEndTime,
+		teb.startTime,
+		teb.endTime,
+		teb.createTime,
+		teb.updateTime,
+		teb.updateEmployeeID,
+		t2.employeeName as updateName,
+		teb.bak
+		FROM
+		T_EMPLOYEE_BASIC_RECORD teb
+		INNER JOIN T_EMPLOYEE t ON teb.employeeID = t.employeeID
+		INNER JOIN
+		T_EMPLOYEE t1 ON teb.scoreEmployeeId = t1.employeeID
+		INNER JOIN
+		T_EMPLOYEE t2 ON teb.updateEmployeeID = t2.employeeID
+		WHERE 1=1
+		<if test="employeeId != null and employeeId != ''">
+			AND teb.employeeID = #{employeeId}
+		</if>
+		<if test="id != null and id != ''">
+			AND teb.ID = #{id}
+		</if>
+	</select>
+	<!-- 查询项目经理fp项目得分 -->
+	<select id="queryProjectManagerScoreFP" parameterType="long"
+		resultType="com.isoftstone.humanresources.domain.portraitprojectmanager.ProjectManagerVO">
+		SELECT
+		FORMAT(
+		(SUM(proDeliveryQuScore)*100/20/count(1)+SUM(TimeOfDelivery)*100/20/count(1)+SUM(rateStageAccept)/count(1))/3,2)
+		as processAndResults,
+		FORMAT(
+		(SUM(PersonStScore)*100/20/count(1)+SUM(proPersonStScore)/COUNT(1))/2,2)
+		as personManage,
+		FORMAT(
+		(SUM(deliveryScheduleDev)*100/10/count(1)+SUM(proDeliveryQuality)*100/15/count(1)
+		+SUM(projectDeliveryQuality)*100/20/count(1)+SUM(qualityScore)*100/45/count(1)
+		+(10*COUNT(1)-SUM(quPointsCriticalEvents))*100/10/count(1))/5,2) as
+		qualityScore
+		FROM
+		t_project_delivery_score
+		WHERE
+		contractID IN (
+		SELECT
+		contractID
+		FROM
+		t_contract
+		WHERE
+		projectId IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+		AND contractType = 'FP'
+		)
+	</select>
+	<!-- 查询项目经理TM项目得分 -->
+	<select id="queryProjectManagerScoreTM" parameterType="long"
+		resultType="com.isoftstone.humanresources.domain.portraitprojectmanager.ProjectManagerVO">
+		SELECT
+		FORMAT(
+		(SUM(taskCompRateTime)*100/15/count(1)+SUM(missionPassRate)*100/10/count(1)+SUM(ridingQuality)*100/20/count(1))/3,2)
+		as processAndResults,
+		FORMAT(
+		(SUM(timelyArrivalRatePer)*100/10/count(1)+SUM(PersonStScore)*100/10/count(1)+SUM(personInterviewRate)*100/10/count(1))/3,2)
+		as personManage,
+		FORMAT(
+		(SUM(informationSecurity)*100/5/count(1)+SUM(networkSecurity)*100/5/count(1))/2,2)
+		as security,
+		FORMAT(
+		SUM(viaBrainstuck)*100/15/count(1),2) as
+		satisfaction,
+		FORMAT(
+		(SUM(deliveryScheduleDev)*100/10/count(1)+SUM(proDeliveryQuality)*100/15/count(1)
+		+SUM(projectDeliveryQuality)*100/20/count(1)+SUM(qualityScore)*100/45/count(1)
+		+(10*COUNT(1)-SUM(quPointsCriticalEvents))*100/10/count(1))/5,2) as
+		qualityScore
+		FROM
+		t_project_delivery_score
+		WHERE
+		contractID IN (
+		SELECT
+		contractID
+		FROM
+		t_contract
+		WHERE
+		projectId IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+		AND contractType = 'TM'
+		)
+	</select>
+
+	<!-- 查询比分规则详情 -->
+	<select id="queryRuleScoreInfo" parameterType="String"
+		resultType="com.isoftstone.humanresources.domain.GradingRulesInformation">
+		SELECT
+		ts.scoreType,
+		tc.configValue as scoreName,
+		ts.scoreProportion,
+		ts.createTime,
+		ts.updateTime,
+		ts.BU,
+		t2.organizationName as buName,
+		ts.BD,
+		t1.organizationName as bdName,
+		ts.bak,
+		ts.createemployeeID,
+		t3.employeeName as createName,
+		ts.updateEmployeeID,
+		t4.employeeName as updateName
+		FROM
+		t_score_weighting_tab ts
+		INNER JOIN t_system_config tc
+		ON ts.scoreType =
+		tc.configName
+		LEFT JOIN t_organization t1
+		ON ts.BD = t1.organizationID
+		LEFT JOIN t_organization t2
+		ON ts.BU = t2.organizationID
+		LEFT JOIN
+		t_employee t3 ON
+		ts.createemployeeID = t3.employeeID
+		LEFT JOIN
+		t_employee t4 ON
+		ts.updateEmployeeID = t4.employeeID
+		WHERE
+		ts.${orgType}
+		= #{bdOrBu}
+		and scoreType = #{scoreType}
+	</select>
+	<!-- 获取质量得分 -->
+	<select id="queryQualityScore"
+		parameterType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreWayVO"
+		resultType="double">
+		SELECT
+		FORMAT(
+		CASE count(1) WHEN 0 then 0 ELSE
+		SUM(sumScore)/count(1)*#{scoreProportion}*0.4 END,2)
+		FROM
+		t_project_delivery_score
+		WHERE
+		contractID IN (
+		SELECT
+		contractID
+		FROM
+		t_contract
+		WHERE
+		projectId IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+		)
+	</select>
+
+	<!-- 获取人资得分 -->
+	<select id="queryHumanScore"
+		parameterType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreWayVO"
+		resultType="double">
+		select
+		FORMAT(
+		(1-(CASE (select count(1) from t_employee
+		where projectTeam in
+		(select organizationID from t_organization where
+		leader =
+		#{employeeId}))
+		WHEN 0 THEN 0 ELSE
+		(select count(1) from
+		t_employee where
+		projectTeam in
+		(select organizationID
+		from
+		t_organization where leader
+		= #{employeeId})
+		and issStatus = '离职')/
+		(select count(1) from t_employee
+		where projectTeam in
+		(select
+		organizationID from t_organization where
+		leader =
+		#{employeeId}))
+		END))*100*0.5*#{scoreProportion}*0.4+ABS((SELECT
+		count(1)
+		from
+		t_employee
+		WHERE projectTeam in
+		((select organizationID
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+		group by
+		organizationID)))-(select
+		IFNULL(SUM(ruleValue),0)
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)))/(select
+		IFNULL(SUM(ruleValue),1)
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader =
+		#{employeeId}
+		))*100*0.5*#{scoreProportion}*0.4,2)
+		from dual
+	</select>
+
+	<!-- 获取印象得分 -->
+	<select id="queryImpressionScore"
+		parameterType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreWayVO"
+		resultType="double">
+		select
+		FORMAT(
+		(CASE count(1) WHEN 0
+		THEN 0 ELSE
+		SUM(labelImpreScore)/count(1) END)*#{scoreProportion}*0.4,2)
+		from
+		t_impression_record
+		where employeeID = #{employeeId}
+	</select>
+
+	<!-- 获取管理得分 -->
+	<select id="queryManagementScore"
+		parameterType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreWayVO"
+		resultType="double">
+		select
+		FORMAT(
+		(CASE count(1) WHEN 0 THEN 0 ELSE 1
+		END)*0.3*#{scoreProportion}*40+
+		(select
+		(CASE count(1) WHEN 0 THEN 0
+		ELSE 1 END)*0.5*#{scoreProportion}*40
+		from t_employee_backups
+		where
+		organizationID in
+		(SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader =
+		#{employeeId})
+		)+(
+		select
+		(CASE count(1) WHEN 0 THEN 0 ELSE 1
+		END)*0.2*#{scoreProportion}*40
+		from
+		t_employee_training_program
+		where
+		scoreEmployeeId = #{employeeId}
+		AND
+		trainStatus = '已完成'
+		),2)
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+	</select>
+
+	<!-- 获取人资得分详情 -->
+	<select id="queryHumanScoreInfo"
+		parameterType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreWayVO"
+		resultType="com.isoftstone.humanresources.domain.portraitprojectmanager.RecruitAndLeaveVO">
+		SELECT
+		(select count(1) from
+		t_employee where
+		projectTeam in
+		(select organizationID
+		from
+		t_organization where leader
+		= #{employeeId})
+		and issStatus = '离职') as leaveCount,
+		(select count(1) from t_employee
+		where projectTeam in
+		(select
+		organizationID from t_organization where
+		leader =
+		#{employeeId})) as sumPersonCount,
+		FORMAT((1-(CASE (select
+		count(1)
+		from t_employee
+		where projectTeam in
+		(select
+		organizationID from
+		t_organization where
+		leader =
+		#{employeeId}))
+		WHEN 0 THEN 0
+		ELSE
+		(select
+		count(1) from
+		t_employee where
+		projectTeam in
+		(select
+		organizationID
+		from
+		t_organization where leader
+		= #{employeeId})
+		and issStatus =
+		'离职')/
+		(select count(1) from t_employee
+		where projectTeam in
+		(select
+		organizationID from t_organization where
+		leader =
+		#{employeeId}))
+		END))*100*0.5*#{scoreProportion}*0.4,2) as leaveScore,
+		(SELECT
+		count(1)
+		from
+		t_employee
+		WHERE projectTeam in
+		((select organizationID
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+		group by
+		organizationID))) as recruitCount,
+		(select
+		IFNULL(SUM(ruleValue),0)
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader =
+		#{employeeId}
+		)) as
+		sumNeedPerson,
+		FORMAT(
+		(SELECT
+		count(1)
+		from
+		t_employee
+		WHERE projectTeam in
+		((select organizationID
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader =
+		#{employeeId}
+		)
+		group by
+		organizationID)))/(select
+		IFNULL(SUM(ruleValue),1)
+		from
+		t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader =
+		#{employeeId}
+		))*100*0.5*#{scoreProportion}*0.4,2) as recruitScore
+	</select>
+
+	<!-- 获取管理得分详情 -->
+	<select id="queryManagementScoreInfo"
+		parameterType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreWayVO"
+		resultType="com.isoftstone.humanresources.domain.portraitprojectmanager.ManageScoreVO">
+		select
+		(
+		SELECT
+		(CASE count(1) WHEN 0 THEN 0 ELSE 1
+		END)*0.3*#{scoreProportion}*40
+		from t_organization_check_health_rule
+		where
+		organizationID IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)) as isHealthPer,
+		(select
+		(CASE count(1) WHEN 0 THEN 0
+		ELSE 1 END)*0.5*#{scoreProportion}*40
+		from
+		t_employee_backups
+		where
+		organizationID in
+		(SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader =
+		#{employeeId})) as isPersonBak,
+		(select
+		(CASE count(1) WHEN 0 THEN 0 ELSE 1
+		END)*0.2*#{scoreProportion}*40
+		from
+		t_employee_training_program
+		where
+		scoreEmployeeId = #{employeeId}
+		AND
+		trainStatus = '已完成'
+		) as isPlanEmployee
+		FROM DUAL
+	</select>
+	
+	<!-- 查询项目经理fp项目得分详情 -->
+	<select id="queryProjectManagerScoreFPInfo" parameterType="long"
+		resultType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreProjectSkillFP">
+		SELECT
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(proDeliveryQuScore)*100/20/count(1),2) END proDeliveryQuScore,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(TimeOfDelivery)*100/20/count(1),2) end timeOfDelivery,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(rateStageAccept)/count(1),2) END rateStageAccept,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(PersonStScore)*100/20/count(1),2) END personStScore,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(proPersonStScore)/COUNT(1),2) end proPersonStScore,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(deliveryScheduleDev)*100/10/count(1),2) END deliveryScheduleDev,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(proDeliveryQuality)*100/15/count(1),2) end proDeliveryQuality,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(projectDeliveryQuality)*100/20/count(1),2) END projectDeliveryQuality,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(qualityScore)*100/45/count(1),2) END qualityScore,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT((1-SUM(quPointsCriticalEvents)/(100*count(1)))*100,2) END quPointsCriticalEvents
+		FROM
+		t_project_delivery_score
+		WHERE
+		contractID IN (
+		SELECT
+		contractID
+		FROM
+		t_contract
+		WHERE
+		projectId IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+		AND contractType = 'FP'
+		)
+	</select>
+	
+	<!-- 查询项目经理TM项目得分详情 -->
+	<select id="queryProjectManagerScoreTMInfo" parameterType="long"
+		resultType="com.isoftstone.humanresources.domain.portraitprojectmanager.ScoreProjectSkillTM">
+		SELECT
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(taskCompRateTime)*100/15/count(1),2) END taskCompRateTime,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(missionPassRate)*100/10/count(1),2) END missionPassRate,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(ridingQuality)*100/20/count(1),2) END ridingQuality,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(timelyArrivalRatePer)*100/10/count(1),2) END timelyArrivalRatePer,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(PersonStScore)*100/10/count(1),2) END personStScore,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(personInterviewRate)*100/10/count(1),2) END personInterviewRate,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(informationSecurity)*100/5/count(1),2) END informationSecurity,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(networkSecurity)*100/5/count(1),2) END networkSecurity,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(viaBrainstuck)*100/15/count(1),2) END viaBrainstuck,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(deliveryScheduleDev)*100/10/count(1),2) END deliveryScheduleDev,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(proDeliveryQuality)*100/15/count(1),2) end proDeliveryQuality,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(projectDeliveryQuality)*100/20/count(1),2) END projectDeliveryQuality,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT(SUM(qualityScore)*100/45/count(1),2) END qualityScore,
+		CASE count(1) WHEN 0 THEN 0 ELSE FORMAT((1-SUM(quPointsCriticalEvents)/(100*count(1)))*100,2) END quPointsCriticalEvents
+		FROM
+		t_project_delivery_score
+		WHERE
+		contractID IN (
+		SELECT
+		contractID
+		FROM
+		t_contract
+		WHERE
+		projectId IN (
+		SELECT
+		organizationID
+		FROM
+		t_organization
+		WHERE
+		leader = #{employeeId}
+		)
+		AND contractType = 'TM'
+		)
+	</select>
+</mapper>

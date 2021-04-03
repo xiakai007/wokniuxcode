@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.isoftstone.humanresources.dao.WorkTimeMonthOmpDao">
+	<!-- 返回值映射map -->
+	<resultMap id="workTimeMonthOmpMapper" type="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpModel">
+			<result property="employeeid" column="employeeID" />
+			<result property="employeename" column="employeeName" />
+			<result property="cardid" column="cardID" />
+			<result property="month" column="month" />
+			<result property="shouldtimes" column="shouldTimes" />
+			<result property="holidaytimes" column="holidayTimes" />
+			<result property="latetimes" column="lateTimes" />
+			<result property="leaveearlytimes" column="LeaveEarlyTimes" />
+			<result property="businesstimes" column="businessTimes" />
+			<result property="absenteeismtimes" column="absenteeismTimes" />
+			<result property="owetimes" column="oweTimes" />
+			<result property="supplysigninnum" column="supplySignInNum" />
+			<result property="servertimes" column="serverTimes" />
+			<result property="realtimes" column="realTimes" />
+			<result property="paytimes" column="payTimes" />
+			<result property="overtimenum" column="overtimeNum" />
+			<result property="overtimes" column="overTimes" />
+			<result property="extendtimes" column="extendTimes" />
+		<result property="area" column="area" />
+		<result property="department" column="department" />
+		<result property="pdu" column="pdu" />
+		<result property="bak" column="bak" />
+		<result property="partnerPm" column="partnerPm" />
+		<result property="po" column="po" />
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from t_work_time_month_omp record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 employeeID, 
+				 employeeName, 
+				 cardID, 
+				 month, 
+				 shouldTimes, 
+				 holidayTimes, 
+				 lateTimes, 
+				 LeaveEarlyTimes, 
+				 businessTimes, 
+				 absenteeismTimes, 
+				 oweTimes, 
+				 supplySignInNum, 
+				 serverTimes, 
+				 realTimes, 
+				 payTimes, 
+				 overtimeNum, 
+				 overTimes, 
+				 extendTimes 
+			]]>
+	  	</if>
+	     FROM t_work_time_month_omp record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+					<if test = "entity.employeeid != null and entity.employeeid != ''">
+						<![CDATA[ and record.employeeID  = #{entity.employeeid} ]]>
+					</if>
+					<if test = "entity.employeename != null and entity.employeename != ''">
+						<![CDATA[ and record.employeeName  = #{entity.employeename} ]]>
+					</if>
+					<if test = "entity.cardid != null and entity.cardid != ''">
+						<![CDATA[ and record.cardID  = #{entity.cardid} ]]>
+					</if>
+					<if test = "entity.month != null and entity.month != ''">
+						<![CDATA[ and record.month  = #{entity.month} ]]>
+					</if>
+					<if test = "entity.shouldtimes != null and entity.shouldtimes != ''">
+						<![CDATA[ and record.shouldTimes  = #{entity.shouldtimes} ]]>
+					</if>
+					<if test = "entity.holidaytimes != null and entity.holidaytimes != ''">
+						<![CDATA[ and record.holidayTimes  = #{entity.holidaytimes} ]]>
+					</if>
+					<if test = "entity.latetimes != null and entity.latetimes != ''">
+						<![CDATA[ and record.lateTimes  = #{entity.latetimes} ]]>
+					</if>
+					<if test = "entity.leaveearlytimes != null and entity.leaveearlytimes != ''">
+						<![CDATA[ and record.LeaveEarlyTimes  = #{entity.leaveearlytimes} ]]>
+					</if>
+					<if test = "entity.businesstimes != null and entity.businesstimes != ''">
+						<![CDATA[ and record.businessTimes  = #{entity.businesstimes} ]]>
+					</if>
+					<if test = "entity.absenteeismtimes != null and entity.absenteeismtimes != ''">
+						<![CDATA[ and record.absenteeismTimes  = #{entity.absenteeismtimes} ]]>
+					</if>
+					<if test = "entity.owetimes != null and entity.owetimes != ''">
+						<![CDATA[ and record.oweTimes  = #{entity.owetimes} ]]>
+					</if>
+					<if test = "entity.supplysigninnum != null and entity.supplysigninnum != ''">
+						<![CDATA[ and record.supplySignInNum  = #{entity.supplysigninnum} ]]>
+					</if>
+					<if test = "entity.servertimes != null and entity.servertimes != ''">
+						<![CDATA[ and record.serverTimes  = #{entity.servertimes} ]]>
+					</if>
+					<if test = "entity.realtimes != null and entity.realtimes != ''">
+						<![CDATA[ and record.realTimes  = #{entity.realtimes} ]]>
+					</if>
+					<if test = "entity.paytimes != null and entity.paytimes != ''">
+						<![CDATA[ and record.payTimes  = #{entity.paytimes} ]]>
+					</if>
+					<if test = "entity.overtimenum != null and entity.overtimenum != ''">
+						<![CDATA[ and record.overtimeNum  = #{entity.overtimenum} ]]>
+					</if>
+					<if test = "entity.overtimes != null and entity.overtimes != ''">
+						<![CDATA[ and record.overTimes  = #{entity.overtimes} ]]>
+					</if>
+					<if test = "entity.extendtimes != null and entity.extendtimes != ''">
+						<![CDATA[ and record.extendTimes  = #{entity.extendtimes} ]]>
+					</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by create_time desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPageWorkTimeMonthOmp" resultMap="workTimeMonthOmpMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListWorkTimeMonthOmp" resultMap="workTimeMonthOmpMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountWorkTimeMonthOmp" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryWorkTimeMonthOmpById" resultMap="workTimeMonthOmpMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.employeeID = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="employeeid != null">employeeID,</if>
+			<if test="employeename != null">employeeName,</if>
+			<if test="cardid != null">cardID,</if>
+			<if test="month != null">month,</if>
+			<if test="shouldtimes != null">shouldTimes,</if>
+			<if test="holidaytimes != null">holidayTimes,</if>
+			<if test="latetimes != null">lateTimes,</if>
+			<if test="leaveearlytimes != null">LeaveEarlyTimes,</if>
+			<if test="businesstimes != null">businessTimes,</if>
+			<if test="absenteeismtimes != null">absenteeismTimes,</if>
+			<if test="owetimes != null">oweTimes,</if>
+			<if test="supplysigninnum != null">supplySignInNum,</if>
+			<if test="servertimes != null">serverTimes,</if>
+			<if test="realtimes != null">realTimes,</if>
+			<if test="paytimes != null">payTimes,</if>
+			<if test="overtimenum != null">overtimeNum,</if>
+			<if test="overtimes != null">overTimes,</if>
+			<if test="extendtimes != null">extendTimes,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+				<if test="employeeid != null">#{employeeid},</if>
+				<if test="employeename != null">#{employeename},</if>
+				<if test="cardid != null">#{cardid},</if>
+				<if test="month != null">#{month},</if>
+				<if test="shouldtimes != null">#{shouldtimes},</if>
+				<if test="holidaytimes != null">#{holidaytimes},</if>
+				<if test="latetimes != null">#{latetimes},</if>
+				<if test="leaveearlytimes != null">#{leaveearlytimes},</if>
+				<if test="businesstimes != null">#{businesstimes},</if>
+				<if test="absenteeismtimes != null">#{absenteeismtimes},</if>
+				<if test="owetimes != null">#{owetimes},</if>
+				<if test="supplysigninnum != null">#{supplysigninnum},</if>
+				<if test="servertimes != null">#{servertimes},</if>
+				<if test="realtimes != null">#{realtimes},</if>
+				<if test="paytimes != null">#{paytimes},</if>
+				<if test="overtimenum != null">#{overtimenum},</if>
+				<if test="overtimes != null">#{overtimes},</if>
+				<if test="extendtimes != null">#{extendtimes},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="addWorkTimeMonthOmp" parameterType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpModel">
+		insert into t_work_time_month_omp(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+
+	<sql id="BASE_COLUMN">
+		 employeeID,
+		 employeeName,
+		 cardID,
+		 month,
+		 shouldTimes,
+		 holidayTimes,
+		 lateTimes,
+		 LeaveEarlyTimes,
+		 businessTimes,
+		 absenteeismTimes,
+		 oweTimes,
+		 supplySignInNum,
+		 serverTimes,
+		 realTimes,
+		 payTimes,
+		 overtimeNum,
+		 overTimes,
+		 extendTimes,
+		 monthInShore,
+		  area,
+		  department,
+		   pdu,
+		    bak,
+		     partnerPm,
+		 po
+	</sql>
+
+	<insert id="importWorkTimeMonth" parameterType="java.util.List">
+		insert into
+		t_work_time_month_omp
+		(
+		<include refid="BASE_COLUMN"></include>
+		)
+		values
+		<if test="null != monthTimeList and monthTimeList.size() > 0">
+			<foreach collection="monthTimeList" item="item" index="index"
+					 separator=",">
+				(
+				#{item.employeeid},
+				#{item.employeename},
+				#{item.cardid},
+				#{item.month},
+				#{item.shouldtimes},
+				#{item.holidaytimes},
+				#{item.latetimes},
+				#{item.leaveearlytimes},
+				#{item.businesstimes},
+				#{item.absenteeismtimes},
+				#{item.owetimes},
+				#{item.supplysigninnum},
+				#{item.servertimes},
+				#{item.realtimes},
+				#{item.paytimes},
+				#{item.overtimenum},
+				#{item.overtimes},
+				#{item.extendtimes},
+				#{item.monthInShore},
+				#{item.area},
+				#{item.department},
+				#{item.pdu},
+				#{item.bak},
+				#{item.partnerPm},
+				#{item.po}
+				)
+			</foreach>
+		</if>
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="updateWorkTimeMonthOmp" parameterType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpModel">
+		update t_work_time_month_omp record 
+			<set>
+					<if test = "employeeid != null ">
+						record.employeeID = #{employeeid},
+					</if>
+					<if test = "employeename != null ">
+						record.employeeName = #{employeename},
+					</if>
+					<if test = "cardid != null ">
+						record.cardID = #{cardid},
+					</if>
+					<if test = "month != null ">
+						record.month = #{month},
+					</if>
+					<if test = "shouldtimes != null ">
+						record.shouldTimes = #{shouldtimes},
+					</if>
+					<if test = "holidaytimes != null ">
+						record.holidayTimes = #{holidaytimes},
+					</if>
+					<if test = "latetimes != null ">
+						record.lateTimes = #{latetimes},
+					</if>
+					<if test = "leaveearlytimes != null ">
+						record.LeaveEarlyTimes = #{leaveearlytimes},
+					</if>
+					<if test = "businesstimes != null ">
+						record.businessTimes = #{businesstimes},
+					</if>
+					<if test = "absenteeismtimes != null ">
+						record.absenteeismTimes = #{absenteeismtimes},
+					</if>
+					<if test = "owetimes != null ">
+						record.oweTimes = #{owetimes},
+					</if>
+					<if test = "supplysigninnum != null ">
+						record.supplySignInNum = #{supplysigninnum},
+					</if>
+					<if test = "servertimes != null ">
+						record.serverTimes = #{servertimes},
+					</if>
+					<if test = "realtimes != null ">
+						record.realTimes = #{realtimes},
+					</if>
+					<if test = "paytimes != null ">
+						record.payTimes = #{paytimes},
+					</if>
+					<if test = "overtimenum != null ">
+						record.overtimeNum = #{overtimenum},
+					</if>
+					<if test = "overtimes != null ">
+						record.overTimes = #{overtimes},
+					</if>
+					<if test = "extendtimes != null ">
+						record.extendTimes = #{extendtimes}
+					</if>
+			</set>
+		where employeeID = #{employeeID}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="removeWorkTimeMonthOmpByIds" parameterType="java.util.List">
+		delete from t_work_time_month_omp 
+			where employeeID in
+			<foreach collection="list" open="(" separator="," close=")" item="code">
+				#{code}
+			</foreach>
+	</delete>
+
+	<delete id="removeWorkTimeMonthOmpById">
+		delete from t_work_time_month_omp 
+		<if test=" id != null and id != ''">
+			where employeeID = #{id}
+		</if>
+	</delete>
+
+	<select id="exportDifMonth" resultType="com.isoftstone.humanresources.domain.workTime.ExportDiffentMonth" >
+		 select ipsa.employeeID          as ipsaemployeeID       ,
+				ipsa.employeeName        as ipsaemployeeName      ,
+				ipsa.area                as ipsaarea              ,
+				omp.pdu                  as omppdu                ,
+				ipsa.month               as ipsamonth             ,
+				ipsa.shouldDays          as ipsashouldDays        ,
+				ipsa.actualDays          as ipsaactualDays        ,
+				ipsa.shouldTimes         as ipsashouldTimes       ,
+				ipsa.actualTimes         as ipsaactualTimes       ,
+				ipsa.holidayTimes        as ipsaholidayTimes      ,
+				ipsa.businessTimes       as ipsabusinessTimes     ,
+				ipsa.businessTripTimes   as ipsabusinessTripTimes ,
+				ipsa.lateTimes           as ipsalateTimes         ,
+				ipsa.LeaveEarlyTimes     as ipsaLeaveEarlyTimes   ,
+				ipsa.absenteeismTimes    as ipsaabsenteeismTimes  ,
+				ipsa.oweTimes            as ipsaoweTimes          ,
+				ipsa.overtimeNum         as ipsaovertimeNum       ,
+				ipsa.overtimes           as ipsaovertimes         ,
+				ipsa.extendTimes         as ipsaextendTimes       ,
+				omp.shouldTimes          as ompshouldTimes        ,
+				omp.holidayTimes         as ompholidayTimes       ,
+				omp.lateTimes            as omplateTimes          ,
+				omp.LeaveEarlyTimes      as ompLeaveEarlyTimes    ,
+				omp.businessTimes        as ompbusinessTimes      ,
+				omp.absenteeismTimes     as ompabsenteeismTimes   ,
+				omp.oweTimes             as ompoweTimes           ,
+				omp.supplySignInNum      as ompsupplySignInNum    ,
+				omp.serverTimes          as ompserverTimes        ,
+				omp.realTimes            as omprealTimes          ,
+				omp.payTimes             as omppayTimes           ,
+				omp.overTimes            as ompoverTimes          ,
+				omp.monthInShore         as ompmonthInShore ,
+				omp.realTimes - omp.serverTimes  as ompoutTimes ,
+			ipsa.actualTimes + ipsa.businessTimes  +ipsa.businessTripTimes - omp.realTimes  as difworkTimes ,
+			ipsa.holidayTimes - omp.holidayTimes as difholidayTimes ,
+			ipsa.lateTimes + ipsa.LeaveEarlyTimes - omp.lateTimes - omp.LeaveEarlyTimes as diflateLeaveTimes  ,
+			ipsa.absenteeismTimes - omp.absenteeismTimes as difabsenteeismTimes,
+			ipsa.overtimes - omp.overTimes as difoverTimes ,
+			ipsa.extendTimes - omp.realTimes + omp.serverTimes as difextendTimes
+			from t_work_time_month_omp omp  ,
+			t_work_time_month_ipsa ipsa
+			where omp.employeeName = ipsa.employeeName
+			and replace(omp.cardID,'*','') = replace(ipsa.cardID ,'*','')
+			order by omp.pdu,Ipsa.area, omp.employeeName
+	</select>
+
+
+	<select id="exportDifDay" resultType="com.isoftstone.humanresources.domain.workTime.ExportDiffentDay" >
+		 select
+				ipsa.employeeID         as       ipsaemployeeID        ,
+				ipsa.employeeName       as       ipsaemployeeName      ,
+				ipsa.workArea           as       ipsaworkArea          ,
+				ipsa.workStatus         as       ipsaworkStatus        ,
+				ipsa.personalStatus     as       ipsapersonalStatus    ,
+				ipsa.dayCount           as       ipsadayCount          ,
+				ipsa.workDay            as       ipsaworkDay           ,
+				ipsa.dayCatagray        as       ipsadayCatagray       ,
+				ipsa.firstRecordPlace   as       ipsafirstRecordPlace  ,
+				ipsa.firstRecordTime    as       ipsafirstRecordTime   ,
+				ipsa.lastRecordPlace    as       ipsalastRecordPlace   ,
+				ipsa.lastRecordTime     as       ipsalastRecordTime    ,
+				ipsa.actualTimes        as       ipsaactualTimes       ,
+				ipsa.holidayTimes       as       ipsaholidayTimes      ,
+				ipsa.businessTimes      as       ipsabusinessTimes     ,
+				ipsa.outWorkTimes       as       ipsaoutWorkTimes      ,
+				ipsa.absenteeismTimes   as       ipsaabsenteeismTimes  ,
+				ipsa.workBadTimes       as       ipsaworkBadTimes      ,
+				ipsa.penalizeTimes      as       ipsapenalizeTimes     ,
+				ipsa.lateTimes          as       ipsalateTimes         ,
+				ipsa.overtimes          as       ipsaovertimes         ,
+				ipsa.extendTimes        as       ipsaextendTimes       ,
+				ipsa.copCatagray        as       ipsacopCatagray       ,
+				ipsa.copModel           as       ipsacopModel          ,
+				ipsa.monthInShore       as       ipsamonthInShore      ,
+				omp.po                  as       omppo                 ,
+				omp.personStatus        as       omppersonStatus       ,
+				omp.actualTimes         as       ompactualTimes        ,
+				omp.holidayTimes        as       ompholidayTimes       ,
+				omp.absenteeismTimes    as       ompabsenteeismTimes   ,
+				omp.penalizeTimes       as       omppenalizeTimes      ,
+				omp.overtimes           as       ompovertimes          ,
+				omp.extendTimes         as       ompextendTimes        ,
+				omp.copCatagray         as       ompcopCatagray        ,
+				omp.copModel            as       ompcopModel           ,
+				omp.monthInShore        as       ompmonthInShore ,
+				omp.shoreMsg        as       shoreMsg ,
+				omp.signMsg        as       signMsg ,
+				ipsa.actualTimes - omp.actualTimes as difworkTimes ,
+ipsa.holidayTimes - omp.holidayTimes as difholidayTimes ,
+ipsa.absenteeismTimes  - omp.absenteeismTimes as difabsenteeismTimes ,
+ipsa.overtimes  - omp.overtimes  as difoverTimes ,
+ipsa.penalizeTimes  - omp.penalizeTimes   as diflateLeaveTimes
+			from t_work_time_day_omp omp  ,
+			t_work_time_day_ipsa ipsa
+			where omp.employeeName = ipsa.employeeName
+			and replace(omp.cardID,'*','') = replace(ipsa.cardID ,'*','')
+			and ipsa.workDay = omp.workDay
+	</select>
+
+
+	<select id="exportOMPOvertimes" resultType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpOverTimes" >
+		select omp.po,
+		omp.employeeName,
+		omp.cardID,
+		omp.area,
+		omp.month,
+		omp.pdu,
+		omp.department,
+		omp.partnerPm,
+		omp.realTimes - omp.serverTimes as extendTimes,omp.realTimes,omp.serverTimes ,
+		ROUND( (omp.realTimes - omp.serverTimes)/(omp.serverTimes/8) ,3) as extendTimesAvg ,
+		omp.overTimes ,omp.realTimes - omp.serverTimes - omp.overTimes as difTimes , pdu.pduNum  ,pdu.pduOverTimes ,ROUND(  pdu.pduOverTimes /pdu.pduNum ,3) as pduOverTimesAvg
+		  ,po.poNum,po.poOverTimes ,ROUND(   po.poOverTimes /po.poNum,3) as poOverTimesAvg ,
+		department.departmentNum,department.departmentOverTimes , ROUND(  department.departmentOverTimes /department.departmentNum,3) as departmentOverTimesAvg
+		 from t_work_time_month_omp omp
+		left join  (select pdu as pdu1 ,count(distinct employeeName,cardid) as pduNum ,sum(realTimes - serverTimes ) as pduOverTimes from t_work_time_month_omp group by pdu  ) pdu on omp.pdu = pdu.pdu1
+		left join  (select  po as po1 ,count(distinct employeeName,cardid) as  poNum ,sum(realTimes - serverTimes ) as  poOverTimes from t_work_time_month_omp group by po ) po on omp.po = po.po1
+		left join  (select  department as  department1,count(distinct employeeName,cardid) as  departmentNum ,sum(realTimes - serverTimes ) as  departmentOverTimes from t_work_time_month_omp group by department)  department on omp.department = department.department1
+		 order by department ,pdu ,po
+	</select>
+
+<select id="exportOMPSumtimes" resultType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpOverTimes" >
+	select
+	omp.employeeName,
+	omp.cardID,
+	omp.area,
+	omp.month,
+	omp.pdu,
+	omp.department,
+	sum(omp.shouldTimes) as shouldtimes,
+	sum(omp.holidayTimes ) as holidaytimes,
+	sum(omp.lateTimes  ) as latetimes,
+	sum(omp.LeaveEarlyTimes ) as LeaveEarlytimes,
+	sum(omp.businessTimes  ) as businesstimes,
+	sum(omp.absenteeismTimes  ) as absenteeismtimes,
+	sum(omp.oweTimes ) as owetimes,
+	sum(omp.supplySignInNum   ) as supplysignInnum,
+	sum(omp.serverTimes ) as servertimes,
+	sum(omp.realTimes  ) as realtimes,
+	sum(omp.payTimes  ) as paytimes,
+	sum(omp.overTimes  ) as overtimes,
+	sum(omp.realTimes) - sum(omp.serverTimes) as extendTimes,
+	ROUND( ( sum(omp.realTimes) - sum(omp.serverTimes))/(sum(omp.serverTimes)/8) ,3) as extendTimesAvg ,
+	sum(omp.realTimes) - sum(omp.serverTimes) - sum(omp.overTimes) as difTimes ,
+	pm.pm
+	from t_work_time_month_omp omp
+	left join t_omp_info pm on omp.employeeName = pm.employeeName and omp.cardID = pm.cardID
+	group by omp.employeeName,omp.cardID
+</select>
+
+	<select id="exportOMPSumPdu" resultType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpSum" >
+	select pdu as name ,
+		count(distinct employeeName,cardid) as num ,
+		sum(realTimes - serverTimes ) as extraTimes ,
+		sum(overTimes) as overTimes,ROUND( sum(realTimes - serverTimes ) / count(distinct employeeName,cardid) ,3) as extraTimesAvg,
+		ROUND(sum(realTimes - serverTimes ) / count(distinct employeeName,cardid)  /8 ,3) as extraTimesAvgPerDay
+		   from t_work_time_month_omp group by pdu
+</select>
+
+	<select id="exportOMPSumDepartment" resultType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpSum" >
+		select department as  name,
+		count(distinct employeeName,cardid) as  num ,sum(realTimes - serverTimes ) as  extraTimes ,
+		sum(overTimes) as overTimes,ROUND( sum(realTimes - serverTimes ) / count(distinct employeeName,cardid) ,3) as extraTimesAvg,
+		ROUND(sum(realTimes - serverTimes ) / count(distinct employeeName,cardid)  /8 ,3) as extraTimesAvgPerDay
+		 from t_work_time_month_omp group by department
+	</select>
+
+	<select id="exportOMPSumByPm" resultType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpSumByPm" >
+select total.area,  total.pm ,count(distinct total.employeeName,total.cardid )  as countnum,
+ count( if(total.holidayTimes > 0.0, 1, null)  ) as holidayTimesCount,
+sum(total.holidayTimes ) as holidaytimes,
+ count( if( total.lateTimes > 0.0 , 1, null)  ) as lateTimesCount,
+sum(total.lateTimes  ) as latetimes,
+   count( if(  total.leaveEarlyTimes > 0.0, 1, null) ) as leaveEarlyTimesCount,
+sum(total.LeaveEarlyTimes ) as LeaveEarlytimes,
+ count( if(  total.absenteeismTimes > 0.0, 1, null) ) as absenteeismTimesCount,
+sum(total.absenteeismTimes  ) as absenteeismtimes,
+count( if(  total.oweTimes > 0.0, 1, null) ) as oweTimesCount,
+sum(total.oweTimes ) as owetimes
+  from (
+select
+omp.employeeName,
+omp.cardID,
+omp.area,
+omp.month,
+omp.pdu,
+omp.department,
+sum(omp.shouldTimes) as shouldtimes,
+sum(omp.holidayTimes ) as holidaytimes,
+sum(omp.lateTimes  ) as latetimes,
+sum(omp.LeaveEarlyTimes ) as LeaveEarlytimes,
+sum(omp.businessTimes  ) as businesstimes,
+sum(omp.absenteeismTimes  ) as absenteeismtimes,
+sum(omp.oweTimes ) as owetimes,
+sum(omp.supplySignInNum   ) as supplysignInnum,
+sum(omp.serverTimes ) as servertimes,
+sum(omp.realTimes  ) as realtimes,
+sum(omp.payTimes  ) as paytimes,
+sum(omp.overTimes  ) as overtimes,
+sum(omp.realTimes) - sum(omp.serverTimes) as extendTimes,
+ROUND( ( sum(omp.realTimes) - sum(omp.serverTimes))/(sum(omp.serverTimes)/8) ,3) as extendTimesAvg ,
+sum(omp.realTimes) - sum(omp.serverTimes) - sum(omp.overTimes) as difTimes ,
+pm.pm
+from t_work_time_month_omp omp
+left join t_omp_info pm on omp.employeeName = pm.employeeName and omp.cardID = pm.cardID
+group by omp.employeeName,omp.cardID ) total group by pm
+</select>
+
+
+	<select id="exportOMPException" resultType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthOmpOverTimes" >
+	select *
+ 	 from (
+	select
+		omp.employeeName,
+		omp.cardID,
+		omp.area,
+		omp.month,
+		omp.pdu,
+		omp.department,
+		sum(omp.shouldTimes) as shouldtimes,
+		sum(omp.holidayTimes ) as holidaytimes,
+		sum(omp.lateTimes  ) as latetimes,
+		sum(omp.LeaveEarlyTimes ) as LeaveEarlytimes,
+		sum(omp.businessTimes  ) as businesstimes,
+		sum(omp.absenteeismTimes  ) as absenteeismtimes,
+		sum(omp.oweTimes ) as owetimes,
+		sum(omp.supplySignInNum   ) as supplysignInnum,
+		sum(omp.serverTimes ) as servertimes,
+		sum(omp.realTimes  ) as realtimes,
+		sum(omp.payTimes  ) as paytimes,
+		sum(omp.overTimes  ) as overtimes,
+		sum(omp.realTimes) - sum(omp.serverTimes) as extendTimes,
+		ROUND( ( sum(omp.realTimes) - sum(omp.serverTimes))/(sum(omp.serverTimes)/8) ,3) as extendTimesAvg ,
+		sum(omp.realTimes) - sum(omp.serverTimes) - sum(omp.overTimes) as difTimes ,
+		pm.pm
+		from t_work_time_month_omp omp
+		left join t_omp_info pm on omp.employeeName = pm.employeeName and omp.cardID = pm.cardID
+		group by omp.employeeName,omp.cardID ) total
+		where 1=1
+			<if test = "changetype != null and changetype == 'LATE'">
+				<![CDATA[ and total.latetimes > 0.0 ]]>
+			</if>
+			<if test = "changetype != null and changetype == 'LEAVEEARLY'">
+				<![CDATA[ and total.LeaveEarlytimes > 0.0 ]]>
+			</if>
+			<if test = "changetype != null and changetype == 'ABSENTEEISM'">
+				<![CDATA[ and total.absenteeismtimes > 0.0 ]]>
+			</if>
+			<if test = "changetype != null and changetype == 'OWE'">
+				<![CDATA[ and total.owetimes > 0.0 ]]>
+			</if>
+	</select>
+</mapper>

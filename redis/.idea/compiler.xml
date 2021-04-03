@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="baidumap" />
+        <module name="bootrediss" />
+        <module name="cachea" />
+        <module name="cacheb" />
+        <module name="es" />
+        <module name="jd" />
+        <module name="mybatiscache" />
+        <module name="mybatisinterceptor" />
+        <module name="redis01" />
+        <module name="seckill" />
+        <module name="smartremind" />
+        <module name="springcache" />
+        <module name="timer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="baidumap" target="1.8" />
+      <module name="bootredis" target="1.8" />
+      <module name="bootrediss" target="1.8" />
+      <module name="cachea" target="1.8" />
+      <module name="cacheb" target="1.8" />
+      <module name="es" target="1.8" />
+      <module name="jd" target="1.8" />
+      <module name="mybatiscache" target="1.8" />
+      <module name="mybatisinterceptor" target="1.8" />
+      <module name="redis" target="1.5" />
+      <module name="redis01" target="1.8" />
+      <module name="seckill" target="1.8" />
+      <module name="smartremind" target="1.8" />
+      <module name="springcache" target="1.8" />
+      <module name="timer" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

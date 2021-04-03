@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isoftstone.humanresources.dao.UserDao">
+    <!--menu表和menu映射-->
+    <resultMap type="com.isoftstone.humanresources.domain.Menu" id="mapId">
+        <id property="menuCode" column="menuID" />
+        <result property="parentCode" column="parentID" />
+        <result property="parentCodes" column="parentIDs" />
+        <result property="authorityValue" column="authorityValue" />
+        <result property="menuName" column="menuName" />
+        <result property="desc" column="desc" />
+        <result property="path" column="path" />
+        <result property="status" column="status" />
+        <result property="creatTime" column="creatTime" />
+        <result property="updateTime" column="updateTime" />
+    </resultMap>
+
+    <!--user表和employee关联查询-->
+    <resultMap id="user" type="com.isoftstone.humanresources.domain.User">
+        <id column="userID" property="userID"></id>
+        <result column="username" property="username"></result>
+        <result column="status" property="status"></result>
+        <result column="creatTime" property="creatTime"></result>
+        <association property="emp" column="t_employee" resultMap="employee"/>
+    </resultMap>
+
+    <resultMap id="employee" type="com.isoftstone.humanresources.domain.EmployeeInformation">
+        <id column="employeeID" property="employeeID"></id>
+        <result column="email" property="email"></result>
+        <result column="employeeName" property="employeeName"></result>
+        <result column="businessLine" property="businessLine"></result>
+        <result column="issStatus" property="issStatus"></result>
+        <result column="BD" property="BD"></result>
+        <result column="BU" property="BU"></result>
+        <result column="CU" property="CU"></result>
+        <result column="PDU" property="PDU"></result>
+        <result column="PO" property="PO"></result>
+        <result column="projectTeam" property="projectTeam"></result>
+    </resultMap>
+
+    <!--根据条件查询用户列表-->
+    <select id="queryUser" parameterType="com.isoftstone.humanresources.domain.QueryUserRequest"
+            resultMap="user ">
+        SELECT
+        t.userID,
+        t.username,
+        t.status,
+        t.creatTime,
+        e.employeeName,
+        e.issStatus,
+        e.email,
+        e.businessLine
+        FROM
+        t_user t
+        LEFT JOIN t_employee e
+        ON t.employeeID = e.employeeID
+        <where>
+            <if test="bD != null and bD !=''">
+                BD=#{bD,jdbcType=VARCHAR}
+            </if>
+            <if test="bU != null and bU !=''">
+              and  BU=#{bU,jdbcType=VARCHAR}
+            </if>
+            <if test="cU != null and cU !=''">
+              and
+                CU
+                IN (
+                SELECT organizationID FROM t_organization WHERE leader = (
+                SELECT leader FROM t_organization WHERE organizationID = #{cU}) AND organizationType = 'CU')
+            </if>
+            <if test="pDU != null and pDU !=''">
+             and   PDU=#{pDU,jdbcType=VARCHAR}
+            </if>
+            <if test="pO != null and pO !=''">
+                and   PO=#{pO,jdbcType=VARCHAR}
+            </if>
+            <if test="projectTeam != null and projectTeam !=''">
+                and   projectTeam=#{projectTeam,jdbcType=VARCHAR}
+            </if>
+            <if test="employeeID != null and employeeID !=''">
+                and   t.employeeID=#{employeeID}
+            </if>
+            <if test="username != null and username !=''">
+              and  username=#{username,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null ">
+                and
+                status=#{status,jdbcType=VARCHAR}
+            </if>
+            <if test="realName != null and realName !=''">
+                and
+                employeeName=#{realName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--根据id查询用户-->
+    <select id="queryUserById" parameterType="java.lang.Integer"
+            resultType="com.isoftstone.humanresources.domain.User">
+        select
+        userID,
+        username,
+        password
+        from
+        t_user
+        <where>
+         userID=#{userID}
+        </where>
+    </select>
+
+    <!--删除用户-->
+    <delete id="deleteUser" parameterType="java.util.List">
+        delete
+        from
+        t_user
+        where
+        userID in
+        <foreach item="userID" collection="list" open="(" separator="," close=")">
+            #{userID}
+        </foreach>
+    </delete>
+
+    <!--更新用户状态-->
+    <update id="updateUser" parameterType="com.isoftstone.humanresources.domain.User" >
+      update
+       t_user
+      set
+          status = #{status},
+          updateTime=#{updateTime}
+      where
+          userID = #{userID}
+  </update>
+
+   <!-- 更新用户密码-->
+    <update id="updatePassword" parameterType="com.isoftstone.humanresources.domain.UpdatePasswordRequest" >
+      update
+       t_user
+      set
+          password = #{repeatNewPassword},
+           updateTime=#{updateTime}
+      where
+          userID = #{userID}
+  </update>
+
+
+
+    <!-- 重置用户密码-->
+    <update id="updateUserPassword" parameterType="com.isoftstone.humanresources.domain.User" >
+      update
+       t_user
+      set
+          password = #{password},
+          updateTime=#{updateTime}
+      where
+          userID = #{userID}
+  </update>
+   <!-- 根据名字修改密码-->
+    <update id="updateUserPasswordByMessage" parameterType="com.isoftstone.humanresources.domain.User" >
+      update
+       t_user
+      set
+          password = #{password},
+          updateTime=#{updateTime}
+      where
+          employeeID = #{employeeID}
+  </update>
+    <!--新增郵件信息-->
+    <insert id="insertMessage" parameterType="com.isoftstone.humanresources.domain.SendMessageInfo">
+        insert
+        into
+         t_send_message_info
+        (
+        title,
+        content,
+        dealUser,
+        toUser,
+        toEmail,
+        ccUser,
+        ccEmail,
+        status,
+        createTime,
+        sendTime,
+        messageType,
+        department
+        )
+        values(
+        #{title},
+        #{content},
+        #{dealUser},
+        #{toUser},
+        #{toEmail},
+        #{ccUser},
+        #{ccEmail},
+        #{status},
+        #{createTime},
+        #{sendTime},
+        #{messageType},
+        #{department}
+        )
+
+    </insert>
+    <!--根据用户名字查询用户-->
+    <select id="queryUserByName" parameterType="java.lang.String"
+            resultType="com.isoftstone.humanresources.domain.User">
+        select
+        userID,
+        username,
+        password
+        from
+        t_user
+        <where>
+            username=#{username}
+        </where>
+    </select>
+
+    <!--新增用户-->
+    <insert id="addUser" parameterType="com.isoftstone.humanresources.domain.User" >
+
+        insert into
+        t_user
+        (
+        username,
+        password,
+        email,
+        creatTime,
+        updateTime,
+        phone
+        )
+        values(
+        #{username},
+        #{password},
+        #{email},
+        #{creatTime},
+        #{updateTime},
+        #{phone}
+        )
+
+
+    </insert>
+
+
+   <!-- 登录用户-->
+    <select id="login" parameterType="com.isoftstone.humanresources.domain.User"
+            resultType="com.isoftstone.humanresources.domain.User">
+        select
+        t.userID,
+        t.username,
+        t.password,
+        t.status,
+        t.lastLoginTime,
+        t.phone,
+        t.email,
+        t.userRole,
+        t.employeeID,
+        t.creatTime,
+        t.updateTime
+        from
+        t_user t ,
+        t_employee  e
+        <where>
+            t.employeeID = e.employeeID
+            AND t.status = 0
+            AND e.issStatus = '在职'
+            AND t.password=#{password}
+             AND (e.employeeID=#{username}
+                or e.email=#{username}
+                or e.mobile=#{username})
+        </where>
+    </select>
+
+    <update id="updateUserLoginTime" parameterType="com.isoftstone.humanresources.domain.User" >
+      update
+       t_user
+      set
+           lastLoginTime=#{lastLoginTime}
+      where
+          userID = #{userID}
+    </update>
+    <!--查询员工信息-->
+    <select id="queryEmployeeInfo" parameterType="java.lang.Integer"
+            resultType="com.isoftstone.humanresources.domain.EmployeeInformation">
+    SELECT
+        employeeID,
+        employeeName,
+        cardID,
+        issStatus,
+        isImportant,
+        isImportantCore,
+        isOnShore,
+        officeSpace,
+        cooperationModel,
+        skill,
+        entryDate,
+        leaveDate,
+        costCenter,
+        entryLong,
+        workLong,
+        birthday,
+        graducationSchool,
+        huaweiLevel,
+        is211,
+        reporter,
+        reporter_workid,
+        area,
+        mobile,
+        businessLine,
+        `position`,
+        email,
+        nameCard,
+        BG,
+        BD,
+        BU,
+        CU,
+        PDU,
+        PO,
+        sex,
+        organizationID,
+        projectTeam,
+        bak,
+        imgURL,
+        coverImg
+        FROM
+        t_employee t
+        WHERE t.employeeID IN
+        (SELECT
+        employeeID
+        FROM
+        t_user
+        WHERE
+        userID = #{userID})
+    </select>
+
+    <!--查询菜单信息-->
+    <select id="queryMenu" parameterType="java.lang.Integer"
+            resultMap="mapId">
+       SELECT
+            menuID,
+            parentID,
+            parentIDs,
+            authorityValue,
+            menuName,
+            `desc`,
+            path,
+            status,
+            creatTime,
+            updateTime
+        FROM
+          t_menu
+        WHERE menuID IN
+          (SELECT
+            menuID
+          FROM
+            tr_usergroup_menu
+          WHERE groupID IN
+            (SELECT
+              groupId
+            FROM
+              t_usergroup
+            WHERE
+            status='0'
+            and
+             groupID IN
+              (SELECT
+                groupID
+              FROM
+                tr_user_usergroup
+
+              WHERE
+
+              userID =#{userID})))
+
+              UNION
+
+              select
+            menuID,
+            parentID,
+            parentIDs,
+            authorityValue,
+            menuName,
+            `desc`,
+            path,
+            status,
+            creatTime,
+            updateTime
+              from
+              t_menu
+              where
+              menuName='问题反馈'
+              or
+              menuName='任务中心'
+
+    </select>
+
+    <!--根据父id查询菜单信息-->
+    <select id="queryMenuByParentID" parameterType="java.lang.String"
+            resultMap="mapId">
+       SELECT
+            menuID,
+            parentID,
+            parentIDs,
+            authorityValue,
+            menuName,
+            `desc`,
+            path,
+            status,
+            creatTime,
+            updateTime
+        FROM
+            t_menu
+        WHERE
+            parentID=#{parentID}
+    </select>
+
+    <!--根据菜单id查询帮助信息-->
+    <select id="queryHelpByMenuID" parameterType="java.lang.String"  resultMap="mapId">
+      SELECT
+           helpID as menuID,
+           menuID as  parentID,
+           helpName as menuName,
+           authorityValue,
+            `desc`,
+            path,
+            status,
+            creatTime,
+            updateTime
+        FROM
+            t_system_help
+        WHERE
+            menuID = #{parentID}
+    </select>
+
+   <!-- 根据用户id查询用户组信息-->
+    <select id="queryGroupByUserId" parameterType="java.lang.Integer"
+    resultType="com.isoftstone.humanresources.domain.UserGroup">
+      SELECT
+            groupID,
+            groupName,
+            creatTime,
+            status,
+            updateTime,
+            bak,
+            `desc`,
+            organization
+     FROM
+            t_usergroup
+     WHERE groupID IN
+      (SELECT
+        groupID
+      FROM
+        tr_user_usergroup
+      WHERE
+      `status`='0'
+      AND
+      userID =#{userID})
+    </select>
+
+ <!--   根据用户id查询用户信息-->
+    <select id="queryEmployeeById" parameterType="java.lang.Integer"
+            resultType="com.isoftstone.humanresources.domain.EmployeeInformation">
+       SELECT
+           BG,
+           BD,
+           BU,
+           CU,
+           PDU,
+           PO,
+           projectTeam
+        FROM
+            t_employee
+        WHERE
+            employeeID=#{employeeID}
+   </select>
+</mapper>

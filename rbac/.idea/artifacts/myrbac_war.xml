@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="myrbac:war">
+    <output-path>$PROJECT_DIR$/myrbac/target</output-path>
+    <root id="archive" name="myrbac.war">
+      <element id="artifact" artifact-name="myrbac:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <properties resource="generator.properties"></properties>
+  <context id="MySqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
+    <property name="beginningDelimiter" value="`"></property>
+    <property name="endingDelimiter" value="`"></property>
+    <property name="javaFileEncoding" value="UTF-8"></property>
+    <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+    <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+    <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"></plugin>
+    <commentGenerator type="com.woniu.mybatisinterceptor.mbg.CommentGenerator">
+      <property name="suppressAllComments" value="true"></property>
+      <property name="suppressDate" value="true"></property>
+      <property name="addRemarkComments" value="true"></property>
+    </commentGenerator>
+    <jdbcConnection driverClass="${jdbc.driverClass}"
+                    connectionURL="${jdbc.connectionURL}"
+                    userId="${jdbc.userId}"
+                    password="${jdbc.password}">
+      <property name="nullCatalogMeansCurrent" value="true"></property>
+    </jdbcConnection>
+    <javaModelGenerator targetPackage="com.woniu.mybatisinterceptor.mbg.model" targetProject="mybatisinterceptor\src\main\java"></javaModelGenerator>
+    <sqlMapGenerator targetPackage="com.woniu.mybatisinterceptor.mbg.mapper" targetProject="mybatisinterceptor\src\main\resources"></sqlMapGenerator>
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.woniu.mybatisinterceptor.mbg.mapper" targetProject="mybatisinterceptor\src\main\java"></javaClientGenerator>
+    <!--%意思为全部的表-->
+    <table tableName="%">
+      <generatedKey column="id" sqlStatement="MySql" identity="true"></generatedKey>
+    </table>
+  </context>
+</generatorConfiguration>

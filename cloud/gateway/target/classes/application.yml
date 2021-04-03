@@ -1,0 +1,25 @@
+server:
+  port: 8100
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: orders_route
+          uri: lb://microorders
+          order: 1
+          predicates:
+            - Path=/orders-serv/**
+          filters:
+            - StripPrefix=1
+        - id: product_route
+          uri: lb://microproduct
+          order: 1
+          predicates:
+            - Path=/product-serv/**
+          filters:
+            - StripPrefix=1
+    nacos:
+      discovery:
+        server-addr: localhost:8848

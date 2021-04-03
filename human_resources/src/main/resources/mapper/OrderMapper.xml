@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isoftstone.humanresources.dao.OrderDao">
+
+    <!--条件查询工单列表-->
+    <select id="queryOrderList" parameterType="com.isoftstone.humanresources.domain.QueryOrderParam" resultType="com.isoftstone.humanresources.domain.Order">
+
+        SELECT
+        t.id,
+        t.creator,
+        t.creatDate,
+        t.level,
+        t.content,
+        t.status,
+        t.designator,
+        t.solver,
+        t.solution,
+        t.updateDate,
+        e.employeeName AS creatorName,
+        m.employeeName AS designatorName,
+        p.employeeName AS solverName
+
+        FROM
+        t_order t
+        LEFT JOIN
+        t_employee e
+        ON t.creator=e.employeeID
+        LEFT JOIN
+        t_employee m
+        ON t.designator=m.employeeID
+        LEFT JOIN
+        t_employee p
+        ON t.solver=p.employeeID
+
+        where 1 = 1
+        <if test="creator != null ">
+            and creator=#{creator,jdbcType=INTEGER}
+        </if>
+        <if test="designator != null ">
+            and  designator=#{designator,jdbcType=INTEGER}
+        </if>
+        <if test="solver != null ">
+            and  solver=#{solver,jdbcType=INTEGER}
+        </if>
+        <if test="status != null and status !=''">
+            and   status=#{status,jdbcType=VARCHAR}
+        </if>
+        order by  t.creatDate DESC
+
+    </select>
+
+    <!--查询所有的工单信息-->
+    <select id="queryAllOrderList" parameterType="java.lang.Integer" resultType="com.isoftstone.humanresources.domain.Order">
+       SELECT
+        t.id,
+        t.creator,
+        t.creatDate,
+        t.level,
+        t.content,
+        t.status,
+        t.designator,
+        t.solver,
+        t.solution,
+        t.updateDate,
+        e.employeeName AS creatorName,
+        m.employeeName AS designatorName
+        FROM
+        t_order t
+        LEFT JOIN
+        t_employee e
+        ON t.creator=e.employeeID
+        LEFT JOIN
+        t_employee m
+        ON t.designator=m.employeeID
+                  WHERE creator = #{creator}
+                    OR designator = #{designator}
+                   order by  t.creatDate DESC 
+    </select>
+
+    <!--查询工单状态下拉框-->
+    <select id="queryOrderStatus" resultType="com.isoftstone.humanresources.domain.SysConfigResponse">
+        select
+        configName,
+        configValue
+        from
+        t_system_config
+        where
+        configType='orderStatus'
+
+    </select>
+
+
+   <!-- 查询工单等级下拉框-->
+    <select id="queryLevelStatus" resultType="com.isoftstone.humanresources.domain.SysConfigResponse">
+        select
+        configName,
+        configValue
+        from
+        t_system_config
+        where
+        configType='orderLevel'
+
+    </select>
+
+    <!--查询工单可选人员下拉框-->
+    <select id="queryEmpList" resultType="com.isoftstone.humanresources.domain.EmployeeInformation">
+        SELECT
+        e.employeeID,
+        e.employeeName
+        FROM
+        t_user t
+        LEFT JOIN t_employee e
+        ON t.employeeID = e.employeeID
+        WHERE userID IN
+        (SELECT
+        userID
+         FROM
+         tr_user_usergroup)
+    </select>
+
+    <!--更新订单信息-->
+    <update id="updateOrder" parameterType="com.isoftstone.humanresources.domain.Order">
+        update
+        t_order
+        set
+        status=#{status},
+        designator=#{designator},
+        solver=#{solver},
+        solution=#{solution},
+        updateDate=#{updateDate},
+        copier=#{copier}
+        where
+        id=#{id}
+    </update>
+
+
+    <!--新增订单-->
+    <insert id="addOrder" parameterType="com.isoftstone.humanresources.domain.Order">
+        insert
+        into
+        t_order(
+        creator,
+        creatDate,
+        `level`,
+        content,
+        status,
+        designator,
+        solver,
+        solution,
+        copier
+        )
+        values
+        (
+        #{creator},
+        #{creatDate},
+        #{level},
+        #{content},
+        #{status},
+        #{designator},
+        #{solver},
+        #{solution},
+        #{copier}
+        )
+    </insert>
+
+    <!--查询工单数量-->
+    <select id="queryMyOrderNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+       SELECT  DISTINCT
+        COUNT(*)
+        FROM
+        t_order
+        WHERE  designator = #{employeeID}
+        AND `status` = '未解决'
+    </select>
+
+    <!--根据id查询工单-->
+    <select id="queryById" parameterType="java.lang.Integer" resultType="com.isoftstone.humanresources.domain.Order">
+        select
+        creator,
+        designator,
+        copier
+        from
+        t_order
+        where
+        id=#{id}
+    </select>
+
+    <!--批量新增工单-->
+    <insert id="addOrderList" parameterType="java.util.List">
+        insert into
+        t_order
+        (
+        creator,
+        creatDate,
+        `level`,
+        content,
+        status,
+        designator
+        )
+        values
+        <foreach collection="list" item="item" index="index"
+                 open="" close="" separator=",">
+            (
+            #{item.creator, jdbcType=INTEGER},
+            #{item.creatDate, jdbcType=TIMESTAMP},
+            #{item.level, jdbcType=VARCHAR},
+            #{item.content, jdbcType=VARCHAR},
+            #{item.status, jdbcType=VARCHAR},
+            #{item.designator, jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+
+
+</mapper>

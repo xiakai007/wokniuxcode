@@ -1,0 +1,20 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud_product?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  application:
+    name: microproduct
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://localhost:8848
+logging:
+  level:
+    root: error
+    com:
+      woniu:
+        product: debug

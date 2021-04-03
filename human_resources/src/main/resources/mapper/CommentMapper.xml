@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.isoftstone.humanresources.dao.CommentDao">
+	<!-- 返回值映射map -->
+	<resultMap id="commentMapper" type="com.isoftstone.humanresources.domain.gather.CommentModel">
+			<result property="id" column="id" />
+			<result property="type" column="type" />
+			<result property="composeid" column="composeID" />
+			<result property="composetype" column="composeType" />
+			<result property="employeeid" column="employeeID" />
+			<result property="employeename" column="employeeName" />
+			<result property="commentImg" column="commentImg" />
+			<result property="content" column="content" />
+			<result property="status" column="status" />
+			<result property="createtime" column="createtime" />
+			<result property="bak" column="bak" />
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from t_comment record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 id, 
+				 type, 
+				 composeID, 
+				 composeType, 
+				 employeeID, 
+				 content, 
+				 status, 
+				 createtime, 
+				 bak 
+			]]>
+	  	</if>
+	     FROM t_comment record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+					<if test = "entity.id != null and entity.id != ''">
+						<![CDATA[ and record.id  = #{entity.id} ]]>
+					</if>
+					<if test = "entity.type != null and entity.type != ''">
+						<![CDATA[ and record.type  = #{entity.type} ]]>
+					</if>
+					<if test = "entity.composeid != null and entity.composeid != ''">
+						<![CDATA[ and record.composeID  = #{entity.composeid} ]]>
+					</if>
+					<if test = "entity.composetype != null and entity.composetype != ''">
+						<![CDATA[ and record.composeType  = #{entity.composetype} ]]>
+					</if>
+					<if test = "entity.employeeid != null and entity.employeeid != ''">
+						<![CDATA[ and record.employeeID  = #{entity.employeeid} ]]>
+					</if>
+					<if test = "entity.content != null and entity.content != ''">
+						<![CDATA[ and record.content  = #{entity.content} ]]>
+					</if>
+					<if test = "entity.status != null and entity.status != ''">
+						<![CDATA[ and record.status  = #{entity.status} ]]>
+					</if>
+					<if test = "entity.createtime != null and entity.createtime != ''">
+						<![CDATA[ and record.createtime  = #{entity.createtime} ]]>
+					</if>
+					<if test = "entity.bak != null and entity.bak != ''">
+						<![CDATA[ and record.bak  = #{entity.bak} ]]>
+					</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by id desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPageComment" resultMap="commentMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListComment" resultMap="commentMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountComment" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryCommentById" resultMap="commentMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="type != null">type,</if>
+			<if test="composeid != null">composeID,</if>
+			<if test="composetype != null">composeType,</if>
+			<if test="employeeid != null">employeeID,</if>
+			<if test="content != null">content,</if>
+			<if test="status != null">status,</if>
+			<if test="createtime != null">createtime,</if>
+			<if test="bak != null">bak,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+				<if test="id != null">#{id},</if>
+				<if test="type != null">#{type},</if>
+				<if test="composeid != null">#{composeid},</if>
+				<if test="composetype != null">#{composetype},</if>
+				<if test="employeeid != null">#{employeeid},</if>
+				<if test="content != null">#{content},</if>
+				<if test="status != null">#{status},</if>
+				<if test="createtime != null">#{createtime},</if>
+				<if test="bak != null">#{bak},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="addComment" parameterType="com.isoftstone.humanresources.domain.gather.CommentModel">
+		insert into t_comment(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="updateComment" parameterType="com.isoftstone.humanresources.domain.gather.CommentModel">
+		update t_comment record 
+			<set>
+					<if test = "type != null ">
+						record.type = #{type},
+					</if>
+					<if test = "composeid != null ">
+						record.composeID = #{composeid},
+					</if>
+					<if test = "composetype != null ">
+						record.composeType = #{composetype},
+					</if>
+					<if test = "employeeid != null ">
+						record.employeeID = #{employeeid},
+					</if>
+					<if test = "content != null ">
+						record.content = #{content},
+					</if>
+					<if test = "status != null ">
+						record.status = #{status},
+					</if>
+					<if test = "createtime != null ">
+						record.createtime = #{createtime},
+					</if>
+					<if test = "bak != null ">
+						record.bak = #{bak}
+					</if>
+			</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="removeCommentByIds" parameterType="java.util.List">
+		delete from t_comment 
+			where id in
+			<foreach collection="list" open="(" separator="," close=")" item="code">
+				#{code}
+			</foreach>
+	</delete>
+
+	<delete id="removeCommentById">
+		delete from t_comment 
+		<if test=" id != null ">
+			where id = #{id}
+		</if>
+	</delete>
+
+	<select id="queryBycomposeID" resultMap="commentMapper" >
+		select  tc.id,
+		tc.type,
+		tc.composeID,
+		tc.composeType,
+		tc.employeeID,
+		te.employeeName,
+		te.imgURL as commentImg,
+		tc.content,
+		tc.status,
+		tc.createtime,
+		tc.bak
+		from t_comment tc
+		left join t_employee te on te.employeeID = tc.employeeID
+		where 1=1
+		<if test=" composeID != null ">
+			and  tc.composeID = #{composeID}
+		</if>
+		<if test=" composeType != null ">
+			and  tc.composeType = #{composeType}
+		</if>
+	</select>
+
+	<select id="queryBycomposeIDSize" resultMap="commentMapper" >
+		select count(tc.id)
+		from t_comment tc
+		left join t_employee te on te.employeeID = tc.employeeID
+		where 1=1
+		<if test=" composeID != null ">
+			and  tc.composeID = #{composeID}
+		</if>
+		<if test=" composeType != null ">
+			and  tc.composeType = #{composeType}
+		</if>
+	</select>
+
+
+</mapper>

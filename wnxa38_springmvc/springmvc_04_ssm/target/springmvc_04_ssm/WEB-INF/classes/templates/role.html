@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1px">
+    <thead>
+        <tr>
+            <th>角色id</th>
+            <th>角色名称</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="role:${roleList}">
+            <td th:text="${role.id}"></td>
+            <td th:text="${role.rolename}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

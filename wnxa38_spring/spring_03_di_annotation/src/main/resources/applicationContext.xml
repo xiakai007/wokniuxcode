@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--自动装配，xml方式-->
+    <!--
+    <bean id="userDao" class="com.woniu.dao.impl.UserDaoImpl"></bean>
+    <bean id="userDao1" class="com.woniu.dao.impl.UserDaoImpl1"></bean>
+    <bean id="userRecordDao" class="com.woniu.dao.impl.UserRecordDaoImpl"></bean>
+    <bean id="userService" class="com.woniu.service.impl.UserServiceImpl"></bean>
+    -->
+    <!--自动装配，注解方式-->
+    <context:component-scan base-package="com.woniu" use-default-filters="true"></context:component-scan>
+    <!--对象实例化：静态工厂、实例工厂-->
+    <bean id="person" class="com.woniu.factory.MyFactory" factory-method="getStaticIntance"></bean>
+    <bean id="personFactory" class="com.woniu.factory.MyFactoryIntance"></bean>
+    <bean id="person2" class="com.woniu.factory.MyFactoryIntance" factory-bean="personFactory" factory-method="getIntance"></bean>
+    <!--使用context:property-placeholder引用外部资源-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+    <!--DRUID连接池的配置-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--数据库连接属性-->
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <!--连接池属性-->
+        <!--初始连接池数量-->
+        <property name="initialSize" value="${initialSize}"></property>
+        <!--最小连接池数量-->
+        <property name="minIdle" value="${minIdle}"></property>
+        <!--最大连接池数量-->
+        <property name="maxActive" value="${maxActive}"></property>
+        <!--最大等待毫秒数-->
+        <property name="maxWait" value="${maxWait}"></property>
+    </bean>
+</beans>

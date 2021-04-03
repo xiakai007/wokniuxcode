@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mapper.RoleMapper">
+    <resultMap id="roleMap" type="Role">
+        <id property="id" column="id"></id>
+        <collection property="permissionList" column="id"
+        select="com.woniu.mapper.PermissionMapper.selectPermissionByRid"></collection>
+        <collection property="userList" column="id"
+        select="com.woniu.mapper.UserMapper.selectUserByRid"></collection>
+    </resultMap>
+    <select id="selectRoleByRolename" parameterType="String" resultMap="roleMap">
+        SELECT id FROM sys_role WHERE rolename=#{rolename}
+    </select>
+    <select id="selectRoleByPerid" parameterType="int" resultType="Role">
+        SELECT * FROM sys_role WHERE id IN(
+	      SELECT rid FROM sys_role_permission WHERE perid=#{perid}
+        )
+    </select>
+    <select id="selectRoleByUid" parameterType="int" resultType="Role">
+        SELECT * FROM sys_role WHERE id IN(
+	      SELECT rid FROM sys_user_role WHERE uid=#{uid}
+        )
+    </select>
+    <select id="selectAllRole" resultType="Role">
+        SELECT * FROM sys_role
+    </select>
+</mapper>

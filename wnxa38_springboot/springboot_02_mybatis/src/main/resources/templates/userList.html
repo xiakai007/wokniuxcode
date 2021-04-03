@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>用户列表页面</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<h1>用户列表：</h1>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:inline="none">
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form','table'], function(){
+        var layer = layui.layer,
+            form = layui.form,
+            table=layui.table,
+            $=layui.jquery;
+        var tableUser=table.render({
+            elem:'#userTable',
+            height:400,
+            url:'userList',
+            id:'userListTable',
+            page:true,
+            limits:[4,8,12,16],
+            limit:4,
+            done:function(resp){
+                if(resp.code==201||resp.code==402){
+                    layer.msg(resp.message);
+                }
+            },
+            cols:[[
+                {field: 'id', title: '编号', width:50,type:"checkbox"},
+                {field: 'telephone', title: '手机号'},
+                {field: 'realname', title: '姓名'},
+                {field: 'birthday', title: '生日'},
+                {field: 'available', title: '状态',templet:function(obj){
+                    return obj.available==1?"正常":"禁用";
+                }},
+                {field: 'dept', title: '部门',templet:function(obj){
+                    return obj.dept.dname;
+                }}
+            ]]
+        });
+        //搜索功能
+        $(".searchBtn").click(function(){
+            var telephone=$("#telephone").val();
+            var realname=$("#realname").val();
+            var deptid=$("#deptid").val();
+            table.reload('userListTable',{url:"userList?telephone="+telephone+"&realname="+realname+"&dept.id="+deptid});
+        });
+        //部门下拉菜单
+        $.ajax({
+            type:"GET",
+            url:"/dept/depts",
+            success:function(resp){
+                //console.log(resp.data.depts);
+                var depts=resp.data.depts;
+                if(depts.length>0){
+                    for(var i=0;i<depts.length;i++){
+                        var dept=depts[i];
+                        $("#deptid").append("<option value='"+dept.id+"'>"+dept.dname+"</option>");
+                    }
+                }
+                //渲染下拉菜单
+                layui.form.render("select");
+            }
+        });
+        //批量删除
+        $("#removeBtn").click(function(){
+            var checkStatus = table.checkStatus("userListTable");
+            var data = checkStatus.data;
+            var ids=new Array();
+            if(data.length==0){
+                layer.msg("请至少选择一条信息")
+            }else{
+                for(var i=0;i<data.length;i++){
+                    ids.push(data[i].id);
+                }
+                layer.confirm('确定删除选中的用户？',{icon:3,title:'提示信息'},function(index){
+                    $.ajax({
+                        type:"post",
+                        url:"removeUser",
+                        data:{ids:ids},
+                        /**
+                         * 使用ajax向后台传递数组必须设置traditional:true!!!！！！
+                         */
+                        traditional:true,
+                        success:function(resp){
+                            console.log(resp);
+                            if(resp.code==401){
+                                //刷新表格
+                                tableUser.reload();
+                                //关闭提示窗口
+                                layer.close(index);
+                            }else if(resp.code==201||resp.code==403){
+                                layer.msg(resp.message);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+        $("#addBtn").click(function(){
+            console.log("***////");
+            //路径：goUserAdd
+            window.location.href="goUserAdd";
+        });
+    });
+</script>
+<blockquote class="layui-elem-quote quoteBox">
+    <form class="layui-form">
+        <div class="layui-inline">
+            <input type="text" class="layui-input" id="telephone" placeholder="请输入手机号">
+        </div>
+        <div class="layui-inline">
+            <input type="text" class="layui-input" id="realname" placeholder="请输入姓名">
+        </div>
+        <div class="layui-inline">
+            <select id="deptid">
+                <option value="0">请选择部门</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn searchBtn">
+                <i class="layui-icon-search">&#xe615;</i> 搜索
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-danger" id="removeBtn">
+                批量删除
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-warm" id="addBtn">
+                增加用户
+            </button>
+        </div>
+    </form>
+</blockquote>
+<table id="userTable"></table>
+</body>
+</html>

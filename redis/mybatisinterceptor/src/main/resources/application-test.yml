@@ -1,0 +1,28 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/student?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    #docker容器中内部的路径
+    #url: jdbc:mysql://172.17.0.2:3306/student?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  data:
+    redis:
+      repositories:
+        enabled: false
+logging:
+  level:
+    root: error
+    com:
+      woniu: debug
+mybatis:
+  config-location: classpath:configuration.xml
+hottable:
+  com.woniu.mybatisinterceptor.mbg.mapper.StudentMapper,com.woniu.mybatisinterceptor.mbg.mapper.GradeMapper
+redis:
+  #docker容器中内部的路径
+  #host: 172.17.0.3
+  host: localhost
+  port: 6379

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isoftstone.humanresources.dao.UserGroupDao">
+
+    <!--menu表和menu映射-->
+    <resultMap type="com.isoftstone.humanresources.domain.Menu" id="mapId">
+        <id property="menuCode" column="menuID" />
+        <result property="parentCode" column="parentID" />
+        <result property="parentCodes" column="parentIDs" />
+        <result property="authorityValue" column="authorityValue" />
+        <result property="menuName" column="menuName" />
+        <result property="desc" column="desc" />
+        <result property="path" column="path" />
+        <result property="status" column="status" />
+        <result property="creatTime" column="creatTime" />
+        <result property="updateTime" column="updateTime" />
+    </resultMap>
+
+   <!-- user表和employee表关联查询-->
+    <resultMap id="user" type="com.isoftstone.humanresources.domain.User">
+        <id column="userID" property="userID"></id>
+        <result column="username" property="username"></result>
+        <result column="status" property="status"></result>
+        <result column="creatTime" property="creatTime"></result>
+        <association property="emp" column="t_employee" resultMap="employee"/>
+    </resultMap>
+
+    <resultMap id="employee" type="com.isoftstone.humanresources.domain.EmployeeInformation">
+        <id column="employeeID" property="employeeID"></id>
+        <result column="email" property="email"></result>
+        <result column="employeeName" property="employeeName"></result>
+        <result column="businessLine" property="businessLine"></result>
+        <result column="BD" property="bD"></result>
+        <result column="BU" property="bU"></result>
+        <result column="CU" property="cU"></result>
+        <result column="PDU" property="pDU"></result>
+    </resultMap>
+
+
+    <!--查询用户组列表-->
+    <select id="queryUserGroup" parameterType="com.isoftstone.humanresources.domain.QueryUserGroupRequest"
+            resultType="com.isoftstone.humanresources.domain.UserGroup">
+        select
+        groupID,
+        groupName,
+        creatTime,
+        status,
+        updateTime,
+        bak,
+        `desc`
+        from
+        t_usergroup
+        <where>
+            <if test="groupName != null and groupName !=''">
+                groupName=#{groupName}
+            </if>
+            <if test="status != null and status !=''">
+                and
+                status=#{status}
+            </if>
+        </where>
+    </select>
+
+ <!--   删除用户组-->
+    <delete id="deleteUserGroup" parameterType="java.util.List">
+        delete
+        from
+        t_usergroup
+        where
+        groupID in
+        <foreach item="groupID" collection="groupList" open="(" separator="," close=")">
+            #{groupID}
+        </foreach>
+    </delete>
+
+  <!--  新增用户组-->
+    <insert id="addUserGroup" parameterType="com.isoftstone.humanresources.domain.UserGroup">
+        insert into
+        t_usergroup
+        (
+        groupName,
+        creatTime,
+        `desc`
+        )
+        values(
+        #{groupName},
+        #{creatTime},
+        #{desc}
+        )
+  </insert>
+
+    <!--更新用户组-->
+    <update id="updateUserGroup" parameterType="com.isoftstone.humanresources.domain.UserGroup">
+      update
+       t_usergroup
+      set
+          status = #{status},
+          updateTime=#{updateTime}
+      where
+          groupID = #{groupID}
+  </update>
+
+    <!--查询用户组-->
+    <select id="findByName" parameterType="java.lang.String"
+            resultType="com.isoftstone.humanresources.domain.UserGroup">
+        select
+        groupID,
+        groupName,
+        creatTime,
+        status,
+        updateTime,
+        bak,
+        `desc`
+        from
+        t_usergroup
+        <where>
+            groupName = #{groupName}
+        </where>
+    </select>
+
+    <!--查询用户组下的用户-->
+    <select id="queryUser" parameterType="com.isoftstone.humanresources.domain.QueryUserParam"
+            resultMap="user">
+       SELECT
+          userID,
+          username,
+          e.employeeName
+          FROM
+          t_user t
+          LEFT JOIN t_employee e
+            ON t.employeeID = e.employeeID
+          WHERE userID IN
+          (SELECT
+            userID
+          FROM
+            tr_user_usergroup
+       WHERE groupID = #{groupID})
+    </select>
+
+   <!--查询用户组可以添加的用户-->
+    <select id="queryOptionUser" parameterType="com.isoftstone.humanresources.domain.QueryUserParam"
+            resultMap="user">
+        select
+        userID,
+        username,
+        e.employeeName,
+        e.mobile
+        from
+        t_user t
+        LEFT JOIN t_employee e
+        ON t.employeeID = e.employeeID
+        <where>
+            userID not IN
+            (SELECT
+            userID
+            FROM
+            tr_user_usergroup
+            )
+            <if test="employeeName != null and employeeName !=''">
+              and  employeeName LIKE CONCAT(CONCAT('%',#{employeeName}),'%')
+            </if>
+            <if test="bD != null and bD !=''">
+              and  BD=#{bD}
+            </if>
+            <if test="bU != null and bU !=''">
+                and  BU=#{bU}
+            </if>
+            <if test="cU != null and cU !=''">
+                and  CU=#{cU}
+            </if>
+            <if test="pDU != null and pDU !=''">
+                and   PDU=#{pDU}
+            </if>
+            <if test="pO != null and pO !=''">
+                and   PO=#{pO}
+            </if>
+            <if test="projectTeam != null and projectTeam !=''">
+                and   projectTeam=#{projectTeam}
+            </if>
+        </where>
+    </select>
+
+   <!-- 删除用户-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        DELETE
+        FROM
+        tr_user_usergroup
+        WHERE groupID = #{groupID}
+            and
+            userID=#{userID}
+    </delete>
+
+    <!--用户组添加用户-->
+    <insert id="addUserToGroup" parameterType="java.lang.Integer">
+        INSERT INTO tr_user_usergroup (userID,groupID)
+        VALUES
+        (#{userID}, #{groupID})
+    </insert>
+
+<!--查询用户组下的菜单-->
+    <select id="queryMenu" parameterType="java.lang.Integer"
+            resultMap="mapId">
+        select
+        menuID,
+        parentID,
+        parentIDs,
+        authorityValue,
+        menuName,
+        `desc`,
+        path,
+        status,
+        creatTime,
+        updateTime
+        FROM
+        t_menu
+        WHERE menuID IN
+        (SELECT
+        menuID
+        FROM
+        tr_usergroup_menu
+        WHERE groupID =#{groupID})
+        and parentID='-1'
+    </select>
+
+    <!--查询用户组可以添加的菜单-->
+    <select id="queryOptionMenu" parameterType="java.lang.Integer"
+            resultMap="mapId">
+        select
+        menuID,
+        parentID,
+        parentIDs,
+        authorityValue,
+        menuName,
+        `desc`,
+        path,
+        status,
+        creatTime,
+        updateTime
+        FROM
+        t_menu
+        WHERE menuID not IN
+        (SELECT
+        menuID
+        FROM
+        tr_usergroup_menu
+        WHERE groupID =#{groupID})
+        and parentID='-1'
+    </select>
+
+    <!--查询所有的一级菜单-->
+    <select id="findMenuList"
+            resultMap="mapId">
+        select
+        menuID,
+        parentID,
+        parentIDs,
+        authorityValue,
+        menuName,
+        `desc`,
+        path,
+        status,
+        creatTime,
+        updateTime
+       FROM
+       t_menu
+       WHERE
+       parentID='-1'
+       and
+       menuName !='问题反馈'
+       AND
+       menuName !='任务中心'
+    </select>
+
+
+    <!--删除菜单-->
+    <delete id="deleteMenu" parameterType="java.lang.Integer">
+        DELETE
+        FROM
+        tr_usergroup_menu
+        WHERE groupID = #{groupID}
+    </delete>
+
+   <!-- 用户组新增菜单-->
+    <insert id="addMenuToGroup" parameterType="java.lang.Integer">
+        INSERT INTO tr_usergroup_menu (groupID,menuID)
+        VALUES
+        (#{groupID}, #{menuID})
+   </insert>
+</mapper>

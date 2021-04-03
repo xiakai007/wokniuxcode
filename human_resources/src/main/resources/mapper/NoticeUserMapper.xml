@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.isoftstone.humanresources.dao.NoticeUserDao">
+	<!-- 返回值映射map -->
+	<resultMap id="noticeUserMapper" type="com.isoftstone.humanresources.domain.gather.NoticeUserModel">
+			<result property="id" column="id" />
+			<result property="noticeId" column="notice_id" />
+			<result property="noticeUser" column="notice_user" />
+			<result property="noticeSight" column="notice_sight" />
+			<result property="mailSend" column="mail_send" />
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from t_notice_user record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 id, 
+				 notice_id, 
+				 notice_user, 
+				 notice_sight, 
+				 mail_send 
+			]]>
+	  	</if>
+	     FROM t_notice_user record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+					<if test = "entity.id != null and entity.id != ''">
+						<![CDATA[ and record.id  = #{entity.id} ]]>
+					</if>
+					<if test = "entity.noticeId != null and entity.noticeId != ''">
+						<![CDATA[ and record.notice_id  = #{entity.noticeId} ]]>
+					</if>
+					<if test = "entity.noticeUser != null and entity.noticeUser != ''">
+						<![CDATA[ and record.notice_user  = #{entity.noticeUser} ]]>
+					</if>
+					<if test = "entity.noticeSight != null and entity.noticeSight != ''">
+						<![CDATA[ and record.notice_sight  = #{entity.noticeSight} ]]>
+					</if>
+					<if test = "entity.mailSend != null and entity.mailSend != ''">
+						<![CDATA[ and record.mail_send  = #{entity.mailSend} ]]>
+					</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by id desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPageNoticeUser" resultMap="noticeUserMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListNoticeUser" resultMap="noticeUserMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountNoticeUser" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryNoticeUserById" resultMap="noticeUserMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="noticeId != null">notice_id,</if>
+			<if test="noticeUser != null">notice_user,</if>
+			<if test="noticeSight != null">notice_sight,</if>
+			<if test="mailSend != null">mail_send,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+				<if test="id != null">#{id},</if>
+				<if test="noticeId != null">#{noticeId},</if>
+				<if test="noticeUser != null">#{noticeUser},</if>
+				<if test="noticeSight != null">#{noticeSight},</if>
+				<if test="mailSend != null">#{mailSend},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="addNoticeUser" parameterType="com.isoftstone.humanresources.domain.gather.NoticeUserModel">
+		insert into t_notice_user(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="updateNoticeUser" parameterType="com.isoftstone.humanresources.domain.gather.NoticeUserModel">
+		update t_notice_user record 
+			<set>
+					<if test = "noticeId != null ">
+						record.notice_id = #{noticeId},
+					</if>
+					<if test = "noticeUser != null ">
+						record.notice_user = #{noticeUser},
+					</if>
+					<if test = "noticeSight != null ">
+						record.notice_sight = #{noticeSight},
+					</if>
+					<if test = "mailSend != null ">
+						record.mail_send = #{mailSend}
+					</if>
+			</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="removeNoticeUserByIds" parameterType="java.util.List">
+		delete from t_notice_user 
+			where id in
+			<foreach collection="list" open="(" separator="," close=")" item="code">
+				#{code}
+			</foreach>
+	</delete>
+
+	<delete id="removeNoticeUserById">
+		delete from t_notice_user 
+		<if test=" id != null and id != ''">
+			where id = #{id}
+		</if>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--普通用户的实现类-->
+    <bean id="normalTarget" class="com.woniu.NormalCard"></bean>
+    <!--会员用户的实现类-->
+    <bean id="vipTarget" class="com.woniu.VipCard"></bean>
+    <!--日志切面-->
+    <bean id="log" class="com.woniu.MoneyLog"></bean>
+    <!--环绕通知切面-->
+    <bean id="money" class="com.woniu.MonyInterest"></bean>
+    <bean id="vip" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!--目标对象-->
+        <property name="target">
+            <ref bean="vipTarget"></ref>
+        </property>
+        <!--接口名称-->
+        <property name="proxyInterfaces">
+            <list>
+                <value>com.woniu.Card</value>
+            </list>
+        </property>
+        <property name="proxyTargetClass" value="false"></property>
+        <property name="interceptorNames">
+            <list>
+                <value>log</value>
+                <value>money</value>
+            </list>
+        </property>
+    </bean>
+    <!--使用springaop完成普通用户的增强处理-->
+    <bean id="normal" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!--目标对象-->
+        <property name="target">
+            <ref bean="normalTarget"></ref>
+        </property>
+        <property name="autodetectInterfaces" value="true"></property>
+        <property name="interceptorNames">
+            <list>
+                <value>log</value>
+                <value>money</value>
+            </list>
+        </property>
+    </bean>
+</beans>

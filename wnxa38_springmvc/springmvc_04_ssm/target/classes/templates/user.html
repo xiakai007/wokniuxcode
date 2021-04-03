@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表页面</title>
+    <style>
+        .pager{
+            list-style: none;
+        }
+        .pager li{
+            float: left;
+            margin:3px;
+        }
+    </style>
+</head>
+<body>
+<h1>用户列表</h1>
+<!--页面集合数据：<div th:text="${userPage.getResult()}"></div>
+总页数：<div th:text="${userPage.getPages()}"></div>
+总记录数：<div th:text="${userPage.getTotal()}"></div>
+当前页：<div th:text="${userPage.getPageNum()}"></div>
+每页记录数：<div th:text="${userPage.getPageSize()}"></div>-->
+<div>
+    <form th:action="@{userList}" method="post">
+        <fieldset>
+            <legend>用户搜索</legend>
+            <label>手机号：</label>
+            <input type="text" name="telephone" th:value="${userVo.telephone}">
+            <label>姓名：</label>
+            <input type="text" name="realname" th:value="${userVo.realname}">
+            <label>所属部门：</label>
+            <select name="dept.id">
+                <option value="0">请选择部门</option>
+                <!--<option th:if="userVo!=null" th:selected="selected"
+                        th:text="${userVo.dept.dname}"
+                        th:value="${userVo.dept.id}">
+                </option>-->
+                <option th:each="dept:${deptList}"
+                        th:value="${dept.id}"
+                        th:text="${dept.dname}"
+                </option>
+            </select>
+            <input type="submit" value="搜索">
+        </fieldset>
+    </form>
+</div>
+<div style="margin: 5px;">
+    <input type="button" onclick="deleteAll()" value="批量删除">
+</div>
+<table border="1px" cellpadding="5px" cellspacing="0px" style="margin-top: 20px;">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" name="selectAll" id="sel1">xxx
+                <input type="button" value="xxx">
+            </th>
+            <th>手机号</th>
+            <th>姓名</th>
+            <th>生日</th>
+            <th>照片</th>
+            <th>部门</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user:${userPage.getResult()}">
+            <td>
+                <input type="checkbox" name="checkbox_ids"th:value="${user.id}">
+                <input type="hidden" name="ids" th:value="${user.id}">
+            </td>
+            <td th:text="${user.telephone}"></td>
+            <td th:text="${user.realname}"></td>
+            <td th:text="${#dates.format(user.birthday,'yyyy-MM-dd')}"></td>
+            <td>
+                <img th:src="${user.headimg}" width="100px" height="100px">
+            </td>
+            <td th:text="${user.dept.dname}"></td>
+            <td>
+                <a th:href="@{updateUser(id=${user.id})}">修改</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<ul class="pager">
+    <li><a th:href="@{userList(currentPage=1,telephone=${userVo.telephone},realname=${userVo.realname})}">首页</a></li>
+    <li><a th:href="@{userList(currentPage=${userPage.getPageNum()}-1,telephone=${userVo.telephone},realname=${userVo.realname})}">上一页</a></li>
+    <li><a th:href="@{userList(currentPage=${userPage.getPageNum()}+1,telephone=${userVo.telephone},realname=${userVo.realname})}">下一页</a></li>
+    <li><a th:href="@{userList(currentPage=${userPage.getPages()},telephone=${userVo.telephone},realname=${userVo.realname})}">尾页</a></li>
+    <li>
+        <span>共有</span>
+        <span th:text="${userPage.getTotal()}"></span>
+        <span>条记录</span>
+    </li>
+    <li>
+        <span>第</span>
+        <span th:text="${userPage.getPageNum()}"></span>
+        <span>页/共</span>
+        <span th:text="${userPage.getPages()}"></span>
+        <span>页</span>
+    </li>
+</ul>
+<script type="text/javascript">
+    //selectAllAndInverse();
+    /**
+     * 全选和反选
+     */
+    /*function selectAllAndInverse(){
+        $("#sel1").click(function(){
+            var flag= $(this).prop("checked");
+            $(":checkbox[name=checkboxIds]").prop("checked",flag);
+        });
+        $(":button[value='反选']").click(function(){
+            $(":checkbox[name=selectAll]").removeProp("checked");
+            $(":checkbox[name=checkboxIds]").each(function(){
+                if($(this).prop("checked")){
+                    $(this).removeProp("checked");
+                }else{
+                    $(this).prop("checked",true);
+                }
+            });
+        });
+    }*/
+    function deleteAll(){
+        var idsArray = document.getElementsByName("checkbox_ids");
+        var ids=new Array();
+        /*$(":hidden[name=ids]").each(function(){
+            if($(this).prop("checked")){
+                ids.push($(this).val())
+            }
+        });*/
+        if(idsArray.length>0){
+            for(var i=0;i<idsArray.length;i++){
+                var item=idsArray[i];
+                if(item.checked){
+                    ids.push(item.value);
+                }
+            }
+        }
+        console.log(ids);
+        window.location.href="removeUser?ids="+ids;
+    }
+</script>
+</body>
+</html>

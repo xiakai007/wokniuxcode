@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="resources/js/jquery-1.12.3.min.js"></script>
+</head>
+<body>
+<form id="form1">
+    <div>
+        <input type="text" id="tele" placeholder="手机号" name="telephone" th:value="${telephone}">
+        <input type="button" id="getAuthcode" value="获取验证码">
+    </div>
+    <div>
+        <input type="text" id="code" name="authcode">
+    </div>
+    <div>
+        <input type="button" id="verify" value="确定">
+    </div>
+</form>
+</body>
+<script type="text/javascript">
+    $("#getAuthcode").click(function(){
+        console.log("************");
+        console.log($("#tele").val());
+        $.ajax({
+            type:"get",
+            url:"/sendAuthcode",
+            data:{telephone:$("#tele").val()},
+            success:function () {
+
+            }
+        });
+    });
+    $("#verify").click(function(){
+        console.log("------------");
+        console.log($("#form1").serialize());
+        $.ajax({
+            type:"get",
+            url:"/verifyAuthcode",
+            data:$("#form1").serialize(),
+            success:function () {
+
+            }
+        });
+    });
+</script>
+</html>

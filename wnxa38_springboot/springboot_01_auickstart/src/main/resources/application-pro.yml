@@ -1,0 +1,10 @@
+server:
+  port: 8082
+spring:
+  devtools:
+    restart:
+      enabled: true
+org:
+  giles:
+    name: tom-pro
+    age: 99

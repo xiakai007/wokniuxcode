@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/spring_01_quickstart/spring_01_quickstart.iml" filepath="$PROJECT_DIR$/spring_01_quickstart/spring_01_quickstart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_02_di/spring_02_di.iml" filepath="$PROJECT_DIR$/spring_02_di/spring_02_di.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_03_di_annotation/spring_03_di_annotation.iml" filepath="$PROJECT_DIR$/spring_03_di_annotation/spring_03_di_annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_04_integratembatis/spring_04_integratembatis.iml" filepath="$PROJECT_DIR$/spring_04_integratembatis/spring_04_integratembatis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_05_proxy/spring_05_proxy.iml" filepath="$PROJECT_DIR$/spring_05_proxy/spring_05_proxy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_06_aop/spring_06_aop.iml" filepath="$PROJECT_DIR$/spring_06_aop/spring_06_aop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_07_aspectj_xml/spring_07_aspectj_xml.iml" filepath="$PROJECT_DIR$/spring_07_aspectj_xml/spring_07_aspectj_xml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_08_aspectj_annotation/spring_08_aspectj_annotation.iml" filepath="$PROJECT_DIR$/spring_08_aspectj_annotation/spring_08_aspectj_annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring_09_transaction/spring_09_transaction.iml" filepath="$PROJECT_DIR$/spring_09_transaction/spring_09_transaction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wnxa38_spring.iml" filepath="$PROJECT_DIR$/wnxa38_spring.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.isoftstone.humanresources.dao.NoticeDao">
+	<!-- 返回值映射map -->
+	<resultMap id="noticeMapper" type="com.isoftstone.humanresources.domain.gather.NoticeModel">
+			<result property="id" column="id" />
+			<result property="createDate" column="create_date" />
+			<result property="noticeTitle" column="notice_title" />
+			<result property="noticeBody" column="notice_body" />
+			<result property="pushUser" column="push_user" />
+			<result property="noticeObj" column="notice_obj" />
+			<result property="noticeStatus" column="notice_status" />
+			<result property="noticeType" column="notice_type" />
+			<result property="img" column="img" />
+			<result property="bak" column="bak" />
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from t_notice record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 id, 
+				 create_date, 
+				 notice_title, 
+				 notice_body, 
+				 push_user, 
+				 notice_obj, 
+				 notice_status, 
+				 notice_type, 
+				 img, 
+				 bak 
+			]]>
+	  	</if>
+	     FROM t_notice record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+					<if test = "entity.id != null and entity.id != ''">
+						<![CDATA[ and record.id  = #{entity.id} ]]>
+					</if>
+					<if test = "entity.createDate != null and entity.createDate != ''">
+						<![CDATA[ and record.create_date  = #{entity.createDate} ]]>
+					</if>
+					<if test = "entity.noticeTitle != null and entity.noticeTitle != ''">
+						<![CDATA[ and record.notice_title  = #{entity.noticeTitle} ]]>
+					</if>
+					<if test = "entity.noticeBody != null and entity.noticeBody != ''">
+						<![CDATA[ and record.notice_body  = #{entity.noticeBody} ]]>
+					</if>
+					<if test = "entity.pushUser != null and entity.pushUser != ''">
+						<![CDATA[ and record.push_user  = #{entity.pushUser} ]]>
+					</if>
+					<if test = "entity.noticeObj != null and entity.noticeObj != ''">
+						<![CDATA[ and record.notice_obj  = #{entity.noticeObj} ]]>
+					</if>
+					<if test = "entity.noticeStatus != null and entity.noticeStatus != ''">
+						<![CDATA[ and record.notice_status  = #{entity.noticeStatus} ]]>
+					</if>
+					<if test = "entity.noticeType != null and entity.noticeType != ''">
+						<![CDATA[ and record.notice_type  = #{entity.noticeType} ]]>
+					</if>
+					<if test = "entity.img != null and entity.img != ''">
+						<![CDATA[ and record.img  = #{entity.img} ]]>
+					</if>
+					<if test = "entity.bak != null and entity.bak != ''">
+						<![CDATA[ and record.bak  = #{entity.bak} ]]>
+					</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by id desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPageNotice" resultMap="noticeMapper" >
+		SELECT
+				 id,
+				 create_date,
+				 notice_title,
+				 push_user,
+				 notice_obj,
+				 notice_status,
+				 notice_type,
+				 img,
+				 bak
+		FROM t_notice record
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListNotice" resultMap="noticeMapper" >
+		SELECT
+		id,
+		create_date,
+		notice_title,
+		push_user,
+		notice_obj,
+		notice_status,
+		notice_type,
+		img,
+		bak
+		FROM t_notice record
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountNotice" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryNoticeById" resultMap="noticeMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.id = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="createDate != null">create_date,</if>
+			<if test="noticeTitle != null">notice_title,</if>
+			<if test="noticeBody != null">notice_body,</if>
+			<if test="pushUser != null">push_user,</if>
+			<if test="noticeObj != null">notice_obj,</if>
+			<if test="noticeStatus != null">notice_status,</if>
+			<if test="noticeType != null">notice_type,</if>
+			<if test="img != null">img,</if>
+			<if test="bak != null">bak,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+				<if test="id != null">#{id},</if>
+				<if test="createDate != null">#{createDate},</if>
+				<if test="noticeTitle != null">#{noticeTitle},</if>
+				<if test="noticeBody != null">#{noticeBody},</if>
+				<if test="pushUser != null">#{pushUser},</if>
+				<if test="noticeObj != null">#{noticeObj},</if>
+				<if test="noticeStatus != null">#{noticeStatus},</if>
+				<if test="noticeType != null">#{noticeType},</if>
+				<if test="img != null">#{img},</if>
+				<if test="bak != null">#{bak},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="addNotice" parameterType="com.isoftstone.humanresources.domain.gather.NoticeModel">
+		insert into t_notice(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+
+	<!-- 编辑 -->
+	<update id="updateNotice" parameterType="com.isoftstone.humanresources.domain.gather.NoticeModel">
+		update t_notice record 
+			<set>
+					<if test = "createDate != null ">
+						record.create_date = #{createDate},
+					</if>
+					<if test = "noticeTitle != null ">
+						record.notice_title = #{noticeTitle},
+					</if>
+					<if test = "noticeBody != null ">
+						record.notice_body = #{noticeBody},
+					</if>
+					<if test = "pushUser != null ">
+						record.push_user = #{pushUser},
+					</if>
+					<if test = "noticeObj != null ">
+						record.notice_obj = #{noticeObj},
+					</if>
+					<if test = "noticeStatus != null ">
+						record.notice_status = #{noticeStatus},
+					</if>
+					<if test = "noticeType != null ">
+						record.notice_type = #{noticeType},
+					</if>
+					<if test = "img != null ">
+						record.img = #{img},
+					</if>
+					<if test = "bak != null ">
+						record.bak = #{bak}
+					</if>
+			</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="removeNoticeByIds" parameterType="java.util.List">
+		delete from t_notice 
+			where id in
+			<foreach collection="list" open="(" separator="," close=")" item="code">
+				#{code}
+			</foreach>
+	</delete>
+
+	<delete id="removeNoticeById">
+		delete from t_notice 
+		<if test=" id != null and id != ''">
+			where id = #{id}
+		</if>
+	</delete>
+	
+</mapper>

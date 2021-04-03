@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>config file</comment>
+<entry key="port">8070</entry>
+<entry key="ip">192.123.456.3</entry>
+</properties>

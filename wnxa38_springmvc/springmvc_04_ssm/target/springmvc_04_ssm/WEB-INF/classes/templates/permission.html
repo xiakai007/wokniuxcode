@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1px">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>pid</th>
+            <th>TYPE</th>
+            <th>percode</th>
+            <th>NAME</th>
+            <th>icon</th>
+            <th>href</th>
+            <th>OPEN</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="perm:${permissionList}">
+            <td th:text="${perm.id}"></td>
+            <td th:text="${perm.pid}"></td>
+            <td th:text="${perm.TYPE}"></td>
+            <td th:text="${perm.percode}"></td>
+            <td th:text="${perm.NAME}"></td>
+            <td th:text="${perm.icon}"></td>
+            <td th:text="${perm.href}"></td>
+            <td th:text="${perm.OPEN}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

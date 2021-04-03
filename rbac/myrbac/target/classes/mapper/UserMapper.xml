@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mapper.UserMapper">
+    <resultMap id="userMap" type="User">
+        <id property="id" column="id"></id>
+        <association property="dept" column="did"
+        select="com.woniu.mapper.DeptMapper.selectDeptById"></association>
+        <collection property="roleList" column="id"
+        select="com.woniu.mapper.RoleMapper.selectRoleByUid"></collection>
+    </resultMap>
+    <select id="selectUserAll" resultMap="userMap">
+        SELECT * FROM sys_user
+    </select>
+    <select id="selectUserByDid" parameterType="int" resultMap="userMap">
+        SELECT * FROM sys_user WHERE did=#{did}
+    </select>
+    <select id="selectUserByRid" parameterType="int" resultType="User">
+        SELECT * FROM sys_user WHERE id IN(
+	      SELECT uid FROM sys_user_role WHERE rid=#{rid}
+        )
+    </select>
+    <select id="selectUserByRealname" parameterType="String" resultMap="userMap">
+        SELECT id FROM sys_user WHERE realname=#{realname}
+    </select>
+</mapper>

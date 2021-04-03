@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/baidumap/baidumap.iml" filepath="$PROJECT_DIR$/baidumap/baidumap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bootrediss/bootrediss.iml" filepath="$PROJECT_DIR$/bootrediss/bootrediss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cachea/cachea.iml" filepath="$PROJECT_DIR$/cachea/cachea.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cacheb/cacheb.iml" filepath="$PROJECT_DIR$/cacheb/cacheb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/es/es.iml" filepath="$PROJECT_DIR$/es/es.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jd/jd.iml" filepath="$PROJECT_DIR$/jd/jd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mybatiscache/mybatiscache.iml" filepath="$PROJECT_DIR$/mybatiscache/mybatiscache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mybatisinterceptor/mybatisinterceptor.iml" filepath="$PROJECT_DIR$/mybatisinterceptor/mybatisinterceptor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis.iml" filepath="$PROJECT_DIR$/redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis01/redis01.iml" filepath="$PROJECT_DIR$/redis01/redis01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/seckill/seckill.iml" filepath="$PROJECT_DIR$/seckill/seckill.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartremind/smartremind.iml" filepath="$PROJECT_DIR$/smartremind/smartremind.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcache/springcache.iml" filepath="$PROJECT_DIR$/springcache/springcache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/timer/timer.iml" filepath="$PROJECT_DIR$/timer/timer.iml" />
+    </modules>
+  </component>
+</project>

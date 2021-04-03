@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isoftstone.humanresources.dao.StaffTrainProgrammeDao">
+	<insert id="addTrainProgram"
+		parameterType="com.isoftstone.humanresources.domain.EmployeeTrainProgramInformation">
+		INSERT INTO T_EMPLOYEE_TRAINING_PROGRAM
+		(
+		employeeID,
+		trainDirection,
+		trainDescript,
+		trainStatus,
+		trainCompleteness,
+		scoreEmployeeId,
+		planStartTime,
+		planEndTime,
+		<if test="etpInfo.startTime != null and etpInfo.startTime != ''">
+			startTime,
+		</if>
+		<if test="etpInfo.endTime != null and etpInfo.endTime != ''">
+			endTime,
+		</if>
+		createTime,
+		updateTime,
+		bak
+		)
+		VALUES
+		(
+		#{etpInfo.employeeID},
+		#{etpInfo.trainDirection},
+		#{etpInfo.trainDescript},
+		#{etpInfo.trainStatus},
+		#{etpInfo.trainCompleteness},
+		#{etpInfo.scoreEmployeeId},
+		#{etpInfo.planStartTime},
+		#{etpInfo.planEndTime},
+		<if test="etpInfo.startTime != null and etpInfo.startTime != ''">
+			#{etpInfo.startTime},
+		</if>
+		<if test="etpInfo.endTime != null and etpInfo.endTime != ''">
+			#{etpInfo.endTime},
+		</if>
+		NOW(),
+		NOW(),
+		#{etpInfo.bak}
+		)
+	</insert>
+	<!-- 修改培训计划 -->
+	<update id="updateTrainProgram"
+		parameterType="com.isoftstone.humanresources.domain.EmployeeTrainProgramInformation">
+		UPDATE T_EMPLOYEE_TRAINING_PROGRAM
+		SET
+		<if test="etpInfo.trainDirection != null and etpInfo.trainDirection != ''">
+			trainDirection = #{etpInfo.trainDirection},
+		</if>
+		<if test="etpInfo.trainDescript != null and etpInfo.trainDescript != ''">
+			trainDescript = #{etpInfo.trainDescript},
+		</if>
+		<if test="etpInfo.trainStatus != null and etpInfo.trainStatus != ''">
+			trainStatus = #{etpInfo.trainStatus},
+		</if>
+		<if test="etpInfo.trainCompleteness != 0">
+			trainCompleteness = #{etpInfo.trainCompleteness},
+		</if>
+		updateEmployeeID = #{etpInfo.updateEmployeeID},
+		updateTime = NOW(),
+		<if test="etpInfo.bak != null and etpInfo.bak != ''">
+			bak = #{etpInfo.bak}
+		</if>
+		WHERE id = #{etpInfo.id}
+	</update>
+	<!-- 查询培训计划详情 -->
+	<select id="queryPlanById" parameterType="String"
+		resultType="com.isoftstone.humanresources.domain.EmployeeTrainProgramInformation">
+		select
+		t.ID,
+		t.employeeID,
+		t1.employeeName as empName,
+		t.trainDirection,
+		t.trainDescript,
+		t.trainStatus,
+		t.trainCompleteness,
+		t.scoreEmployeeId,
+		t2.employeeName as scoreName,
+		t.planStartTime,
+		t.planEndTime,
+		t.startTime,
+		t.endTime,
+		t.createTime,
+		t.updateTime,
+		t.bak,
+		t.updateEmployeeID,
+		t3.employeeName as updateName
+		from
+		t_employee_training_program t
+		LEFT JOIN t_employee t1 ON t.employeeID = t1.employeeID
+		LEFT JOIN t_employee t2 ON t.scoreEmployeeId = t2.employeeID
+		LEFT JOIN t_employee t3 ON t.updateEmployeeID = t3.employeeID
+		where 
+		t.employeeID in 
+		(SELECT employeeID from T_EMPLOYEE WHERE projectTeam in 
+		(SELECT organizationID from T_ORGANIZATION WHERE leader = #{projectTeam}))
+		<if test="id != null and id != ''">
+		AND id = #{id};
+		</if>
+		<if test="des != null and des != ''">
+		${des}
+		</if>
+	</select>
+	
+	<!--查询leader下员工信息  -->
+	<select id="queryEmpProject" parameterType="String" resultType="com.isoftstone.humanresources.domain.organization.QueryEmpForProjectVO">
+	SELECT employeeID,employeeName from T_EMPLOYEE WHERE projectTeam in 
+		(SELECT organizationID from T_ORGANIZATION WHERE leader = #{leader}
+		and organizationStatus = '工作中')
+	</select>
+</mapper>

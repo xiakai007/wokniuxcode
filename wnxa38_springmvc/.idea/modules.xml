@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/springmvc_01_quickstart/springmvc_01_quickstart.iml" filepath="$PROJECT_DIR$/springmvc_01_quickstart/springmvc_01_quickstart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springmvc_02_annotation/springmvc_02_annotation.iml" filepath="$PROJECT_DIR$/springmvc_02_annotation/springmvc_02_annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springmvc_03_thymeleaf/springmvc_03_thymeleaf.iml" filepath="$PROJECT_DIR$/springmvc_03_thymeleaf/springmvc_03_thymeleaf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springmvc_04_ssm/springmvc_04_ssm.iml" filepath="$PROJECT_DIR$/springmvc_04_ssm/springmvc_04_ssm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springmvc_05_layui/springmvc_05_layui.iml" filepath="$PROJECT_DIR$/springmvc_05_layui/springmvc_05_layui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wnxa38_springmvc.iml" filepath="$PROJECT_DIR$/wnxa38_springmvc.iml" />
+    </modules>
+  </component>
+</project>

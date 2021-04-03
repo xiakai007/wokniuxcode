@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="person1" class="com.woniu.bean.Person">
+        <property name="name" value="tom"></property>
+    </bean>
+    <bean id="person2" class="com.woniu.bean.Person">
+        <property name="name">
+            <value>jack</value>
+        </property>
+    </bean>
+    <bean id="w1" class="com.woniu.bean.Wife">
+        <property name="name" value="mary"></property>
+    </bean>
+    <bean id="m1" class="com.woniu.bean.Man">
+        <property name="name" value="小明"></property>
+        <property name="wife" ref="w1"></property>
+    </bean>
+    <!--set注入list集合-->
+    <bean id="student1" class="com.woniu.bean.Student">
+        <property name="name" value="ming"></property>
+    </bean>
+    <bean id="student2" class="com.woniu.bean.Student">
+        <property name="name" value="tom"></property>
+    </bean>
+    <bean id="teacher1" class="com.woniu.bean.Teacher">
+        <property name="name" value="翟吉喆"></property>
+        <property name="students">
+            <list>
+                <ref bean="student1"></ref>
+                <ref bean="student2"></ref>
+            </list>
+        </property>
+        <property name="hobbies">
+            <set>
+                <value>唱歌</value>
+                <value>跳舞</value>
+            </set>
+        </property>
+        <property name="job">
+            <map>
+                <entry key="蜗牛公司" value="总经理"></entry>
+                <entry key="西安" value="书记"></entry>
+            </map>
+        </property>
+        <property name="studentLevel">
+            <props>
+                <prop key="firstLevel">ming,hua</prop>
+                <prop key="secondLevel">tom,jack</prop>
+            </props>
+        </property>
+    </bean>
+    <!--
+    <import resource="bean1.xml"></import>
+    <import resource="bean2.xml"></import>
+    <import resource="bean3.xml"></import>
+    <import resource="bean4.xml"></import>
+    -->
+</beans>

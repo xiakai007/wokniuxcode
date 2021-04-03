@@ -1,0 +1,10 @@
+server:
+  port: 8081
+spring:
+  devtools:
+    restart:
+      enabled: true
+org:
+  giles:
+    name: tom-dev
+    age: 99

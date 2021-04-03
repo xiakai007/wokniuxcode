@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户修改</title>
+    <script>
+        function preview(){
+            var fileReader = new FileReader;
+            var file = document.getElementById("headimg").files[0];
+            fileReader.readAsDataURL(file);
+            fileReader.onload=function(e){
+                document.getElementById("show").src=this.result;
+            }
+        }
+    </script>
+</head>
+<body>
+<h2>用户修改页面</h2>
+<span th:text="${#dates.format(userUpd.birthday,'yyyy-MM-dd')}"></span>
+<form action="doUpdate" method="post" enctype="multipart/form-data">
+    <table border="1px">
+        <tbody>
+        <tr>
+            <td>手机：</td>
+            <td><input type="text" name="telephone" th:value="${userUpd.telephone}"></td>
+        </tr>
+        <tr>
+            <td>密码：</td>
+            <td><input type="password" name="PASSWORD" th:value="${userUpd.PASSWORD}"></td>
+        </tr>
+        <tr>
+            <td>姓名：</td>
+            <td><input type="text" name="realname" th:value="${userUpd.realname}"></td>
+        </tr>
+        <tr>
+            <td>生日：</td>
+            <td><input type="date" th:value="${userUpd.birthday}" name="birthday"></td>
+        </tr>
+        <tr>
+            <td>所属部门：</td>
+            <td>
+                <select name="dept.id">
+                    <option th:each="dept:${deptList}" th:value="${dept.id}" th:text="${dept.dname}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>用户角色：</td>
+            <td>
+                <input type="checkbox"
+                       th:each="role,roleStat:${roleList}"
+                       th:text="${role.rolename}"
+                       th:name="roleList[__${roleStat.index}__].id"
+                       th:value="${role.id}">
+            </td>
+        </tr>
+        <tr>
+            <td>头像：</td>
+            <td><input type="file" name="avatar" id="headimg" onchange="preview()"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div style="margin-top:3px;">
+                    <img th:src="${userUpd.headimg}" id="show" width="100px" height="100px">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="确定"></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

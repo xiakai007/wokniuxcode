@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.isoftstone.humanresources.dao.WorkTimeMonthIpsaDao">
+	<!-- 返回值映射map -->
+	<resultMap id="workTimeMonthIpsaMapper" type="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthIpsaModel">
+			<result property="employeeid" column="employeeID" />
+			<result property="employeename" column="employeeName" />
+			<result property="cardid" column="cardID" />
+			<result property="area" column="area" />
+			<result property="month" column="month" />
+			<result property="shoulddays" column="shouldDays" />
+			<result property="actualdays" column="actualDays" />
+			<result property="shouldtimes" column="shouldTimes" />
+			<result property="actualtimes" column="actualTimes" />
+			<result property="holidaytimes" column="holidayTimes" />
+			<result property="businesstimes" column="businessTimes" />
+			<result property="businesstriptimes" column="businessTripTimes" />
+			<result property="latetimes" column="lateTimes" />
+			<result property="leaveearlytimes" column="LeaveEarlyTimes" />
+			<result property="absenteeismtimes" column="absenteeismTimes" />
+			<result property="owetimes" column="oweTimes" />
+			<result property="overtimenum" column="overtimeNum" />
+			<result property="overtimes" column="overtimes" />
+			<result property="extendtimes" column="extendTimes" />
+			<result property="notbringpctimes" column="notBringPcTimes" />
+			<result property="bringpctimes" column="BringPcTimes" />
+			<result property="inday" column="inDay" />
+			<result property="outday" column="outDay" />
+			<result property="annualleave" column="annualLeave" />
+			<result property="resttimes" column="restTimes" />
+			<result property="marriageleave" column="marriageLeave" />
+			<result property="maternityleave" column="maternityLeave" />
+			<result property="prenatalleave" column="prenatalLeave" />
+			<result property="paternityleave" column="paternityLeave" />
+			<result property="breastfeeding" column="breastFeeding" />
+			<result property="sickleave" column="sickLeave" />
+			<result property="funeralleave" column="funeralLeave" />
+			<result property="personalleave" column="personalLeave" />
+			<result property="overtimeresttimes" column="overtimeRestTimes" />
+			<result property="outsidetimes" column="outsideTimes" />
+			<result property="ehs" column="ehs" />
+			<result property="insufficientreasons" column="insufficientReasons" />
+			<result property="noworkreasons" column="noWorkReasons" />
+			<result property="monthinsufficientreasons" column="monthInsufficientReasons" />
+			<result property="cu" column="cu" />
+	</resultMap>
+	
+	<!-- 查询数量公共sql -->
+	<sql id="count_Tail">
+		select count(1) from t_work_time_month_ipsa record
+	</sql>
+	
+	<!-- 分页公共sql -->
+	<sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.pageSize}
+	</sql>
+
+	<!-- 查询字段公共sql -->
+	<sql id="selectAllColumns">
+	    SELECT 
+	    <if test="queryFields != null ">
+	 	     <trim prefix="" suffix="" suffixOverrides=",">
+		        <foreach collection="queryFields" item="fi" index="index">
+		          ${fi},
+		        </foreach>
+		      </trim> 	
+	  	</if>
+	    <if test="queryFields == null ">
+	  		<![CDATA[
+				 employeeID, 
+				 employeeName, 
+				 cardID, 
+				 area, 
+				 month, 
+				 shouldDays, 
+				 actualDays, 
+				 shouldTimes, 
+				 actualTimes, 
+				 holidayTimes, 
+				 businessTimes, 
+				 businessTripTimes, 
+				 lateTimes, 
+				 LeaveEarlyTimes, 
+				 absenteeismTimes, 
+				 oweTimes, 
+				 overtimeNum, 
+				 overtimes, 
+				 extendTimes, 
+				 notBringPcTimes, 
+				 BringPcTimes, 
+				 inDay, 
+				 outDay, 
+				 annualLeave, 
+				 restTimes, 
+				 marriageLeave, 
+				 maternityLeave, 
+				 prenatalLeave, 
+				 paternityLeave, 
+				 breastFeeding, 
+				 sickLeave, 
+				 funeralLeave, 
+				 personalLeave, 
+				 overtimeRestTimes, 
+				 outsideTimes, 
+				 ehs, 
+				 insufficientReasons, 
+				 noWorkReasons, 
+				 monthInsufficientReasons, 
+				 cu 
+			]]>
+	  	</if>
+	     FROM t_work_time_month_ipsa record
+	</sql>
+	
+	<sql id="where_fragement">
+		<where> 
+			<if test="entity!=null">
+					<if test = "entity.employeeid != null and entity.employeeid != ''">
+						<![CDATA[ and record.employeeID  = #{entity.employeeid} ]]>
+					</if>
+					<if test = "entity.employeename != null and entity.employeename != ''">
+						<![CDATA[ and record.employeeName  = #{entity.employeename} ]]>
+					</if>
+					<if test = "entity.cardid != null and entity.cardid != ''">
+						<![CDATA[ and record.cardID  = #{entity.cardid} ]]>
+					</if>
+					<if test = "entity.area != null and entity.area != ''">
+						<![CDATA[ and record.area  = #{entity.area} ]]>
+					</if>
+					<if test = "entity.month != null and entity.month != ''">
+						<![CDATA[ and record.month  = #{entity.month} ]]>
+					</if>
+					<if test = "entity.shoulddays != null and entity.shoulddays != ''">
+						<![CDATA[ and record.shouldDays  = #{entity.shoulddays} ]]>
+					</if>
+					<if test = "entity.actualdays != null and entity.actualdays != ''">
+						<![CDATA[ and record.actualDays  = #{entity.actualdays} ]]>
+					</if>
+					<if test = "entity.shouldtimes != null and entity.shouldtimes != ''">
+						<![CDATA[ and record.shouldTimes  = #{entity.shouldtimes} ]]>
+					</if>
+					<if test = "entity.actualtimes != null and entity.actualtimes != ''">
+						<![CDATA[ and record.actualTimes  = #{entity.actualtimes} ]]>
+					</if>
+					<if test = "entity.holidaytimes != null and entity.holidaytimes != ''">
+						<![CDATA[ and record.holidayTimes  = #{entity.holidaytimes} ]]>
+					</if>
+					<if test = "entity.businesstimes != null and entity.businesstimes != ''">
+						<![CDATA[ and record.businessTimes  = #{entity.businesstimes} ]]>
+					</if>
+					<if test = "entity.businesstriptimes != null and entity.businesstriptimes != ''">
+						<![CDATA[ and record.businessTripTimes  = #{entity.businesstriptimes} ]]>
+					</if>
+					<if test = "entity.latetimes != null and entity.latetimes != ''">
+						<![CDATA[ and record.lateTimes  = #{entity.latetimes} ]]>
+					</if>
+					<if test = "entity.leaveearlytimes != null and entity.leaveearlytimes != ''">
+						<![CDATA[ and record.LeaveEarlyTimes  = #{entity.leaveearlytimes} ]]>
+					</if>
+					<if test = "entity.absenteeismtimes != null and entity.absenteeismtimes != ''">
+						<![CDATA[ and record.absenteeismTimes  = #{entity.absenteeismtimes} ]]>
+					</if>
+					<if test = "entity.owetimes != null and entity.owetimes != ''">
+						<![CDATA[ and record.oweTimes  = #{entity.owetimes} ]]>
+					</if>
+					<if test = "entity.overtimenum != null and entity.overtimenum != ''">
+						<![CDATA[ and record.overtimeNum  = #{entity.overtimenum} ]]>
+					</if>
+					<if test = "entity.overtimes != null and entity.overtimes != ''">
+						<![CDATA[ and record.overtimes  = #{entity.overtimes} ]]>
+					</if>
+					<if test = "entity.extendtimes != null and entity.extendtimes != ''">
+						<![CDATA[ and record.extendTimes  = #{entity.extendtimes} ]]>
+					</if>
+					<if test = "entity.notbringpctimes != null and entity.notbringpctimes != ''">
+						<![CDATA[ and record.notBringPcTimes  = #{entity.notbringpctimes} ]]>
+					</if>
+					<if test = "entity.bringpctimes != null and entity.bringpctimes != ''">
+						<![CDATA[ and record.BringPcTimes  = #{entity.bringpctimes} ]]>
+					</if>
+					<if test = "entity.inday != null and entity.inday != ''">
+						<![CDATA[ and record.inDay  = #{entity.inday} ]]>
+					</if>
+					<if test = "entity.outday != null and entity.outday != ''">
+						<![CDATA[ and record.outDay  = #{entity.outday} ]]>
+					</if>
+					<if test = "entity.annualleave != null and entity.annualleave != ''">
+						<![CDATA[ and record.annualLeave  = #{entity.annualleave} ]]>
+					</if>
+					<if test = "entity.resttimes != null and entity.resttimes != ''">
+						<![CDATA[ and record.restTimes  = #{entity.resttimes} ]]>
+					</if>
+					<if test = "entity.marriageleave != null and entity.marriageleave != ''">
+						<![CDATA[ and record.marriageLeave  = #{entity.marriageleave} ]]>
+					</if>
+					<if test = "entity.maternityleave != null and entity.maternityleave != ''">
+						<![CDATA[ and record.maternityLeave  = #{entity.maternityleave} ]]>
+					</if>
+					<if test = "entity.prenatalleave != null and entity.prenatalleave != ''">
+						<![CDATA[ and record.prenatalLeave  = #{entity.prenatalleave} ]]>
+					</if>
+					<if test = "entity.paternityleave != null and entity.paternityleave != ''">
+						<![CDATA[ and record.paternityLeave  = #{entity.paternityleave} ]]>
+					</if>
+					<if test = "entity.breastfeeding != null and entity.breastfeeding != ''">
+						<![CDATA[ and record.breastFeeding  = #{entity.breastfeeding} ]]>
+					</if>
+					<if test = "entity.sickleave != null and entity.sickleave != ''">
+						<![CDATA[ and record.sickLeave  = #{entity.sickleave} ]]>
+					</if>
+					<if test = "entity.funeralleave != null and entity.funeralleave != ''">
+						<![CDATA[ and record.funeralLeave  = #{entity.funeralleave} ]]>
+					</if>
+					<if test = "entity.personalleave != null and entity.personalleave != ''">
+						<![CDATA[ and record.personalLeave  = #{entity.personalleave} ]]>
+					</if>
+					<if test = "entity.overtimeresttimes != null and entity.overtimeresttimes != ''">
+						<![CDATA[ and record.overtimeRestTimes  = #{entity.overtimeresttimes} ]]>
+					</if>
+					<if test = "entity.outsidetimes != null and entity.outsidetimes != ''">
+						<![CDATA[ and record.outsideTimes  = #{entity.outsidetimes} ]]>
+					</if>
+					<if test = "entity.ehs != null and entity.ehs != ''">
+						<![CDATA[ and record.ehs  = #{entity.ehs} ]]>
+					</if>
+					<if test = "entity.insufficientreasons != null and entity.insufficientreasons != ''">
+						<![CDATA[ and record.insufficientReasons  = #{entity.insufficientreasons} ]]>
+					</if>
+					<if test = "entity.noworkreasons != null and entity.noworkreasons != ''">
+						<![CDATA[ and record.noWorkReasons  = #{entity.noworkreasons} ]]>
+					</if>
+					<if test = "entity.monthinsufficientreasons != null and entity.monthinsufficientreasons != ''">
+						<![CDATA[ and record.monthInsufficientReasons  = #{entity.monthinsufficientreasons} ]]>
+					</if>
+					<if test = "entity.cu != null and entity.cu != ''">
+						<![CDATA[ and record.cu  = #{entity.cu} ]]>
+					</if>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="time_sort">
+		order by create_time desc
+	</sql>
+
+	<!-- 分页查询数据集合-->
+	<select id="queryPageWorkTimeMonthIpsa" resultMap="workTimeMonthIpsaMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+		<if test="page!=null">
+			<include refid="pagination_tail" />
+		</if>
+		
+	</select>
+	
+	<!-- 不分页查询数据集合-->
+	<select id="queryListWorkTimeMonthIpsa" resultMap="workTimeMonthIpsaMapper" >
+		<include refid="selectAllColumns"/>
+		<include refid="where_fragement" />
+		<include refid="time_sort" />
+	</select>
+	
+	<!-- 查询总数量 -->
+	<select id="queryCountWorkTimeMonthIpsa" resultType="long">
+		<include refid="count_Tail"></include>
+		<include refid="where_fragement"></include>
+	</select>
+
+	<!-- 查询单个实体 -->
+	<select id="queryWorkTimeMonthIpsaById" resultMap="workTimeMonthIpsaMapper" >
+		<include refid="selectAllColumns"/>
+		 where 
+		 record.employeeID = #{id}
+	</select>
+	
+	<!-- 新增列处理 -->
+	<sql id="sql_add_columns">
+		<trim suffixOverrides=",">
+			<if test="employeeid != null">employeeID,</if>
+			<if test="employeename != null">employeeName,</if>
+			<if test="cardid != null">cardID,</if>
+			<if test="area != null">area,</if>
+			<if test="month != null">month,</if>
+			<if test="shoulddays != null">shouldDays,</if>
+			<if test="actualdays != null">actualDays,</if>
+			<if test="shouldtimes != null">shouldTimes,</if>
+			<if test="actualtimes != null">actualTimes,</if>
+			<if test="holidaytimes != null">holidayTimes,</if>
+			<if test="businesstimes != null">businessTimes,</if>
+			<if test="businesstriptimes != null">businessTripTimes,</if>
+			<if test="latetimes != null">lateTimes,</if>
+			<if test="leaveearlytimes != null">LeaveEarlyTimes,</if>
+			<if test="absenteeismtimes != null">absenteeismTimes,</if>
+			<if test="owetimes != null">oweTimes,</if>
+			<if test="overtimenum != null">overtimeNum,</if>
+			<if test="overtimes != null">overtimes,</if>
+			<if test="extendtimes != null">extendTimes,</if>
+			<if test="notbringpctimes != null">notBringPcTimes,</if>
+			<if test="bringpctimes != null">BringPcTimes,</if>
+			<if test="inday != null">inDay,</if>
+			<if test="outday != null">outDay,</if>
+			<if test="annualleave != null">annualLeave,</if>
+			<if test="resttimes != null">restTimes,</if>
+			<if test="marriageleave != null">marriageLeave,</if>
+			<if test="maternityleave != null">maternityLeave,</if>
+			<if test="prenatalleave != null">prenatalLeave,</if>
+			<if test="paternityleave != null">paternityLeave,</if>
+			<if test="breastfeeding != null">breastFeeding,</if>
+			<if test="sickleave != null">sickLeave,</if>
+			<if test="funeralleave != null">funeralLeave,</if>
+			<if test="personalleave != null">personalLeave,</if>
+			<if test="overtimeresttimes != null">overtimeRestTimes,</if>
+			<if test="outsidetimes != null">outsideTimes,</if>
+			<if test="ehs != null">ehs,</if>
+			<if test="insufficientreasons != null">insufficientReasons,</if>
+			<if test="noworkreasons != null">noWorkReasons,</if>
+			<if test="monthinsufficientreasons != null">monthInsufficientReasons,</if>
+			<if test="cu != null">cu,</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_add_properties">
+		<trim suffixOverrides=",">
+				<if test="employeeid != null">#{employeeid},</if>
+				<if test="employeename != null">#{employeename},</if>
+				<if test="cardid != null">#{cardid},</if>
+				<if test="area != null">#{area},</if>
+				<if test="month != null">#{month},</if>
+				<if test="shoulddays != null">#{shoulddays},</if>
+				<if test="actualdays != null">#{actualdays},</if>
+				<if test="shouldtimes != null">#{shouldtimes},</if>
+				<if test="actualtimes != null">#{actualtimes},</if>
+				<if test="holidaytimes != null">#{holidaytimes},</if>
+				<if test="businesstimes != null">#{businesstimes},</if>
+				<if test="businesstriptimes != null">#{businesstriptimes},</if>
+				<if test="latetimes != null">#{latetimes},</if>
+				<if test="leaveearlytimes != null">#{leaveearlytimes},</if>
+				<if test="absenteeismtimes != null">#{absenteeismtimes},</if>
+				<if test="owetimes != null">#{owetimes},</if>
+				<if test="overtimenum != null">#{overtimenum},</if>
+				<if test="overtimes != null">#{overtimes},</if>
+				<if test="extendtimes != null">#{extendtimes},</if>
+				<if test="notbringpctimes != null">#{notbringpctimes},</if>
+				<if test="bringpctimes != null">#{bringpctimes},</if>
+				<if test="inday != null">#{inday},</if>
+				<if test="outday != null">#{outday},</if>
+				<if test="annualleave != null">#{annualleave},</if>
+				<if test="resttimes != null">#{resttimes},</if>
+				<if test="marriageleave != null">#{marriageleave},</if>
+				<if test="maternityleave != null">#{maternityleave},</if>
+				<if test="prenatalleave != null">#{prenatalleave},</if>
+				<if test="paternityleave != null">#{paternityleave},</if>
+				<if test="breastfeeding != null">#{breastfeeding},</if>
+				<if test="sickleave != null">#{sickleave},</if>
+				<if test="funeralleave != null">#{funeralleave},</if>
+				<if test="personalleave != null">#{personalleave},</if>
+				<if test="overtimeresttimes != null">#{overtimeresttimes},</if>
+				<if test="outsidetimes != null">#{outsidetimes},</if>
+				<if test="ehs != null">#{ehs},</if>
+				<if test="insufficientreasons != null">#{insufficientreasons},</if>
+				<if test="noworkreasons != null">#{noworkreasons},</if>
+				<if test="monthinsufficientreasons != null">#{monthinsufficientreasons},</if>
+				<if test="cu != null">#{cu},</if>
+		</trim>		
+	</sql>
+	
+	<!-- 新增 -->
+	<insert id="addWorkTimeMonthIpsa" parameterType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthIpsaModel">
+		insert into t_work_time_month_ipsa(
+			<include refid="sql_add_columns"/>
+		)values(
+			<include refid="sql_add_properties"/>
+		)
+	</insert>
+
+
+
+	<sql id="BASE_COLUMN">
+		 employeeID,
+		 employeeName,
+		 cardID,
+		 area,
+		 month,
+		 shouldDays,
+		 actualDays,
+		 shouldTimes,
+		 actualTimes,
+		 holidayTimes,
+		 businessTimes,
+		 businessTripTimes,
+		 lateTimes,
+		 LeaveEarlyTimes,
+		 absenteeismTimes,
+		 oweTimes,
+		 overtimeNum,
+		 overtimes,
+		 extendTimes,
+		 notBringPcTimes,
+		 BringPcTimes,
+		 inDay,
+		 outDay,
+		 annualLeave,
+		 restTimes,
+		 marriageLeave,
+		 maternityLeave,
+		 prenatalLeave,
+		 paternityLeave,
+		 breastFeeding,
+		 sickLeave,
+		 funeralLeave,
+		 personalLeave,
+		 overtimeRestTimes,
+		 outsideTimes,
+		 ehs,
+		 insufficientReasons,
+		 noWorkReasons,
+		 monthInsufficientReasons,
+		 cu
+	</sql>
+
+	<insert id="importWorkTimeMonth" parameterType="java.util.List">
+		insert into
+		t_work_time_month_ipsa
+		(
+		<include refid="BASE_COLUMN"></include>
+		)
+		values
+		<if test="null != monthTimeList and monthTimeList.size() > 0">
+			<foreach collection="monthTimeList" item="item" index="index"
+					 separator=",">
+				(
+				#{item.employeeid},
+				#{item.employeename},
+				#{item.cardid},
+				#{item.area},
+				#{item.month},
+				#{item.shoulddays},
+				#{item.actualdays},
+				#{item.shouldtimes},
+				#{item.actualtimes},
+				#{item.holidaytimes},
+				#{item.businesstimes},
+				#{item.businesstriptimes},
+				#{item.latetimes},
+				#{item.leaveearlytimes},
+				#{item.absenteeismtimes},
+				#{item.owetimes},
+				#{item.overtimenum},
+				#{item.overtimes},
+				#{item.extendtimes},
+				#{item.notbringpctimes},
+				#{item.bringpctimes},
+				#{item.inday},
+				#{item.outday},
+				#{item.annualleave},
+				#{item.resttimes},
+				#{item.marriageleave},
+				#{item.maternityleave},
+				#{item.prenatalleave},
+				#{item.paternityleave},
+				#{item.breastfeeding},
+				#{item.sickleave},
+				#{item.funeralleave},
+				#{item.personalleave},
+				#{item.overtimeresttimes},
+				#{item.outsidetimes},
+				#{item.ehs},
+				#{item.insufficientreasons},
+				#{item.noworkreasons},
+				#{item.monthinsufficientreasons},
+				#{item.cu}
+				)
+			</foreach>
+		</if>
+	</insert>
+
+
+	<!-- 编辑 -->
+	<update id="updateWorkTimeMonthIpsa" parameterType="com.isoftstone.humanresources.domain.workTime.WorkTimeMonthIpsaModel">
+		update t_work_time_month_ipsa record 
+			<set>
+					<if test = "employeeid != null ">
+						record.employeeID = #{employeeid},
+					</if>
+					<if test = "employeename != null ">
+						record.employeeName = #{employeename},
+					</if>
+					<if test = "cardid != null ">
+						record.cardID = #{cardid},
+					</if>
+					<if test = "area != null ">
+						record.area = #{area},
+					</if>
+					<if test = "month != null ">
+						record.month = #{month},
+					</if>
+					<if test = "shoulddays != null ">
+						record.shouldDays = #{shoulddays},
+					</if>
+					<if test = "actualdays != null ">
+						record.actualDays = #{actualdays},
+					</if>
+					<if test = "shouldtimes != null ">
+						record.shouldTimes = #{shouldtimes},
+					</if>
+					<if test = "actualtimes != null ">
+						record.actualTimes = #{actualtimes},
+					</if>
+					<if test = "holidaytimes != null ">
+						record.holidayTimes = #{holidaytimes},
+					</if>
+					<if test = "businesstimes != null ">
+						record.businessTimes = #{businesstimes},
+					</if>
+					<if test = "businesstriptimes != null ">
+						record.businessTripTimes = #{businesstriptimes},
+					</if>
+					<if test = "latetimes != null ">
+						record.lateTimes = #{latetimes},
+					</if>
+					<if test = "leaveearlytimes != null ">
+						record.LeaveEarlyTimes = #{leaveearlytimes},
+					</if>
+					<if test = "absenteeismtimes != null ">
+						record.absenteeismTimes = #{absenteeismtimes},
+					</if>
+					<if test = "owetimes != null ">
+						record.oweTimes = #{owetimes},
+					</if>
+					<if test = "overtimenum != null ">
+						record.overtimeNum = #{overtimenum},
+					</if>
+					<if test = "overtimes != null ">
+						record.overtimes = #{overtimes},
+					</if>
+					<if test = "extendtimes != null ">
+						record.extendTimes = #{extendtimes},
+					</if>
+					<if test = "notbringpctimes != null ">
+						record.notBringPcTimes = #{notbringpctimes},
+					</if>
+					<if test = "bringpctimes != null ">
+						record.BringPcTimes = #{bringpctimes},
+					</if>
+					<if test = "inday != null ">
+						record.inDay = #{inday},
+					</if>
+					<if test = "outday != null ">
+						record.outDay = #{outday},
+					</if>
+					<if test = "annualleave != null ">
+						record.annualLeave = #{annualleave},
+					</if>
+					<if test = "resttimes != null ">
+						record.restTimes = #{resttimes},
+					</if>
+					<if test = "marriageleave != null ">
+						record.marriageLeave = #{marriageleave},
+					</if>
+					<if test = "maternityleave != null ">
+						record.maternityLeave = #{maternityleave},
+					</if>
+					<if test = "prenatalleave != null ">
+						record.prenatalLeave = #{prenatalleave},
+					</if>
+					<if test = "paternityleave != null ">
+						record.paternityLeave = #{paternityleave},
+					</if>
+					<if test = "breastfeeding != null ">
+						record.breastFeeding = #{breastfeeding},
+					</if>
+					<if test = "sickleave != null ">
+						record.sickLeave = #{sickleave},
+					</if>
+					<if test = "funeralleave != null ">
+						record.funeralLeave = #{funeralleave},
+					</if>
+					<if test = "personalleave != null ">
+						record.personalLeave = #{personalleave},
+					</if>
+					<if test = "overtimeresttimes != null ">
+						record.overtimeRestTimes = #{overtimeresttimes},
+					</if>
+					<if test = "outsidetimes != null ">
+						record.outsideTimes = #{outsidetimes},
+					</if>
+					<if test = "ehs != null ">
+						record.ehs = #{ehs},
+					</if>
+					<if test = "insufficientreasons != null ">
+						record.insufficientReasons = #{insufficientreasons},
+					</if>
+					<if test = "noworkreasons != null ">
+						record.noWorkReasons = #{noworkreasons},
+					</if>
+					<if test = "monthinsufficientreasons != null ">
+						record.monthInsufficientReasons = #{monthinsufficientreasons},
+					</if>
+					<if test = "cu != null ">
+						record.cu = #{cu}
+					</if>
+			</set>
+		where employeeID = #{employeeID}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="removeWorkTimeMonthIpsaByIds" parameterType="java.util.List">
+		delete from t_work_time_month_ipsa 
+			where employeeID in
+			<foreach collection="list" open="(" separator="," close=")" item="code">
+				#{code}
+			</foreach>
+	</delete>
+
+	<delete id="removeWorkTimeMonthIpsaById">
+		delete from t_work_time_month_ipsa 
+		<if test=" id != null and id != ''">
+			where employeeID = #{id}
+		</if>
+	</delete>
+	
+</mapper>

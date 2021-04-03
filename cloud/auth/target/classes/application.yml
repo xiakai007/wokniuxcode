@@ -1,0 +1,22 @@
+server:
+  port: 8061
+spring:
+  application:
+    name: microauth
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud_auth?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+logging:
+  level:
+    root: error
+    com:
+      woniu:
+        auth: debug
+mybatis:
+  mapper-locations: classpath:com/**/mapper/*.xml

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isoftstone.humanresources.dao.ScreenMapDao">
+
+	<resultMap id="screenMapEntity"
+		type="com.isoftstone.humanresources.domain.screen.ScreenMapEntity">
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="value" jdbcType="INTEGER" property="value" />
+	</resultMap>
+
+	<resultMap id="topEntity"
+		type="com.isoftstone.humanresources.domain.screen.EntryLeaveTopEntity">
+		<result column="entryMonth" jdbcType="VARCHAR" property="entryMonth" />
+		<result column="leaveMonth" jdbcType="VARCHAR" property="leaveMonth" />
+		<result column="organizationID" jdbcType="VARCHAR" property="organizationID" />
+		<result column="organizationName" jdbcType="VARCHAR" property="organizationName" />
+		<result column="entryNum" jdbcType="INTEGER" property="entryNum" />
+		<result column="leaveNum" jdbcType="INTEGER" property="leaveNum" />
+		<result column="allNum" jdbcType="INTEGER" property="allNum" />
+		<result column="leaveOrEntryRate" jdbcType="VARCHAR" property="leaveOrEntryRate" />
+	</resultMap>
+
+	<resultMap id="backupEntity"
+		type="com.isoftstone.humanresources.domain.screen.EmployeeBackUpEntity">
+		<result column="employeeID" jdbcType="VARCHAR" property="employeeID" />
+		<result column="employeeName" jdbcType="VARCHAR" property="employeeName" />
+		<result column="backupType" jdbcType="VARCHAR" property="backupType" />
+		<result column="backupContent" jdbcType="VARCHAR" property="backupContent" />
+		<result column="backupEmployeeID" jdbcType="VARCHAR" property="backupEmployeeID" />
+		<result column="backupEmployeeName" jdbcType="VARCHAR"
+			property="backupEmployeeName" />
+		<result column="organizationID" jdbcType="VARCHAR" property="organizationID" />
+		<result column="organizationName" jdbcType="VARCHAR" property="organizationName" />
+		<result column="planCompleteDate" jdbcType="VARCHAR" property="planCompleteDate" />
+		<result column="currentProgress" jdbcType="VARCHAR" property="currentProgress" />
+		<result column="createDate" jdbcType="VARCHAR" property="createDate" />
+		<result column="completeDate" jdbcType="VARCHAR" property="completeDate" />
+		<result column="pm" jdbcType="VARCHAR" property="pm" />
+		<result column="cuHead" jdbcType="VARCHAR" property="cuHead" />
+		<result column="bak" jdbcType="VARCHAR" property="bak" />
+	</resultMap>
+
+	<select id="queryScreenMapEntity" resultMap="screenMapEntity">
+		(select area as name ,count(*) as value from t_employee where issStatus =
+		'在职'
+		and ${organizationType} = #{organizationID,jdbcType =VARCHAR} group by
+		area)
+		union
+		(select area as name ,count(*) as value from t_employee where issStatus =
+		'在职'
+		and ${organizationType} in( SELECT organizationID from t_organization where
+		organizationgroupID = #{organizationID,jdbcType =VARCHAR} and organizationgroupID &lt;&gt; 0) 
+		group by area)
+		union
+		(select area as name ,count(*) as value from t_employee where issStatus =
+		'在职'
+		and ${organizationType} in( SELECT organizationID from t_organization where
+		organizationAlias = #{organizationID,jdbcType =VARCHAR}) group by
+		area)
+	</select>
+
+	<select id="getSexDistribution" resultMap="screenMapEntity">
+		select sex as name ,count(*) as value from t_employee
+		where issStatus = '在职'
+		and ${organizationType} = #{organizationID,jdbcType =VARCHAR}
+		group by sex
+	</select>
+
+	<select id="getSkillDistribution" resultMap="screenMapEntity">
+		(select ts.configValue as name ,count(*) as value from t_employee te
+		INNER JOIN t_system_config ts ON te.skill = ts.configName
+		where te.issStatus = '在职'
+		and te.${organizationType} = #{organizationID,jdbcType =VARCHAR}
+		group by ts.configValue)
+		union
+		(select ts.configValue as name ,count(*) as value from t_employee te
+		INNER JOIN t_system_config ts ON te.skill = ts.configName
+		where te.issStatus = '在职'
+		and te.${organizationType} in( SELECT organizationID from t_organization where
+		organizationgroupID = #{organizationID,jdbcType =VARCHAR} AND organizationgroupID &lt;&gt; 0)
+		group by ts.configValue)
+		UNION
+		(select ts.configValue as name ,count(*) as value from t_employee te
+		INNER JOIN t_system_config ts ON te.skill = ts.configName
+		where te.issStatus = '在职'
+		and te.${organizationType} in( SELECT organizationID from t_organization where
+		organizationAlias = #{organizationID,jdbcType =VARCHAR})
+		group by ts.configValue)
+	</select>
+
+	<select id="getHuaweiLevelDistribution" resultMap="screenMapEntity">
+		select huaweiLevel as name ,count(*) as value from t_employee
+		where issStatus = '在职'
+		and ${organizationType} = #{organizationID,jdbcType =VARCHAR}
+		group by huaweiLevel order by count(*)desc
+	</select>
+
+	<select id="getLeaveDistributionByMonth" resultMap="screenMapEntity">
+		(select concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0)))
+		as name,count(*) as value from t_employee
+		where issStatus = '离职' and leaveDate > DATE_SUB(now(), INTERVAL 6 MONTH)
+		and ${organizationType} = #{organizationID,jdbcType =VARCHAR} and
+		leaveDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0)))
+		order by concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0))))
+		UNION
+		(select concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0)))
+		as name,count(*) as value from t_employee
+		where issStatus = '离职' and leaveDate > DATE_SUB(now(), INTERVAL 6 MONTH)
+		and ${organizationType} in( SELECT organizationID from t_organization where
+		organizationgroupID = #{organizationID,jdbcType =VARCHAR} AND organizationgroupID &lt;&gt; 0) and
+		leaveDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0)))
+		order by concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0))))
+		UNION
+		(select concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0)))
+		as name,count(*) as value from t_employee
+		where issStatus = '离职' and leaveDate > DATE_SUB(now(), INTERVAL 6 MONTH)
+		and ${organizationType} in(SELECT organizationID from t_organization where
+		organizationAlias = #{organizationID,jdbcType =VARCHAR}) and
+		leaveDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0)))
+		order by concat(YEAR(leaveDate),'-',if(
+		LENGTH(month(leaveDate))>1,month(leaveDate),LPAD(month(leaveDate),2,0))))
+	</select>
+	<select id="getEntryDistributionByMonth" resultMap="screenMapEntity">
+		(select concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		as name,count(*) as value from t_employee
+		where 1=1
+		and ${organizationType} = #{organizationID,jdbcType =VARCHAR} and
+		entryDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		order by concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		)
+		UNION
+		(
+		select concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		as name,count(*) as value from t_employee
+		where 1=1
+		and ${organizationType} in( SELECT organizationID from t_organization where
+		organizationgroupID = #{organizationID,jdbcType =VARCHAR} AND organizationgroupID &lt;&gt; 0) and entryDate > DATE_SUB(CURDATE(),
+		INTERVAL 6 MONTH)
+		group by concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		order by concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		)
+		UNION
+		(
+		select concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		as name,count(*) as value from t_employee
+		where 1=1
+		and ${organizationType} in( SELECT organizationID from t_organization where
+		organizationAlias = #{organizationID,jdbcType =VARCHAR}) and entryDate > DATE_SUB(CURDATE(),
+		INTERVAL 6 MONTH)
+		group by concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		order by concat(YEAR(entryDate),'-',if(
+		LENGTH(month(entryDate))>1,month(entryDate),LPAD(month(entryDate),2,0)))
+		)
+	</select>
+
+	<select id="getLeaveDistributionByWeek" resultMap="screenMapEntity">
+		(select week_begin_end_day(leaveDate) as name,count(*) as value from
+		t_employee
+		where issStatus = '离职' and leaveDate > DATE_SUB(now(), INTERVAL 6 MONTH)
+		and ${organizationType} = #{organizationID,jdbcType =VARCHAR}and
+		leaveDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by week_begin_end_day(leaveDate) order by
+		week_begin_end_day(leaveDate))
+		UNION
+		(select week_begin_end_day(leaveDate) as name,count(*) as value from
+		t_employee
+		where issStatus = '离职' and leaveDate > DATE_SUB(now(), INTERVAL 6 MONTH)
+		AND ${organizationType} in ( SELECT organizationID from t_organization where organizationgroupID = #{organizationID,jdbcType =VARCHAR}AND organizationgroupID &lt;&gt; 0) and
+		leaveDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by week_begin_end_day(leaveDate) order by
+		week_begin_end_day(leaveDate))
+		UNION
+		(select week_begin_end_day(leaveDate) as name,count(*) as value from
+		t_employee
+		where issStatus = '离职' and leaveDate > DATE_SUB(now(), INTERVAL 6 MONTH)
+		AND ${organizationType} in ( SELECT organizationID from t_organization where organizationAlias = #{organizationID,jdbcType =VARCHAR}) and
+		leaveDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by week_begin_end_day(leaveDate) order by
+		week_begin_end_day(leaveDate))
+	</select>
+
+	<select id="getEntryDistributionByWeek" resultMap="screenMapEntity">
+		(select week_begin_end_day(entryDate) as name,count(*) as value from
+		t_employee
+		where 1=1
+		and ${organizationType} = #{organizationID,jdbcType =VARCHAR} and
+		entryDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by week_begin_end_day(entryDate) order by
+		week_begin_end_day(entryDate))
+		UNION
+		(select week_begin_end_day(entryDate) as name,count(*) as value from
+		t_employee
+		where 1=1 and
+		${organizationType} in ( SELECT organizationID from t_organization where organizationgroupID = #{organizationID,jdbcType =VARCHAR} AND organizationgroupID &lt;&gt; 0) and
+		entryDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by week_begin_end_day(entryDate) order by
+		week_begin_end_day(entryDate))
+		UNION
+		(select week_begin_end_day(entryDate) as name,count(*) as value from
+		t_employee
+		where 1=1 and
+		${organizationType} in ( SELECT organizationID from t_organization where organizationAlias = #{organizationID,jdbcType =VARCHAR}) and
+		entryDate > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+		group by week_begin_end_day(entryDate) order by
+		week_begin_end_day(entryDate))
+	</select>
+
+	<select id="getEntryTopByMonth" resultMap="topEntity">
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.entryNum,round(a.entryNum *100
+		/(b.numByID+a.entryNum ),2) as leaveOrEntryRate ,b.numByID as allNum
+		from
+		(
+		select t.${childOrgType} as organizationID ,count(t.employeeID) as entryNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and t.entryDate
+		like #{leaveOrEntryMonth,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		and t.${organizationType} = #{organizationID,jdbcType =VARCHAR}
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+		UNION
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.entryNum,round(a.entryNum *100
+		/(b.numByID+a.entryNum ),2) as leaveOrEntryRate ,b.numByID as allNum
+		from
+		(
+		select t.${childOrgType} as organizationID ,count(t.employeeID) as entryNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and t.entryDate
+		like #{leaveOrEntryMonth,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		AND t.${organizationType} in ( SELECT organizationID from t_organization where organizationgroupID = #{organizationID,jdbcType =VARCHAR} AND organizationgroupID &lt;&gt; 0)
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+		UNION
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.entryNum,round(a.entryNum *100
+		/(b.numByID+a.entryNum ),2) as leaveOrEntryRate ,b.numByID as allNum
+		from
+		(
+		select t.${childOrgType} as organizationID ,count(t.employeeID) as entryNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and t.entryDate
+		like #{leaveOrEntryMonth,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		AND t.${organizationType} in ( SELECT organizationID from t_organization where organizationAlias = #{organizationID,jdbcType =VARCHAR})
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+	</select>
+
+	<select id="getLeaveTopByMonth" resultMap="topEntity">
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.leaveNum,round(a.leaveNum *100
+		/(b.numByID+a.leaveNum ),2) as leaveOrEntryRate ,b.numByID as allNum
+		from
+		(
+		select t.${childOrgType} as organizationID ,count(t.employeeID) as leaveNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and t.leaveDate
+		like #{leaveOrEntryMonth,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		and t.${organizationType} = #{organizationID,jdbcType =VARCHAR}
+		group by t.${childOrgType} ORDER BY t.${childOrgType} desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+		UNION
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.leaveNum,round(a.leaveNum *100
+		/(b.numByID+a.leaveNum ),2) as leaveOrEntryRate ,b.numByID as allNum
+		from
+		(
+		select t.${childOrgType} as organizationID ,count(t.employeeID) as leaveNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and t.leaveDate
+		like #{leaveOrEntryMonth,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		AND t.${organizationType} in ( SELECT organizationID from t_organization where organizationgroupID = #{organizationID,jdbcType =VARCHAR} AND organizationgroupID &lt;&gt; 0)
+		group by t.${childOrgType} ORDER BY t.${childOrgType} desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+		UNION
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.leaveNum,round(a.leaveNum *100
+		/(b.numByID+a.leaveNum ),2) as leaveOrEntryRate ,b.numByID as allNum
+		from
+		(
+		select t.${childOrgType} as organizationID ,count(t.employeeID) as leaveNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and t.leaveDate
+		like #{leaveOrEntryMonth,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		AND t.${organizationType} in ( SELECT organizationID from t_organization where organizationAlias = #{organizationID,jdbcType =VARCHAR})
+		group by t.${childOrgType} ORDER BY t.${childOrgType} desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+	</select>
+
+	<select id="getEntryTopByWeek" resultMap="topEntity">
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.entryNum,round(a.entryNum *100
+		/(b.numByID+a.entryNum ),2) as leaveOrEntryRate,b.numByID as allNum
+		from
+		(
+		select og.organizationID as organizationID ,count(t.employeeID) as entryNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and
+		week_begin_end_day(entryDate)= #{leaveOrEntryWeek,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		and t.${organizationType} = #{organizationID,jdbcType =VARCHAR}
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+		UNION
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.entryNum,round(a.entryNum *100
+		/(b.numByID+a.entryNum ),2) as leaveOrEntryRate,b.numByID as allNum
+		from
+		(
+		select og.organizationID as organizationID ,count(t.employeeID) as entryNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and
+		week_begin_end_day(entryDate)= #{leaveOrEntryWeek,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		AND t.${organizationType} in ( SELECT organizationID from t_organization where organizationgroupID = #{organizationID,jdbcType =VARCHAR})
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+	</select>
+
+	<select id="getLeaveTopByWeek" resultMap="topEntity">
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.leaveNum,round(a.leaveNum *100
+		/(b.numByID+a.leaveNum ),2) as leaveOrEntryRate,b.numByID as allNum
+		from
+		(
+		select og.organizationID as organizationID ,count(t.employeeID) as leaveNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and
+		week_begin_end_day(leaveDate)= #{leaveOrEntryWeek,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		and t.${organizationType} = #{organizationID,jdbcType =VARCHAR}
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+		UNION
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.leaveNum,round(a.leaveNum *100
+		/(b.numByID+a.leaveNum ),2) as leaveOrEntryRate,b.numByID as allNum
+		from
+		(
+		select og.organizationID as organizationID ,count(t.employeeID) as leaveNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and
+		week_begin_end_day(leaveDate)= #{leaveOrEntryWeek,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		AND t.${organizationType} in ( SELECT organizationID from t_organization where organizationgroupID = #{organizationID,jdbcType =VARCHAR} AND organizationgroupID &lt;&gt; 0)
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+		UNION
+		(SELECT a.organizationID,if( length(a.organizationName) >
+		0,a.organizationName,'没有找到对应的组织名') as
+		organizationName,a.leaveNum,round(a.leaveNum *100
+		/(b.numByID+a.leaveNum ),2) as leaveOrEntryRate,b.numByID as allNum
+		from
+		(
+		select og.organizationID as organizationID ,count(t.employeeID) as leaveNum
+		,og.organizationName from t_employee t
+		left JOIN t_organization og on t.${childOrgType} = og.organizationID
+		where t.issStatus = #{leaveOrEntryStr,jdbcType =VARCHAR} and
+		week_begin_end_day(leaveDate)= #{leaveOrEntryWeek,jdbcType =VARCHAR}
+		and t.${childOrgType} is not null
+		AND t.${organizationType} in ( SELECT organizationID from t_organization where organizationAlias = #{organizationID,jdbcType =VARCHAR})
+		group by t.${childOrgType} ORDER BY count(t.employeeID) desc
+		)a , (
+		select te.${childOrgType} as orgID ,count(te.employeeID) as numByID from
+		t_employee te where te.issStatus ='在职' GROUP BY te.${childOrgType}
+		) b
+		where a.organizationID = b.orgID order by a.organizationID desc)
+	</select>
+
+	<select id="getBackUpDistribution" resultMap="backupEntity"
+		parameterType="list">
+		select
+		t.employeeID,te.employeeName,t.backupType,t.backupContent,t.backupEmployeeID,e1.employeeName
+		as backupEmployeeName,
+		t.organizationID,o1.organizationName ,t.planCompleteDate,
+		t.currentProgress,t.createDate,t.completeDate,t.pm,t.cuHead,t.bak
+		from t_employee_backups t
+		LEFT JOIN t_employee te on t.employeeID=te.employeeID
+		LEFT JOIN t_employee e1 on t.backupEmployeeID=e1.employeeID
+		LEFT JOIN t_organization o1 on t.organizationID = o1.organizationID
+		where t.organizationID in
+		<foreach item="item" collection="list" separator="," open="("
+			close=")" index="">
+			#{item.organizationID, jdbcType=VARCHAR}
+		</foreach>
+	</select>
+
+	<!--查询cu权限  -->
+	<select id="getCuInfoList" parameterType="String" resultType="com.isoftstone.humanresources.domain.OrganizationInformation">
+	select t.organizationgroupID as organizationID,tog.groupName as organizationName 
+	from t_organization t 
+	INNER JOIN t_organization_group tog ON t.organizationgroupID = tog.groupID
+	where t.leader = (
+	SELECT leader from t_organization where organizationID = (select CU from t_employee where employeeId = #{employeeId})) 
+	AND organizationType = 'CU' 
+	GROUP BY t.organizationgroupID,tog.groupName
+	</select>
+</mapper>
