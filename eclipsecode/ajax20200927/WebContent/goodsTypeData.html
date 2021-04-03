@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+  var xmlHttp;
+  function createXMLHttpRequest(){
+	  if(window.ActiveXObject){
+		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }else {
+		  xmlHttp=new XMLHttpRequest();
+	  }
+  }
+  function sendData(){
+	  createXMLHttpRequest();
+      xmlHttp.open("post","goodsType.do",true);
+      xmlHttp.onreadystatechange=getData;
+      xmlHttp.send();
+  }
+  function getData(){
+	  if(xmlHttp.readyState==4&&xmlHttp.status==200){
+		  var jStrTypes =xmlHttp.responseText;
+		  var types=JSON.parse(jStrTypes);//JSON.parse()方法返回一个数组对象
+		  var str="";
+		  for(var i=0;i<types.length;i++){
+			  str=str+"<tr><td>"+types[i].type_id+"</td><td>"+types[i].type_code+"</td><td>"+types[i].type_name+"</td></tr>"
+		  }
+		  document.getElementById("tbody1").innerHTML=str;
+	  }
+  }
+</script>
+</head>
+<body>
+  <input type="button" value="查看商品类型" onclick="sendData();"/>
+  <table>
+    <thead>
+      <tr>
+        <th>类型id</th>
+        <th>类型编号</th>
+        <th>类型名称</th>
+      </tr>
+    </thead>
+    <tbody id="tbody1">
+        
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!--
+    新增学生组子页面
+    功能：新增学生组
+    -->
+<style>
+    #group-add {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="group-add">
+    <form class="layui-form" action="" lay-filter="group-add-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">批次：</label>
+            <div class="layui-input-block">
+                <select name="batchId" lay-filter="groupAdd-cboBatch" id="groupAdd-cboBatch" lay-search=""
+                        lay-verify="required">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">组名示例：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="required|txt" maxlength="20" class="layui-input"
+                       id="groupAdd-getGroupNo" lay-filter="example" placeholder="请输入组名，最多20字符">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">组名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="groupNo" readonly class="layui-input layui-disabled" id="groupAdd-groupNo">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">招生老师：</label>
+            <div class="layui-input-block">
+                <input type="text" name="userId" id="groupAdd-cboUser" lay-filter="groupAdd-cboUser"
+                       lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea name="remark" lay-verify="txt" maxlength="100" class="layui-textarea"
+                          placeholder="最多200字符"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-input-block">
+                <input type="text" name="userName" readonly class="layui-input layui-disabled" id="groupAdd-founder">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="group-add-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="module/treeSelect/treeSelect.js"></script>
+<script>
+    layui.use(['febs', 'form', 'jquery', 'treeSelect', 'validate'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            treeSelect = layui.treeSelect,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate,
+            $view = $('#group-add');
+
+        febs.get(ctx + 'index/' + currentUser.username, null, function (r) {
+            handleSuccess(r.data);
+        });
+
+        function handleSuccess(data) {
+            let userName = currentUser.username;
+            $view.find('#groupAdd-founder').val(userName).end();
+        }
+
+        form.verify(validate);
+
+        form.render();
+
+        $(function () {
+            $.ajax({
+                url: ctx + 'college/batchSelect',
+                success: function (res) {
+                    let batch;
+                    for (let i = 0; i < res.data.length; i++) {
+                        batch = res.data[i];
+                        $("#groupAdd-cboBatch").append("<option value='" + batch.id + "'>" + batch.batchName + "</option>");
+                    }
+                    form.render("select");
+                }
+            })
+        });
+
+        //构建用户树
+        treeSelect.render({
+            // 选择器
+            elem: '#groupAdd-cboUser',
+            // 数据
+            data: ctx + 'transferApplication/userDeptTree',
+            // 异步加载方式：get/post，默认get
+            type: 'get',
+            // 占位符
+            placeholder: '请选择',
+            // 是否开启搜索功能：true/false，默认false
+            search: true,
+            style: {
+                folder: { // 父节点图标
+                    enable: true // 是否开启：true/false
+                },
+                line: {
+                    enable: true
+                }
+            },
+            // 点击回调
+            click: function (d) {
+                $("#groupAdd-cboUser").val(d.current.id);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+            }
+        });
+
+        let batch = '';
+        let name = '';
+        form.on('select(groupAdd-cboBatch)', function (data) {
+            batch = data.elem[data.elem.selectedIndex].text;
+            if (data.value != 0) {
+                $("#groupAdd-groupNo").val(batch + name)
+            } else {
+                $("#groupAdd-groupNo").val(name);
+            }
+        });
+
+        $(function () {
+            $("#groupAdd-getGroupNo").on("input", function (e) {
+                name = e.delegateTarget.value;
+                $("#groupAdd-groupNo").val(batch + name);
+            });
+        });
+
+        form.on('submit(group-add-form-submit)', function (data) {
+            febs.post(ctx + 'group/add', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('新增学生组操作成功');
+                $('#businesses-group').find('#group-query').click();
+            });
+            return false;
+        });
+    });
+</script>

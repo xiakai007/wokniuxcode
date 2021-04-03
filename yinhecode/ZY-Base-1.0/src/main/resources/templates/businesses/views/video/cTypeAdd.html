@@ -1,0 +1,165 @@
+<style>
+    #cType-add {
+        padding: 20px 25px 25px 0;
+    }
+    img {
+        transition: transform 0.5s;
+    }
+
+    img:hover {
+        -webkit-transform: scale(1.05, 1.05);
+        -moz-transform: scale(1.05, 1.05);
+        -ms-transform: scale(1.05, 1.05);
+        -o-transform: scale(1.05, 1.05);
+        transform: scale(1.05, 1.05);
+    }
+</style>
+<div class="layui-fluid" id="cType-add">
+            <form class="layui-form" action="" lay-filter="cType-add-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上级类别：</label>
+                    <div class="layui-input-block" id="parent-cTypeAdd-id">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label febs-form-item-require">名称：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" autocomplete="off" class="layui-input"
+                               minlength="2" maxlength="30" lay-verify="range">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">简介：</label>
+                    <div class="layui-input-block">
+                        <textarea name="info" maxlength="1000" class="layui-textarea" lay-verify="txt"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">封面：</label>
+                <div class="layui-upload" >
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="demo1"  width="200px" height="150px" src="/febs/images/defaultImg.png" >
+                        <input type="hidden" id="imgUrl" name="imgUrl">
+                        <p id="demoText"></p>
+                    </div>
+                    <span style="padding-left: 110px">(上传的图片大小应小于750*560)</span>
+                </div>
+                </div>
+                <div class="layui-form-item febs-hide">
+                    <button class="layui-btn" lay-submit="" lay-filter="cType-add-form-save" id="saveType">
+                    </button>
+                    <button class="layui-btn" lay-submit="" lay-filter="cType-add-form-submit" id="submitType">
+                    </button>
+                    <button type="reset" class="layui-btn" id="resetType"></button>
+                </div>
+            </form>
+</div>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.use([  'validate', 'febs', 'layer', 'form', 'xmSelect','upload'], function () {
+        let $ = layui.jquery,
+            form = layui.form,
+            validate = layui.validate,
+            layer = layui.layer,
+            febs = layui.febs,
+            upload = layui.upload,
+            typeXmSelect;
+
+        form.verify(validate);
+        form.render();
+
+        $("demo1").click(function () {
+          location.href="http://www.baidu.com"
+        })
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#demo1'
+            ,url: ctx + 'upload' //改成您自己的上传接口
+            ,method: 'post'
+            ,accept: 'images'
+            ,auto: false  //auto 参数必须设置为false
+            ,exts: 'jpg|png|gif|bmp|jpeg'
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                var flag = true;
+                obj.preview(function(index, file, result){
+                    var img = new Image();
+                    img.src = result;
+                    img.onload = function () { //初始化夹在完成后获取上传图片宽高，判断限制上传图片的大小。
+                        if(img.width <=750 && img.height <=560){
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                            obj.upload(index, file); //满足条件调用上传方法
+                        }else{
+                            flag = false;
+                            layer.msg("您上传的小图大小必须小于750*560尺寸！");
+                            return false;
+                        }
+                    }
+                    return flag;
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                //上传成功
+                if (res.code=200){
+                    $('#imgUrl').val(res.url)
+                    return layer.msg("上传成功")
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;padding-left: 110px"" >上传失败</span>' +
+                    ' <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+        typeXmSelect = xmSelect.render({
+            el: '#parent-cTypeAdd-id',
+            model: {label: {type: 'text'}},
+            radio:true,
+            clickClose: true,
+            tips: '创建一级目录不选,二级目录请选择一级目录',
+            tree: {
+                show: true,
+                strict: false,
+                showLine: false,
+                clickCheck: true,
+                expandedKeys: [-1],
+            },
+            name: 'id',
+            theme: {
+                color: '#52c41a',
+            },
+            prop: {
+                value: 'id'
+            },
+            height: '150px'
+        });
+
+        febs.get(ctx + 'cType/select/tree1', null, function (data) {
+            typeXmSelect.update(data);
+        });
+
+        form.on('submit(cType-add-form-submit)',function (data){
+            febs.post(ctx + 'cType/add?status=1', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('新增类别成功');
+                $('#febs-cType').find('#queryType').click();
+            });
+            return false;
+        });
+
+        form.on('submit(cType-add-form-save)',function (data){
+            febs.post(ctx + 'cType/add?status=0', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('保存草稿成功');
+                $('#febs-cType').find('#queryType').click();
+            });
+            return false;
+        });
+    })
+
+</script>

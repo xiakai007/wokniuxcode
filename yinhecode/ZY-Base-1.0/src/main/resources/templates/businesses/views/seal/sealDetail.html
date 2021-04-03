@@ -1,0 +1,48 @@
+<style>
+    #seal-detail #seal-img, #seal-detail {
+        display: inline-block;
+        float: left;
+        margin-left: 15px;
+    }
+
+    #seal-detail #seal-img img {
+        width: 7rem;
+        margin: 10px 10px 0 20px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    #seal-detail {
+        margin: 0 0 1rem 0;
+        display: inline-block;
+    }
+
+    #seal-detail .seal-info div {
+        margin: 10px 15px;
+        max-width: 19rem;
+    }
+
+    #seal-detail #options-wrapper a {
+        padding: 4px 6px;
+        color: rgba(0, 0, 0, 0.65);
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+    }
+
+    #seal-detail #options-wrapper a:hover {
+        color: #40a9ff;
+        border-color: #40a9ff;
+    }
+
+</style>
+<div class="layui-fluid" id="seal-detail" lay-title="印章信息">
+    <div id="college-info-wrapper">
+        <div id="seal-img">
+            <div style="background-image:url(febs/images/receipt/receipt.png);width:720px;height: 420px">
+                <div style="padding-left:450px;padding-top:250px">
+                    <img alt="印章样例展示：" data-th-src="${college.img}" title="印章样例" style="height: 150px;width: 150px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

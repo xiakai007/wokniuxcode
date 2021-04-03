@@ -1,0 +1,54 @@
+<style>
+    #student:visited {
+        color:#00FF00;
+        text-decoration:none;
+    }
+    #student:hover {
+        color:#000000;
+        text-decoration:none;
+    }
+    #student:active {
+        color:#FFFFFF;
+        text-decoration:none;
+    }
+</style>
+<!--回收站详情页-->
+<div class="layui-tab layui-tab-brief">
+    <input id="stuid" type="hidden" data-th-value="${id}">
+    <ul class="layui-tab-title">
+        <li class="layui-this"><a id="student">个人信息</a></li>
+        <li><a id="exam" >报考信息</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show" id="showinfo">
+        </div>
+    </div>
+</div>
+<script data-th-inline="javascript">
+layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+    let $ = layui.$,
+        febs = layui.febs,
+        layer = layui.layer,
+        form = layui.form,
+        xmSelect = layui.xmSelect,
+        user = [[${user}]],
+        validate = layui.validate,
+        dataPermissionXmlSelect,
+        roleXmSelect,
+        deptXmlSelect;
+    form.render();
+
+    $(function () {
+        $("#showinfo").load("febs/views/recycle/recInfo?id="+$("#stuid").val())
+    })
+    $("#exam").click(function () {
+        $("#showinfo").load("febs/views/recycle/recycleExaminfo?id="+$("#stuid").val())
+    });
+    $("#student").click(function () {
+        $("#showinfo").load("febs/views/recycle/recInfo?id="+$("#stuid").val())
+    });
+
+});
+</script>
+
+

@@ -1,0 +1,73 @@
+<style>
+    #student:visited {
+
+        color:#00FF00;
+
+        text-decoration:none;
+
+    }
+
+    #student:hover {
+
+        color:#000000;
+
+        text-decoration:none;
+
+    }
+
+    #student:active {
+
+        color:#FFFFFF;
+
+        text-decoration:none;
+
+    }
+</style>
+<!--班主任学生管理详情页-->
+<div class="layui-tab layui-tab-brief">
+    <input id="recruitStuid" type="hidden" data-th-value="${id}">
+    <ul class="layui-tab-title">
+        <li class="layui-this"><a id="recruitStudent">个人信息</a></li>
+        <li><a id="recruitExam" >报考信息</a></li>
+        <li><a id="recruitPayinfo">缴费信息</a></li>
+        <li><a id="recruitStudyinfo">学习详情</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show" id="reshowinfo">
+        </div>
+    </div>
+</div>
+<script data-th-inline="javascript">
+layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+    let $ = layui.$,
+        febs = layui.febs,
+        layer = layui.layer,
+        form = layui.form,
+        xmSelect = layui.xmSelect,
+        user = [[${user}]],
+        validate = layui.validate,
+        dataPermissionXmlSelect,
+        roleXmSelect,
+        deptXmlSelect;
+    form.render();
+
+    $(function () {
+        $("#reshowinfo").load("febs/views/recruitStudent/studentinfo?id="+$("#recruitStuid").val())
+    })
+    $("#recruitExam").click(function () {
+        $("#reshowinfo").load("febs/views/recruitStudent/examinfo/"+$("#recruitStuid").val())
+    });
+    $("#recruitPayinfo").click(function () {
+        $("#reshowinfo").load("febs/views/recruitStudent/cost?id="+$("#recruitStuid").val())
+    });
+    $("#recruitStudyinfo").click(function () {
+        $("#reshowinfo").load("febs/views/recruitStudent/studyInfo?id="+$("#recruitStuid").val())
+    });
+    $("#recruitStudent").click(function () {
+        $("#reshowinfo").load("febs/views/recruitStudent/studentinfo?id="+$("#recruitStuid").val())
+    });
+
+});
+</script>
+
+

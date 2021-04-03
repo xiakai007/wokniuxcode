@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.IPaymentMapper">
+<!--    <select id="searchCostMonetByOutTradeNoForAbsentee" parameterType="string" resultType="string">-->
+<!--        SELECT-->
+<!--            COST_MONEY-->
+<!--        FROM-->
+<!--            t_absentee_cost-->
+<!--        WHERE-->
+<!--            OUT_TRADE_NO = #{outTradeNo}-->
+<!--    </select>-->
+
+    <insert id="insertRefundStatu" parameterType="cc.zy.base.common.paymentUtils.entity.RefundStatu">
+        INSERT INTO t_return_refund_statu_search (
+            OUT_TRADE_NO,
+            REFUND_NO,
+            REFUND_AMOUNT,
+            REFUND_FEE,
+            TIME,
+            OPERATOR_NAME,
+            OPERATOR_ID,
+            CODE,
+            MSG,
+            RANDOM,
+            SIGN,
+            EXT1,
+            EXT2,
+            EXT3,
+            EXT4,
+            EXT5,
+            EXT6,
+            EXT7,
+            EXT8,
+            EXT9,
+            EXT10
+        ) VALUES (
+            #{outTradeNo},
+            #{refundNo},
+            #{refundAmount},
+            #{refundFee},
+            #{time},
+            #{operatorName},
+            #{operatorId},
+            #{code},
+            #{msg},
+            #{random},
+            #{sign},
+            #{ext1},
+            #{ext2},
+            #{ext3},
+            #{ext4},
+            #{ext5},
+            #{ext6},
+            #{ext7},
+            #{ext8},
+            #{ext9},
+            #{ext10}
+        )
+    </insert>
+
+    <select id="searchOutTradeNoAndCostMoney" parameterType="Integer" resultType="map">
+        SELECT
+            OUT_TRADE_NO,
+            COST_MONEY
+        FROM
+            t_absentee_cost
+        WHERE
+            ID = (
+                SELECT
+                    COST_ID
+                FROM
+                    t_absentee_refund
+                WHERE
+                    ID = #{id}
+            )
+    </select>
+
+    <!--t_return_refund_detail表插入退款成功返回的信息-->
+    <insert id="insertReturnRefundDetail" parameterType="cc.zy.base.common.paymentUtils.entity.RefundDetail">
+        INSERT INTO t_return_refund_detail (
+            OUT_TRADE_NO,
+            REFUND_NO,
+            REFUND_AMOUNT,
+            REFUND_FEE,
+            TIME,
+            CODE,
+            MSG,
+            SIGN,
+            EXT1,
+            EXT2,
+            EXT3,
+            EXT4,
+            EXT5,
+            EXT6,
+            EXT7,
+            EXT8,
+            EXT9,
+            EXT10
+        ) VALUES (
+            #{outTradeNo},
+            #{refundNo},
+            #{refundAmount},
+            #{refundFee},
+            #{time},
+            #{code},
+            #{msg},
+            #{sign},
+            #{ext1},
+            #{ext2},
+            #{ext3},
+            #{ext4},
+            #{ext5},
+            #{ext6},
+            #{ext7},
+            #{ext8},
+            #{ext9},
+            #{ext10}
+        )
+    </insert>
+
+
+    <update id="updateRefundNoById">
+        UPDATE
+            t_absentee_refund
+        SET
+            REFUND_NO = #{refundNo},
+            REFUND_TIME = #{refundTime},
+            USER_FINANCE_ID = #{financeId},
+            FINANCE_AGREE_TIME = #{finanaceAgreeTime},
+            FINANCE_AGREE_STATUS = #{agreeStatu},
+            STATUS = #{refundOkStatu}
+        WHERE
+            ID = #{id}
+    </update>
+
+
+    <select id="searchAgreeStatu" resultType="Integer">
+        SELECT
+            SID
+        FROM
+            t_dic
+        WHERE
+            NAME = '退费申请状态'
+            AND
+            DETAIL = '同意'
+    </select>
+
+    <select id="searchRefundOkStatu" resultType="Integer">
+        SELECT
+            SID
+        FROM
+            t_dic
+        WHERE
+            NAME = '退费状态'
+            AND
+            DETAIL = '已退费'
+    </select>
+
+    <select id="searchRefundNotStatu" resultType="Integer">
+        SELECT
+            SID
+        FROM
+            t_dic
+        WHERE
+            NAME = '退费状态'
+            AND
+            DETAIL = '未退费'
+    </select>
+
+    <select id="selectRefundListForFinance" resultType="map">
+    SELECT
+        REFUND_NO,
+        REFUND_MONEY,
+        STU_ID,
+        STU_NAME,
+        STATUS,
+        TEACHER_AGREE_STATUS
+    FROM
+        t_absentee_refund refund
+	LEFT JOIN
+        t_student stu
+        ON
+        refund.STU_ID = stu.ID
+    HAVING
+        STATUS = #{refundNotStatu}
+        AND
+        TEACHER_AGREE_STATUS = #{teacherAgreeStatu}
+    </select>
+</mapper>

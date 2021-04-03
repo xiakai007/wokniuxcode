@@ -1,0 +1,98 @@
+<style>
+    td{
+        width: 200px;
+        text-align: center;
+    }
+</style>
+<!--班主任学生管理缴费详情-->
+<div class="layui-fluid layui-anim febs-anim" id="businesses-college" lay-title="院校信息">
+<div class="layui-collapse" lay-filter="test" id="father_rpd">
+    <input type="hidden" id="stuId_payDetail" data-th-value="${student.id}">
+</div>
+</div>
+
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'form', 'table', 'febs', 'element'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            table = layui.table,
+            $view = $('#studyDetail-tb'),
+            element = layui.element,
+            tableIns;
+        element.render();
+
+
+$(function () {
+            $.ajax({
+                type:"get",
+                url:"recruitStudent/getStuStudyYear",
+                data:{"stuId":$("#stuId_payDetail").val()},
+                success:function (res) {
+                    var str =new Array();
+                    str.push("第一学年")
+                    str.push("第二学年")
+                    str.push("第三学年")
+                    str.push("第四学年")
+                    str.push("第五学年")
+                    var num =res.data
+                    for (var i=0;i<num;i++){
+                        $("#father_rpd").append(" <div class=\"layui-colla-item\">\n" +
+                            "        <h2  class=\"layui-colla-title\">"+str[i]+"</h2>\n" +
+                            "        <div id="+i+" class=\"layui-colla-content\">\n" +
+                            "            <table class=\"layui-table\">\n" +
+                            "                <colgroup>\n" +
+                            "                    <col width=\"150\">\n" +
+                            "                    <col width=\"200\">\n" +
+                            "                    <col>\n" +
+                            "                </colgroup>\n" +
+                            "<tr>\n" +
+                            "<th style=\"text-align: center\">应缴金额</th>\n" +
+                            "<th style=\"text-align: center\">活动金额</th>\n" +
+                            "<th style=\"text-align: center\">活动名称</th>\n" +
+                            "<th style=\"text-align: center\">实缴金额</th>\n" +
+                            " <th style=\"text-align: center\">缴费时间</th>\n" +
+                            "</tr>\n" +
+                            "                <tbody>\n" +
+                            "                <tr>\n" +
+                            "                    <td id=\"shouldPay_payDetail"+i+"\">0</td>\n" +
+                            "                    <td id=\"policy_payDetail"+i+"\">0</td>\n" +
+                            "                    <td id=\"discountName_payDetail"+i+"\">无</td>\n" +
+                            "                    <td id=\"cost_payDetail"+i+"\">0</td>\n" +
+                            "                    <td id=\"ctime_payDetail"+i+"\"></td>\n" +
+                            "                </tr>\n" +
+                            "            </table>\n" +
+                            "        </div>\n" +
+                            "    </div>")
+                        //获取数据
+                        $(function () {
+                            $.ajax({
+                                type:"get",
+                                url:"recruitStudent/getStuStudyPayDetail",
+                                data:{"stuId":$("#stuId_payDetail").val(),"paymenExplain":str[i]},
+                                success:function (res) {
+                                    console.log(res.data)
+                                    $("#shouldPay_payDetail"+i).text(res.data.shouldPay)
+                                    $("#policy_payDetail"+i).text("-"+res.data.policy)
+                                    $("#discountName_payDetail"+i).text(res.data.discountName)
+                                    $("#cost_payDetail"+i).text(res.data.cost)
+                                    $("#ctime_payDetail"+i).text(res.data.ctime)
+                                }
+                            })
+                        })
+
+
+                    }
+                    element.render();
+                    //监听折叠
+                    element.on('collapse(test)', function(data){
+                        $(this).addClass(data.show);
+                    });
+                    //设置默认展开
+                    $("#0").attr("class","layui-colla-content layui-show")
+                }
+            })
+        })
+
+
+    });
+</script>

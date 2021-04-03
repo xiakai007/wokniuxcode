@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.StudentProgressMapper">
+    <sql id="findStatusBySidSql">
+        SELECT
+          STAGE_ID stageId,
+          TRACSACTION tracsaction,
+          ALLOW_ESSAY allowEssay
+          FROM
+          t_student
+          WHERE
+          ID =#{id}
+    </sql>
+
+    <sql id="findStatusNameByIdSql">
+      SELECT
+        DETAIL detail
+        FROM t_dic
+        WHERE id = #{id}
+    </sql>
+    
+    <select id="findStatusBySid" parameterType="int" resultType="StudentProgress">
+        <include refid="findStatusBySidSql"></include>
+    </select>
+    <select id="findStatusNameById" parameterType="int" resultType="String">
+        <include refid="findStatusNameByIdSql"></include>
+    </select>
+
+</mapper>

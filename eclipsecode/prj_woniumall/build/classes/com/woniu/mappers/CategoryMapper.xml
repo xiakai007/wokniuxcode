@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.CategoryMapper">
+	<resultMap type="Category" id="categoryMap">
+		<id property="id" column="id"/>
+		<collection property="goodsList" column="id"
+		select="com.woniu.mappers.GoodsMapper.selectGoodsByCategoryId">
+		</collection>
+	</resultMap>
+	<select id="selectCategoryById" parameterType="int" resultMap="categoryMap">
+		SELECT * FROM mall_category WHERE id=#{id}
+	</select>
+	<select id="selectCategoryByNavable" resultType="Category">
+		SELECT * FROM mall_category WHERE navable='y'
+	</select>
+	<select id="selectCategoryByNotNavable" resultType="Category">
+		SELECT * FROM mall_category WHERE navable='n'
+	</select>
+</mapper>

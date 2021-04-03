@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.ConfirmAddressMapper">
+    <sql id="countAddressDetailSql" >
+        SELECT
+        COUNT(1)
+        FROM
+            t_confirm_address T
+        WHERE
+            1 = 1
+            <if test="confirmAddress.province != null and confirmAddress.province != ''">
+                AND T.province LIKE concat('%', #{confirmAddress.province},'%')
+            </if>
+            <if test="confirmAddress.city != null and confirmAddress.city != ''">
+                AND T.city like concat('%',#{confirmAddress.city},'%')
+            </if>
+    </sql>
+
+    <sql id="finfAddressBIdSql">
+        SELECT
+            T.id,
+            T.province,
+            T.city,
+            T.area,
+            T.specific_location specificLocation ,
+            T.status,
+            T1.province_name provinceName,
+            T2.city_name cityName,
+            T3.area_Name areaName
+        FROM
+            t_confirm_address T
+            LEFT JOIN t_province T1 ON (T.province = T1.id)
+            LEFT JOIN t_city T2 ON (T.city = T2.id)
+            LEFT JOIN t_area T3 ON (T.area = T3.id)
+        WHERE
+            T.id = #{confirmAddress.id}
+    </sql>
+
+    <sql id="findAddressDetailSql">
+        SELECT
+            T.id,
+            T.province,
+            T.city,
+            T.area,
+            T.specific_location specificLocation ,
+            T.status,
+            T1.PROVINCE_NAME provinceName,
+            T2.CITY_NAME cityName,
+            T3.AREA_NAME areaName
+        FROM
+            t_confirm_address T
+            LEFT JOIN t_province T1 ON (T.province = T1.id)
+            LEFT JOIN t_city T2 ON (T.city = T2.id)
+            LEFT JOIN t_area T3 ON (T.area = T3.id)
+        WHERE
+            1 = 1
+            <if test="confirmAddress.province != null and confirmAddress.province != ''">
+                AND T.province = #{confirmAddress.province}
+            </if>
+            <if test="confirmAddress.city != null and confirmAddress.city != ''">
+                AND T.city = #{confirmAddress.city}
+            </if>
+    </sql>
+
+    <select id="countAddressDetail" parameterType="confirmAddress" resultType="long">
+        <include refid="countAddressDetailSql"/>
+    </select>
+    <select id="findAddressDetailPage" parameterType="confirmAddress" resultType="confirmAddress">
+        <include refid="findAddressDetailSql"/>
+    </select>
+    <select id="findAddressDetail" parameterType="confirmAddress" resultType="confirmAddress">
+        <include refid="findAddressDetailSql"/>
+    </select>
+
+    <select id="findById" parameterType="int" resultType="confirmAddress">
+        <include refid="finfAddressBIdSql"/>
+    </select>
+
+</mapper>

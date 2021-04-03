@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.PaperFinalMapper">
+    <sql id="countPaperFinalDetailSql">
+        SELECT
+        count( DISTINCT p.BATCH_ID, p.IDENTITY, p.STUDY_TYPE_ID )
+        FROM
+        t_paperfinal p
+        LEFT JOIN t_student s ON p.IDENTITY = s.IDENTITY
+        AND p.BATCH_ID = s.BATCH_ID
+        AND p.STUDY_TYPE_ID = s.STUDY_TYPE_ID
+        LEFT JOIN t_college c ON s.COLLEGE_ID = c.id
+        LEFT JOIN t_batch b ON s.BATCH_ID = b.id
+        LEFT JOIN t_dic d ON p.STUDY_TYPE_ID = d.id
+        LEFT JOIN t_level l ON s.`LEVEL` = l.id
+        LEFT JOIN t_major m ON s.MAJOR_ID = m.ID
+        LEFT JOIN t_classes cla ON s.CLASS_ID = cla.ID
+        LEFT JOIN t_user u ON cla.USER_ID = u.USER_ID
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="paperFinal.batchName!= null and paperFinal.batchName!=''">
+                AND BATCH_NAME = #{paperFinal.batchName}
+            </if>
+            <if test="paperFinal.university!= null and paperFinal.batchName!=''">
+                AND UNIVERSITY = #{paperFinal.university}
+            </if>
+            <if test="paperFinal.collegeId!= null and paperFinal.collegeId!=''">
+                AND s.COLLEGE_ID = #{paperFinal.collegeId}
+            </if>
+            <if test="paperFinal.levelId!= null and paperFinal.levelId!=''">
+                AND s.LEVEL = #{paperFinal.levelId}
+            </if>
+            <if test="paperFinal.studyType!= null and paperFinal.studyType!=''">
+                AND d.DETAIL = #{paperFinal.studyType}
+            </if>
+            <if test="paperFinal.collegeLevel!= null and paperFinal.collegeLevel!=''">
+                AND COLLEGELEVEL = #{paperFinal.collegeLevel}
+            </if>
+            <if test="paperFinal.majorId!= null and paperFinal.majorId!=''">
+                AND MAJOR_ID = #{paperFinal.majorId}
+            </if>
+            <if test="paperFinal.passStatus!= null and paperFinal.passStatus!=''">
+                AND p.`STATUS` = #{paperFinal.passStatus}
+            </if>
+            <if test="paperFinal.stuName!= null and paperFinal.stuName!=''">
+                AND STU_NAME LIKE concat ('%',#{paperFinal.stuName},'%')
+            </if>
+            <if test="paperFinal.identity!= null and paperFinal.identity!=''">
+                AND p.IDENTITY LIKE concat ('%',#{paperFinal.identity},'%')
+            </if>
+            <if test="paperFinal.tel!= null and paperFinal.tel!=''">
+                AND s.tel LIKE concat ('%',#{paperFinal.tel},'%')
+            </if>
+            <if test="paperFinal.userName!= null and paperFinal.userName!=''">
+                AND USERNAME LIKE concat ('%',#{paperFinal.userName},'%')
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="findPaperFinalDetailSql">
+        SELECT DISTINCT
+        p.ID,
+        p.BATCH_ID,
+        p.IDENTITY,
+        p.STUDY_TYPE_ID,
+        b.BATCH_NAME,
+        c.NAME 'UNIVERSITY',
+        d.detail 'STUDYTYPE',
+        l.`LEVEL_NAME` 'COLLEGELEVEL',
+        m.FULL_NAME AS majorName,
+        s.MAJOR_ID,
+        s.STU_NAME,
+        s.IDENTITY,
+        s.TEL,
+        s.SEX_ID,
+        u.USERNAME,
+        p.`STATUS` 'PASSSTATUS',
+        p.UPDATETIME,
+        P.CHECKTIME
+        FROM
+        t_paperfinal p
+        LEFT JOIN t_student s ON p.IDENTITY = s.IDENTITY
+        AND p.BATCH_ID = s.BATCH_ID
+        AND p.STUDY_TYPE_ID = s.STUDY_TYPE_ID
+        LEFT JOIN t_college c ON s.COLLEGE_ID = c.id
+        LEFT JOIN t_batch b ON s.BATCH_ID = b.id
+        LEFT JOIN t_dic d ON p.STUDY_TYPE_ID = d.id
+        LEFT JOIN t_level l ON s.`LEVEL` = l.id
+        LEFT JOIN t_major m ON s.MAJOR_ID = m.ID
+        LEFT JOIN t_classes cla ON s.CLASS_ID = cla.ID
+        LEFT JOIN t_user u ON cla.USER_ID = u.USER_ID
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="paperFinal.batchName!= null and paperFinal.batchName!=''">
+                AND BATCH_NAME = #{paperFinal.batchName}
+            </if>
+            <if test="paperFinal.university!= null and paperFinal.batchName!=''">
+                AND UNIVERSITY = #{paperFinal.university}
+            </if>
+            <if test="paperFinal.collegeId!= null and paperFinal.collegeId!=''">
+                AND s.COLLEGE_ID = #{paperFinal.collegeId}
+            </if>
+            <if test="paperFinal.levelId!= null and paperFinal.levelId!=''">
+                AND s.LEVEL = #{paperFinal.levelId}
+            </if>
+            <if test="paperFinal.studyType!= null and paperFinal.studyType!=''">
+                AND d.DETAIL = #{paperFinal.studyType}
+            </if>
+            <if test="paperFinal.collegeLevel!= null and paperFinal.collegeLevel!=''">
+                AND COLLEGELEVEL = #{paperFinal.collegeLevel}
+            </if>
+            <if test="paperFinal.majorId!= null and paperFinal.majorId!=''">
+                AND MAJOR_ID = #{paperFinal.majorId}
+            </if>
+            <if test="paperFinal.passStatus!= null and paperFinal.passStatus!=''">
+                AND  p.`STATUS` = #{paperFinal.passStatus}
+            </if>
+            <if test="paperFinal.stuName!= null and paperFinal.stuName!=''">
+                AND STU_NAME LIKE concat ('%',#{paperFinal.stuName},'%')
+            </if>
+            <if test="paperFinal.identity!= null and paperFinal.identity!=''">
+                AND p.IDENTITY LIKE concat ('%',#{paperFinal.identity},'%')
+            </if>
+            <if test="paperFinal.tel!= null and paperFinal.tel!=''">
+                AND s.tel LIKE concat ('%',#{paperFinal.tel},'%')
+            </if>
+            <if test="paperFinal.userName!= null and paperFinal.userName!=''">
+                AND USERNAME LIKE concat ('%',#{paperFinal.userName},'%')
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updatePaperFinalStatusSql">
+        UPDATE t_paperfinal
+        SET `STATUS` =#{statusId},CHECKTIME=#{checkTime}
+        WHERE ID = #{paperId}
+    </sql>
+
+    <sql id="findPaperFinalByIdSql">
+        SELECT BATCH_ID,
+            IDENTITY,
+            STUDY_TYPE_ID,
+            FILE,
+            `STATUS` passStatus,
+            UPDATETIME,
+            CHECKTIME
+        FROM
+            t_paperfinal
+        WHERE
+            ID =#{paperId}
+    </sql>
+
+    <sql id="uploadPaperFinalsSql">
+        UPDATE t_paperfinal
+        SET FILE =#{file},
+            UPDATETIME=#{updatetime}
+        WHERE ID = #{id}
+    </sql>
+
+    <select id="findPaperFinalDetail" parameterType="cc.zy.base.businesses.entity.PaperFinal"
+            resultType="cc.zy.base.businesses.entity.PaperFinal">
+        <include refid="findPaperFinalDetailSql"></include>
+    </select>
+
+    <select id="paperFinalDetailPage" resultType="cc.zy.base.businesses.entity.PaperFinal">
+        <include refid="findPaperFinalDetailSql"></include>
+    </select>
+    <select id="countPaperFinalDetail" resultType="long">
+        <include refid="countPaperFinalDetailSql"/>
+    </select>
+
+    <!--论文终表状态修改-->
+    <select id="updatePaperFinalStatus">
+        <include refid="updatePaperFinalStatusSql"/>
+    </select>
+    <select id="findPaperFinalById" parameterType="integer" resultType="cc.zy.base.businesses.entity.PaperFinal">
+        <include refid="findPaperFinalByIdSql"></include>
+    </select>
+    <!--论文终稿上传-->
+    <select id="uploadPaperFinals" parameterType="cc.zy.base.businesses.entity.Papers" resultType="cc.zy.base.businesses.entity.Papers">
+        <include refid="uploadPaperFinalsSql"></include>
+    </select>
+</mapper>

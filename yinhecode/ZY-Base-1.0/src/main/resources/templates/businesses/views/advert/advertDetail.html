@@ -1,0 +1,115 @@
+<style>
+    #college-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="college-update">
+    <form class="layui-form" action="" lay-filter="college-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">广告id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${advert.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">广告标题：</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" disabled="true" minlength="2" maxlength="10" data-th-id="${advert.id}"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告图片：</label>
+            <div class="layui-upload-list">
+                <img  class="layui-upload-img" width="360px";height="235px" id="advertimg"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告视频：</label>
+            <div class="layui-input-block">
+                <video class="layui-upload-video" src="" id="advertvideo" controls="controls" width="360px"
+                       height="235px">
+                </video>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告状态：</label>
+            <div class="layui-input-block">
+                <select name="statusId" disabled="true">
+                    <option value=""></option>
+                    <option value="1">上架</option>
+                    <option value="2">下架</option>
+                    <option value="3">草稿</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告内容：</label>
+            <div class="layui-input-block">
+            <div id="advert_content" style="border: 1px solid #eee; padding: 10px;border-radius: 2px;min-height: 50px;"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-input-block">
+                <input type="text" disabled="true" name="userName" minlength="4" maxlength="100"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建时间：</label>
+            <div class="layui-input-block">
+                <input type="text" disabled="true" name="createTime" minlength="4" maxlength="100"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate','upload'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            upload = layui.upload,
+            advert = [[${advert}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+        advertContent();
+        initCollegeValue();
+        $("#advertvideo").attr('src',advert.videoUrl);
+        $("#advertimg").attr('src',advert.imgUrl);
+        function advertContent() {
+            var str = advert.content;
+            $("#advert_content").html(str);
+            form.render();
+        }
+        function initCollegeValue() {
+            form.val("college-update-form", {
+                "title": advert.title,
+                "imgUrl": advert.imgUrl,
+                "videoUrl": advert.videoUrl,
+                "content": advert.content,
+                "userName": advert.userName,
+                "statusId":advert.statusId,
+                "createTime":[[${#strings.defaultString(createTime,'未显示时间')}]]
+            });
+        }
+
+        form.on('submit(college-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, advert)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'advert/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(advert.id + ' 院校数据修改成功');
+                $('#businesses-college').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

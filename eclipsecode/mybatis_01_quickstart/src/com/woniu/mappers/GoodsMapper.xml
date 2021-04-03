@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.GoodsMapper">
+	<select id="selectAllGoods" resultType="Goods">
+		SELECT * FROM goods
+	</select>
+	<insert id="addGoods" parameterType="Goods">
+		INSERT INTO goods(name,goodsno,author,publisher,pubtime,
+		categoryid,description,image,stock,marketprice,salesprice,
+		score,remarknums,uptime,salenums,newest,hot,status)VALUE
+		(#{name},#{goodsno},#{author},#{publisher},#{pubtime},
+		#{categoryid},#{description},#{image},#{stock},#{marketprice},#{salesprice},
+		#{score},#{remarknums},#{uptime},#{salenums},#{newest},#{hot},#{status})
+	</insert>
+	<delete id="deleteGoods" parameterType="java.lang.Integer">
+		DELETE FROM goods WHERE id=#{id}
+	</delete>
+	<update id="updateGoods" parameterType="Goods">
+		UPDATE goods SET name=#{name},goodsno=#{goodsno},author=#{author},publisher=#{publisher},pubtime=#{pubtime},
+		categoryid=#{categoryid},description=#{description},image=#{image},stock=#{stock},marketprice=#{marketprice},salesprice=#{salesprice},
+		score=#{score},remarknums=#{remarknums},uptime=#{uptime},salenums=#{salenums},newest=#{newest},hot=#{hot},status=#{status} WHERE id=#{id}
+	</update>
+	<select id="selectGoods" parameterType="java.lang.Integer" resultType="Goods">
+		SELECT * FROM goods WHERE id=#{id}
+	</select>
+	<select id="selectGoodsByNewest" parameterType="string" resultType="Goods">
+		SELECT * FROM goods WHERE newest=#{newest} AND status='1'
+	</select>
+	<select id="selectGoodsByAuthor" parameterType="string" resultType="Goods">
+		SELECT * FROM goods WHERE author LIKE CONCAT('%',#{author},'%') AND status='1'
+	</select>
+	<select id="selectGoodsByAuthorAndHot" resultType="Goods">
+		SELECT * FROM goods WHERE author LIKE CONCAT('%',#{author},'%') AND hot=#{hot} AND status='1'
+	</select>
+	<select id="selectGoodsByAuthorAndPublisher" parameterType="GoodsQuery" resultType="Goods">
+		SELECT * FROM goods WHERE author LIKE CONCAT('%',#{author},'%') AND publisher LIKE CONCAT('%',#{publisher},'%');
+	</select>
+	<select id="selectGoodsByNameAndPublisherWithMap" parameterType="java.util.Map" resultType="Goods">
+		SELECT * FROM goods WHERE name LIKE CONCAT('%',#{nameKey},'%') AND publisher LIKE CONCAT('%',#{publisherKey},'%');
+	</select>
+</mapper>

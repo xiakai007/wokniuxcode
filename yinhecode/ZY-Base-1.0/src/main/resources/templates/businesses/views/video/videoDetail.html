@@ -1,0 +1,124 @@
+<style>
+    #video-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="video-update">
+    <form class="layui-form" action="" lay-filter="video-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">视频id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${video.id}">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">状态：</label>
+            <div class="layui-input-block">
+                <input type="text" name="status" data-th-value="${video.status}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" minlength="2" maxlength="50" lay-verify="range|name"
+                       autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">简介：</label>
+            <div class="layui-input-block">
+                <textarea name="info" maxlength="100" class="layui-textarea" readonly></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">视频：</label>
+            <div class="layui-upload">
+                <div class="layui-upload-list">
+                    <video class="layui-upload-video" src="" id="video1" controls="controls" width="200px"
+                           height="150px">
+                    </video>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">封面：</label>
+            <div class="layui-upload">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="img1" width="200px" height="150px">
+                </div>
+
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分类：</label>
+            <!--
+            <div class="layui-input-block" id="video-update-type"></div>
+            -->
+            <div class="layui-input-block">
+                <input type="text" name="typeName"
+                       autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'xmSelect', 'validate','upload'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            upload = layui.upload,
+            video = [[${video}]],
+            typeId = [[${typeId}]],
+            //courseId = [[${courseId}]],
+            validate = layui.validate,
+            //courseXmSelect,
+            typeXmSelect;
+
+        form.verify(validate);
+        form.render();
+
+        initVideoValue();
+
+        $('#video1').attr('src', video.videoUrl);
+        $('#img1').attr('src', video.imgUrl);
+
+//        typeXmSelect = xmSelect.render({
+//            el: '#video-update-type',
+//            disabled:true,
+//            model: {label: {type: 'text'}},
+//            tree: {
+//                show: true,
+//                strict: false,
+//                showLine: false,
+//                clickCheck: true,
+//                expandedKeys: [-1],
+//            },
+//            name: 'typeId',
+//            theme: {
+//                color: '#52c41a',
+//            },
+//            prop: {
+//                value: 'id'
+//            },
+//            height: 'auto'
+//        });
+//
+//        febs.get(ctx + 'cType/select/treeXK', null, function (data) {
+//            typeXmSelect.update(data);
+//            typeXmSelect.setValue([typeId]);
+//        });
+
+        function initVideoValue() {
+            form.val("video-update-form", {
+                "name": video.name,
+                "info": video.info,
+                "typeName": video.typeName
+            });
+        }
+    });
+</script>

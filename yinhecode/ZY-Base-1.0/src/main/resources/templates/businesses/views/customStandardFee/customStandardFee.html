@@ -1,0 +1,523 @@
+<style>
+    #febs-customStandardFee xm-select {
+        min-height: 30px;
+        line-height: 30px;
+    }
+    #febs-customStandardFee xm-select > .xm-label .scroll .label-content {
+        display: flex;
+        padding: 0 30px 0 10px;
+    }
+</style>
+
+<script type="text/html" id="customStandardFee-option">
+
+    <a lay-event="edit"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+    <a lay-event="del"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+<div class="layui-fluid layui-anim febs-anim" id="businesses-customStandardFee" lay-title="自定义套内缴费管理">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="customStandardFee-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId"lay-filter="cbuBatch2" id="cbuBatch2">
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                         <div class="layui-inline" style="display: none">
+                                        <label class="layui-form-label layui-form-label-sm">学习形式</label>
+                                        <div class="layui-input-inline">
+                                            <select name="cultivate"  lay-filter="cultivate2" id="cultivate2">
+
+                                            </select>
+                                        </div>
+
+                                     </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId"  lay-filter="cbuCollege2" id="cbuCollege2">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="studyLevelId"  lay-filter="cbuLevel2" id="cbuLevel2">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">类别</label>
+                                        <div class="layui-input-inline">
+                                            <select name="subjectCategoryId" lay-filter="cbuSubcate2" id="cbuSubcate2">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                     <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" lay-filter="cbuMajor2" id="cbuMajor2">
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action" id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action" id="reset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                    <div  style="margin-top: 50px;width: 500px " >
+
+                         <!--<button lay-event="add_standardFee" style="height: 30px;width: 100px" id="add_standardFee">创建</button>-->
+                         <!--<button style="height: 30px;width: 120px" id="copy_standardFee">复制现有套内缴费</button>-->
+                         <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action" id="add_customStandardFee">
+                                    <i class="layui-icon layui-icon-plus-circle">新增</i>
+                                </div>
+
+                         </div>
+
+
+                    </div>
+
+
+                    <table lay-filter="customStandardFeeTable" lay-data="{id: 'customStandardFeeTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script data-th-inline="none" type="text/javascript">
+     layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-customStandardFee'),
+            $query = $view.find('#query'),
+            $add = $view.find('#add_customStandardFee'),
+
+//             $selectcollege = $view.find('#cbuCollege'),
+//            $copy=$view.find('#copy_standardFee')
+            $reset = $view.find('#reset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+
+        form.render();
+
+        initTable();
+
+              //使用ajax获得下拉菜单中的值
+            //批次下拉菜单
+/******************************************************/
+
+batchAll();
+levelAll(0);
+collegeAll(0);
+subcateAll(0);
+majorAll(0);
+cultivateAll();
+
+
+
+            function  batchAll() {
+                    $.ajax({
+                type:"GET",
+                url:"customStandardFee/batchlist",
+
+                success:function (res) {
+                    console.log("res:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let opt="<option value='0'>请选择批次</option>";
+                        for (var i=0;i<data.length;i++){
+                            var batch = data[i];
+                            opt=opt+"<option value='"+batch.id+"'>"+batch.name+"</option>";
+
+                        }
+                        $("#cbuBatch2").html(opt);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+            }
+
+
+            function  cultivateAll() {
+                    $.ajax({
+                type:"GET",
+                url:"customStandardFee/cultivatelist",
+
+                success:function (res) {
+                    console.log("res:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let optc="<option value='0'>请选择学习形式</option>";
+                        for (var i=0;i<data.length;i++){
+                            var cultivate = data[i];
+                            if(cultivate.cultivateName=='成教'){
+                                 optc=optc+"<option selected value='"+cultivate.id+"'>"+cultivate.cultivateName+"</option>";
+
+                            }
+                            optc=optc+"<option value='"+cultivate.id+"'>"+cultivate.cultivateName+"</option>";
+
+                        }
+                        $("#cultivate2").html(optc);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+            }
+         function  collegeAll(batchId) {
+
+                       $.ajax({
+                type:"GET",
+                url:"customStandardFee/collegelist",
+                data:{"batchId":batchId},
+                success:function (res) {
+                    console.log("res:"+res)
+                    var data = res.data;
+                    // console.log(data);
+
+
+                    if(data.length>0){
+                        let optc="<option value='0'>请选择院校</option>";
+                        for (var i=0;i<data.length;i++){
+                            var college = data[i];
+                            optc=optc+"<option value='"+college.id+"'>"+college.name+"</option>";
+
+                        }
+                        $("#cbuCollege2").html(optc);
+                    }else {
+                        let optc1="<option >无记录</option>";
+                         $("#cbuCollege2").html(optc1);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+
+         }
+
+         function  levelAll(batchId,collegeId) {
+                   $.ajax({
+                type:"GET",
+                url:"customStandardFee/levallist",
+                       data:{"batchId":batchId,"collegeId":collegeId},
+                success:function (res) {
+
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let optl="<option value='0'>请选择层次</option>";
+                        for (var i=0;i<data.length;i++){
+                            var level = data[i];
+                            optl=optl+"<option value='"+level.id+"'>"+level.name+"</option>";
+
+                        }
+                        $("#cbuLevel2").html(optl);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+         }
+
+
+        function  subcateAll(batchId,collegeId,levelId) {
+                  $.ajax({
+                type:"GET",
+                url:"customStandardFee/subjectcategorylist",
+                      data:{"batchId":batchId,"collegeId":collegeId,"levelId":levelId},
+                success:function (res) {
+                    console.log("level:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let opts="<option value='0'>请选择类别</option>";
+                        for (var i=0;i<data.length;i++){
+                            var subcate = data[i];
+                            opts=opts+"<option value='"+subcate.id+"'>"+subcate.name+"</option>";
+
+                        }
+                        $("#cbuSubcate2").html(opts);
+                        layui.form.render("select");
+                    }else {
+                         let opts1="<option >无记录</option>";
+                          $("#cbuSubcate2").html(opts1);
+                          layui.form.render("select");
+
+                    }
+
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+
+                }
+            })
+        }
+
+
+
+        function majorAll(batchId,collegeId, levelId,subjectCategoryId) {
+                 $.ajax({
+                type:"GET",
+                url:"customStandardFee/majorlist",
+                data:{"batchId":batchId,"collegeId":collegeId,"levelId":levelId,"subjectCategoryId":subjectCategoryId},
+                success:function (res) {
+
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let optm="<option value='0'>请选择专业</option>";
+                        for (var i=0;i<data.length;i++){
+                            var major = data[i];
+                            optm=optm+"<option value='"+major.id+"'>"+major.name+"</option>";
+
+                        }
+                        $("#cbuMajor2").html(optm);
+                    }else {
+                        let optm1="<option >无记录</option>";
+                         $("#cbuMajor2").html(optm1);
+
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+        }
+
+            form.on("select(cbuBatch2)",function () {
+                var a=$("#cbuBatch2").val();
+                console.log("dianji："+a);
+
+                    collegeAll(a);
+                    subcateAll(a);
+                    levelAll(a);
+                    majorAll(a);
+
+
+
+
+            })
+           form.on("select(cbuCollege2)",function () {
+                 var a=$("#cbuBatch2").val();
+
+                var b=$("#cbuCollege2").val();
+                console.log("dianji："+a);
+
+                    levelAll(a,b);
+                    subcateAll(a,b);
+
+                    majorAll(a,b);
+
+
+
+
+            })
+
+             form.on("select(cbuLevel2)",function () {
+                   var a=$("#cbuBatch2").val();
+
+                var b=$("#cbuCollege2").val();
+                var c=$("#cbuLevel2").val();
+                console.log("dianji："+a);
+
+                   subcateAll(a,b,c);
+
+
+                    majorAll(a,b,c);
+
+
+
+
+            })
+             form.on("select(cbuSubcate2)",function () {
+                  var a=$("#cbuBatch2").val();
+
+                var b=$("#cbuCollege2").val();
+                var c=$("#cbuLevel2").val();
+                var d=$("#cbuSubcate2").val();
+                console.log("dianji："+a);
+
+                    majorAll(a,b,c,d);
+
+
+
+
+            })
+
+
+         /******************************************************/
+
+       table.on('tool(customStandardFeeTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+//            if (layEvent === 'detail') {
+//                febs.modal.view('套内缴费信息', 'customStandardFee/detail/' + data.id, {
+//                    area: $(window).width() <= 750 ? '95%' : '660px'
+//                });
+//            }
+            if (layEvent === 'del') {
+                febs.modal.confirm('删除套内缴费信息', '确定删除该条记录？', function () {
+                    deleteCustomStandardFees(data.id);
+                });
+            }
+            if (layEvent === 'edit') {
+                console.log("==========================="+data.id)
+                febs.modal.open('修改套内缴费信息', 'customStandardFee/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#customStandardFee-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+//        table.on('sort(customStandardFee)', function (obj) {
+//            sortObject = obj;
+//            tableIns.reload({
+//                initSort: obj,
+//                where: $.extend(getQueryParams(), {
+//                    field: obj.field,
+//                    order: obj.type
+//                })
+//            });
+//        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $add.on('click', function () {
+            febs.modal.open('创建自定义套内缴费', 'customStandardFee/add', {
+                        btn: ['提交', '重置'],
+                        area: $(window).width() <= 750 ? '95%' : '50%',
+                        yes: function (index, layero) {
+                            $('#customStandardFee-add').find('#submit').trigger('click');
+                        },
+                        btn2: function () {
+                            $('#customStandardFee-add').find('#reset').trigger('click');
+                            return false;
+                        }
+                    });
+        });
+//
+//            $copy.on('click', function () {
+//            febs.modal.open('批次复制套内缴费', 'customStandardFee/copy', {
+//                        btn: ['提交', '重置'],
+//                        area: $(window).width() <= 750 ? '95%' : '50%',
+//
+//                        yes: function (index, layero) {
+//                            $('#standard-copy').find('#submit').trigger('click');
+//                        },
+//                        btn2: function () {
+//                            $('#standard-copy').find('#reset').trigger('click');
+//                            return false;
+//                        }
+//                    });
+//        });
+
+
+
+
+//          $copy.on('click', function () {
+//            febs.modal.open('批次复制套内缴费', 'standardFee/copy', {
+//                        btn: ['提交', '重置'],
+//                        area: $(window).width() <= 750 ? '95%' : '50%',
+//                        yes: function (index, layero) {
+//                            $('#user-add').find('#submit').trigger('click');
+//                        },
+//                        btn2: function () {
+//                            $('#user-add').find('#reset').trigger('click');
+//                            return false;
+//                        }
+//                    });
+//        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+          tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'customStandardFeeTable',
+                url: ctx + 'customStandardFee/list',
+
+
+                cols: [[
+
+                    {field: 'id', title: '编号', minWidth: 100},
+                    {field: 'batchname', title: '批次', minWidth: 100},
+                    {field: 'collegeName', title: '院校', minWidth: 100},
+                    {field: 'levelName', title: '层次', minWidth: 100},
+                    {field: 'cultivateName', title: '培养方式', minWidth: 100},
+                    {field: 'subjectcategoryName', title: '类别'},
+                    {field: 'majorname', title: '专业', minWidth: 165},
+                    {field: 'paymentExplain', title: '缴费类型', minWidth: 180},
+
+//                    {field: 'originalPrice', title: '应缴金额', minWidth: 180},
+                      {field: 'originalPrice', title: '应缴金额',templet:function (d) {
+                         return "<div style='text-align: center;color: red'>"+d.originalPrice+"</div>";
+                     }},
+
+
+
+
+                    {title: '操作',field:'id', toolbar: '#customStandardFee-option', minWidth: 140}
+                ]]
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        function deleteCustomStandardFees(customStandardFeeIds) {
+            febs.get(ctx + 'customStandardFee/delete/' + customStandardFeeIds, null, function () {
+                febs.alert.success('删除院校成功');
+                $query.click();
+            });
+        }
+    })
+</script>

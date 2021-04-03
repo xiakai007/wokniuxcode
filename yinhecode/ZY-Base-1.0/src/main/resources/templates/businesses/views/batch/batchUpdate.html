@@ -1,0 +1,84 @@
+<style>
+    #batch-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="batch-update">
+    <form class="layui-form" action="" lay-filter="batch-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${batch.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">批次：</label>
+            <div class="layui-input-block">
+                <input type="text" name="batchName" minlength="1" maxlength="4"
+                       onkeyup="this.value=value.replace(/[^0-9]/gi,'')" size="4"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item layui-form-text">-->
+            <!--<label class="layui-form-label">状态：</label>-->
+            <!--<div class="layui-input-block">-->
+                <!--<input type="text" name="status"  class="layui-input">-->
+                <!--</textarea>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">状态：</label>
+            <div class="layui-input-inline">
+                <select name="status" id="status">
+                    <option value="">请选择状态</option>
+                    <option value="y">使用中</option>
+                    <option value="n">未使用</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="batch-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            batch = [[${batch}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+
+
+        function initBatchValue() {
+            form.val("batch-update-form", {
+                "batchName": batch.batchName,
+                "status": batch.status
+            });
+           form.render();
+        }
+
+        form.on('submit(batch-update-form-submit)', function (data) {
+            console.log(data);
+            if (febs.nativeEqual(data.field, batch)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'batch/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(batch.id + ' 批次修改成功');
+                $('#businesses-batch').find('#query').click();
+            });
+            return false;
+        });
+
+        initBatchValue()
+
+    });
+</script>

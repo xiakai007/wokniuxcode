@@ -1,0 +1,296 @@
+<style>
+    #notice-edit {
+        padding: 20px 25px 25px 0;
+    }
+    img[src=""],img:not([src]){
+
+          opacity:0;
+
+      }
+
+</style>
+
+<div class="layui-fluid" id="notice-edit">
+    <form class="layui-form" action="" lay-filter="notice-edit-form" id="editForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">通知图片：</label>
+            <div class="layui-upload-list">
+                <img data-th-src="${img}" width="200px" id="imgNotice" height="100px" class="layui-upload-img" >
+                <input type="hidden" id="notimg" name="imgUrl">
+                <p id="demoText"></p >
+            </div>
+            <a id="noitceImg" style="padding-left: 110px">上传图片</a>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">通知标题：</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtTitle" data-th-value="${noticeTitle}" name="title" minlength="2" maxlength="50"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司名：</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtCompany" data-th-value="陕西全务" minlength="4" maxlength="100"
+                       autocomplete="off" class="layui-input" readonly="true" style="background:#F0F0F0">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtCreateUser"   name="username" data-th-value="${noticeName}" minlength="2" maxlength="100"
+                       autocomplete="off" class="layui-input" readonly="true" style="background:#F0F0F0">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建日期：</label>
+            <div class="layui-input-block">
+                <input type="text" data-th-value="${createDateTime}"   disabled="true" name="createTime" id="txtCreateTime" minlength="4" maxlength="100"
+                       autocomplete="off" class="layui-input" readonly="true" style="background:#F0F0F0">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">通知内容：</label>
+            <div class="layui-input-block">
+                <textarea name="content" data-th-text="${noticeContent}" id="txtContent" maxlength="100" class="layui-textarea" lay-verify="required"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">通知视频：</label>
+            <div class="layui-upload">
+                <div class="layui-upload-list">
+                    <video class="layui-upload-video" data-th-src="${noticevoid}" id="video1" controls="controls" width="200px" height="150px">
+                    </video>
+                    <input type="hidden" id="noticeVideo" name="videoUrl">
+                    <p id="videoText"></p >
+                </div>
+                <a id="notVideo" style="padding-left: 110px">上传视频</a>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">通知附件：</label>
+            <div class="layui-upload">
+                <div class="layui-upload-list">
+                    <a class='layui-icon layui-icon-file-image' id="file1" target='_blank' data-th-href="${fileurl}">附件</a>
+                    <!--<file  class="layui-upload-file" data-th-src="${fileurl}" id="file1" width="200px" height="150px"></file>-->
+                    <input type="hidden" id="myfile" name="myfile">
+                    <p id="fileText"></p >
+                </div>
+                <a id="testfile" >上传附件</a>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md10">
+                <div class="layui-form-item" style="margin-left: 10px">
+                    <label class="layui-form-label febs-form-item-require">接收人：</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="noticereceive" data-th-value="${noticeUserId}" lay-verify="required" autocomplete="off"
+						 class="layui-input" readonly="true" style="background:#F0F0F0">
+                    </div>
+                </div>
+            </div>
+
+            <!--隐藏的部分属性-->
+            <div class="layui-form-item febs-hide">
+                <label class="layui-form-label febs-form-item-require">接收人隐藏id：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="userId" id="noticereceivehide">
+                </div>
+            </div>
+
+        </div>
+        <div style="text-align:center" class="layui-form-item febs-hide">
+            <input type="button" class="layui-btn" lay-submit="" lay-filter="btnPreservation-submit" id="btnPreservation" value="确定">
+            <input type="button" class="layui-btn" lay-submit="" lay-filter="btnDraft-submit" id="btnDraft" value="取消">
+        </div>
+        <input type="hidden" id="id" name="id" data-th-value="${id}">
+    </form>
+</div>
+<script>
+    layui.use(['febs', 'form', 'xmSelect','upload', 'validate', 'laydate','dropdown', 'jquery', 'table'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            laydate = layui.laydate,
+            dropdown=layui.dropdown,
+            jquery=layui.jquery,
+            table=layui.table,
+            notice = [[${noticeId}]],
+            $view = $('#notice-edit'),
+            $student = $view.find('#student'),
+            $reset = $view.find('#reset'),
+            upload = layui.upload,
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initCollegeValue();
+
+        function initCollegeValue() {
+            form.val("notice-edit-form", {
+                "userId": notice,
+            });
+        }
+
+        $reset.on('click',function () {
+
+            document.getElementById("noticereceive").value ="";
+
+        })
+
+
+
+        //进入学生的页面跳转控制器
+        $student.on('click',function () {
+            var selectUser= febs.modal.open('选择学生', 'student/list', {
+
+//                area: $(window).width() <= 750 ? '95%' : '50%',
+                area:['100%','100%'],
+                btn: ['选择勾选结果', '选择本页结果','选择全部结果'],
+                yes: function (index, layero) {
+                    $('#select-student').find('#btnCheckResults').trigger('click');
+                },
+                btn2: function (index, layero) {
+                    $('#select-student').find('#btnPageResults').trigger('click');
+                },
+                btn3: function (index, layero) {
+                    $('#select-student').find('#btnAllResults').trigger('click');
+                },
+                success: function(layero){
+                    layero.find('.layui-layer-btn').css('text-align', 'center');
+                },
+            });
+
+        });
+
+        //保存草稿
+        form.on('submit(btnPreservation-submit)',function (data) {
+
+            $.ajax({
+                type:'post',
+                url:'notice/updateNoticeUser',
+                data:$('#editForm').serialize(),
+                success:function () {
+//                    febs.alert.success('通知修改成功');
+//                    $('#notice-list').find('#btnReset').click();
+                    layer.closeAll();
+                    $('#notice-list').find('#btnReset').click();
+                    febs.alert.success('通知修改成功');
+
+                }
+            })
+
+        })
+        //视频上传
+        var uploadVideo = upload.render({
+            elem: '#notVideo'
+            ,url: ctx+'upload' //改成您自己的上传接口
+            ,method:'post'
+            ,auto:false
+            ,accept:'video'
+            ,exts: 'mp4|avi'
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#video1').attr('src', result);
+                    obj.upload(index, file);
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if(res.code == 200){
+                    layer.msg('上传视频成功');
+                    $("#noticeVideo").val(res.url);
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#videoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadVideo.upload();
+                });
+            }
+        })
+
+        //图片上传
+        var uploadInst = upload.render({
+            elem: '#noitceImg'
+            ,url: ctx+'upload' //改成您自己的上传接口
+            ,method:'post'
+            ,auto:false
+            ,accept:'images'
+            ,exts: 'jpg|png|gif|bmp|jpeg'
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                var flag = true;
+                obj.preview(function(index, file, result){
+                    var img = new Image();
+                    img.src = result;
+                    img.onload = function () { //初始化夹在完成后获取上传图片宽高，判断限制上传图片的大小。
+                        if(img.width <=750 && img.height <=560){
+                            $('#imgNotice').attr('src', result); //图片链接（base64）
+                            obj.upload(index, file); //满足条件调用上传方法
+                        }else{
+                            flag = false;
+                            layer.msg("您上传的小图大小必须小于750*560尺寸！");
+                            return false;
+                        }
+                    }
+                    return flag;
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if(res.code == 200){
+                    layer.msg('上传图片成功');
+                    $("#notimg").val(res.url);
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+        //附件上传
+        var uploadFile = upload.render({
+            elem: '#testfile'
+            ,url: ctx+'upload' //改成您自己的上传接口
+            ,method:'post'
+            ,auto:false
+            ,accept:'file'
+            ,exts: 'bmp|jpeg|doc|docx|txt|xlsx|pdf'
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#file1').attr('href', result);
+                    obj.upload(index, file);
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if(res.code == 200){
+                    layer.msg('上传附件成功');
+                    $("#myfile").val(res.url);
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#fileText');
+                demoText.html('<span style="color: #FF5722;">上传附件失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadFile.upload();
+                });
+            }
+        });
+    });
+</script>

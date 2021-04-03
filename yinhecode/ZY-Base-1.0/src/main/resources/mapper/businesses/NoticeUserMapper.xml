@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.NoticeUserMapper">
+    <sql id="countNoticeUserDetailSql">
+        SELECT
+		count(1)
+		FROM
+		t_notice_user T
+		WHERE 1 = 1
+
+    </sql>
+
+    <sql id="findNoticeUserDetailSql">
+        SELECT
+        T.ID,
+		T1.STU_NAME,
+		T1.TEL,T.READ_TIME,
+		T2.DETAIL,
+		T.READ_STATUS_ID,
+		T1.CLASS_ID classId,
+		c.CLASS_NAME className
+		FROM t_notice_user T
+		LEFT JOIN t_student  T1 ON (T.USER_ID = T1.ID)
+		LEFT JOIN (select SID,DETAIL from t_dic where TYPE = 'is_read' and NAME = '是否阅读') T2 ON (T.READ_STATUS_ID = T2.SID)
+		LEFT JOIN t_classes c ON (c.ID = T1.CLASS_ID)
+    </sql>
+    <select id="countNoticeUserDetail" parameterType="Integer" resultType="long">
+        <include refid="countNoticeUserDetailSql"/>
+        <if test="noticeId !=null and noticeId != ''">
+			AND T.NOTICE_ID = #{noticeId}
+		</if>
+    </select>
+
+    <select id="findNoticeUserList" resultType="NoticeUser">
+        SELECT
+        T.ID,
+		T1.STU_NAME,
+		T1.TEL,T.READ_TIME,
+		T1.ADDRESS,
+		T1.EMAIL,
+		T1.IDENTITY,
+		T2.DETAIL,
+		T.READ_STATUS_ID,
+		T1.CLASS_ID classId,
+		c.CLASS_NAME className
+		FROM t_notice_user T
+		LEFT JOIN t_student  T1 ON (T.USER_ID = T1.ID)
+		LEFT JOIN (select SID,DETAIL from t_dic where TYPE = 'is_read' and NAME = '是否阅读') T2 ON (T.READ_STATUS_ID = T2.SID)
+		LEFT JOIN t_classes c ON (c.ID = T1.CLASS_ID)
+    </select>
+
+    <select id="countNoticeUserRead" parameterType="Integer" resultType="int">
+        <include refid="countNoticeUserDetailSql"/>
+        <if test="noticeId !=null and noticeId != ''">
+            AND T.NOTICE_ID = #{noticeId}
+        </if>
+        AND T.READ_STATUS_ID = (select SID from t_dic where TYPE = 'is_read' and DETAIL = '是')
+    </select>
+
+    <select id="findNoticeUserByNoticeIdPage" parameterType="Integer" resultType="NoticeUser">
+        <include refid="findNoticeUserDetailSql"></include>
+        WHERE T.NOTICE_ID = #{noticeId}
+    </select>
+
+    <update id="updateNoticeUserRead">
+        UPDATE
+            t_notice_user
+        SET
+            READ_STATUS_ID =
+                (select SID from t_dic where TYPE = 'is_read' and DETAIL = '是'),READ_TIME = NOW()
+        WHERE
+            NOTICE_ID =
+                #{noticeId},READ_TIME = NOW() AND USER_ID = #{userId}
+    </update>
+    
+    <select id="findStudentIdByOpenId" parameterType="String" resultType="Integer">
+        select
+        ID
+        from
+        t_student
+        where WX_APP_OPENID = #{openId}
+    </select>
+
+    <delete id="delectNoticeUserByNoticeId" parameterType="int">
+        DELETE
+        FROM
+        t_notice_user
+        where notice_id=#{noticeId}
+    </delete>
+
+    <insert id="insertNoticeUserByNoticeId" >
+        INSERT INTO t_notice_user(
+            notice_id,
+            user_id,
+            read_time,
+            read_status_id
+        )VALUE(
+            #{noticeId},
+            #{userId},
+            #{readTime},
+            #{readStatusId}
+        )
+    </insert>
+
+</mapper>

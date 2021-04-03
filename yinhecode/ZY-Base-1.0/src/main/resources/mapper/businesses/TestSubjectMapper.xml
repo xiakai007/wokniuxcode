@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.TestSubjectMapper">
+  <resultMap id="BaseResultMap" type="cc.zy.base.businesses.entity.TestSubject">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="SUBJECT" jdbcType="VARCHAR" property="subject" />
+    <result column="ALIAS" jdbcType="VARCHAR" property="alias" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, SUBJECT, `ALIAS`
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_test_subject
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_test_subject
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="cc.zy.base.businesses.entity.TestSubject" useGeneratedKeys="true">
+    insert into t_test_subject (SUBJECT, `ALIAS`)
+    values (#{subject,jdbcType=VARCHAR}, #{alias,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="cc.zy.base.businesses.entity.TestSubject" useGeneratedKeys="true">
+    insert into t_test_subject
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="subject != null">
+        SUBJECT,
+      </if>
+      <if test="alias != null">
+        `ALIAS`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null">
+        #{alias,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="cc.zy.base.businesses.entity.TestSubject">
+    update t_test_subject
+    <set>
+      <if test="subject != null">
+        SUBJECT = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null">
+        `ALIAS` = #{alias,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="cc.zy.base.businesses.entity.TestSubject">
+    update t_test_subject
+    set SUBJECT = #{subject,jdbcType=VARCHAR},
+      `ALIAS` = #{alias,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getSubjestsById" resultType="cc.zy.base.businesses.entity.TestSubject">
+    select * from t_test_subject where ID IN (
+        SELECT SUBJECT_ID FROM t_subject_subtype_level
+        where LEVEL_ID=#{levelId} and SUBTYPE_ID=#{subtypeId}
+    )
+  </select>
+  <select id="getSubjectsAliasAndNum" resultType="EntranceScore">
+        SELECT b.ID,b.ALIAS,b.NUM FROM t_subject_subtype_level a,t_test_subject b,t_subject_category c,t_level d
+          WHERE a.SUBJECT_ID=b.ID
+          AND a.SUBTYPE_ID=c.ID
+          AND a.LEVEL_ID=d.ID
+          AND c.FULL_NAME=#{subtypeName}
+          AND d.LEVEL_NAME=#{levelName}
+  </select>
+
+  <select id="getEntranceIds" resultType="EntranceScore">
+        SELECT b.ALIAS,b.NUM,e.ID as BATCH_ID,d.ID as levelId,c.ID as SUBTYPE_ID,b.ID as SUBJECT_ID FROM t_subject_subtype_level a,
+          t_test_subject b,t_subject_category c,t_level d,t_batch e
+          WHERE a.SUBJECT_ID=b.ID
+          AND a.SUBTYPE_ID=c.ID
+          AND a.LEVEL_ID=d.ID
+          AND c.FULL_NAME=#{subtypeName}
+          AND d.LEVEL_NAME=#{levelName}
+          AND e.BATCH_NAME=#{batchName}
+  </select>
+
+</mapper>

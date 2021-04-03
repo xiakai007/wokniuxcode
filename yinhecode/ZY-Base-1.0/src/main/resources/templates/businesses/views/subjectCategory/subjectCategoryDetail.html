@@ -1,0 +1,63 @@
+<style>
+    #subjectCategory-detail #subjectCategory-img, #subjectCategory-detail .subjectCategory-info {
+        display: inline-block;
+        float: left;
+        margin-left: 15px;
+    }
+
+    #subjectCategory-detail #subjectCategory-img img {
+        width: 7rem;
+        margin: 10px 10px 0 20px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    #subjectCategory-detail #subjectCategory-info-wrapper {
+        margin: 0 0 1rem 0;
+        display: inline-block;
+    }
+
+    #subjectCategory-detail .subjectCategory-info div {
+        margin: 10px 15px;
+        max-width: 19rem;
+    }
+
+    #subjectCategory-detail #options-wrapper a {
+        padding: 4px 6px;
+        color: rgba(0, 0, 0, 0.65);
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+    }
+
+    #subjectCategory-detail #options-wrapper a:hover {
+        color: #40a9ff;
+        border-color: #40a9ff;
+    }
+
+</style>
+<div class="layui-fluid" id="subjectCategory-detail" lay-title="院校信息">
+    <div id="subjectCategory-info-wrapper">
+
+        <div class="subjectCategory-info">
+            <div><span class="layui-icon layui-icon-form"></span> 类别全称：
+                [[${subjectCategory.fullName}]]
+            </div>
+            <div><span class="layui-icon layui-icon-note"></span> 类别简称：
+                [[${subjectCategory.simpleName}]]
+            </div>
+
+            <div><span class="layui-icon layui-icon-user"></span> 创建人：
+                [[${subjectCategory.userName}]]
+            </div>
+            <div><span class="layui-icon layui-icon-time-circle"></span> 创建时间：
+                [[${#strings.defaultString(createDateTime,'未显示时间')}]]
+            </div>
+            <div><span class="layui-icon layui-icon-read"></span> 备注：
+                [[${#strings.defaultString(subjectCategory.remark,'暂无备注')}]]
+            </div>
+        </div>
+        <div class="subjectCategory-info">
+
+        </div>
+    </div>
+</div>

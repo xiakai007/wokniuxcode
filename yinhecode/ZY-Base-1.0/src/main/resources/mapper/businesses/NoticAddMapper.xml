@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.NoticAddMapper">
+    <!--根据字典表查新状态-->
+    <sql id="findDicIdSql">
+        SELECT
+          ID
+        FROM t_dic
+        WHERE 1=1
+        AND NAME = '是否阅读'
+        AND DETAIL = '否'
+    </sql>
+
+    <select id="findDicId" parameterType="int" resultType="int">
+        <include refid="findDicIdSql"></include>
+    </select>
+
+    <insert id="insertNotice" parameterType="Notice" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+        INSERT INTO t_notice(TITLE,CREATE_USER_ID,CREATE_TIME,CONTENT,IMG_URL,VIDEO_URL,FILE,STATUS)
+        VALUES (#{notice.title},#{notice.createUserId},NOW(),#{notice.content},#{notice.imgUrl},#{notice.videoUrl},#{notice.file},1)
+    </insert>
+
+    <update id="sendNotice" parameterType="int">
+      UPDATE t_notice SET STATUS=1 WHERE ID = #{id}
+    </update>
+
+    <insert id="insertNoticeUser" parameterType="Notice" useGeneratedKeys="true" keyColumn="ID">
+        INSERT INTO t_notice_user(NOTICE_ID,USER_ID,READ_STATUS_ID)
+        VALUES (#{notice.id},#{notice.userId},1)
+    </insert>
+
+    <insert id="insertNoticeTemp" parameterType="Notice" useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+        INSERT INTO t_notice(TITLE,CREATE_USER_ID,CREATE_TIME,CONTENT,IMG_URL,VIDEO_URL,FILE,STATUS)
+        VALUES (#{notice.title},#{notice.createUserId},NOW(),#{notice.content},#{notice.imgUrl},#{notice.videoUrl},#{notice.file},0)
+    </insert>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.RecycleMapper">
+    <sql id="countRecycleDetailSql">
+        SELECT
+        COUNT(1)
+        FROM
+        t_recycle recycle
+        LEFT JOIN t_college college ON recycle.COLLEGE_ID=college.id
+        LEFT JOIN t_classes classes ON recycle.CLASS_ID=classes.id
+        LEFT JOIN t_level level ON recycle.LEVEL=level.ID
+        LEFT JOIN t_batch batch ON recycle.BATCH_ID = batch.ID
+        LEFT JOIN t_major major ON recycle.MAJOR_ID=major.ID
+        LEFT JOIN t_user u on classes.USER_ID = u.USER_ID
+        WHERE 1 = 1
+        <if test="recycle.stuName!=null and recycle.stuName!=''">
+            AND recycle.STU_NAME LIKE CONCAT('%',#{recycle.stuName},'%')
+        </if>
+        <if test="recycle.collegeName!=null and recycle.collegeName!=''">
+            AND college.name LIKE concat('%',#{recycle.collegeName},'%')
+        </if>
+        <if test="recycle.level!=null and recycle.level!=''">
+            AND recycle.LEVEL LIKE concat('%',#{recycle.level},'%')
+        </if>
+        <if test="recycle.classId!=null and recycle.classId!=''">
+            AND recycle.CLASS_ID = #{recycle.classId}
+        </if>
+        <if test="recycle.identity!=null and recycle.identity!=''">
+            AND recycle.identity LIKE concat('%',#{recycle.identity},'%')
+        </if>
+        <if test="recycle.tel!=null and recycle.tel!=''">
+            AND recycle.tel LIKE concat('%',#{recycle.tel},'%')
+        </if>
+        <if test="recycle.batchId!=null and recycle.batchId!=''">
+            AND recycle.BATCH_ID =#{recycle.batchId}
+        </if>
+        <if test="recycle.collegeId!=null and recycle.collegeId!=''">
+            AND recycle.COLLEGE_ID =#{recycle.collegeId}
+        </if>
+        <if test="recycle.majorId!=null and recycle.majorId!=''">
+            AND recycle.MAJOR_ID =#{recycle.majorId}
+        </if>
+        <if test="recycle.stageId!=null and recycle.stageId!=''">
+            AND recycle.STAGE_ID =#{recycle.stageId}
+        </if>
+        AND recycle.STATUS_ID =0
+    </sql>
+    <select id="countRecycleDetail" parameterType="Recycle" resultType="long">
+        <include refid="countRecycleDetailSql"/>
+    </select>
+    <sql id="findRecycleDetail">
+        SELECT
+        recycle.ID,
+        recycle.STU_NAME stuName,
+        college.name collegeName,
+        recycle.LEVEL,
+        level.LEVEL_NAME levelName,
+        classes.CLASS_NAME className,
+        batch.BATCH_NAME batchName,
+        major.FULL_NAME majorName,
+        u.USERNAME userName,
+        recycle.TEL,
+        recycle.IDENTITY,
+        recycle.CLASS_ID,
+        recycle.STAGE_ID
+        FROM
+        t_recycle recycle
+        LEFT JOIN t_college college ON recycle.COLLEGE_ID=college.id
+        LEFT JOIN t_classes classes ON recycle.CLASS_ID=classes.id
+        LEFT JOIN t_level level ON recycle.LEVEL=level.ID
+        LEFT JOIN t_batch batch ON recycle.BATCH_ID = batch.ID
+        LEFT JOIN t_major major ON recycle.MAJOR_ID=major.ID
+        LEFT JOIN t_user u on classes.USER_ID = u.USER_ID
+        WHERE 1 = 1
+        <if test="recycle.stuName!=null and recycle.stuName!=''">
+            AND recycle.STU_NAME LIKE CONCAT('%',#{recycle.stuName},'%')
+        </if>
+        <if test="recycle.collegeName!=null and recycle.collegeName!=''">
+            AND college.name LIKE concat('%',#{recycle.collegeName},'%')
+        </if>
+        <if test="recycle.level!=null and recycle.level!=''">
+            AND recycle.LEVEL LIKE concat('%',#{recycle.level},'%')
+        </if>
+        <if test="recycle.classId!=null and recycle.classId!=''">
+            AND recycle.CLASS_ID = #{recycle.classId}
+        </if>
+        <if test="recycle.identity!=null and recycle.identity!=''">
+            AND recycle.identity LIKE concat('%',#{recycle.identity},'%')
+        </if>
+        <if test="recycle.tel!=null and recycle.tel!=''">
+            AND recycle.tel LIKE concat('%',#{recycle.tel},'%')
+        </if>
+        <if test="recycle.batchId!=null and recycle.batchId!=''">
+            AND recycle.BATCH_ID =#{recycle.batchId}
+        </if>
+        <if test="recycle.collegeId!=null and recycle.collegeId!=''">
+            AND recycle.COLLEGE_ID =#{recycle.collegeId}
+        </if>
+        <if test="recycle.majorId!=null and recycle.majorId!=''">
+            AND recycle.MAJOR_ID =#{recycle.majorId}
+        </if>
+        <if test="recycle.stageId!=null and recycle.stageId!=''">
+            AND recycle.STAGE_ID =#{recycle.stageId}
+        </if>
+        AND recycle.STATUS_ID =0
+    </sql>
+    <select id="findRecycleDetailPage" parameterType="Recycle" resultType="Recycle">
+        <include refid="findRecycleDetail"/>
+    </select>
+    <select id="findRecycleById" parameterType="Integer" resultType="Recycle">
+        SELECT
+        r.ID,
+        r.IDENTITY,
+        r.LEVEL,
+        r.STU_NUM,
+        r.COLLEGE_ID,
+        r.BATCH_ID,
+        r.MAJOR_ID,
+        r.STUDY_TYPE_ID,
+        r.CLASS_ID,
+        r.STU_NAME,
+        r.SEX_ID,
+        r.NATION,
+        r.NATIVE_CITY,
+        r.NATIVE_DISTRICT,
+        r.NATIVE_PROVINCE,
+        r.POLITICS_ID,
+        r.DIPLOMA_NUM,
+        r.GRADU_DATE,
+        r.ENROL_DATE,
+        r.TEL,
+        r.URGENCY_TEL,
+        r.EMAIL,
+        r.ADDRESS,
+        r.EXAM_LOCATION_ID,
+        r.IDEN_BEGIN_DATE,
+        r.IDEC_END_DATE,
+        r.WX_APP_OPENID,
+        r.STATUS_ID,
+        r.STAGE_ID,
+        r.TRACSACTION,
+        r.ALLOW_ESSAY,
+        r.DIPLOMA_IMG_URL,
+        r.HEAD_IMG_URL,
+        r.ID_FRONT_IMG_URL,
+        r.ID_BACK_IMG_URL,
+        r.EXAM_STU_NUM,
+        r.EXAM_REGRIT_NUM,
+        d.name as politicsName,
+        concat(g.province_name,'-',f.city_name,'-',e.area_name) as nativeName
+        FROM
+        t_recycle r
+        LEFT JOIN t_dic d on r.politics_id=d.id
+        LEFT JOIN t_area e on r.NATIVE_DISTRICT=e.id
+        LEFT JOIN t_city f on r.NATIVE_CITY=f.id
+        LEFT JOIN t_PROVINCE g on r.NATIVE_PROVINCE=g.id
+        WHERE
+        1=1
+        AND r.id=#{id}
+    </select>
+</mapper>

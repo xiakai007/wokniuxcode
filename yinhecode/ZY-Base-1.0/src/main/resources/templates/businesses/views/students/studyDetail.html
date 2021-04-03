@@ -1,0 +1,86 @@
+<style>
+    .layui-table th{
+        text-align: center;
+
+    }
+    .layui-table td{
+        text-align: center;
+    }
+</style>
+<!--招生学生管理学习详情-->
+<div class="layui-collapse" lay-filter="test" id="studyDetail-all">
+    <input type="hidden" data-th-value="${student.id}" id="stuId-studyDetail">
+    <!--展示该学生当前已上学期，从第一学期开始-->
+    <div class="layui-colla-item" id="studyDetail-tb" data-th-each="term:${term}">
+        <h2 class="layui-colla-title" data-th-text="${term.semesterName}"></h2>
+        <input type="hidden" data-th-value="${term.id}" id="studyDetail-term-id" >
+        <!--根据学期展示学习详情-->
+        <div class="layui-colla-content">
+            <table class="layui-table tb-studyDetail" lay-filter="tb-studyDetail-semester"
+                    data-th-id="${term.id}">
+                <thead>
+                    <tr>
+                        <th style="width: 20%" rowspan="2">课程</th>
+                        <th colspan="2">视频</th>
+                        <th colspan="2">线上答题</th>
+                        <th colspan="2">纸质作业</th>
+                        <th rowspan="2">是否通过</th>
+                    </tr>
+                <tr>
+                    <th>观看/应看</th>
+                    <th>分数</th>
+                    <th>已答/应答</th>
+                    <th>分数</th>
+                    <th>已写/应写</th>
+                    <th>分数</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'form', 'table', 'febs', 'element'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            table = layui.table,
+            $view = $('#studyDetail-tb'),
+            element = layui.element,
+            tableIns;
+        initseme();
+        element.render();
+        //该学期学习详情数据
+        function initseme() {
+            $.ajax({
+                type: "GET",
+                url: ctx + "homework/semester?id="+$("#stuId-studyDetail").val(),
+                success: function (data) {
+                    console.log(data.data)
+                    if(data.data.term.length==0){
+                        $("#studyDetail-all").append('<p style="text-align: center;">无数据</p>')
+                    }
+                    for (let i = 0; i < data.data.term.length; i++) {
+                        var study=eval("data.data.study"+""+i);
+                        for (let j = 0; j < study.length; j++) {
+                            var pass=null;
+                            if (study[j].ispass==1){
+                                pass="是";
+                            }else {
+                                pass="否";
+                            }
+                            $("#"+(i+1)).append("<tbody><tr><td>"+study[j].courseName+"</td><td>"+study[j].videoAl +
+                                "/" + study[j].videoSh + "</td><td>" + study[j].videoScore + "</td><td>" +
+                                study[j].testAl + "/" + study[j].testSh + "</td><td>" + study[j].testScore +
+                                "</td><td>" + study[j].wriAl + "/" + study[j].wriSh + "</td><td>" + study[j].wriScore +
+                                "</td><td>" + pass + "</td></tr></tbody>")
+                        }
+                    }
+                },
+            })
+        }
+        //监听折叠
+        element.on('collapse(test)', function(data){
+            $(this).addClass(data.show);
+        });
+    });
+</script>

@@ -1,0 +1,25 @@
+
+
+# 联拓富配置
+liantuofu:
+  #合作方标识
+  appId: EW_N1353488498
+  #商户编号，集合
+  merchantCode:
+  - EW_N3569696496
+  - Le_sad12342152
+  #密钥
+  key: 7cf7ba6e3ebb8a5f8b8c769aa0a26f4b
+  #小程序/公众号支付Url
+  miniProgramUrl: http://api.liantuofu.com/open/precreate
+  #订单批量查询Url
+  orderSearchUrl: http://api.liantuofu.com/open/bill
+  #已支付订单进行退款Url
+  refundUrl: http://api.liantuofu.com/open/refund
+  #根据退款订单号查询退款状态Url
+  refundStatuUrl: http://api.liantuofu.com/open/refund/query
+
+  #支付订单号OutTradeNo前缀
+  prefixOutTradeNo: LS
+  #退款单号prefixRefundNo前缀
+  prefixRefundNo: LS-TK

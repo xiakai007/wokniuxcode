@@ -1,0 +1,394 @@
+<style>
+    #febs-user xm-select {
+        min-height: 30px;
+        line-height: 30px;
+    }
+
+    #febs-user xm-select > .xm-label .scroll .label-content {
+        display: flex;
+        padding: 0 30px 0 10px;
+    }
+
+    a.continer span {
+        display: none; /*默认隐藏*/
+    }
+
+    a.continer:hover span {
+        display: initial; /*当鼠标hover时展示*/
+    }
+
+
+    a.passcontiner span {
+        display: none; /*默认隐藏*/
+    }
+
+    a.passcontiner:hover span {
+        display: initial; /*当鼠标hover时展示*/
+    }
+
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="businesses-paper" lay-title="论文初稿管理">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="user-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                            <legend style="font-size: 15px;font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchName" id="cbuBatch">
+                                                <option value="">全部</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="papers-school" lay-filter="cboCollege">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="levelId" id="cboLevel" lay-filter="cboLevelConcat">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorName" id="cboMajor">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">学习形式</label>
+                                        <div class="layui-input-inline">
+                                            <select name="studyType">
+                                                <option value=""></option>
+                                                <option value="成教">成教</option>
+                                                <option value="网教">网教</option>
+                                                <option value="电大">电大</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">审核状态</label>
+                                        <div class="layui-input-inline">
+                                            <select name="passStatus">
+                                                <option value=""></option>
+                                                <option value="1">正在审批</option>
+                                                <option value="2">审批通过</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                            <legend style="font-size: 15px;font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" id="txtName" autocomplete="off"
+                                                   placeholder="例：张\张XX" class="layui-input"
+                                                   lay-verify="range|name|char">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" id="txtCardId" autocomplete="off"
+                                                   placeholder="格式为数字或X" class="layui-input" maxlength="18"
+                                                   oninput="value=value.replace(/[^\d|^X^x]/g,'')">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">手机号</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" id="txtPhone" autocomplete="off"
+                                                   placeholder="格式为数字" class="layui-input" maxlength="11"
+                                                   oninput="value=value.replace(/[^\d]/g,'')">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">班主任</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="userName" id="txtTeacher" autocomplete="off"
+                                                   placeholder="例：张\张XX" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="reset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="btnExportBactch">
+                                    <i class="layui-icon layui-icon-export" id="btnExportBatch">导出</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="btnLoadBactch">
+                                    <i class="layui-icon layui-icon-export">批量下载论文</i>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="paperFinalTable" lay-data="{id: 'paperFinalTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="stu-sex">
+    {{#
+    let sex = {
+    1: {title: '男'},
+    2: {title: '女'}
+    }[d.sexId];
+    }}
+    <span>{{ sex.title }}</span>
+</script>
+<script type="text/html" id="pass-status">
+    {{#
+    let status = {
+    1: {title: '正在审核',color: 'blue'},
+    2: {title: '审核通过',color: 'green'}
+    }[d.passStatus];
+    }}
+    <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
+</script>
+<script type="text/html" id="paperFinal-option">
+    <a lay-event="download" class="continer">
+        <i class="layui-icon febs-edit-area febs-green">&#xe601;</i>
+        <span>下载</span>
+    </a>
+    {{# if(d.passStatus !=2){  }}
+    <a lay-event="pass" class="passcontiner">
+        <i class="layui-icon febs-edit-area febs-green">&#x1005;</i>
+        <span>审批通过</span>
+    </a>
+    {{# } }}
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect'], function () {
+        let $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-paper'),
+            $query = $view.find('#query'),
+            $reset = $view.find('#reset'),
+            $export = $view.find('#btnExportBatch'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'uploadTime', type: null},
+            tableIns;
+
+        form.render();
+
+        initTable();
+
+        table.on('sort(paperFinalTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        table.on('tool(paperFinalTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'pass') {
+                febs.modal.confirm('警告', '确定该论通过该论文？', function () {
+                    updatstatus(data.id);
+                });
+            }
+            if (layEvent === 'download') {
+                febs.modal.confirm('提示', '确定下载该论文？', function () {
+                    $.ajax({
+                        type: 'post',
+                        url: 'papers/fileDownload?paperId=' + data.id,
+                        success: function (res) {
+                            window.location.href = res;
+                        }
+                    })
+                });
+            }
+        });
+
+        function updatstatus(paperId) {
+            febs.get(ctx + 'paperFinal/update/' + paperId, null, function () {
+                febs.alert.success('修改状态成功');
+                $query.click();
+            });
+        }
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+            // 批量查询和精确查询
+
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+            //下拉框的初始化
+            $("#cboLevel").empty();
+            $("#cboMajor").empty();
+            // $("#cboLevel").html("");
+            // $("#cboMajor").html("");
+        });
+        //按回车搜索
+        $(".layui-input").keydown(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $query.click();
+            }
+        });
+        //导出Excel
+        $export.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+            params.pageNum = $view.find(".layui-laypage-em").next().html();
+            febs.download(ctx + 'paperFinal/excel', params, '论文终稿表.xlsx');
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'paperFinalTable',
+                url: ctx + 'paperFinal/list',
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'batchName', title: '批次'},
+                    {field: 'university', title: '院校'},
+                    {field: 'studyType', title: '学习形式'},
+                    {field: 'collegeLevel', title: '层次'},
+                    {field: 'majorName', title: '专业'},
+                    {field: 'stuName', title: '姓名'},
+                    {field: 'identity', title: '身份证号'},
+                    {field: 'tel', title: '手机号'},
+                    {title: '性别', templet: '#stu-sex'},
+                    {field: 'userName', title: '班主任'},
+                    {title: '审核状态', templet: '#pass-status'},
+                    {field: 'updatetime', title: '上传时间', sort: true},
+                    {field: 'checktime', title: '通过时间', sort: true},
+                    {title: '操作', toolbar: '#paperFinal-option', minWidth: 140}
+                ]]
+            });
+
+
+            //使用ajax获得下拉菜单中的值
+            //批次下拉菜单
+            $.ajax({
+                type: "GET",
+                url: "batch/getList",
+                success: function (res) {
+                    var data = res.data;
+                    // console.log(data);
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            var batch = data[i];
+                            $("#cbuBatch").append("<option value='" + batch.batchName + "'>" + batch.batchName + "</option>")
+                        }
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            console.log(params)
+            return params;
+        }
+
+        //院校下拉框遍历
+        $(function () {
+            $.get("college/list", function (obj) {
+                console.log(obj.data.rows);
+                layui.each(obj.data.rows, function (index, item) {
+                    $("#papers-school").append("<option value='" + this.id + "'>" + this.name + "</option>");
+                });
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+        //层次下拉框联动
+        form.on("select(cboCollege)", function (obj) {
+            var collegeId = obj.value;
+            $.get("paperFinal/levelName?collegeId=" + collegeId, function (res) {
+                var str = '';
+                layui.each(res.data, function (index, item) {
+                    str = str + "<option value=''></option>";
+                    str = str + "<option value='" + this.levelId + "'>" + this.level + "</option>";
+                });
+                $("#cboLevel").html(str);
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+        //专业下拉框联动
+        form.on("select(cboLevelConcat)", function (obj) {
+            var collegeId = $("#papers-school").val();
+            var levelId = obj.value;
+            // console.log(collegeId + "*****")
+            // console.log(levelId + "&&&&")
+            // $.get("paperFinal/majorName?levelId=" + levelId,
+            $.get("paperFinal/majorName", {
+                collegeId: collegeId,
+                levelId: levelId
+            }, function (res) {
+                var str2 = '';
+                layui.each(res.data, function (index, item) {
+                    str2 = str2 + "<option value=''></option>";
+                    str2 = str2 + "<option value='" + this.majorName + "'>" + this.majorName + "</option>";
+                });
+                $("#cboMajor").html(str2)
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+    })
+</script>

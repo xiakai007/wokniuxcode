@@ -1,0 +1,383 @@
+<!--公海学生详情-->
+<div class="layui-fluid layui-anim febs-anim" id="select-student">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="user-table-form" id="selectStudentForm">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select id="selectStudentChoBatch" name="batchId">
+                                                <option value="">请选择</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="selectStudentChoCollege"
+                                                    lay-filter="selectStudentChoCollegeLay">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="level" id="selectStudentChoLevel"
+                                                    lay-filter="selectStudentChoLevelLay">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="selectStudentChoMajor">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">班主任</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="userId" id="selectStudent-cboUser"
+                                                   lay-filter="selectStudent-cboUser" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" id="txtStuName" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证号</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" id="txtIdentity" autocomplete="off"
+                                                   class="layui-input" lay-verify="dimIdentity" maxlength="18">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">手机号</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" id="txtTel" autocomplete="off"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="btnAccurateSearch">
+                                    <i class="layui-icon" title="查询">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="btnAccurateReset">
+                                    <i class="layui-icon" title="刷新">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table lay-filter="studentTable" lay-data="{id: 'studentTable'}"></table>
+                </div>
+
+                <div style="text-align:center" class="layui-form-item febs-hide">
+                    <input type="button" class="layui-btn" lay-submit="" lay-filter="select-btnCheckResults-submit"
+                           id="btnCheckResults" value="选择勾选结果">
+                    <input type="button" class="layui-btn" lay-submit="" lay-filter="select-btnPageResults-submit"
+                           id="btnPageResults" value="选择本页结果">
+                    <input type="button" class="layui-btn" lay-submit="" lay-filter="select-btnAllResults-submit"
+                           id="btnAllResults" value="选择全部结果">
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="stu_ids">
+    <input type="hidden" id="stu_stunames">
+</div>
+
+<script type="text/html" id="student-sex">
+    {{#
+    let sex = {
+    2: {title: '保密'},
+    1: {title: '女'},
+    0: {title: '男'}
+    }[d.sexId];
+    }}
+    <span>{{ sex.title }}</span>
+</script>
+<script type="text/javascript" src="module/treeSelect/treeSelect.js"></script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['treeSelect', 'dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect', 'validate'], function () {
+        let $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            treeSelect = layui.treeSelect,
+            dropdown = layui.dropdown,
+            validate = layui.validate,
+            $view = $('#select-student'),
+            $btnAccurateReset = $view.find('#btnAccurateReset'),
+            $btnAccurateSearch = $view.find('#btnAccurateSearch'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createTime', type: null},
+            tableIns,
+            studentXmlSelect;
+        form.verify(validate);
+        form.render();
+        initTable();
+
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'studentTable',
+                url: ctx + 'student/selectStudentlist',
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'id', title: '编号', minWidth: 80},
+                    {field: 'stuName', title: '姓名', minWidth: 100},
+                    {title: '性别', templet: '#student-sex', minWidth: 30},
+                    {field: 'tel', title: '手机号', minWidth: 155},
+                    {field: 'identity', title: '身份证号', minWidth: 180},
+                    {field: 'batchName', title: '批次', minWidth: 100},
+                    {field: 'name', title: '院校', minWidth: 200},
+                    {field: 'levelname', title: '层次', minWidth: 100},
+                    {field: 'fullName', title: '专业', minWidth: 230},
+                    {field: 'userName', title: '班主任', minWidth: 130}
+                ]]
+            });
+        }
+
+        //批次的下拉菜单
+        $.ajax({
+            type: 'get',
+            url: 'batch/list',
+            success: function (res) {
+                const BatchArray = res.data.rows;
+                if (BatchArray.length > 0) {
+                    for (let i = 0; i < BatchArray.length; i++) {
+                        const batchone = BatchArray[i];
+                        $("#selectStudentChoBatch").append("<option value='" + batchone.id + "'>" + batchone.batchName + "</option>")
+                    }
+                }
+                layui.form.render("select");
+            }
+        });
+
+        //院校下拉框遍历
+        $(function () {
+            $.get("college/list", function (obj) {
+
+                layui.each(obj.data.rows, function (index, item) {
+                    $("#selectStudentChoCollege").append("<option value='" + this.id + "'>" + this.name + "</option>");
+                });
+                layui.use('form', function () {
+                    const form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+        //层次下拉框联动
+        form.on("select(selectStudentChoCollegeLay)", function (obj) {
+            const collegeId = obj.value;
+            $.get("student/selectStudentlevelName?collegeId=" + collegeId, function (res) {
+                let str = '';
+                layui.each(res.data, function (index, item) {
+                    str = str + "<option value=''></option>";
+                    str = str + "<option value='" + this.levelId + "'>" + this.level + "</option>";
+                });
+                $("#selectStudentChoLevel").html(str);
+                layui.use('form', function () {
+                    const form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+        //专业下拉框联动
+        form.on("select(selectStudentChoLevelLay)", function (obj) {
+            const collegeId = $("#selectStudentChoCollege").val();
+            const levelId = obj.value;
+            $.get("student/selectStudentmajorName", {
+                collegeId: collegeId,
+                levelId: levelId
+            }, function (res) {
+                let str2 = '';
+                layui.each(res.data, function (index, item) {
+                    str2 = str2 + "<option value=''></option>";
+                    str2 = str2 + "<option value='" + this.majorId + "'>" + this.majorName + "</option>";
+                });
+                $("#selectStudentChoMajor").html(str2)
+                layui.use('form', function () {
+                    const form = layui.form;
+                    form.render();
+                });
+            });
+        });
+        //构建用户树
+        treeSelect.render({
+            // 选择器
+            elem: '#selectStudent-cboUser',
+            // 数据
+            data: ctx + 'student/selectStudentuserDeptTree',
+            // 异步加载方式：get/post，默认get
+            type: 'get',
+            // 占位符
+            placeholder: '请选择',
+            // 是否开启搜索功能：true/false，默认false
+            search: true,
+            style: {
+                folder: { // 父节点图标
+                    enable: true // 是否开启：true/false
+                },
+                line: {
+                    enable: true
+                }
+            },
+            // 点击回调
+            click: function (d) {
+
+                $("#selectStudent-cboUser").val(d.current.id);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+
+            }
+        });
+        table.on('sort(studentTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        //精准查询
+        $btnAccurateSearch.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+        //按回车搜索
+        $(".layui-input").keyup(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $btnAccurateSearch.click();
+            }
+        });
+
+        //精准重置
+        $btnAccurateReset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            form.render();
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}});
+            //下拉框的初始化
+            $("#selectStudentChoLevel").empty();
+            $("#selectStudentChoMajor").empty();
+        });
+
+        //函数给参数--才能使用
+        function getQueryParams(flag) {
+            const selectStudentChoBatch = $("#selectStudentChoBatch").val();
+            const selectStudentChoCollege = $("#selectStudentChoCollege").val();
+            const selectStudentChoLevel = $("#selectStudentChoLevel").val();
+            const selectStudentChoMajor = $("#selectStudentChoMajor").val();
+            let deptId;
+            if (flag) {
+                deptId = '';
+            }
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        let check_id = new Map();
+        let check_stuName = [];
+        let aID =[];
+        let bName=[];
+        //选择勾选状态
+        $("#btnCheckResults").click(function () {
+            let checkStatus = table.checkStatus("studentTable");
+            let data = checkStatus.data;
+            if (data.length > 0) {
+                for (let i = 0; i < data.length; i++) {
+                    let check = data[i];
+                    check_id.set(check.id,check.stuName);
+                    // check_stuName.push(check.stuName);
+                }
+                check_id.forEach(function (value, key, map) {
+                   aID.push(key);
+                   bName.push(value)
+                })
+                $("#stu_stunames").val(bName);
+                $("#stu_ids").val(aID);
+                layer.close(layer.index);//只是关闭当前页，数据传递到父页面
+            } else {
+                febs.alert.warn('至少选择一个学生');
+            }
+        });
+        //选择本页结果
+        $("#btnPageResults").click(function () {
+            let datas = layui.table.cache["studentTable"];
+            let page_id = [];//存id
+            let page_stuName = [];//存stuname
+            if (datas.length > 0) {
+                for (let i = 0; i < datas.length; i++) {
+                    let page = datas[i];
+                    page_id.push(page.id);
+                    page_stuName.push(page.stuName);
+                }
+                $("#stu_stunames").val(page_stuName);
+                $("#stu_ids").val(page_id);
+            }
+        });
+        //选择全部
+        form.on('submit(select-btnAllResults-submit)', function () {
+            $.ajax({
+                type: 'get',
+                url: 'student/selectStudent',
+                cache: false,
+                traditional: true,
+                data: $('#selectStudentForm').serialize(),
+                success: function (res) {
+                    let all_id = [];//存id
+                    let all_stuName = [];//存stuName
+                    if (res.data.length > 0) {
+                        for (let i = 0; i < res.data.length; i++) {
+                            let add = res.data[i];
+                            all_id.push(add.id)
+                            all_stuName.push(add.stuName);
+                        }
+                        $("#stu_stunames").val(all_stuName);
+                        $("#stu_ids").val(all_id);
+                        parent.layui.$("#noticereceive").val(all_stuName);
+                        parent.layui.$("#noticereceivehide").val(all_id);
+                    }
+                }
+            });
+        });
+
+    })
+</script>

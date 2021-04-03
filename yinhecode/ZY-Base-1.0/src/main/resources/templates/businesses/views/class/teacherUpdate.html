@@ -1,0 +1,122 @@
+<style>
+    #teacher-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="teacher-update">
+    <form class="layui-form" action="" lay-filter="teacher-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">班级id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="classId" data-th-value="${classes.id}">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">原班主任id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="oldUserId" data-th-value="${classes.userId}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">班级名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="className" readonly data-th-id="${classes.id}"
+                       class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">现班主任：</label>
+            <div class="layui-input-block">
+                <input type="text" name="userName" readonly class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">新班主任：</label>
+            <div class="layui-input-block">
+                <input type="text" name="userId" id="teacher-update-cboUser" lay-filter="teacher-update-cboUser"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea name="remark" maxlength="100" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="teacher-update-form-submit"
+                    id="teacher-update-submit"></button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="module/treeSelect/treeSelect.js"></script>
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'treeSelect', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            treeSelect = layui.treeSelect,
+            classes = [[${classes}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+
+        form.render();
+
+        initClassValue();
+
+        function initClassValue() {
+            form.val("teacher-update-form", {
+                "className": classes.className,
+                "userName": classes.userName,
+            });
+        }
+
+        //构建用户树
+        treeSelect.render({
+            // 选择器
+            elem: '#teacher-update-cboUser',
+            // 数据
+            data: ctx + 'transferApplication/userDeptTree',
+            // 异步加载方式：get/post，默认get
+            type: 'get',
+            // 占位符
+            placeholder: '请选择',
+            // 是否开启搜索功能：true/false，默认false
+            search: true,
+            style: {
+                folder: { // 父节点图标
+                    enable: true // 是否开启：true/false
+                },
+                line: {
+                    enable: true
+                }
+            },
+            // 点击回调
+            click: function (d) {
+                $("#teacher-update-cboUser").val(d.current.id);
+                if (d.current.id===classes.userId){
+                    febs.alert.warn('数据未作任何修改！');
+                }
+
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+            }
+        });
+
+        form.on('submit(teacher-update-form-submit)', function (data) {
+            if (data.field.oldUserId===data.field.userId) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'class/updateTeacher', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(classes.className + ' 更换班主任操作成功');
+                $('#businesses-class').find('#class-query').click();
+            });
+            return false;
+        });
+    });
+</script>

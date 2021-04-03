@@ -1,0 +1,335 @@
+<style>
+    a.updatecontiner span{
+        display:none;
+    }
+    a.updatecontiner:hover span{
+        display:initial;
+    }
+    a.changestatuscontiner span{
+        display:none;
+    }
+    a.changestatuscontiner:hover span{
+        display:initial;
+    }
+    a.orderedcontiner span{
+        display:none;
+    }
+    a.orderedcontiner:hover span{
+        display:initial;
+    }
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="febs-cType" lay-title="课程分类">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="college-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">课程分类：</label>
+                                        <div class="layui-input-block" id="parent-cType-id"
+                                             style="width: 230px;">
+                                            <input type="hidden" id="name" name="name" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain  table-action"
+                                     id="queryType" title="查询">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain
+                                table-action" id="resetType" title="刷新">
+                                    <i class="layui-icon" >&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain
+                                table-action" id="addType">
+                                    <i class="layui-icon layui-icon-plus-circle">新建分类</i>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="cTypeTable" lay-data="{id: 'cTypeTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="cType-status">
+    {{#
+    let status = {
+    1: {title: '上架', color: 'green'},
+    0: {title: '下架', color: 'volcano'}
+    }[d.status];
+    }}
+    <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
+</script>
+
+<script type="text/html" id="cType-option">
+    {{# if(d.status==0 && d.pid!=0){}}
+    <a lay-event="update" class="updatecontiner" title="编辑"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a4;</i></a>
+    <a lay-event="changestatus" class="changestatuscontiner" title="上架">
+        <i class="layui-icon febs-edit-area febs-blue">&#xe619;</i></a>
+    <a lay-event="ordered" class="orderedcontiner" title="排序"><i class="layui-icon febs-edit-area febs-red">&#xe649;</i>
+        </a>
+    {{# } else if(d.status==1 && d.pid!=0) { }}
+    <a lay-event="update" class="updatecontiner" ><i
+            class="layui-icon febs-edit-area febs-green" title="编辑">&#xe7a4;</i></a>
+    <a lay-event="changestatus" class="changestatuscontiner" title="下架">
+        <i class="layui-icon febs-edit-area febs-blue">&#xe61a;</i></a>
+    <a lay-event="ordered" class="orderedcontiner" title="排序"><i class="layui-icon febs-edit-area febs-red">&#xe649;</i>
+    {{# } else if(d.status==1 && d.pid==0) { }}
+    <a lay-event="update" class="updatecontiner" title="编辑"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a4;</i></a>
+    <a lay-event="changestatus" class="changestatuscontiner" title="下架">
+        <i class="layui-icon febs-edit-area febs-blue">&#xe61a;</i></a>
+    {{# } else if(d.status==0 && d.pid==0) { }}
+    <a lay-event="update" class="updatecontiner" title="编辑"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a4;</i></a>
+    <a lay-event="changestatus" class="changestatuscontiner" title="上架">
+        <i class="layui-icon febs-edit-area febs-blue">&#xe619;</i></a>
+    {{# } else {}}
+    {{# } }}
+</script>
+<style>
+    body .demo-class .layui-layer-btn0{
+        border-color: #E6E3E6;
+        background-color: #FFF;
+        color: black;
+    }
+    body .demo-class .layui-layer-btn1{
+        border-color: #4898d5;
+        background-color: #2e8ded;
+        color: #fff;
+    }
+</style>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect','layer'], function () {
+        let $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            layer=layui.layer,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#febs-cType'),
+            $query = $view.find('#queryType'),
+            $reset = $view.find('#resetType'),
+            $add = $view.find('#addType'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            typeXmSelect,
+            tableIns;
+        form.render();
+        initSelect();
+        initTable();
+        typeXmSelect = xmSelect.render({
+            el: '#parent-cType-id',
+            radio:true,
+            model: {label: {type: 'text'}},
+            clickClose: true,
+            tree: {
+                show: true,
+                strict: false,
+                showLine: false,
+                clickCheck: true,
+                expandedKeys: [-1],
+            },
+            name: 'id',
+            theme: {
+                color: '#52c41a',
+            },
+            prop: {
+                value: 'id'
+            },
+            height: '180px',
+            on: function (data) {
+                if(data.isAdd){
+                    $("#name").val(data.change[0].name);
+                }else {
+                    $("#name").val("");
+                }
+                let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                tableIns.reload({where: params, page: {curr: 1}});
+            }
+        });
+
+        function initSelect() {
+            febs.get(ctx + 'cType/select/tree1', null, function (data) {
+                data.data[0].selected=true;
+                typeXmSelect.update(data);
+                $("#name").val(data.data[0].name);
+            });
+        }
+
+
+        table.on('tool(cTypeTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'update') {
+                febs.modal.open('修改类别', 'cType/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    skin: 'demo-class',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#cType-update').find('#submitType').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+            if (layEvent === 'changestatus') {
+                if(data.status==0){
+                    febs.modal.confirm('提示', '确定上架吗？', function () {
+                        $.ajax({
+                            type:'get',
+                            url:'/cType/updateByIdSatusUp?id='+data.id,
+                            success:function () {
+                                //刷新表单
+                                table.reload("cTypeTable", {url:'/cType/list'})
+                            }
+                        })
+                    });
+                }else if(data.status==1) {
+                    febs.modal.confirm('提示', '确定下架吗？', function () {
+                        $.ajax({
+                            type: 'get',
+                            url: '/cType/updateByIdSatus?id=' + data.id,
+                            success: function () {
+                                //刷新表单
+                                table.reload("cTypeTable", {url: '/cType/list'})
+                                //关闭提示框
+                                febs.modal.close(index)
+                            }
+                        })
+                    });
+                }
+            }
+            if (layEvent === 'ordered') {
+                febs.modal.open('排序', 'cType/sort/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : '30%',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#cType-sort').find('#submitTypeSort').trigger('click');
+                        var DISABLED = 'layui-btn-disabled';
+                         // 增加样式
+                        $('#cType-sort').find('#submitTypeSort').addClass(DISABLED);
+                        // 增加属性
+                        $('#cType-sort').find('#submitTypeSort').attr('disabled', 'disabled');
+                        setTimeout(function () {
+                            $('#cType-sort').find('#submitTypeSort').removeClass(DISABLED).attr('disabled', false);
+                        },2000);
+
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+        table.on('sort(cTypeTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+        $query.on('click', function () {
+            tableIns.reload({where:getQueryParams(true), page: {curr: 1}});
+        });
+        $reset.on('click', function () {
+            initSelect();
+            $("#name").val("");
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}});
+        });
+
+        $add.on('click', function () {
+            febs.modal.open('新增类别', 'cType/add', {
+                btn: ['保存并提交','保存草稿','重置'],
+                area: $(window).width() <= 750 ? '95%' : '50%',
+                yes: function (index, layero) {
+                    $('#cType-add').find('#submitType').trigger('click');
+                    let DISABLED = 'layui-btn-disabled';
+                    $('#cType-add').find('#submitType').addClass(DISABLED).attr('disabled', true);
+                    setTimeout(function () {
+                        $('#cType-add').find('#submitType').removeClass(DISABLED).attr('disabled', false);
+                    },2000);
+                },
+                btn2: function () {
+                    $('#cType-add').find('#saveType').trigger('click');
+                    var DISABLED = 'layui-btn-disabled';
+                    $('#cType-add').find('#submitType').addClass(DISABLED).attr('disabled', 'disabled');
+                    setTimeout(function () {
+                        $('#cType-add').find('#submitType').removeClass(DISABLED).attr('disabled', false);
+                    },2000);
+                    return false;
+                },
+                btn3: function () {
+                    $('#cType-add').find('#resetType').trigger('click');
+                    return false;
+                }
+            });
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'cTypeTable',
+                limit: 10 ,
+                url: ctx + 'cType/list',
+                done: function (res, curr, count) {
+                    $("table").css("width", "100%");
+                },
+                width:"100%",
+                cols: [[
+                    {type: 'checkbox', Width: 50},
+                    {field: 'pid', title: 'pid',hide:true},
+                    {field: 'sort', title: '一级 - 二级', minWidth: 100},
+                    {
+                        field:'imgUrl',
+                        title:'封面',
+                        minWidth: 100,
+                        templet: function (data) {
+                            var html = "<div><img style="+"width: 80px;height: 40px;vertical-align: middle src="+data.imgUrl+"></div>";
+                            return html;
+                        }
+                    },
+                    {field: 'name', title: '课程分类', minWidth: 140},
+                    {field: 'info', title: '简介', minWidth: 140},
+                    {title: '状态', templet: '#cType-status', minWidth: 80,style:'center'},
+                    {field: 'userName', title: '操作人', minWidth: 80,
+                        templet: function(d){
+                            if(d.updateName==null){
+                                return d.userName;
+                            }else {
+                                return  d.updateName;
+                            }
+                        }},
+                    {title: '操作', toolbar: '#cType-option', minWidth: 140}
+                ]]
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params =$searchForm.serializeJson();
+            return params;
+        }
+    })
+</script>

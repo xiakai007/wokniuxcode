@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+  function createXMLHttpRequest(){
+	  if(window.ActiveXObject){
+		  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }else{
+		  xmlHttp=new XMLHttpRequest();
+	  }
+  }
+  function sendSuppData(){
+	  createXMLHttpRequest();
+	  xmlHttp.open("post","supplier.do",true);
+	  xmlHttp.onreadystatechange=getSuppData;
+	  xmlHttp.send();
+  }
+  function getSuppData(){
+	  if(xmlHttp.readyState==4&&xmlHttp.status==200){
+		  var json_Supps=xmlHttp.responseText;
+		  var supps=JSON.parse(json_Supps);
+		  var str="";
+		  for(var i=0;i<supps.length;i++){
+			  str=str+"<tr><td>"+supps[i].supp_id+"</td><td>"+supps[i].supp_code+
+			  "</td><td>"+supps[i].supp_name+"</td><td>"+supps[i].supp_phone+"</td></tr>";
+		  }
+		  document.getElementById("tbody1").innerHTML=str;
+	  }
+  }
+</script>
+</head>
+<body>
+  <input type="button" value="查看供应商" onclick="sendSuppData();"/>
+  <table>
+    <thead>
+      <tr>
+        <th>供应商id</th>
+        <th>供应商编号</th>
+        <th>供应商名称</th>
+        <th>供应商手机号</th>
+      </tr>
+    </thead>
+    <tbody id="tbody1">
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<style>
+    #college-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="cType-sort">
+    <form class="layui-form" action="" lay-filter="cType-sort-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">排序位置：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" >
+                <input type="hidden" name="sort1" >
+                <input type="hidden" name="sort2" >
+                <input type="text" name="sort3"
+                       class="layui-input"  placeholder="请输入要对调位置的数字" id="sort3">
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="video-sort-form-submit" id="submitTypeSort">
+            </button>
+        </div>
+    </form>
+</div>
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            cType = [[${cType}]],
+            sort2List = [[${sort2List}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initUserValue();
+
+        function initUserValue() {
+            form.val("cType-sort-form", {
+                "id": cType.id,
+                "sort1":cType.sort1,
+                "sort2":cType.sort2,
+            });
+        }
+
+        form.on('submit(video-sort-form-submit)', function (data) {
+            var val = $("#sort3").val();
+            for (var i = 1; i <=sort2List.length; i++) {
+                if(val==sort2List[i]){
+                    febs.get(ctx + 'cType/updateSort', data.field, function () {
+                        layer.closeAll();
+                        $('#febs-cType').find('#resetType').click();
+                    });
+                    return false;
+                }
+            }
+            febs.alert.error('无效的序号');
+            return false;
+        });
+    });
+</script>
+

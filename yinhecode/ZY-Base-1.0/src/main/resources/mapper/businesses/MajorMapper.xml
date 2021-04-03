@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.MajorMapper">
+    <sql id="countMajorDetailSql" >
+        SELECT
+        COUNT(1)
+        FROM
+        t_major T
+        WHERE 1 = 1
+        <if test="major.fullName != null and major.fullName != ''">
+            AND T.full_Name like concat('%',#{major.fullName},'%')
+        </if>
+    </sql>
+
+    <sql id="findMajorDetailSql">
+        SELECT
+        T.ID,
+        T.FULL_NAME,
+        T.SIMPLE_NAME,
+        T1.USERNAME,
+        T.CREATE_TIME,
+        T.INTRO,
+        T.REMARK
+        FROM t_major T
+        LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.USER_ID)
+        WHERE 1 = 1
+        <if test="major.fullName != null and major.fullName != ''">
+            AND T.full_Name like concat('%',#{major.fullName},'%')
+
+        </if>
+
+    </sql>
+
+    <select id="findMajor" resultType="major">
+        SELECT
+        T.ID,
+        T.FULL_NAME,
+        T.SIMPLE_NAME,
+        T1.USERNAME,
+        T.CREATE_TIME,
+        T.INTRO,
+        T.REMARK
+        FROM t_major T
+        LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.USER_ID)
+        WHERE 1 = 1
+    </select>
+
+    <select id="countMajorDetail" parameterType="user" resultType="long">
+        <include refid="countMajorDetailSql"/>
+    </select>
+
+    <select id="findMajorDetailPage" parameterType="major" resultType="major">
+        <include refid="findMajorDetailSql"/>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultType="major">
+        SELECT
+        T.ID,
+        T.FULL_NAME,
+        T.SIMPLE_NAME,
+        T1.USERNAME,
+        T.CREATE_TIME,
+        T.INTRO,
+        T.REMARK
+        FROM t_major T
+        LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.USER_ID)
+        WHERE 1 = 1
+        AND T.ID = #{majorId}
+    </select>
+
+	<select id="selectMajorForSelect" parameterType="int" resultType="cc.zy.base.businesses.entity.Major">
+        SELECT
+            DISTINCT major.ID,
+            major.FULL_NAME
+        FROM
+            t_teach_program program
+            LEFT JOIN t_major major ON (program.MAJOR_ID=major.ID)
+        WHERE
+            program.COLLEGE_ID=#{collegeId} AND
+            program.LEVEL_ID=#{levelId}
+    </select>
+
+    <select id="selectMajorByBatchForSelect" parameterType="int" resultType="cc.zy.base.businesses.entity.Major">
+        SELECT
+        ID,FULL_NAME
+        FROM
+        t_major
+        WHERE ID IN (
+            SELECT MAJOR_ID FROM t_teach_program WHERE BATCH_ID=#{batchId} AND COLLEGE_ID=#{collegeId} AND LEVEL_ID=#{levelId}
+        )
+    </select>
+</mapper>

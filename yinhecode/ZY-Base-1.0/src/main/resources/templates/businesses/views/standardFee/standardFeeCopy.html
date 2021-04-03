@@ -1,0 +1,211 @@
+<style>
+    #user-add {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="standard-copy" style="height: 300px">
+    <form class="layui-form" action="" lay-filter="standardFee-cope-form">
+
+
+            <div style="width: 800px;height: 50px;margin: auto;margin-top: 200px">
+
+                 <div class="layui-row">
+                     <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                        <div class="layui-input-inline">
+                            <select name="batchId"lay-filter="cbuOldBatch" id="cbuOldBatch">
+
+                            </select>
+                        </div>
+                    </div>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp复制到
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                         <div class="layui-input-inline">
+                            <select name="batchId"lay-filter="cbuNewBatch" id="cbuNewBatch">
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                 </div>
+
+            </div>
+
+            <input type="hidden" id="status" name="status" >
+           <div class="layui-form-item febs-hide">
+                                    <button class="layui-btn" lay-submit="" lay-filter="standardFee-copy-form-submit" id="submit"></button>
+                                    <button type="reset" class="layui-btn" id="reset"></button>
+                            </div>
+
+    </form>
+
+
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate', 'xmSelect'], function () {
+
+
+
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            validate = layui.validate,
+            dataPermissionXmlSelect,
+            roleXmSelect,
+            deptXmlSelect;
+           form.verify(validate);
+        form.render();
+
+
+
+
+
+oldBatch();
+newBatch();
+function oldBatch() {
+    $.ajax({
+        type:"get",
+        url:"standardFee/oldBatchAll",
+        success:function (res) {
+            console.log("res:"+res)
+                    var data = res.data;
+                    if(data.length>0){
+                        let optc="<option value='0'>请选择批次</option>";
+                        for (var i=0;i<data.length;i++){
+                            var oldbatch = data[i];
+                            optc=optc+"<option value='"+oldbatch.id+"'>"+oldbatch.batchName+"</option>";
+
+                        }
+                        $("#cbuOldBatch").html(optc);
+                    }else {
+                        let optc1="<option >无记录</option>";
+                         $("#cbuOldBatch").html(optc1);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+        }
+
+
+    })
+}
+
+function newBatch() {
+    $.ajax({
+        type:"get",
+        url:"standardFee/newBatchAll",
+        success:function (res) {
+            console.log("res:"+res)
+                    var data = res.data;
+                    if(data.length>0){
+                        let optl="<option value='0'>请选择批次</option>";
+                        for (var i=0;i<data.length;i++){
+                            var newbatch = data[i];
+                            optl=optl+"<option value='"+newbatch.id+"'>"+newbatch.batchName+"</option>";
+
+                        }
+                        $("#cbuNewBatch").html(optl);
+                    }else {
+                        let opt1="<option >无记录</option>";
+                         $("#cbuNewBatch").html(optl);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+        }
+
+
+    })
+}
+
+ form.on("select(cbuNewBatch)",function () {
+                var bid=$("#cbuNewBatch").val();
+                console.log(bid+"状态")
+     $.ajax({
+         type:"get",
+         url:"standardFee/verify",
+
+         data:{"id":bid},
+         success:function (res) {
+
+             $("#status").val(res.data);
+
+         }
+
+
+     })
+
+
+            })
+
+        form.on('submit(standardFee-copy-form-submit)', function (data) {
+
+            if($("#cbuOldBatch").val()==0||$("#cbuNewBatch").val()==0){
+                 layer.alert("请选择批次");
+                return false;
+
+            }
+            if($("#cbuOldBatch").val()==$("#cbuNewBatch").val()){
+                layer.alert("所选批次不能相同");
+                return false;
+
+            }
+            if($("#status").val()>0){
+                febs.modal.confirm('复制套内缴费信息', '所选批次已存在套内缴费信息确定覆盖？', function () {
+                     copystandard();
+
+
+
+
+
+                });
+
+            }else {
+                febs.modal.confirm('复制套内缴费信息', '确定复制所选批次套内缴费信息？', function () {
+                    copystandard();
+
+
+
+
+
+
+
+                });
+
+            }
+
+            return false;
+        });
+function  copystandard() {
+    var oldid= $("#cbuOldBatch").val();
+   var newid= $("#cbuNewBatch").val();
+    $.ajax({
+        type:"get",
+        url:"standardFee/copy",
+        data:{"oldid":oldid,"newid":newid},
+        success:function (res) {
+            console.log("ssssssssssssss"+res.data);
+            if(res.data>0){
+                 layer.closeAll();
+                febs.alert.success('复制成功');
+                 $('#businesses-standardFee').find('#query').click();
+
+
+            }else {
+
+                   layer.closeAll();
+                febs.alert.success('复制失败');
+                 $('#businesses-standardFee').find('#query').click();
+            }
+
+        }
+    })
+    
+}
+
+
+    });
+</script>

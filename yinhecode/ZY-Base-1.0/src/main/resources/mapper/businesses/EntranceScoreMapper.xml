@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.EntranceScoreMapper">
+
+    <select id="getSequence" resultType="String">
+            SELECT
+					GROUP_CONCAT(DISTINCT
+					CONCAT(
+						'MAX(IF(c.`SUBJECT` = ''',
+						c.`SUBJECT`,
+						''', b.SCORE, 0)) AS ''',
+						c.`ALIAS`, ''''
+					)
+				)
+				FROM t_student a,t_entrance_score b,t_test_subject c
+				WHERE a.IDENTITY=b.IDENTITY
+				AND a.BATCH_ID=b.BATCH_ID
+				AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+				AND b.SUBJECT_ID=c.ID
+      <if test="entranceScore.levelId!=null and entranceScore.levelId!=''">
+        AND b.LEVEL=#{entranceScore.levelId}
+      </if>
+      <if test="entranceScore.subtypeId!=null and entranceScore.subtypeId!=''">
+        AND b.SUBTYPE_ID=#{entranceScore.subtypeId}
+      </if>
+    </select>
+
+    <select id="getAllSequence" resultType="String">
+            SELECT
+					GROUP_CONCAT(DISTINCT
+					CONCAT(
+						'MAX(IF(c.`SUBJECT` = ''',
+						c.`SUBJECT`,
+						''', b.SCORE, 0)) AS ''',
+						c.`ALIAS`, ''''
+					)
+				)
+				FROM t_test_subject c,t_entrance_score b
+				WHERE
+				b.SUBJECT_ID=c.ID
+    </select>
+
+  <select id="exportList" resultType="EntranceScore">
+        Select b.ID,e.BATCH_NAME,a.STU_NAME,a.IDENTITY,f.name as collegeName,a.LEVEL,d.FULL_NAME,d.ID as SUBTYPE_ID,
+        ${sql},g.LEVEL_NAME as levelName,b.BATCH_ID,b.STUDY_TYPE_ID,a.TEL,h.`STATUS`
+        FROM t_student a,t_entrance_score b,t_test_subject c,
+        t_subject_category d,t_batch e,t_college f,t_level g,t_entrytest_score h
+        WHERE a.IDENTITY=b.IDENTITY
+        AND a.BATCH_ID=b.BATCH_ID
+        AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        AND b.SUBJECT_ID=c.ID
+        AND b.BATCH_ID=e.ID
+        AND d.ID=b.SUBTYPE_ID
+        AND f.ID=a.COLLEGE_ID
+        AND b.LEVEL=g.ID
+        AND h.IDENTITY=b.IDENTITY
+        AND h.BATCH_ID=b.BATCH_ID
+        AND h.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        <if test="entranceScore.subtypeId!=null and entranceScore.subtypeId!=''">
+          AND b.SUBTYPE_ID=#{entranceScore.subtypeId}
+        </if>
+        <if test="entranceScore.batchId!=null and entranceScore.batchId!=''">
+          AND b.BATCH_ID=#{entranceScore.batchId}
+        </if>
+        <if test="entranceScore.collegeId!=null and entranceScore.collegeId!=''">
+          AND a.COLLEGE_ID=#{entranceScore.collegeId}
+        </if>
+        <if test="entranceScore.levelId!=null and entranceScore.levelId!=''">
+          AND b.LEVEL=#{entranceScore.levelId}
+        </if>
+        <if test="entranceScore.status!=null and entranceScore.status!=''">
+          AND h.STATUS=#{entranceScore.status}
+        </if>
+        <if test="entranceScore.stuName!=null and entranceScore.stuName!=''">
+          AND a.STU_NAME like concat('%',#{entranceScore.stuName},'%')
+        </if>
+        <if test="entranceScore.identity!=null and entranceScore.identity!=''">
+          AND b.IDENTITY like concat('%',#{entranceScore.identity},'%')
+        </if>
+        GROUP BY a.IDENTITY
+  </select>
+
+    <select id="findList" resultType="EntranceScore">
+        Select b.ID,e.BATCH_NAME,a.STU_NAME,a.IDENTITY,f.name as collegeName,a.LEVEL,d.FULL_NAME,d.ID as SUBTYPE_ID,
+        ${sql},g.LEVEL_NAME as levelName,b.BATCH_ID,b.STUDY_TYPE_ID,a.TEL,h.`STATUS`
+        FROM t_student a,t_entrance_score b,t_test_subject c,
+        t_subject_category d,t_batch e,t_college f,t_level g,t_entrytest_score h
+        WHERE a.IDENTITY=b.IDENTITY
+        AND a.BATCH_ID=b.BATCH_ID
+        AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        AND b.SUBJECT_ID=c.ID
+        AND b.BATCH_ID=e.ID
+        AND d.ID=b.SUBTYPE_ID
+        AND f.ID=a.COLLEGE_ID
+        AND b.LEVEL=g.ID
+        AND h.IDENTITY=b.IDENTITY
+        AND h.BATCH_ID=b.BATCH_ID
+        AND h.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        <if test="entranceScore.subtypeId!=null and entranceScore.subtypeId!=''">
+            AND b.SUBTYPE_ID=#{entranceScore.subtypeId}
+        </if>
+        <if test="entranceScore.batchId!=null and entranceScore.batchId!=''">
+            AND b.BATCH_ID=#{entranceScore.batchId}
+        </if>
+        <if test="entranceScore.collegeId!=null and entranceScore.collegeId!=''">
+            AND a.COLLEGE_ID=#{entranceScore.collegeId}
+        </if>
+        <if test="entranceScore.levelId!=null and entranceScore.levelId!=''">
+            AND b.LEVEL=#{entranceScore.levelId}
+        </if>
+        <if test="entranceScore.status!=null and entranceScore.status!=''">
+            AND h.STATUS=#{entranceScore.status}
+        </if>
+        <if test="entranceScore.stuName!=null and entranceScore.stuName!=''">
+            AND a.STU_NAME like concat('%',#{entranceScore.stuName},'%')
+        </if>
+        <if test="entranceScore.identity!=null and entranceScore.identity!=''">
+            AND b.IDENTITY like concat('%',#{entranceScore.identity},'%')
+        </if>
+        GROUP BY a.IDENTITY
+    </select>
+
+    <select id="countEntranceScoreDetail" resultType="Long">
+        Select COUNT(DISTINCT a.STU_NAME,a.IDENTITY,a.STUDY_TYPE_ID)
+        FROM t_student a,t_entrance_score b,t_test_subject c,
+        t_subject_category d,t_batch e,t_college f
+        WHERE a.IDENTITY=b.IDENTITY
+        AND a.BATCH_ID=b.BATCH_ID
+        AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        AND b.SUBJECT_ID=c.ID
+        AND b.BATCH_ID=e.ID
+        AND d.ID=b.SUBTYPE_ID
+        AND f.ID=a.COLLEGE_ID
+        <if test="entranceScore.subtypeId!=null and entranceScore.subtypeId!=''">
+            AND d.ID=#{entranceScore.subtypeId}
+        </if>
+        <if test="entranceScore.batchId!=null and entranceScore.batchId!=''">
+            AND b.BATCH_ID=#{entranceScore.batchId}
+        </if>
+        <if test="entranceScore.collegeId!=null and entranceScore.collegeId!=''">
+            AND a.COLLEGE_ID=#{entranceScore.collegeId}
+        </if>
+        <if test="entranceScore.levelId!=null and entranceScore.levelId!=''">
+            AND a.LEVEL=#{entranceScore.levelId}
+        </if>
+        <if test="entranceScore.stuName!=null and entranceScore.stuName!=''">
+            AND a.STU_NAME=#{entranceScore.stuName}
+        </if>
+        <if test="entranceScore.identity!=null and entranceScore.identity!=''">
+            AND b.IDENTITY like concat('%',#{entranceScore.identity},'%')
+        </if>
+
+    </select>
+
+    <select id="getStuTotalScore" resultType="Integer">
+        Select SUM(b.SCORE)
+        FROM t_student a,t_entrance_score b,t_test_subject c,
+        t_subject_category d,t_batch e,t_college f
+        WHERE a.IDENTITY=b.IDENTITY
+        AND a.BATCH_ID=b.BATCH_ID
+        AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        AND b.SUBJECT_ID=c.ID
+        AND b.BATCH_ID=e.ID
+        AND d.ID=b.SUBTYPE_ID
+        AND f.ID=a.COLLEGE_ID
+        AND d.ID=#{entranceScore.subtypeId}
+        AND e.BATCH_NAME=#{entranceScore.batchName}
+        AND b.IDENTITY=#{entranceScore.identity}
+    </select>
+
+    <select id="getBatchs" resultType="EntranceScore">
+        SELECT ID,BATCH_NAME FROM t_batch where STATUS='y'
+    </select>
+
+    <select id="getCollegesByBatchId" parameterType="Integer" resultType="EntranceScore">
+        SELECT a.id,a.name from t_college a,t_teach_program b
+            where b.COLLEGE_ID=a.id and b.BATCH_ID=#{batchId}
+            GROUP BY a.name
+    </select>
+
+    <insert id="insertEntrance">
+        insert into t_entrance_score(`IDENTITY`,BATCH_ID,STUDY_TYPE_ID,`LEVEL`,SUBTYPE_ID,SUBJECT_ID,SCORE)
+        VALUES (#{entranceScore.identity},#{entranceScore.batchId},1,#{entranceScore.levelId},#{entranceScore.subtypeId},#{entranceScore.subjectId},#{score})
+    </insert>
+
+    <select id="checkUnique" resultType="EntranceScore">
+        select a.ID from t_entrance_score a,t_batch b where a.BATCH_ID=b.ID
+         and a.IDENTITY=#{identity}
+         and b.BATCH_NAME=#{batchName}
+    </select>
+
+    <select id="getEntranceById" resultType="EntranceScore">
+        select * from t_entrance_score where id=#{id}
+    </select>
+
+    <select id="getEntranceScoreByIds" resultType="EntranceScore">
+        select a.ID,b.`SUBJECT`,a.SCORE from t_entrance_score a,t_test_subject b
+        where a.SUBJECT_ID=b.ID
+        AND a.BATCH_ID=#{entranceScore.batchId}
+        and a.`IDENTITY`=#{entranceScore.identity}
+        and a.STUDY_TYPE_ID=#{entranceScore.studyTypeId}
+    </select>
+
+    <select id="getTotalScore" parameterType="EntranceScore" resultType="EntrytestScore">
+        SELECT * FROM t_entrytest_score WHERE `IDENTITY`=#{entranceScore.identity}
+        AND BATCH_ID=#{entranceScore.batchId} AND STUDY_TYPE_ID=#{entranceScore.studyTypeId}
+    </select>
+
+    <update id="changeEntranceScoreStatus" >
+        update t_entrytest_score
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entranceScore.status!=null and entranceScore.status!=''">
+                STATUS = #{entranceScore.status},
+            </if>
+            <if test="entranceScore.remark!=null and entranceScore.remark!=''">
+                REMARK = #{entranceScore.remark},
+            </if>
+        </trim>
+        where BATCH_ID=#{entranceScore.batchId}
+        and `IDENTITY`=#{entranceScore.identity}
+        and STUDY_TYPE_ID=#{entranceScore.studyTypeId}
+    </update>
+
+    <select id="getEntranceScoreInfo" resultType="EntranceScore">
+        SELECT b.STU_NAME,a.IDENTITY,b.TEL,c.`name` as collegeName,d.ADDSCOREITEM,d.TOTALSCORE,d.FINALSCORE,d.REMARK FROM
+            t_entrance_score a,t_student b,t_college c,t_entrytest_score d
+            WHERE a.IDENTITY=b.IDENTITY
+            AND a.BATCH_ID=b.BATCH_ID
+            AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+            AND b.COLLEGE_ID=c.ID
+            AND a.IDENTITY=d.IDENTITY
+            AND a.BATCH_ID=d.BATCH_ID
+            AND a.STUDY_TYPE_ID=d.STUDY_TYPE_ID
+            AND a.IDENTITY=#{entranceScore.identity}
+            AND a.BATCH_ID=#{entranceScore.batchId}
+            AND a.STUDY_TYPE_ID=#{entranceScore.studyTypeId}
+            GROUP BY a.IDENTITY
+    </select>
+    <select id="getSequenceNecessary" parameterType="EntranceScore" resultType="EntranceScore">
+        SELECT
+					c.`SUBJECT`,b.SCORE,c.`ALIAS`
+				FROM t_student a,t_entrance_score b,t_test_subject c
+				WHERE a.IDENTITY=b.IDENTITY
+				AND a.BATCH_ID=b.BATCH_ID
+				AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+				AND b.SUBJECT_ID=c.ID
+      <if test="entranceScore.levelId!=null and entranceScore.levelId!=''">
+        AND b.LEVEL=#{entranceScore.levelId}
+      </if>
+      <if test="entranceScore.subtypeId!=null and entranceScore.subtypeId!=''">
+        AND b.SUBTYPE_ID=#{entranceScore.subtypeId}
+      </if>
+    </select>
+
+    <insert id="addEntranceList" parameterType="list">
+        INSERT INTO t_entrance_score VALUES
+        <foreach collection="entranceList" index="index" item="item" separator=",">
+            (
+            null,#{item.identity},#{item.batchId},1,#{item.levelId},
+            #{item.subtypeId},#{item.subjectId},#{item.score},null
+            )
+        </foreach>
+    </insert>
+
+    <insert id="addErrorLogList" parameterType="list">
+        INSERT INTO t_error_log VALUES
+        <foreach collection="errorLogList" index="index" item="item" separator=",">
+            (
+            null,#{item.errorColumn},#{item.errorRow},#{item.reason},
+            #{item.createTime},#{item.fileName},#{item.remark},#{item.unique}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="addEntryTestList" parameterType="list">
+        INSERT INTO t_entrytest_score VALUES
+        <foreach collection="entryTestList" index="index" item="item" separator=",">
+            (
+            null,#{item.identity},1,#{item.batchId},
+            #{item.addscoreitem},#{item.totalscore},#{item.finalscore},null,null
+            )
+        </foreach>
+    </insert>
+
+    <select id="getErrorLogs" parameterType="String" resultType="ErrorLog">
+        select * from t_error_log where `UNIQUE`=#{unique}
+    </select>
+
+    <select id="getErrorLogsDetail" parameterType="String" resultType="Long">
+        select count(1) from t_error_log where `UNIQUE`=#{unique}
+    </select>
+
+</mapper>

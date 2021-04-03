@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.TermScoreMapper">
+    <select id="getTermScoreList" parameterType="TermScore" resultType="TermScore">
+        SELECT a.ID,i.DETAIL as studyType,g.BATCH_NAME,b.STU_NAME,a.IDENTITY,b.TEL,c.`name` as collegeName,d.LEVEL_NAME,e.FULL_NAME as
+        majorName,h.COURSE_NAME,f.SEMESTER_NAME as termName,a.SCORE,a.ISEXAM,a.STATUS FROM
+        t_term_score a,t_student b,t_college c,t_level d,t_major e,t_college_term f,t_batch g,t_teach_program h,t_dic i
+        WHERE a.BATCH_ID=b.BATCH_ID
+        AND a.IDENTITY=b.IDENTITY
+        AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        AND b.COLLEGE_ID=c.ID
+        AND b.`LEVEL`=d.ID
+        AND b.MAJOR_ID=e.ID
+        AND a.TERM_ID=f.ID
+        AND a.BATCH_ID=g.ID
+        and a.COURSE_ID=h.ID
+        and a.STUDY_TYPE_ID=i.ID
+        <if test="termScore.collegeId!=null and termScore.collegeId!=''">
+            AND b.COLLEGE_ID=#{termScore.collegeId}
+        </if>
+        <if test="termScore.batchId!=null and termScore.batchId!=''">
+            AND a.BATCH_ID=#{termScore.batchId}
+        </if>
+        <if test="termScore.levelId!=null and termScore.levelId!=''">
+            AND b.LEVEL=#{termScore.levelId}
+        </if>
+        <if test="termScore.courseId!=null and termScore.courseId!=''">
+            AND a.COURSE_ID=#{termScore.courseId}
+        </if>
+        <if test="termScore.majorId!=null and termScore.majorId!=''">
+            AND e.ID=#{termScore.majorId}
+        </if>
+        <if test="termScore.isexam!=null and termScore.isexam!=''">
+            AND a.ISEXAM=#{termScore.isexam}
+        </if>
+        <if test="termScore.STATUS!=null and termScore.STATUS!=''">
+            AND a.STATUS=#{termScore.status}
+        </if>
+        <if test="termScore.termId!=null and termScore.termId!=''">
+            AND a.TERM_ID=#{termScore.termId}
+        </if>
+        <if test="termScore.tel!=null and termScore.tel!=''">
+            AND b.TEL like concat('%',#{termScore.tel},'%')
+        </if>
+        <if test="termScore.identity!=null and termScore.identity!=''">
+            AND a.IDENTITY like concat('%',#{termScore.identity},'%')
+        </if>
+        <if test="termScore.stuName!=null and termScore.stuName!=''">
+            AND b.STU_NAME like concat('%',#{termScore.stuName},'%')
+        </if>
+    </select>
+
+    <select id="countTermScoreDetail" parameterType="TermScore" resultType="long">
+        SELECT count(1) FROM
+        t_term_score a,t_student b,t_college c,t_level d,t_major e,t_college_term f,t_batch g
+        WHERE a.BATCH_ID=b.BATCH_ID
+        AND a.IDENTITY=b.IDENTITY
+        AND a.STUDY_TYPE_ID=b.STUDY_TYPE_ID
+        AND b.COLLEGE_ID=c.ID
+        AND b.`LEVEL`=d.ID
+        AND b.MAJOR_ID=e.ID
+        AND a.TERM_ID=f.ID
+        AND a.BATCH_ID=g.ID
+        <if test="termScore.collegeId!=null and termScore.collegeId!=''">
+            AND b.COLLEGE_ID=#{termScore.collegeId}
+        </if>
+        <if test="termScore.batchId!=null and termScore.batchId!=''">
+            AND a.BATCH_ID=#{termScore.batchId}
+        </if>
+        <if test="termScore.levelId!=null and termScore.levelId!=''">
+            AND b.LEVEL=#{termScore.levelId}
+        </if>
+        <if test="termScore.courseId!=null and termScore.courseId!=''">
+            AND a.COURSE_ID=#{termScore.courseId}
+        </if>
+        <if test="termScore.majorId!=null and termScore.majorId!=''">
+            AND e.ID=#{termScore.majorId}
+        </if>
+        <if test="termScore.isexam!=null and termScore.isexam!=''">
+            AND a.ISEXAM=#{termScore.isexam}
+        </if>
+        <if test="termScore.STATUS!=null and termScore.STATUS!=''">
+            AND a.STATUS=#{termScore.status}
+        </if>
+        <if test="termScore.termId!=null and termScore.termId!=''">
+            AND a.TERM_ID=#{termScore.termId}
+        </if>
+        <if test="termScore.tel!=null and termScore.tel!=''">
+            AND b.TEL like concat('%',#{termScore.tel},'%')
+        </if>
+        <if test="termScore.identity!=null and termScore.identity!=''">
+            AND a.IDENTITY like concat('%',#{termScore.identity},'%')
+        </if>
+        <if test="termScore.stuName!=null and termScore.stuName!=''">
+            AND b.STU_NAME like concat('%',#{termScore.stuName},'%')
+        </if>
+    </select>
+
+    <select id="getLevelListByCollegeId" resultType="Level">
+        SELECT DISTINCT a.LEVEL_ID as ID,b.LEVEL_NAME FROM t_teach_program a,t_level b
+        WHERE a.LEVEL_ID=b.ID AND a.COLLEGE_ID=#{collegeId}
+    </select>
+
+    <select id="getMajorListByIds" resultType="Major">
+        SELECT DISTINCT a.MAJOR_ID as ID,b.FULL_NAME FROM t_teach_program a,t_major b
+            WHERE a.MAJOR_ID=b.ID
+            AND COLLEGE_ID=#{collegeId} AND LEVEL_ID=#{levelId}
+    </select>
+
+    <select id="getCourseNameByIds" resultType="TeachProgram">
+        SELECT ID,COURSE_NAME FROM t_teach_program WHERE COLLEGE_ID=#{collegeId} AND LEVEL_ID=#{levelId} AND MAJOR_ID=#{majorId} AND ABSO_SEM_ID=#{termId}
+    </select>
+
+    <select id="getTermsByLevelId" resultType="CollegeTerm">
+        SELECT ID,SEMESTER_NAME FROM t_college_term
+    </select>
+
+
+
+    <select id="getBatchIdByBatchName" parameterType="String" resultType="Integer">
+        SELECT ID FROM t_batch WHERE BATCH_NAME=#{batchName}
+    </select>
+
+    <select id="getStudyTypeIdByStudyType" parameterType="String" resultType="Integer">
+        SELECT ID FROM t_dic WHERE DETAIL=#{studyType}
+    </select>
+
+    <select id="getTermIdByTermName" parameterType="String" resultType="Integer">
+        SELECT ID FROM t_college_term WHERE SEMESTER_NAME=#{termName}
+    </select>
+
+    <select id="getYearIdByYearName" parameterType="String" resultType="Integer">
+        SELECT ID FROM t_college_year WHERE YEAR_NAME=#{yearName}
+    </select>
+
+    <select id="getTermIdsByPrimery" resultType="TermScore">
+        SELECT BATCH_ID,IDENTITY,STUDY_TYPE_ID,MAJOR_ID,`LEVEL` as levelId,COLLEGE_ID
+            FROM t_student
+            WHERE BATCH_ID=#{batchId}
+            AND STUDY_TYPE_ID=#{studyTypeId}
+            AND `IDENTITY`=#{identity}
+    </select>
+
+    <select id="getCourseIdAndSubTypeIdByCourseName" parameterType="TermScore" resultType="TeachProgram">
+        SELECT ID,TYPE_ID FROM t_teach_program
+            WHERE BATCH_ID=#{termScore.batchId}
+            AND COLLEGE_ID=#{termScore.collegeId}
+            AND MAJOR_ID=#{termScore.majorId}
+            AND LEVEL_ID=#{termScore.levelId}
+            AND ABSO_SEM_ID=#{termScore.termId}
+            AND COURSE_NAME=#{termScore.courseName}
+    </select>
+
+    <insert id="addtermScoreList" parameterType="list">
+        INSERT INTO t_term_score VALUES
+        <foreach collection="termScoreList" index="index" item="item" separator=",">
+            (
+            null,#{item.identity},#{item.batchId},#{item.studyTypeId},#{item.subtypeId},#{item.termId},
+            #{item.courseId},#{item.isexam},#{item.score},#{item.status}
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="checkTermScoreUnique" parameterType="TermScore" resultType="Integer">
+           SELECT ID FROM t_term_score WHERE BATCH_ID=#{termScore.batchId}
+               AND STUDY_TYPE_ID=#{termScore.studyTypeId}
+               AND SUBTYPE_ID=#{termScore.subtypeId}
+               AND TERM_ID=#{termScore.termId}
+               AND COURSE_ID=#{termScore.courseId}
+    </select>
+</mapper>

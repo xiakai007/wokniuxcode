@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+<title>蜗牛商城结算页面</title>
+<style type="text/css">
+	.pagerlist{
+		width:860px;
+		display:flex;
+		justify-content:center;
+		border-radius:5px;
+	}
+	.block{
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		float:left;
+		width: 30px;
+		height:30px;
+		border:1px solid grey;
+		text-align:center;
+		margin-right: 3px;
+		border-radius:8px;
+	}
+	.block1{
+		display:flex;
+		justify-content:center;
+		float:left;
+		width: 60px;
+		height:30px;
+		border:1px solid grey;
+		margin-right: 3px;
+		align-items:center;
+		border-radius:8px;
+		background-color: #357EBD;
+		color:white;
+	}
+	.currentCls{
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		float:left;
+		width: 30px;
+		height:30px;
+		border:1px solid grey;
+		text-align:center;
+		margin-right: 3px;
+		border-radius:8px;
+		background-color: olive;
+	}
+	.currentCls a{
+		color:white;
+	}
+	a:hover{
+		color:black;
+	}
+</style>
+</head>
+<body>
+	<div th:insert="~{commons::head}"></div>
+	<div style="padding-left: 100px;">
+        	<div>
+        		<table class="table table-striped table-hover table-bordered" style="width:80%;">
+        			<thead>
+        				<tr>
+        					<th></th>
+        					<th>收货人</th>
+        					<th>收货电话</th>
+        					<th>省份</th>
+        					<th>城市</th>
+        					<th>区域</th>
+        					<th>详细地址</th>
+        				</tr>
+        			</thead>
+        			<tbody>
+        				
+        			</tbody>
+        		</table>
+        	</div>
+        	<div>
+        		支付方式：
+        		<input type="radio" name="paymethod"/>微信支付
+        		<input type="radio" name="paymethod"/>支付宝支付
+        	</div>
+        	<table class="table table-striped table-hover table-bordered" style="width:90%;">
+        		<thead>
+        			<tr>
+	        			<th>图片</th>
+	        			<th>商品名称</th>
+	        			<th>单价</th>
+	        			<th>数量</th>
+	        			<th>小计</th>
+        			</tr>
+        		</thead>
+        		<tbody id="tbody1">
+        			<tr th:each="cart:${pageBean.data}">
+        				<td>
+        					<img alt="" th:src="${cart.goods.image}" width="80px" height="80px">
+        				</td>
+        				<td th:text="${cart.goods.name}"></td>
+        				<td>
+        					<span th:text="${cart.goods.salesprice}"></span>
+        				</td>
+        				<td>
+        					<span th:text="${cart.nums}"></span>
+        				</td>
+        				<td>
+        					<span style="color: #FF0000;font-size: larger;">¥</span>
+        					<span class="myspa" th:text="${cart.goods.salesprice*cart.nums}" style="color: #FF0000;font-size: small;"></span>
+        				</td>
+        			</tr>
+        		</tbody>
+        		<tfoot>
+        			<tr class="total">
+        				<td colspan="7" align="right">
+        					金额合计（不含运费）：
+        					<span style="color: #FF0000;font-size: xx-larger;">¥</span>
+        					<span style="color: #FF0000;font-size: xx-larger;" class="totalMoney"></span>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td colspan="7" align="right">
+        					<button type="button" class="btn btn-default">继续购物</button>
+        					<button type="button" class="btn btn-primary btn-lg">去结算&nbsp;&nbsp;<span class="glyphicon glyphicon-forward"></span></button>
+        				</td>
+        			</tr>
+        		</tfoot>
+        </table>
+        <div class="pagerlist">
+						<div class="block1" th:if="${pageBean.previous}">
+							<a th:href="@{cart(oper='goToCart',currentPage=${pageBean.currentPage-1})}">
+								<div style="color:white;">
+									<span class="glyphicon glyphicon-chevron-left"></span>上一页
+								</div>
+							</a>
+						</div>
+						<div class="block" th:each="i:${#numbers.sequence(pageBean.start,pageBean.end)}"
+						th:class="${pageBean.currentPage==i?'currentCls':'block'}">
+							<a th:href="@{cart(oper='goToCart',currentPage=${i})}">
+								<div th:text="${i}"></div>
+							</a>
+						</div>
+						<div class="block1" th:if="${pageBean.next}">
+							<a th:href="@{cart(oper='goToCart',currentPage=${pageBean.currentPage+1})}">
+								<div style="color:white;">	
+									下一页<span class="glyphicon glyphicon-chevron-right"></span>
+								</div>
+							</a>
+						</div>
+		</div>
+    </div>
+    <div th:insert="~{commons::foot}"></div>
+	<script type="text/javascript" th:src="@{/resources/js/jquery-1.12.3.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/resources/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+		//loadCartList();
+		minus();
+		function minus(){
+				$("input[value='-']").click(function(){
+					var $txt=$(this).next("input");
+					var num=parseInt($txt.val());
+					if(num-1>=0){
+						$txt.val(num-1);
+					}
+					var buynum=$(this).next("input").val();
+					var price=$(this).parent().prev().text();
+					$(this).parent().next().find(".myspa").text(buynum*price);
+					getTotalMoney();
+				});
+		}
+		add();
+		function add(){
+				$("input[value='+']").click(function(){
+					var $txt=$(this).prev("input");
+					var num=parseInt($txt.val());
+					$txt.val(num+1);
+					var buynum=$(this).prev("input").val();
+					var price=$(this).parent().prev().text();
+					$(this).parent().next().find(".myspa").text(buynum*price);
+					/*$(this).parent().next().find(":hidden[name=subtotal]").val(buynum*price);*/
+					getTotalMoney();
+				});
+		}
+		deleteCartGoods();
+		function deleteCartGoods(){
+			$("button[name=goods_delete-btn]").click(function(){
+				if(confirm("确认删除？")){
+					var goodsid=$(this).parents("tr").find(":hidden[name=goodsid]").val();
+					console.log(goodsid);
+					$.ajax({
+						type:"post",
+						url:"cart",
+						data:{"oper":"deleteCartGoods","goodsid":goodsid},
+						error:function(){
+							alert("错误");
+						},
+						success:function(data){
+							alert(data);
+							//loadCartList();
+							window.location.reload();
+						}
+					});
+				}
+				
+			});
+		}
+		selectAllAndInverseCart();
+		function selectAllAndInverseCart(){
+			$(":checkbox[name=selectAll]").click(function(){
+				var flag=$(this).prop("checked");
+				$(":checkbox[name=mycheckbox]").prop("checked",flag);
+				getTotalMoney();
+			});
+			$(":button[value='反选']").click(function(){
+				$(":checkbox[name=mycheckbox]").each(function(){
+					$(":checkbox[name=selectAll]").removeProp("checked");
+					if($(this).prop("checked")){
+						$(this).removeProp("checked");
+						getTotalMoney();
+					}else{
+						$(this).prop("checked","true");
+						getTotalMoney();
+					}
+				});
+			});
+		}
+		$(".checkboxmy").click(function(){
+			getTotalMoney();
+		});
+		function getTotalMoney(){
+			var totalMoney=0;
+			$(".checkboxmy").each(function(){
+				if(this.checked){
+					/*var subTotal=$(this).parents("tr").find(":hidden[name=subtotal]").val();*/
+					var subTotal=$(this).parents("tr").find(".myspa").text();
+					console.log(subTotal);
+					totalMoney+=Number(subTotal);
+				}
+			});
+			$(".totalMoney").text(totalMoney);
+		}
+	</script>
+</body>
+</html>

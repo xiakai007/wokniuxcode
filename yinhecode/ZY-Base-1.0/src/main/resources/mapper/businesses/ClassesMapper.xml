@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.ClassesMapper">
+
+	<select id="selectClassesById" parameterType="int" resultType="cc.zy.base.businesses.entity.Classes">
+        SELECT
+			cs.ID id,
+			cs.CLASS_NAME className,
+			b.BATCH_NAME batchName,
+			c.`name` collegeName,
+			l.LEVEL_NAME levelName,
+			m.FULL_NAME majorName,
+			u.USERNAME userName,
+			u2.USERNAME createUserName,
+			cs.CREATE_TIME,
+			cs.REMARK
+		FROM
+			t_classes cs
+			LEFT JOIN t_batch b ON (b.ID=cs.BATCH_ID)
+			LEFT JOIN t_college c ON (c.id=cs.COLLEGE_ID)
+			LEFT JOIN t_level l ON (l.ID=cs.LEVEL_ID)
+			LEFT JOIN t_major m ON (m.ID=cs.MAJOR_ID)
+			LEFT JOIN t_user u ON (u.USER_ID=cs.USER_ID)
+			LEFT JOIN t_user u2 ON (u2.USER_ID=cs.CREATE_USER_ID)
+		<where>
+			<if test="classesId!=null and classesId!=''">
+				AND cs.ID=#{classesId}
+			</if>
+		</where>
+    </select>
+
+	<sql id="countClassesDetailSql" >
+		SELECT
+			COUNT(1)
+		FROM
+			t_classes T
+		WHERE 1 = 1
+			<if test="classes.batchId != null and classes.batchId != 0" >
+				AND T.BATCH_ID = #{classes.batchId}
+			</if>
+			<if test="classes.collegeId != null and classes.collegeId != 0 ">
+				AND T.COLLEGE_ID = #{classes.collegeId}
+			</if>
+			<if test="classes.levelId != null and classes.levelId != 0">
+				AND T.LEVEL_ID = #{classes.levelId}
+			</if>
+			<if test="classes.majorId != null and classes.majorId != 0 ">
+				AND T.MAJOR_ID = #{classes.majorId}
+			</if>
+			<if test="classes.userId != null and classes.userId != 0">
+				AND T.USER_ID = #{classes.userId}
+			</if>
+
+	</sql>
+
+	<sql id="findClassesDetailSql">
+		SELECT
+			T.ID,
+			T.CLASS_NAME,
+			T.COLLEGE_ID,
+			T.BATCH_ID,
+			T.USER_ID,
+			T.LEVEL_ID,
+			T.MAJOR_ID,
+			T.CREATE_USER_ID,
+			T.CREATE_TIME,
+			T.REMARK,
+			T1.username userName,
+			T2.username createUserName,
+			T3.BATCH_NAME batchName,
+			T4.LEVEL_Name levelName,
+			T5.FULL_NAME majorName,
+			T6.name collegeName,
+			( SELECT COUNT( 1 ) FROM t_student WHERE CLASS_ID = T.id ) stuNum
+		FROM
+			t_classes T
+			LEFT JOIN t_user T1 ON (T.USER_ID = T1.user_id)
+			LEFT JOIN t_user T2 ON (T.CREATE_USER_ID = T2.user_id)
+			LEFT JOIN t_major T5 ON (T.MAJOR_ID = T5.ID)
+			LEFT JOIN t_level T4 ON (T.LEVEL_ID = T4.ID)
+			LEFT JOIN t_college T6 ON (T.COLLEGE_ID = T6.id)
+			LEFT JOIN t_batch T3 ON (T.BATCH_ID = T3.ID)
+		WHERE 1 = 1
+			<if test="classes.batchId != null and classes.batchId != 0" >
+				AND T.BATCH_ID = #{classes.batchId}
+			</if>
+			<if test="classes.collegeId != null and classes.collegeId != 0 ">
+				AND T.COLLEGE_ID = #{classes.collegeId}
+			</if>
+			<if test="classes.levelId != null and classes.levelId != 0">
+				AND T.LEVEL_ID = #{classes.levelId}
+			</if>
+			<if test="classes.majorId != null and classes.majorId != 0 ">
+				AND T.MAJOR_ID = #{classes.majorId}
+			</if>
+			<if test="classes.userId != null and classes.userId != 0">
+				AND T.USER_ID = #{classes.userId}
+			</if>
+	</sql>
+
+	<select id="findClassesByCls" parameterType="Classes" resultType="Classes">
+		<include refid="findClassesDetailSql"/>
+	</select>
+
+	<select id="findClassesDetailPage" parameterType="classes" resultType="classes">
+		<include refid="findClassesDetailSql"/>
+	</select>
+
+	<select id="countClassesDetail" parameterType="classes" resultType="long">
+		<include refid="countClassesDetailSql"/>
+	</select>
+
+	<select id="findById" parameterType="Integer" resultType="classes">
+		SELECT
+			T.ID,
+			T.CLASS_NAME,
+			T.COLLEGE_ID,
+			T.BATCH_ID,
+			T.USER_ID,
+			T.LEVEL_ID,
+			T.MAJOR_ID,
+			T.CREATE_USER_ID,
+			T.CREATE_TIME,
+			T.REMARK,
+			T1.username userName,
+			T2.username createUserName,
+			T3.BATCH_NAME batchName,
+			T4.LEVEL_Name levelName,
+			T5.FULL_NAME majorName,
+			T6.name collegeName,
+			( SELECT COUNT( 1 ) FROM t_student WHERE CLASS_ID = T.id ) stuNum
+		FROM
+			t_classes T
+			LEFT JOIN t_user T1 ON (T.USER_ID = T1.user_id)
+			LEFT JOIN t_user T2 ON (T.CREATE_USER_ID = T2.user_id)
+			LEFT JOIN t_batch T3 ON (T.BATCH_ID = T3.ID)
+			LEFT JOIN t_level T4 ON (T.LEVEL_ID = T4.ID)
+			LEFT JOIN t_major T5 ON (T.MAJOR_ID = T5.ID)
+			LEFT JOIN t_college T6 ON (T.COLLEGE_ID = T6.id)
+		WHERE 1 = 1
+			AND  T.id = #{classesId}
+	</select>
+
+	<select id="selectClassesByUniqueCode" resultType="java.lang.Integer">
+		SELECT
+		    ID
+		FROM
+		    t_classes
+		WHERE
+			BATCH_ID=#{classes.batchId} AND
+			COLLEGE_ID=#{classes.collegeId} AND
+			LEVEL_ID=#{classes.levelId} AND
+			MAJOR_ID=#{classes.majorId}
+	</select>
+
+	<select id="selectAllClasses" resultType="cc.zy.base.businesses.entity.Classes">
+		SELECT
+			class.ID,
+			class.CLASS_NAME,
+			class.BATCH_ID,
+			class.COLLEGE_ID,
+			class.LEVEL_ID,
+			class.MAJOR_ID,
+			class.USER_ID,
+			class.CREATE_USER_ID,
+			class.CREATE_TIME,
+			class.REMARK,
+			batch.BATCH_NAME batchName,
+			college.name collegeName
+		FROM
+		    t_classes class
+			LEFT JOIN t_batch batch ON (class.BATCH_ID=batch.ID)
+			LEFT JOIN t_college college ON (class.COLLEGE_ID=college.id)
+	</select>
+
+	<sql id="SearchWhereClause">
+		<where>
+			student.CLASS_ID IS NULL
+			<if test="student.batchId != null and student.batchId != ''">
+				AND student.BATCH_ID = #{student.batchId}
+			</if>
+			<if test="student.collegeId != null and student.collegeId != ''">
+				AND student.COLLEGE_ID = #{student.collegeId}
+			</if>
+			<if test="student.level != null and student.level != ''">
+				AND student.`LEVEL` = #{student.level}
+			</if>
+			<if test="student.majorId != null and student.majorId != ''">
+				AND student.MAJOR_ID = #{student.majorId}
+			</if>
+			<if test="student.userId != null and student.userId != ''">
+				AND pool.FOLLOW_USER_ID=#{student.userId}
+			</if>
+			<if test="student.stuName != null and student.stuName != ''">
+				AND student.STU_NAME LIKE CONCAT('%',trim(#{student.stuName}),'%')
+			</if>
+			<if test="student.identity != null and student.identity != ''">
+				AND student.IDENTITY LIKE CONCAT('%',trim(#{student.identity}),'%')
+			</if>
+			<if test="student.tel != null and student.tel != ''">
+				AND student.TEL LIKE CONCAT('%',trim(#{student.tel}),'%')
+			</if>
+		</where>
+	</sql>
+
+    <select id="findStudentInfoForClassGrouping" resultType="cc.zy.base.businesses.entity.Student">
+		SELECT
+			student.ID,
+			student.IDENTITY,
+			student.LEVEL,
+			student.STU_NUM,
+			student.COLLEGE_ID,
+			student.BATCH_ID,
+			student.MAJOR_ID,
+			student.STUDY_TYPE_ID,
+			student.CLASS_ID,
+			student.STU_NAME,
+			student.SEX_ID,
+			student.NATION,
+			student.NATIVE_CITY,
+			student.NATIVE_DISTRICT,
+			student.NATIVE_PROVINCE,
+			student.POLITICS_ID,
+			student.DIPLOMA_NUM,
+			student.GRADU_DATE,
+			student.ENROL_DATE,
+			student.TEL,
+			student.URGENCY_TEL,
+			student.EMAIL,
+			student.ADDRESS,
+			student.EXAM_LOCATION_ID,
+			student.IDEN_BEGIN_DATE,
+			student.IDEC_END_DATE,
+			student.WX_APP_OPENID,
+			student.STATUS_ID,
+			student.STAGE_ID,
+			student.TRACSACTION,
+			student.ALLOW_ESSAY,
+			student.DIPLOMA_IMG_URL,
+			student.HEAD_IMG_URL,
+			student.ID_FRONT_IMG_URL,
+			student.ID_BACK_IMG_URL,
+			student.EXAM_STU_NUM,
+			student.EXAM_REGRIT_NUM,
+			batch.BATCH_NAME batchName,
+			college.`name` collegeName,
+			`level`.LEVEL_NAME levelname,
+			major.FULL_NAME majorName,
+			`user`.USERNAME userName
+		FROM
+			t_student student
+			LEFT JOIN t_batch batch ON (student.BATCH_ID=batch.ID)
+			LEFT JOIN t_college college ON (student.COLLEGE_ID=college.id)
+			LEFT JOIN t_level `level` ON (student.`LEVEL`=`level`.ID)
+			LEFT JOIN t_major major ON (student.MAJOR_ID=major.ID)
+			LEFT JOIN t_student_pool pool ON (student.IDENTITY=pool.ID_CARD AND student.BATCH_ID=pool.BATCH AND student.STUDY_TYPE_ID=pool.STUDY_MODE)
+			LEFT JOIN t_user `user` ON (pool.FOLLOW_USER_ID=`user`.USER_ID)
+		<include refid="SearchWhereClause"></include>
+	</select>
+
+	<select id="countStudentInfoForClassGrouping" resultType="java.lang.Long">
+		SELECT
+			COUNT(1)
+		FROM
+			t_student student
+			LEFT JOIN t_student_pool pool ON (student.IDENTITY=pool.ID_CARD AND student.BATCH_ID=pool.BATCH AND student.STUDY_TYPE_ID=pool.STUDY_MODE)
+		<include refid="SearchWhereClause"></include>
+	</select>
+
+	<update id="updateClassId">
+		UPDATE
+			t_student
+		SET
+			CLASS_ID=#{classId}
+		WHERE
+			ID IN
+			<foreach collection="ids" index="index" open="(" close=")" item="id" separator=",">
+				#{id}
+			</foreach>
+	</update>
+
+	<select id="findIdsByParams" resultType="java.lang.Integer">
+		SELECT
+			student.ID
+		FROM
+			t_student student
+			LEFT JOIN t_student_pool pool ON (student.IDENTITY=pool.ID_CARD AND student.BATCH_ID=pool.BATCH AND student.STUDY_TYPE_ID=pool.STUDY_MODE)
+		<include refid="SearchWhereClause"></include>
+	</select>
+
+</mapper>

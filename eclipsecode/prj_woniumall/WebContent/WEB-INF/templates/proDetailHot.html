@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+<title>商品详情页面</title>
+<style>
+        #nav li{
+            display: inline;
+            width: 24%;
+            text-decoration: none;
+            padding: 15px;
+        }
+        #nav li:hover{
+            background-color: lightblue;
+        }
+        section{
+            height: 100px;
+        }
+    </style>
+<style>
+        #nav li{
+            display: inline;
+            width: 24%;
+            text-decoration: none;
+            padding: 15px;
+        }
+        #nav li:hover{
+            background-color: lightblue;
+        }
+        section{
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+	<div th:insert="~{commons::head}"></div>
+	<div class="container" style="margin-top: 20px;">
+			<div class="row">
+				<div class="col-lg-5">
+					<img th:src="${goodsHot.image}" th:width="400px" th:height="355px" />  
+				</div>
+				<div class="col-lg-7">
+					<div>
+						<h3 th:text="${goodsHot.name}"></h3>
+						<hr />
+						<h5>
+							惊喜价：¥<span th:text="${goodsHot.salesprice}" style="font-size:x-large; color: red; margin-right: 100px;"></span>
+							图书编号：<span th:text=${goodsHot.goodsno}></span>
+						</h5>
+						<h5>
+							市场价：¥<span th:text="${goodsHot.marketprice}" style="font-size: 3; color: grey;text-decoration: line-through;"></span>
+						</h5>
+						<h5>
+							作者：<span th:text="${goodsHot.author}"></span>
+						</h5>
+						<h5>
+							出版社：<span th:text="${goodsHot.publisher}"></span>
+						</h5>
+						<h5>
+							出版时间：<span th:text="${goodsHot.pubtime}"></span>
+						</h5>
+						<h5>
+							库存：现货（<span th:text="${goodsHot.stock}"></span>）
+						</h5>
+						<h5>
+							<div th:switch="${goodsHot.score}">
+								<p th:case="5">
+									顾客评分：<img th:src="@{/images/front/star5.png}" th:width="180px" th:height="40px" >
+								</p>
+							</div>
+						</h5>
+					</div>
+					<div>
+						<font size="2">购买数量</font>:<input type="number" value="20" /><br /><br />
+						<button class="btn btn-success"><span class="glyphicon glyphicon-usd"></span>立即购买</button>&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</button>
+					</div>
+				</div>
+		</div>
+		
+		<div class="row" style="margin-top: 20px">
+			<div class="col-lg-3" style="text-align: right;">
+				热卖商品
+			</div>
+			<div class="col-lg-9">
+				<nav id="nav">
+			    	<ul>
+				        <li class="act">商品详情:</li>
+				        <li>顾客评价:</li>
+			    	</ul>
+				</nav>
+				<div id="mycontainer">
+			    <section class="tab"><span th:text="${goodsHot.description}"></span></section>
+			    <section class="tab" style="background-color:#A6A6A6"><span th:text="${goodsHot.remark.content}"></span></section>
+				</div>
+			</div>
+		</div>
+		
+	  </div>
+	<div th:insert="~{commons::foot}"></div>
+	<script type="text/javascript" th:src="@{/resources/js/jquery-1.12.3.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/resources/js/bootstrap.min.js}"></script>
+	<script>
+	    window.onload=function () {
+	        var nav=document.getElementById('nav');
+	        var oNav=nav.getElementsByTagName('li');
+	
+	        var container=document.getElementById('mycontainer');
+	        var oDiv=container.getElementsByClassName('tab');
+	        for(var i=0;i<oNav.length;i++){
+	            oNav[i].index=i;
+	            oNav[i].onclick=function () {
+	                for(var i=0;i<oNav.length;i++){
+	                    oNav[i].className='';
+	                    oDiv[i].style.display="none";
+	                }
+	                this.className='act';
+	                oDiv[this.index].style.display="block"
+	            }
+	            for(var m=1;m<oNav.length;m++){
+	                    oNav[m].className='';
+	                    oDiv[m].style.display="none";
+	                }
+	        }
+	    };
+		</script>
+</body>
+</html>

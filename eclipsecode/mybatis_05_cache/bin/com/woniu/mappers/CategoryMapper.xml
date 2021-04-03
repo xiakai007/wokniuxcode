@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.CategoryMapper">
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache">
+	</cache>
+	<select id="selectCategoryById" parameterType="Integer" resultType="Category">
+		SELECT * FROM mall_category WHERE id=#{id}
+	</select>
+	<update id="updateCategory" parameterType="Category">
+		UPDATE mall_category
+		<trim prefix="SET" suffixOverrides="," suffix="WHERE id=#{id}">
+			<if test="name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test="status!=null and status!=''">
+				status=#{status},
+			</if>
+			<if test="navable!=null and navable!=''">
+				navable=#{navable},
+			</if>
+		</trim>
+	</update>
+</mapper>

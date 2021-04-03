@@ -1,0 +1,120 @@
+<style>
+    #notice-detail {
+        padding: 20px 25px 25px 0;
+    }
+    img[src=""],img:not([src]){
+
+        opacity:0;
+
+    }
+</style>
+
+<div class="layui-fluid" id="notice-detail">
+    <form class="layui-form" action="" lay-filter="notice-detail-form">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label ">通知图片：</label>
+            <div class="layui-upload">
+                <span id="imgUrl" >
+                </span>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label ">通知标题：</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtTitle" data-th-value="${noticeTitle}" name="title" minlength="2" maxlength="50"
+                       autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司名：</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtCompany" data-th-value="陕西全务" minlength="4" maxlength="100"
+                       autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-input-block">
+                <input type="text" id="txtCreateUser"   name="username" data-th-value="${noticeName}" minlength="2" maxlength="100"
+                       autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建日期：</label>
+            <div class="layui-input-block">
+                <input type="text" data-th-value="${createDateTime}"   disabled="true" name="createTime" id="txtCreateTime" minlength="4" maxlength="100"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">通知内容：</label>
+            <div class="layui-input-block">
+                <textarea name="content" data-th-text="${noticeContent}" id="txtContent" maxlength="100" class="layui-textarea" readonly></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">通知视频：</label>
+            <div class="layui-upload">
+                <div class="layui-upload-list" style="float: left">
+                    <span id="videoUrl">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">通知附件：</label>
+            <div class="layui-upload-list" style="float: left">
+                <span id="fileUrl"></span>
+
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md10">
+                <div class="layui-form-item" >
+                    <label class="layui-form-label febs-form-item-require">接收人：</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="txtAdvice" data-th-value="${noticeUserId}" name="userId" lay-verify="" autocomplete="off"
+                               class="layui-input" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.use(['febs', 'form', 'xmSelect', 'validate', 'laydate','dropdown', 'jquery', 'table'], function () {
+        let $ = layui.$,
+            noticevoid = [[${noticevoid}]],
+            fileurl=[[${fileurl}]],
+            img = [[${img}]];
+
+        init();
+        function init() {
+
+            let noticevoUrl = noticevoid;
+            let imgUrl=img;
+            let fileUrl=fileurl;
+            if(noticevoUrl === ""){
+                $("#videoUrl").append("无通知视频");
+            }else{
+                $("#videoUrl").append("<a class='layui-icon layui-icon-file-image' target='_blank' href='" + noticevoUrl + "'>" + "视频" + "</a>");
+            }
+            if(imgUrl === ""){
+                $("#imgUrl").append("无图片");
+            }else{
+                $("#imgUrl").append("<img class='layui-upload-img' width=\"200px\" id=\"imgNotice\" height=\"100px\"src='" + imgUrl + "'>");
+            }
+
+            if(fileUrl === ""){
+                $("#fileUrl").append("无附件");
+            }else{
+                $("#fileUrl").append("<a class='layui-icon layui-icon-file-image' target='_blank' href='" + fileUrl + "'>" + "附件" + "</a>");
+            }
+        }
+
+
+
+    });
+</script>

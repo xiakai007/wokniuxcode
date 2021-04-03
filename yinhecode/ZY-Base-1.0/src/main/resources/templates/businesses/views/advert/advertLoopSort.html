@@ -1,0 +1,66 @@
+<style>
+    #college-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="advertLoop-sort">
+    <form class="layui-form" action="" lay-filter="advertLoop-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require febs-hide">广告ID：</label>
+            <div class="layui-input-block">
+                <input type="text" name="advertId" id="advert_Id">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top: 10px;">
+            <label class="layui-form-label febs-form-item-require">选择序号:</label>
+            <div class="layui-input-block" style="width: 150px;">
+                <select name="id" id="advetLoop_sort">
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="advertLoop-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            id = [[${id}]],
+            count=[[${count}]],
+            validate = layui.validate;
+        form.verify(validate);
+        form.render();
+        initCollegeValue();
+        function initCollegeValue() {
+            var str="";
+            for(var i=1;i<=count;i++){
+                if(i==id){
+                    str=str+"<option selected value="+i+">"+i+"</option>";
+                }else {
+                    str=str+"<option value="+i+">"+i+"</option>";
+                }
+            }
+            $("#advetLoop_sort").html(str);
+            form.render();
+        }
+
+        form.on('submit(advertLoop-update-form-submit)', function (data) {
+            if ($("#advetLoop_sort").val()==id) {
+                febs.alert.warn('数据未做任何修改！');
+                return false;
+            }
+                febs.post(ctx + 'advert/loopAdvertSort', data.field, function () {
+                    $('#businesses-advert').find('#sortLoopBtn').click();
+                    layer.closeAll();
+                    febs.alert.success('广告位置修改成功');
+                });
+            return false;
+        });
+    });
+</script>

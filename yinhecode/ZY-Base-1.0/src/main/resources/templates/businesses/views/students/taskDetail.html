@@ -1,0 +1,126 @@
+<style>
+    #student:visited {
+
+        color:#00FF00;
+
+        text-decoration:none;
+
+    }
+
+    #student:hover {
+
+        color:#000000;
+
+        text-decoration:none;
+
+    }
+
+    #student:active {
+
+        color:#FFFFFF;
+
+        text-decoration:none;
+
+    }
+</style>
+<!--待办事务-->
+<div class="layui-tab layui-tab-brief">
+    <input id="stuid" type="hidden" data-th-value="${id}">
+    <ul class="layui-tab-title">
+        <li id="identityShow" style="display: none"><a id="identity">身份证确认</a></li>
+        <li id="diplomaShow" style="display: none"><a id="diploma">毕业证确认</a></li>
+        <li  id="photoShow" style="display: none"><a id="photo">照片确认</a></li>
+        <li id="examShow" style="display: none"><a id="exam" >报考信息</a></li>
+        <li id="examlocationShow" style="display: none"><a id="examlocation">现场确认</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show" id="showinfo">
+        </div>
+    </div>
+</div>
+<script data-th-inline="javascript">
+layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+    let $ = layui.$,
+        febs = layui.febs,
+        layer = layui.layer,
+        form = layui.form,
+        xmSelect = layui.xmSelect,
+        user = [[${user}]],
+        validate = layui.validate,
+        dataPermissionXmlSelect,
+        roleXmSelect,
+        deptXmlSelect;
+    form.render();
+
+    $(function () {
+        $.ajax({
+            type:"get",
+            url:"student/getTaskTypeNumByStuId?stuId="+$("#stuid").val(),
+            success:function (res) {
+                //显示连接栏样式
+                for(var i=0;i<res.data.length;i++){
+                    if (res.data[i].typeId==1){
+                        $("#identityShow").removeAttr("style")
+                        $("#identity").text("身份证确认(1)")
+                    }
+                    if (res.data[i].typeId==2){
+                        $("#diplomaShow").removeAttr("style")
+                        $("#diploma").text("毕业证确认(1)")
+                    }
+                    if (res.data[i].typeId==3){
+                        $("#photoShow").removeAttr("style")
+                        $("#photo").text("照片确认(1)")
+                    }
+                    if (res.data[i].typeId==4){
+                        $("#examShow").removeAttr("style")
+                        $("#exam").text("报考信息("+res.data[i].num+")")
+                    }
+                    if (res.data[i].typeId==5){
+                        $("#examlocationShow").removeAttr("style")
+                        $("#examlocation").text("现场确认(1)")
+                    }
+                }
+                if(res.data[0].typeId==1){
+                    $("#showinfo").load("febs/views/student/affirm/identity?id="+$("#stuid").val()+"&typeId=1")
+                    $("#identityShow").attr("class","layui-this");
+                }
+                if(res.data[0].typeId==2){
+                    $("#showinfo").load("febs/views/student/affirm/diploma?id="+$("#stuid").val()+"&typeId=2")
+                    $("#diplomaShow").attr("class","layui-this");
+                }
+                if(res.data[0].typeId==3){
+                    $("#showinfo").load("febs/views/student/affirm/photo?id="+$("#stuid").val()+"&typeId=3")
+                    $("#photoShow").attr("class","layui-this");
+                }
+                if(res.data[0].typeId==4){
+                    $("#showinfo").load("febs/views/student/checkExamTask?id="+$("#stuid").val())
+                    $("#examShow").attr("class","layui-this");
+                }
+                if(res.data[0].typeId==5){
+                    $("#showinfo").load("febs/views/student/examlocationconfirm?id="+$("#stuid").val())
+                    $("#examlocation").attr("class","layui-this");
+                }
+            }
+        })
+    })
+    $("#exam").click(function () {
+        $("#showinfo").load("febs/views/student/checkExamTask?id="+$("#stuid").val())
+    });
+    $("#identity").click(function () {
+        $("#showinfo").load("febs/views/student/affirm/identity?id="+$("#stuid").val()+"&typeId=1")
+    });
+
+    $("#photo").click(function () {
+        $("#showinfo").load("febs/views/student/affirm/photo?id="+$("#stuid").val()+"&typeId=3")
+    })
+    $("#examlocation").click(function () {
+        $("#showinfo").load("febs/views/student/examlocationconfirm?id="+$("#stuid").val())
+    })
+    $("#diploma").click(function () {
+        $("#showinfo").load("febs/views/student/affirm/diploma?id="+$("#stuid").val()+"&typeId=2")
+    });
+
+});
+</script>
+
+

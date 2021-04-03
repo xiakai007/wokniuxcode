@@ -1,0 +1,40 @@
+<style>
+    #exception-datil {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="exception-datil">
+    <div class="layui-form-item">
+        <label class="layui-form-label">异常时间</label>
+        <div class="layui-input-block">
+            <!--<input type="text" name="id" data-th-value="${resolveException.exceptionTime}">-->
+            <input type="text" id="exceptionTime" disabled readonly name="exceptionTime" data-th-value="${resolveException.exceptionTime}" lay-verify="title" autocomplete="off"   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">触发方式</label>
+        <div class="layui-input-block">
+            <input type="text" disabled readonly name="detail" data-th-value="${resolveException.detail}"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">请求人</label>
+        <div class="layui-input-block">
+            <input type="text" disabled readonly name="userName" data-th-value="${resolveException.userName}"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">异常详情</label>
+        <div class="layui-input-block">
+            <textarea  class="layui-textarea" disabled readonly name="exceptionInfo"  >[[${resolveException.exceptionInfo}]]</textarea>
+        </div>
+    </div>
+
+</div>
+
+<script data-th-inline="javascript">
+
+</script>

@@ -1,0 +1,441 @@
+<div class="layui-fluid layui-anim febs-anim" id="recruitbusinesses-student" lay-title="我的学生">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="college-table-form">
+
+
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" autocomplete="off" class="layui-input"
+                                                   id="recruitstuidstuname">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" autocomplete="off" class="layui-input"
+                                                   id="recruitstuididentity">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" autocomplete="off" class="layui-input"
+                                                   id="recruitstuidtel">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="recruitstuquery">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="recruitstureset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <table lay-filter="recruitstudentTable" lay-data="{id: 'recruitstudentTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="recruit-option">
+
+
+    <a lay-event="select_student" title="选择"><i class="layui-icon febs-edit-area febs-red">&#xe78a;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs', 'xmSelect'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#recruitbusinesses-student'),
+            $query = $view.find('#recruitstuquery'),
+            $reset = $view.find('#recruitstureset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            batchSelect,
+            majorSelect,
+            eamXmSelect,
+            tableIns;
+        form.render();
+        initTable();//大列表
+        seteamXmSelect();
+        setmajorSelect();
+        setbatchSelect();
+
+        function setbatchSelect() {
+            batchSelect = xmSelect.render({
+                el: '#recbatch',
+                //toolbar: {show: true},
+                name: 'batchId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'batchName',
+                    value: 'id'
+                },
+                data: []
+            });
+            febs.get('/student/batchList', null, function (data) {
+                batchSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+            });
+        }
+
+        $(".layui-input").keydown(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $query.click();
+            }
+        });
+
+        function seteamXmSelect() {
+            eamXmSelect = xmSelect.render({
+                el: '#reccollege',
+                //toolbar: {show: true},
+                name: 'collegeId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'name',
+                    value: 'id'
+                },
+                data: []
+            });
+
+
+            febs.get('/student/collegeList', null, function (data) {
+                eamXmSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+            });
+        }
+
+        function setmajorSelect() {
+            majorSelect = xmSelect.render({
+                el: '#recmajor',
+                // toolbar: {show: true},
+                name: 'majorId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'fullName',
+                    value: 'id'
+                },
+                data: []
+            });
+
+            febs.get('/student/majorList', null, function (data) {
+                majorSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+            });
+        }
+
+        dropdown.render({
+            elem: $view.find('.action-more'),
+            click: function (name, elem, event) {
+                let checkStatus = table.checkStatus('recruitstudentTable');
+                if (name === 'add') {
+                    febs.modal.open('新增院校', 'college/add', {
+                        btn: ['提交', '重置'],
+                        area: $(window).width() <= 750 ? '95%' : '50%',
+                        yes: function (index, layero) {
+                            $('#college-add').find('#submit').trigger('click');
+                        },
+                        btn2: function () {
+                            $('#college-add').find('#reset').trigger('click');
+                            return false;
+                        }
+                    });
+                }
+                if (name === 'delete') {
+                    if (!checkStatus.data.length) {
+                        febs.alert.warn('请选择需要删除的院校');
+                    } else {
+                        febs.modal.confirm('提示', '确定删除该院校？', function () {
+                            let collegeIds = [];
+                            layui.each(checkStatus.data, function (key, item) {
+                                collegeIds.push(item.id)
+                            });
+                            deleteColleges(collegeIds.join(','));
+                        });
+                    }
+                }
+                if (name === 'export') {
+                    let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                    params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+                    params.pageNum = $view.find(".layui-laypage-em").next().html();
+                    febs.download(ctx + 'college/excel', params, '院校信息表.xlsx');
+                }
+            },
+            options: [{
+                name: 'add',
+                title: '新增院校',
+                perms: 'college:add'
+            }, {
+                name: 'delete',
+                title: '删除院校',
+                perms: 'college:delete'
+            }, {
+                name: 'export',
+                title: '导出Excel',
+                perms: 'college:export'
+            }]
+        });
+
+        //当前人员的待办数量
+        $(function () {
+            $.ajax({
+                type: "get"
+            })
+        })
+
+        table.on('tool(recruitstudentTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('学生信息', 'recruitStudent/detail/' + data.id, {
+                    area: ['70%', '80%'],
+                    tipsMore: true
+                });
+            }
+            if (layEvent === 'del') {
+                febs.modal.confirm('提示', '确定删除该院校？', function () {
+                    deleteColleges(data.id);
+                });
+            }
+            if (layEvent === 'edit') {
+                febs.modal.open('修改院校', 'college/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#college-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+            if (layEvent === 'exchange') {
+                febs.modal.open('更换学生专业', 'stuMajor/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : ['30%', '60%'],
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        febs.modal.confirm('提示', '是否确定更换？', function () {
+                            $('#stuMajor-update').find('#submit').trigger('click');
+                        })
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+            if (layEvent === 'select_student') {
+                febs.modal.view('创建其他缴费', 'otherPayment/addOtherPayment/' + data.id, {
+                    area: $(window).width() <= 750 ? ['95%', '85%'] : ['35%', '70%'],
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#backCollege').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+        table.on('sort(recruitstudentTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+            var collegeIds = new Array();
+            collegeIds.push('');
+            eamXmSelect.setValue(collegeIds);
+            var batchIds = new Array();
+            batchIds.push('');
+            batchSelect.setValue(batchIds);
+            var majorIds = new Array();
+            majorIds.push('');
+            majorSelect.setValue(majorIds);
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'recruitstudentTable',
+                url: ctx + 'recruitStudent/list',
+                cols: [[
+
+                    {field: 'id', title: '序号', minWidth: 80},
+                    {field: 'stuName', title: '姓名', minWidth: 80},
+                    {field: 'collegeName', title: '院校', minWidth: 80},
+                    {field: 'batchName', title: '批次', minWidth: 80},
+                    {field: 'levelname', title: '层次', minWidth: 80},
+                    {
+                        field: 'stageId', title: '阶段', width: 110,
+                        templet: function (obj) {
+                            var exep;
+                            if (obj.stageId == 14) {
+                                exep = '考前';
+                            } else if (obj.stageId == 15) {
+                                exep = '在籍';
+                            } else if (obj.stageId == 16) {
+                                exep = '逾期毕业';
+                            } else if (obj.stageId == 17) {
+                                exep = '已毕业';
+                            }
+                            return exep;
+                        }
+                    },
+                    {field: 'majorName', title: '专业', minWidth: 80},
+                    {field: 'className', title: '班级名称', minWidth: 80},
+                    {field: 'userName', title: '班主任', minWidth: 80},
+                    {field: 'tel', title: '电话', minWidth: 80},
+                    {field: 'identity', title: '身份证', minWidth: 80},
+                    {title: '操作', toolbar: '#recruit-option', minWidth: 140},
+                ]],
+
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        $("#recruitmovtorecycle").click(function () {
+            let checkStatus = table.checkStatus('recruitstudentTable');
+            febs.modal.confirm('提示', '确定移入回收站吗？', function () {
+                let studentIds = [];
+                layui.each(checkStatus.data, function (key, item) {
+                    studentIds.push(item.id)
+                });
+                if (studentIds.length > 0) {
+                    deleteColleges(studentIds.join(','));
+                } else {
+                    febs.alert.warn('请选择学生!');
+                }
+            });
+        });
+
+        function deleteColleges(studentIds) {
+            febs.get(ctx + 'recruitStudent/moveToRecycle/' + studentIds, null, function () {
+                febs.alert.success('学生回收成功');
+                $query.click();
+            });
+        };
+        $("#recruitoverdue").click(function () {
+            let checkStatus = table.checkStatus('recruitstudentTable');
+            febs.modal.confirm('提示', '确定让他的状态变为逾期毕业吗？', function () {
+                let studentIds = [];
+                layui.each(checkStatus.data, function (key, item) {
+                    studentIds.push(item.id)
+                });
+                if (studentIds.length > 0) {
+                    recruitoverdueSet(studentIds.join(','));
+                } else {
+                    febs.alert.warn('请选择学生!');
+                }
+            });
+        });
+
+        function recruitoverdueSet(studentIds) {
+            febs.get(ctx + 'recruitStudent/overdueSet/' + studentIds, null, function () {
+                febs.alert.success('让他变为逾期毕业状态成功');
+                $query.click();
+            });
+        };
+
+
+    });
+
+
+</script>
+

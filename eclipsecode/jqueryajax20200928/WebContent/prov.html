@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+   <select id="prov">
+     <option value="0">请选择省份</option>
+   </select>
+   <select id="city">
+     <option>请选择城市</option>
+   </select>
+   <script type="text/javascript" src="static/js/jquery-1.12.3.min.js"></script>
+   <script type="text/javascript">
+      $.ajax({
+    	  type:"get",
+    	  url:"prov.do",
+    	  dataType:"json",
+    	  error:function(){
+    		  alert("错误");
+    	  },
+    	  success:function(data){
+    		  var str="";
+    		  for(var i=0;i<data.length;i++){
+    			  str=str+"<option value="+data[i].prov_id+">"+data[i].prov_name+"</option>";
+    		  }
+    		  $("#prov").append(str);
+    	  }
+      });
+      $("#prov").change(function(){
+    	  $.ajax({
+    		  type:"post",
+    		  url:"city.do",
+    		  dataType:"json",
+    		  data:{"prov_id":$("#prov").val()},
+    		  error:function(){
+    			alert("错误");  
+    		  },
+    		  success:function(data){
+    			  var str="<option>请选择城市</option>";
+    			  for(var i=0;i<data.length;i++){
+    				  str=str+"<option value="+data[i].city_id+">"+data[i].city_name+"</option>";
+    			  }
+    			  $("#city").html(str);
+    		  }
+    	  })
+      });
+   </script>
+</body>
+</html>

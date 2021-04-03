@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.TransferApplicationMapper">
+    <sql id="countTransferApplicationDetailSql">
+        SELECT
+            COUNT(1)
+        FROM
+            t_transfer_application T
+        WHERE 1 = 1
+        <if test="transferApplication.id != null and transferApplication.id != ''">
+            AND T.user_id = #{transferApplication.userId}
+        </if>
+    </sql>
+
+    <sql id="findTransferApplicationDetailSql">
+        SELECT
+            T.id id,
+            B.batch_name batchName,
+            C.simplename collegeSimpleName,
+            L.level_name levelName,
+            M.simple_name majorSimpleName,
+            S.stu_name stuName,
+            S.identity,
+            S.tel,
+            T.transfer_type_id transferTypeId,
+            T.approval_status_id approvalStatusId,
+            T.application_time applicationTime,
+            T.opinion,
+            U.userName
+        FROM
+            t_transfer_application T
+            LEFT JOIN t_user U ON (T.user_id = U.user_id)
+            LEFT JOIN t_student S ON (T.stu_id = S.id)
+            LEFT JOIN t_college C ON (S.college_id = C.id )
+            LEFT JOIN t_batch B ON (S.batch_id = B.id)
+            LEFT JOIN t_level L ON (S.level = L.id)
+            LEFT JOIN t_major M ON (S.MAJOR_ID = M.id)
+        WHERE 1 = 1
+        <if test="transferApplication.userId != null and transferApplication.userId != 0">
+            AND T.user_id = #{transferApplication.userId}
+        </if>
+        <if test="transferApplication.transferTypeId != null and transferApplication.transferTypeId != 0">
+            AND T.transfer_type_id = #{transferApplication.transferTypeId}
+        </if>
+        <if test="transferApplication.student.batchId != null and transferApplication.student.batchId != 0">
+            AND S.batch_id = #{transferApplication.student.batchId}
+        </if>
+        <if test="transferApplication.student.collegeId != null and transferApplication.student.collegeId != 0">
+            AND S.college_id = #{transferApplication.student.collegeId}
+        </if>
+        <if test="transferApplication.student.majorId != null and transferApplication.student.majorId != 0">
+            AND S.major_id = #{transferApplication.student.majorId}
+        </if>
+        <if test="transferApplication.student.level != null and transferApplication.student.level != 0">
+            AND S.level = #{transferApplication.student.level}
+        </if>
+        <if test="transferApplication.student.stuName != null and transferApplication.student.stuName != ''">
+            AND S.stu_name LIKE CONCAT ('%',#{transferApplication.student.stuName},'%')
+        </if>
+        <if test="transferApplication.student.identity != null and transferApplication.student.identity != ''">
+            AND S.identity LIKE CONCAT ('%',#{transferApplication.student.identity},'%')
+        </if>
+        <if test="transferApplication.student.tel != null and transferApplication.student.tel != ''">
+            AND S.tel LIKE CONCAT ('%',#{transferApplication.student.tel},'%')
+        </if>
+    </sql>
+
+    <sql id="findTransferApplicationDetailByIdSql">
+        SELECT
+            T.id id,
+            B.batch_name batchName,
+            C.simplename collegeSimpleName,
+            L.level_name levelName,
+            M.simple_name majorSimpleName,
+            S.stu_name stuName,
+            S.identity,
+            S.tel,
+            S.enrol_date enrolDate,
+            S.stu_num stuNum,
+            S.study_type_id studyTypeId,
+            T.transfer_type_id transferTypeId,
+            T.approval_status_id approvalStatusId,
+            T.application_reason_id applicationnReasonId,
+            (SELECT detail FROM t_dic WHERE id = S.study_type_id) studyType,
+            (SELECT detail FROM t_dic WHERE id = T.transfer_type_id) transferType,
+            (SELECT detail FROM t_dic WHERE id = T.approval_status_id) approvalStatus,
+            (SELECT detail FROM t_dic WHERE id = T.application_reason_id) applicationReason,
+            T.application_time applicationTime,
+            T.approval_time approvalTime,
+            T.opinion,
+            T.other_reason otherReason,
+            U.userName
+        FROM
+            t_transfer_application T
+            LEFT JOIN t_user U ON (T.user_id = U.user_id)
+            LEFT JOIN t_student S ON (T.stu_id = S.id)
+            LEFT JOIN t_college C ON (S.college_id = C.id)
+            LEFT JOIN t_batch B ON (S.batch_id = B.id)
+            LEFT JOIN t_level L ON (S.level = L.id)
+            LEFT JOIN t_major M ON (S.MAJOR_ID = M.id)
+        WHERE T.id = #{id}
+    </sql>
+
+    <sql id="findTransferApplicationDetailsSql">
+        SELECT
+            T.id id,
+            B.batch_name batchName,
+            C.simplename collegeSimpleName,
+            L.level_name levelName,
+            M.simple_name majorSimpleName,
+            S.stu_name stuName,
+            S.identity,
+            S.tel,
+            S.enrol_date enrolDate,
+            S.stu_num stuNum,
+            S.study_type_id studyTypeId,
+            T.transfer_type_id transferTypeId,
+            T.approval_status_id approvalStatusId,
+            T.application_reason_id applicationnReasonId,
+            (SELECT detail FROM t_dic WHERE id = S.study_type_id) studyType,
+            (SELECT detail FROM t_dic WHERE id = T.transfer_type_id) transferType,
+            (SELECT detail FROM t_dic WHERE id = T.approval_status_id) approvalStatus,
+            (SELECT detail FROM t_dic WHERE id = T.application_reason_id) applicationReason,
+            T.application_time applicationTime,
+            T.approval_time approvalTime,
+            T.opinion,
+            T.other_reason otherReason,
+            U.userName
+        FROM
+            t_transfer_application T
+            LEFT JOIN t_user U ON (T.user_id = U.user_id)
+            LEFT JOIN t_student S ON (T.stu_id = S.id)
+            LEFT JOIN t_college C ON (S.college_id = C.id)
+            LEFT JOIN t_batch B ON (S.batch_id = B.id)
+            LEFT JOIN t_level L ON (S.level = L.id)
+            LEFT JOIN t_major M ON (S.MAJOR_ID = M.id)
+        WHERE 1 = 1
+        <if test="transferApplication.userId != null and transferApplication.userId != 0">
+            AND T.user_id = #{transferApplication.userId}
+        </if>
+        <if test="transferApplication.transferTypeId != null and transferApplication.transferTypeId != 0">
+            AND T.transfer_type_id = #{transferApplication.transferTypeId}
+        </if>
+        <if test="transferApplication.student.batchId != null and transferApplication.student.batchId != 0">
+            AND S.batch_id = #{transferApplication.student.batchId}
+        </if>
+        <if test="transferApplication.student.collegeId != null and transferApplication.student.collegeId != 0">
+            AND S.college_id = #{transferApplication.student.collegeId}
+        </if>
+        <if test="transferApplication.student.majorId != null and transferApplication.student.majorId != 0">
+            AND S.major_id = #{transferApplication.student.majorId}
+        </if>
+        <if test="transferApplication.student.level != null and transferApplication.student.level != 0">
+            AND S.level = #{transferApplication.student.level}
+        </if>
+        <if test="transferApplication.student.stuName != null and transferApplication.student.stuName != ''">
+            AND S.stu_name LIKE CONCAT ('%',#{transferApplication.student.stuName},'%')
+        </if>
+        <if test="transferApplication.student.identity != null and transferApplication.student.identity != ''">
+            AND S.identity LIKE CONCAT ('%',#{transferApplication.student.identity},'%')
+        </if>
+        <if test="transferApplication.student.tel != null and transferApplication.student.tel != ''">
+            AND S.tel LIKE CONCAT ('%',#{transferApplication.student.tel},'%')
+        </if>
+    </sql>
+
+    <select id="countTransferApplication" parameterType="User" resultType="long">
+        <include refid="countTransferApplicationDetailSql"/>
+    </select>
+
+    <select id="findTransferApplicationPage" parameterType="TransferApplication" resultType="TransferApplicationVo">
+        <include refid="findTransferApplicationDetailsSql"/>
+    </select>
+
+    <select id="findTransferDetailById" resultType="TransferApplicationVo" parameterType="Integer">
+        <include refid="findTransferApplicationDetailByIdSql"/>
+    </select>
+
+    <select id="findBackCollegeByTransferApplicationId" resultType="String" parameterType="Integer">
+        SELECT
+            B.batch_name newBatchName
+        FROM
+            t_back_college T
+            LEFT JOIN t_batch B ON (T.new_batch_id = B.id)
+        WHERE
+            T.application_id = #{id}
+    </select>
+    <select id="findSuspensionCollegeByTransferApplicationId" resultType="Integer" parameterType="Integer">
+        SELECT
+            year_limit
+        FROM
+            t_suspension_college T
+        WHERE
+            T.application_id = #{id}
+    </select>
+
+    <select id="findStudyTypeChangeByTransferApplicationId" resultType="String" parameterType="Integer">
+        SELECT
+            (SELECT detail FROM t_dic WHERE id = T.new_study_type_id) newStudyTypeName
+        FROM
+            t_study_type_change T
+        WHERE
+            T.application_id = #{id}
+    </select>
+
+    <select id="findMajorChangeByTransferApplicationId" resultType="String" parameterType="Integer">
+        SELECT
+            M.simple_name newMajorName
+        FROM
+            t_major_change T
+            LEFT JOIN t_major M ON T.new_major_id = M.id
+        WHERE T.application_id = #{id}
+    </select>
+
+    <select id="findTransferAttachment" resultType="String" parameterType="Integer">
+        SELECT
+            url
+        FROM
+            t_transfer_applicatiaon_attachment
+        WHERE application_id = #{id}
+    </select>
+
+    <insert id="addTransferApplication" parameterType="transferApplicationVo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            t_transfer_application(USER_ID,STU_ID,APPLICATION_TIME,TRANSFER_TYPE_ID,APPLICATION_REASON_ID,OTHER_REASON)
+        VALUES
+            (#{transferApplicationVo.userId},#{transferApplicationVo.stuId},#{transferApplicationVo.applicationTime},
+            #{transferApplicationVo.transferTypeId},#{transferApplicationVo.applicationReasonId},#{transferApplicationVo.otherReason})
+    </insert>
+
+    <insert id="addTransferApplicationAttachment">
+        INSERT INTO
+            t_transfer_applicatiaon_attachment(APPLICATION_ID,URL)
+        VALUES
+            (#{applicationId},#{url})
+    </insert>
+
+    <insert id="addSuspensionCollege">
+        INSERT INTO
+            t_suspension_college(APPLICATION_ID,YEAR_LIMIT)
+        VALUES
+            (#{applicationId},#{yearLimit})
+    </insert>
+
+    <insert id="addBackCollege">
+        INSERT INTO
+            t_back_college(APPLICATION_ID,NEW_BATCH_ID)
+        VALUES
+            (#{applicationId},#{newBatchId})
+    </insert>
+
+    <insert id="addMajorChange">
+        INSERT INTO
+            t_major_change(APPLICATION_ID,NEW_MAJOR_ID)
+        VALUES
+            (#{applicationId},#{newMajorId})
+    </insert>
+
+    <insert id="addStudyTypeChange">
+        INSERT INTO
+            t_study_type_change(APPLICATION_ID,NEW_STUDY_TYPE_ID)
+        VALUES
+            (#{applicationId},#{newStudyTypeId})
+    </insert>
+</mapper>

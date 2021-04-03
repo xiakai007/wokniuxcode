@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.SubjectCategoryMapper">
+
+    <select id="getSubjectCategorys" resultType="SubjectCategory">
+        SELECT
+        ID,FULL_NAME
+        FROM
+        t_subject_category
+        where
+        ID in (
+            select SUBTYPEID from t_level_subtype where LEVELID = #{levelId}
+        )
+    </select>
+
+	<sql id="countSubjectCategoryDetailSql" >
+        SELECT
+        COUNT(1)
+        FROM
+        t_subject_category T
+        WHERE 1 = 1
+        <if test="subjectCategory.fullName != null and subjectCategory.fullName != ''">
+            AND T.full_Name like concat('%', #{subjectCategory.fullName},'%')
+        </if>
+    </sql>
+
+    <insert id="insertLevelAndSubtype" >
+        insert into t_level_subtype values (#{levelId},#{subtypeId})
+    </insert>
+
+    <sql id="findSubjectCategoryDetailSql">
+        SELECT
+        T.ID,
+        T.FULL_NAME,
+        T.SIMPLE_NAME,
+        T1.USERNAME,
+        T.CREATE_TIME,
+        T.REMARK
+        FROM t_subject_category T
+        LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.USER_ID)
+        WHERE 1 = 1
+        <if test="subjectCategory.fullName != null and subjectCategory.fullName != ''">
+            AND T.full_Name like concat('%', #{subjectCategory.fullName},'%')
+
+        </if>
+
+    </sql>
+
+    <select id="getSubTypeIdByName" parameterType="String" resultType="Integer">
+        select ID from t_subject_category where FULL_NAME=#{fullName}
+    </select>
+
+    <select id="findSubjectCategory" resultType="subjectCategory">
+        SELECT
+        T.ID,
+        T.FULL_NAME,
+        T.SIMPLE_NAME,
+        T1.USERNAME,
+        T.CREATE_TIME,
+        T.REMARK
+        FROM t_subject_category T
+        LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.USER_ID)
+        WHERE 1 = 1
+    </select>
+    <select id="countSubjectCategoryDetail" parameterType="user" resultType="long">
+        <include refid="countSubjectCategoryDetailSql"/>
+    </select>
+
+    <select id="findSubjectCategoryDetailPage" parameterType="subjectCategory" resultType="subjectCategory">
+        <include refid="findSubjectCategoryDetailSql"/>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultType="subjectCategory">
+        SELECT
+        T.ID,
+        T.FULL_NAME,
+        T.SIMPLE_NAME,
+        T1.USERNAME,
+        T.CREATE_TIME,
+        T.REMARK
+        FROM t_subject_category T
+        LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.USER_ID)
+        WHERE 1 = 1
+        AND T.ID = #{subjectCategoryId}
+    </select>
+    
+</mapper>

@@ -1,0 +1,198 @@
+<style>
+    #address-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="address-update">
+    <form class="layui-form" action="" lay-filter="address-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">地点id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${confirmAddress.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">省：</label>
+            <div class="layui-input-inline" style="">
+                <select name="provinceId" id="province_add2" lay-filter="province_add">
+                    <option value="">请选择省</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">市：</label>
+            <div class="layui-input-inline">
+                <select name="city" id="city_add2" lay-filter="city_add">
+                    <option value="">请选择市</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">区：</label>
+            <div class="layui-input-inline">
+                <select name="area" id="area_add2">
+                    <option value="">请选择县/区</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">详细地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="specificLocation" minlength="1" maxlength="100"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">状态：</label>
+            <div class="layui-input-inline">
+                <select name="status" id="status">
+                    <option value="">请选择状态</option>
+                    <option value="启用">启用</option>
+                    <option value="禁用">禁用</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="address-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            confirmAddress = [[${confirmAddress}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+
+
+        function initCollegeValue() {
+            console.log("confirmAddress.province is "+confirmAddress.province)
+            form.val("address-update-form", {
+                "provinceId": confirmAddress.province,
+                "city": confirmAddress.city,
+                "area": confirmAddress.area,
+                "specificLocation": confirmAddress.specificLocation,
+                "status": confirmAddress.status
+            });
+           form.render();
+        }
+
+        form.on('submit(address-update-form-submit)', function (data) {
+            console.log(data);
+            if (febs.nativeEqual(data.field, confirmAddress)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'confirmAddress/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(confirmAddress.id + ' 确认地点修改成功');
+                $('#businesses-address').find('#query').click();
+            });
+            return false;
+        });
+
+        //查询省份
+        $.ajax({
+            type:'get',
+            url:'province',
+            async: false,
+            success:function(res){
+                for(var i=0;i<res.data.length;i++){
+                    let provinces = res.data[i];
+                    $("#province_add2").append(new Option(provinces.provinceName,provinces.id));
+                }
+                selectCityByPid();
+                layui.form.render("select");
+                form.render();
+            }
+        });
+
+        //省市联动
+        form.on('select(province_add)',function () {
+            var pid = $("#province_add1").val();
+            $.ajax({
+                type:'get',
+                url:'city',
+                data:{"pid":pid},
+                success:function(res) {
+
+                    var c=document.getElementById("city_add2");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let citys = res.data[i];
+                        $("#city_add2").append(new Option(citys.cityName, citys.id));
+                    }
+                    layui.form.render("select");
+                }
+            })
+        })
+
+        //市区联动
+        form.on('select(city_add)',function () {
+            var cid = $("#city_add2").val();
+            $.ajax({
+                type:'get',
+                url:'area',
+                data:{"cid":cid},
+                success:function(res) {
+                    var c=document.getElementById("area_add2");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let areas = res.data[i];
+                        $("#area_add1").append(new Option(areas.areaName, areas.id));
+                    }
+                    layui.form.render("select");
+                }
+            })
+        })
+
+        //初始化的时候加载市信息
+        function selectCityByPid() {
+            var pid = confirmAddress.province;
+            $.ajax({
+                type:'get',
+                url:'city',
+                async:false,
+                data:{"pid":pid},
+                success:function(res) {
+                    var c=document.getElementById("city_add2")
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let citys = res.data[i];
+                        $("#city_add2").append(new Option(citys.cityName, citys.id));
+                    }
+                    layui.form.render("select");
+                    selectAreaByCity();
+
+                }
+            })
+        }
+        //初始化的时候加载区信息
+        function selectAreaByCity() {
+            var cid = confirmAddress.city;
+            $.ajax({
+                type:'get',
+                url:'area',
+                async:false,
+                data:{"cid":cid},
+                success:function(res) {
+                    console.log("市")
+                    var c=document.getElementById("area_add2");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let areas = res.data[i];
+                        $("#area_add2").append(new Option(areas.areaName, areas.id));
+                    }
+                }
+            })
+        }
+        initCollegeValue();
+
+    });
+</script>

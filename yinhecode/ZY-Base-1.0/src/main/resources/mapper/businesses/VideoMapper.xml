@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.VideoMapper">
+    <!--视频的下架-->
+    <update id="updateByIdSatus">
+        update t_video SET status=0,update_user_id=#{updateUserId},update_time=#{updateTime} WHERE id=#{id};
+    </update>
+    <!--视频的排序的第一步-->
+    <select id="selectBySort" parameterType="int" resultType="integer">
+        select id from t_video where sort=#{sort}
+    </select>
+    <!--第二步-->
+    <update id="updateByIdSortAB" parameterType="int">
+        update t_video set sort=#{sort} where id=#{id}
+    </update>
+    <select id="findVideoDetailPage" parameterType="video" resultType="cc.zy.base.businesses.entity.Video">
+        SELECT
+        a.id,
+        a.sort,
+        a.img_url,
+        a.video_url,
+        a.name,
+        a.info,
+        d.type_name,
+        a.create_time,
+        a.update_time,
+        a.status,
+        c.username update_name
+        FROM t_video a
+        LEFT JOIN t_video_type f ON (a.id=f.video_id)
+        LEFT JOIN t_type g ON (f.type_id=g.id)
+        LEFT JOIN t_user b ON (a.create_user_id=b.user_id)
+        LEFT JOIN t_user c ON (a.update_user_id=c.user_id)
+        LEFT JOIN
+        (SELECT e.id,ifnull(CONCAT(e.pname,'>',e.name),e.name) type_name FROM (
+        select t1.id,t1.pid,t1.name,t2.name AS pname
+        from t_type as t1
+        left join (
+        select *
+        from t_type)as t2 on(t1.pid= t2.id)
+        )e)d
+        ON (f.type_id=d.id)
+        <where>
+            <if test="video.name!= null and video.name!= ''">
+                AND a.name LIKE concat ('%',#{video.name},'%')
+            </if>
+            <if test="video.updateName != null and video.updateName != ''">
+                AND c.username LIKE CONCAT('%',#{video.updateName},'%')
+            </if>
+            <if test="video.typeName!=null and video.typeName!=''">
+                AND d.type_name LIKE CONCAT('%',#{video.typeName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="countVideoDetail" parameterType="video" resultType="long">
+        SELECT count(*) FROM (
+        SELECT
+        a.id,
+        a.sort,
+        a.img_url,
+        a.video_url,
+        a.name,
+        a.info,
+        d.type_name,
+        a.create_time,
+        a.update_time,
+        a.status,
+        c.username update_name
+        FROM t_video a
+        LEFT JOIN t_video_type f ON (a.id=f.video_id)
+        LEFT JOIN t_type g ON (f.type_id=g.id)
+        LEFT JOIN t_user b ON (a.create_user_id=b.user_id)
+        LEFT JOIN t_user c ON (a.update_user_id=c.user_id)
+        LEFT JOIN
+        (SELECT e.id,ifnull(CONCAT(e.pname,'>',e.name),e.name) type_name FROM (
+        select t1.id,t1.pid,t1.name,t2.name AS pname
+        from t_type as t1
+        left join (
+        select *
+        from t_type)as t2 on(t1.pid= t2.id)
+        )e)d
+        ON (f.type_id=d.id)
+        <where>
+            <if test="video.name!= null and video.name!= ''">
+                AND a.name LIKE concat ('%',#{video.name},'%')
+            </if>
+            <if test="video.updateName != null and video.updateName != ''">
+                AND c.username LIKE CONCAT('%',#{video.updateName},'%')
+            </if>
+            <if test="video.typeName!=null and video.typeName!=''">
+                AND d.type_name LIKE CONCAT('%',#{video.typeName},'%')
+            </if>
+        </where>
+        )b3
+    </select>
+    <select id="findById" parameterType="int" resultType="cc.zy.base.businesses.entity.Video">
+        SELECT
+            a.id,
+            a.sort,
+            a.img_url,
+            a.video_url,
+            a.name,
+            a.info,
+            d.type_name,
+            a.create_time,
+            a.update_time,
+            a.status,
+            c.username update_name
+            FROM t_video a
+            LEFT JOIN t_video_type f ON (a.id=f.video_id)
+            LEFT JOIN t_type g ON (f.type_id=g.id)
+            LEFT JOIN t_user b ON (a.create_user_id=b.user_id)
+            LEFT JOIN t_user c ON (a.update_user_id=c.user_id)
+            LEFT JOIN
+            (SELECT e.id,ifnull(CONCAT(e.pname,'>',e.name),e.name) type_name FROM (
+            select t1.id,t1.pid,t1.name,t2.name AS pname
+            from t_type as t1
+            left join (
+            select *
+            from t_type)as t2 on(t1.pid= t2.id)
+            )e)d
+            ON (f.type_id=d.id)
+        WHERE a.id=#{id}
+    </select>
+    <!--视频的上架-->
+    <update id="updateByIdSatusUp">
+        update t_video SET status=1,update_user_id=#{updateUserId},update_time=#{updateTime} WHERE id=#{id}
+    </update>
+    <select id="selectByIdSort" parameterType="int" resultType="Integer">
+        select sort FROM  t_video WHERE  id=#{id}
+    </select>
+    <!--xk-->
+    <select id="findTypeIdByVid" parameterType="int" resultType="int">
+        SELECT type_id FROM t_video_type WHERE video_id=#{id}
+    </select>
+    <!--xk-->
+    <select id="findCourseIdByVid" parameterType="int" resultType="int">
+        SELECT course_id FROM t_video_course WHERE video_id=#{id}
+    </select>
+    <!--xk-->
+    <insert id="insertVideoCourse" parameterType="int">
+        INSERT INTO t_video_course (course_id,video_id) VALUES (#{courseId},#{videoId})
+    </insert>
+    <!--xk-->
+    <insert id="insertVideoType" parameterType="int">
+        INSERT INTO t_video_type (video_id,type_id) VALUES (#{videoId},#{typeId})
+    </insert>
+    <!--xk-->
+    <insert id="insertCourseType" parameterType="int">
+        INSERT INTO t_course_type (course_id,type_id) VALUES (#{courseId},#{typeId});
+    </insert>
+    <!--xk-->
+    <insert id="insertVideo" parameterType="video" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_video (name,video_url,img_url,info,create_user_id,create_time,
+        update_user_id,update_time,status) VALUES (#{name},#{videoUrl},#{imgUrl},#{info},#{createUserId}
+        ,#{createTime},#{updateUserId},#{updateTime},#{status});
+    </insert>
+    <!--xk-->
+    <update id="updateVideoSort" parameterType="int">
+        UPDATE t_video SET sort=#{sortNow} WHERE id=#{videoId}
+    </update>
+    <update id="updateVideo" parameterType="video">
+        UPDATE t_video
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="videoUrl!=null and videoUrl!=''">
+                video_url=#{videoUrl},
+            </if>
+            <if test="imgUrl!=null and imgUrl!=''">
+                img_url=#{imgUrl},
+            </if>
+            <if test="info!=null and info!=''">
+                info=#{info},
+            </if>
+            <if test="updateUserId!=null and updateUserId!=0">
+                update_user_id=#{updateUserId},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime},
+            </if>
+            <if test="status!=null and status!=''">
+                status=#{status},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <update id="updateVideoType" parameterType="int">
+        UPDATE t_video_type SET type_id=#{typeId} WHERE video_id=#{videoId}
+    </update>
+    <select id="selectByTypeId" parameterType="int" resultType="java.lang.Integer">
+        SELECT  video_id from t_video_type  where type_id=#{id}
+    </select>
+    <select id="selectSortList" parameterType="int" resultType="Integer">
+        SELECT  sort  from t_video
+    </select>
+    <select id="selectMaxSort" resultType="Integer">
+        SELECT ifnull(MAX(sort),0) FROM t_video
+    </select>
+    <select id="selectVideoByName" resultType="cc.zy.base.businesses.entity.Video" parameterType="string">
+        SELECT id,name FROM t_video WHERE name=#{videoname}
+    </select>
+    <select id="selectVideoByNameUpdate" resultType="cc.zy.base.businesses.entity.Video">
+        SELECT id,name FROM t_video WHERE name=#{videoname} AND id != #{videoid}
+    </select>
+    <select id="selectVideoListByTypeId" parameterType="Integer" resultType="Integer">
+        SELECT
+          Count(1)
+        FROM
+          t_video V
+          LEFT JOIN
+            t_video_type VT
+          ON
+            V.id = VT.video_id
+        WHERE
+          VT.type_id = #{id}
+        AND
+          V.status = 1
+    </select>
+</mapper>

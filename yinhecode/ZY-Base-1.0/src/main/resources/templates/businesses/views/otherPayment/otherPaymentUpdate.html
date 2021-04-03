@@ -1,0 +1,67 @@
+<style>
+    #otherPayment-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="otherPayment-update">
+    <form class="layui-form" action="" lay-filter="otherPayment-update-form">
+
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">其他缴费id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${otherPayment.id}">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">应缴金额：</label>
+            <div class="layui-input-block">
+                <input type="text" name="originalPrice" minlength="2" maxlength="20"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="otherPayment-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            otherPayment = [[${otherPayment}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initCollegeValue();
+
+        function initCollegeValue() {
+            form.val("otherPayment-update-form", {
+
+                "originalPrice": otherPayment.originalPrice,
+
+            });
+        }
+
+        form.on('submit(otherPayment-update-form-submit)', function (data) {
+            console.log("进入提交"+data.id)
+            if (febs.nativeEqual(data.field, otherPayment)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'otherPayment/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(otherPayment.id + ' 院校数据修改成功');
+                $('#businesses-otherPayment').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

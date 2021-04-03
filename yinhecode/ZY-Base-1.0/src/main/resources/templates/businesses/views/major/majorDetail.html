@@ -1,0 +1,66 @@
+<style>
+    #major #college-img, #major-detail .major-info {
+        display: inline-block;
+        float: left;
+        margin-left: 15px;
+    }
+
+    #major-detail #major-img img {
+        width: 7rem;
+        margin: 10px 10px 0 20px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    #major-detail #major-info-wrapper {
+        margin: 0 0 1rem 0;
+        display: inline-block;
+    }
+
+    #major-detail .major-info div {
+        margin: 10px 15px;
+        max-width: 19rem;
+    }
+
+    #major-detail #options-wrapper a {
+        padding: 4px 6px;
+        color: rgba(0, 0, 0, 0.65);
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+    }
+
+    #major-detail #options-wrapper a:hover {
+        color: #40a9ff;
+        border-color: #40a9ff;
+    }
+
+</style>
+<div class="layui-fluid" id="major-detail" lay-title="院校专业信息">
+    <div id="major-info-wrapper">
+
+        <div class="major-info">
+            <div><span class="layui-icon layui-icon-form"></span> 专业全称：
+                [[${major.fullName}]]
+            </div>
+            <div><span class="layui-icon layui-icon-note"></span> 简称：
+                [[${major.simpleName}]]
+            </div>
+
+            <div><span class="layui-icon layui-icon-user"></span> 创建人：
+                [[${major.userName}]]
+            </div>
+            <div><span class="layui-icon layui-icon-time-circle"></span> 创建时间：
+                [[${#strings.defaultString(createDateTime,'未显示时间')}]]
+            </div>
+            <div><span class="layui-icon layui-icon-read"></span> 简介：
+                [[${#strings.defaultString(major.remark,'暂无简介')}]]
+            </div>
+            <div><span class="layui-icon layui-icon-read"></span> 备注：
+                [[${#strings.defaultString(major.intro,'暂无简介')}]]
+            </div>
+        </div>
+        <div class="major-info">
+
+        </div>
+    </div>
+</div>

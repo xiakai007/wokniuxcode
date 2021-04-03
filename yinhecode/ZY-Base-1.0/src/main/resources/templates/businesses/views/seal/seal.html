@@ -1,0 +1,150 @@
+<div class="layui-fluid layui-anim febs-anim" id="businesses-seal" lay-title="印章">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="college-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校名称</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="name" minlength="2" maxlength="20"
+                                                   lay-verify="range|name" autocomplete="off" class="layui-input"
+                                                   placeholder="请输入院校名称">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <!--批量查询按钮-->
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="query_cost">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <!--页面重置-->
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="reset_cost">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table lay-filter="sealTable" lay-data="{id: 'sealTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="seal-option">
+    <!--样例-->
+    <a lay-event="detail"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+    <!--编辑-->
+    <a lay-event="edit"><i
+            class="layui-icon febs-edit-area febs-blue">&#xe7a4;</i></a>
+</script>
+
+<script data-th-inline="none" type="text/javascript">
+
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
+
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-seal'),
+            $query = $view.find('#query_cost'),
+            $add = $view.find('#add'),
+            $appearAll = $view.find('#appearAll'),
+            $reset = $view.find('#reset_cost'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+        form.render();
+        initTable();
+        table.on('tool(sealTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            <!--样例-->
+            if (layEvent === 'detail') {
+                febs.modal.view('院校印章样式', 'seal/details/' + data.id, {
+                    area: $(window).width() <= 800 ? '90%' : '800px',
+                });
+            }
+            <!--编辑-->
+            if (layEvent === 'edit') {
+                febs.modal.open('修改院校印章', 'seal/detail/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : '750px',
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#seal-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+        table.on('sort(sealTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+        <!--批量查询操作-->
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $appearAll.on('click', function () {
+            let params = null;
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        <!--页面操作-->
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'sealTable',
+                url: ctx + 'seal/list',
+                cols: [[
+                    {field: 'id', title: '编号', minWidth: 50},
+                    {field: 'name', title: '院校名称', minWidth: 100},
+                    {field: 'simplename', title: '简称', minWidth: 100},
+                    {
+                        field: 'imgurl',
+                        title: '印章图片',
+                        minWidth: 50,
+                        templet: '<div><img style="width: 30px;height: 30px;vertical-align: middle" src="{{ d.imgurl }}"></div>'
+                    },
+                    {title: '操作', toolbar: '#seal-option', minWidth: 140}
+                ]]
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+    })
+</script>

@@ -1,0 +1,185 @@
+<style>
+    .juzhong {
+        text-align: center;
+    }
+</style>
+<body>
+<!--报考详情-->
+<div class="layui-fluid" id="examinfo-update">
+    <form id="examform" class="layui-form" action="" lay-filter="examinfo-update-form">
+        <input type="hidden" name="id" data-th-value="${student.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">学习形式：</label>
+            <div class="layui-input-inline">
+                <select id="studyTypeId" name="studyTypeId" disabled>
+                    <option data-th-each="studyType:${studyType}" data-th-value="${studyType.id}"
+                            data-th-text="${studyType.detail}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">院校：</label>
+            <div class="layui-input-inline">
+                <select name="collegeId" id="college" lay-search="" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">层次：</label>
+            <div class="layui-input-inline">
+                <select name="level" id="level" lay-search="" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业：</label>
+            <div class="layui-input-inline">
+                <select name="majorId" id="major" lay-search="" disabled>
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">毕业时间：</label>
+            <div class="layui-input-block">
+                <input disabled id="graduDate" readonly type="text" name="graduDate" placeholder="不可编辑"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body juzhong">
+                    <button class="layui-btn" lay-filter="examinfo-update-form-edit" id="edit_ExamInfo">编辑</button>
+                    <button class="layui-btn" style="display: none" lay-submit=""
+                            lay-filter="examinfo-update-form-submit" id="submit_ExamInfo">提交修改
+                    </button>
+                    <button class="layui-btn" style="display: none" lay-filter="examinfo-update-form-cancel"
+                            id="cancel_ExamInfo">取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'xmSelect', 'validate', 'laydate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            student = [[${student}]],
+            graduDateStr = [[${graduDateStr}]],
+            validate = layui.validate,
+            laydate = layui.laydate,
+            dataPermissionXmlSelect,
+            eamXmSelect,
+            majorSelect,
+            batchSelect,
+            deptXmlSelect;
+
+        laydate.render({
+            elem: '#graduDate' //指定元素
+        });
+        form.verify(validate);
+        form.render();
+        initExamValue();
+
+        //编辑按钮
+        $("#edit_ExamInfo").click(function () {
+            $('#studyTypeId').attr("disabled", false);
+            $('#college').attr("disabled", false);
+            $('#level').attr("disabled", false);
+            $('#major').attr("disabled", false);
+            layui.form.render("select");
+            $(this).attr("style", "display:none;");
+            $("#submit_ExamInfo").removeAttr("style");
+            $("#cancel_ExamInfo").removeAttr("style");
+            return false;
+        });
+
+        //取消按钮
+        $("#cancel_ExamInfo").click(function () {
+            $('#studyTypeId').attr("disabled", true);
+            $('#college').attr("disabled", true);
+            $('#level').attr("disabled", true);
+            $('#major').attr("disabled", true);
+            layui.form.render("select");
+            $(this).attr("style", "display:none;");
+            $("#submit_ExamInfo").attr("style", "display:none;");
+            $("#edit_ExamInfo").removeAttr("style");
+            return false;
+        });
+
+        //院校
+        febs.get('/student/collegeList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#college").append(new Option(list[i].name, list[i].id));
+            }
+            $("#college").val(student.collegeId);
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //层次
+        febs.get('/student/stuLevelList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#level").append(new Option(list[i].levelName, list[i].id));
+            }
+            $("#level").val(student.level);
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //专业
+        febs.get('/student/majorList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#major").append(new Option(list[i].fullName, list[i].id));
+            }
+            $("#major").val(student.majorId);
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //初始化表单
+        function initExamValue() {
+            form.val("examinfo-update-form", {
+                "studyTypeId": student.studyTypeId,
+                "graduDate": graduDateStr
+            });
+        }
+
+        //提交表单方法
+        form.on('submit(examinfo-update-form-submit)', function (data) {
+            var str = {
+                "id": student.id + '',
+                "stageId": student.stageId + '',
+                "level": student.level + '',
+                "studyTypeId": student.studyTypeId + '',
+                "graduDate": graduDateStr,
+                "collegeId": student.collegeId + '',
+                "batchId": student.batchId + '',
+                "majorId": student.majorId + ''
+            };
+//            console.log(data.field)
+//            console.log(str)
+            //判断非空
+            if (febs.nativeEqual(data.field, str)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post("/student/updateExamInfo", data.field, function () {
+                //layer.closeAll();
+                febs.alert.success('用户数据修改成功');
+            });
+
+        });
+    });
+</script>
+</body>

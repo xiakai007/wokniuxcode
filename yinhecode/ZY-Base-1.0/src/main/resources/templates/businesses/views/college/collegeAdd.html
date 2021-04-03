@@ -1,0 +1,82 @@
+<style>
+    #college-add {
+        padding: 20px 25px 25px 0;
+    }
+    .layui-upload-img {
+        width: 92px;
+        height: 92px;
+        margin: 0 10px 10px 0;
+    }
+</style>
+<div class="layui-fluid" id="college-add">
+    <form class="layui-form" action="" lay-filter="college-add-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" minlength="2" maxlength="20" lay-verify="range|name"
+                       autocomplete="off" class="layui-input repetitive" id="name">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">简称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="simplename" minlength="2" maxlength="20" lay-verify="range|name"
+                       autocomplete="off" class="layui-input repetitive" id="simplename">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">校址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="address" minlength="2" maxlength="50" lay-verify="range|name"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式：</label>
+            <div class="layui-input-block">
+                <input type="tel" name="tel" lay-verify="phoneNum" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea name="remark" maxlength="200" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="college-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate','upload'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+        form.on('submit(college-add-form-submit)', function (data) {
+            if($('#imgFile').attr("href") != "")
+            {
+                febs.post(ctx + 'college/add', data.field, function () {
+                    layer.closeAll();
+                    febs.alert.success('新增院校成功');
+                    $('#businesses-college').find('#query').click();
+                });
+            }else
+            {
+                febs.post(ctx + 'college/add', data.field, function () {
+                    layer.closeAll();
+                    febs.alert.success('新增院校成功');
+                    $('#businesses-college').find('#query').click();
+                });
+            }
+            return false;
+        });
+    });
+</script>

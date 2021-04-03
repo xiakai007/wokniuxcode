@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.StudentPoolMapper">
+   <insert id="AddStudentPoolList"  parameterType="list"  >
+      INSERT  into   t_student_pool   VALUES
+       <foreach collection="list"   index="index" item="sp"  separator="," >
+           (
+           #{sp.idCard},#{sp.batch},#{sp.studyMode},
+           #{sp.reqExtensionId},#{sp.distinctReqId},
+           #{sp.reqInfoId},#{sp.followUserId},#{sp.groupId},
+           #{sp.name},#{sp.ecCall},#{sp.gender},#{sp.birthday},
+           #{sp.isLunarBirthday}, #{sp.title},
+           #{sp.qq},#{sp.mobile}, #{sp.phone}, #{sp.fax},
+           #{sp.email},#{sp.company}, #{sp.companyUrl},
+           #{sp.companyAddress}, #{sp.memo}, #{sp.vocation},
+           #{sp.channel}, #{sp.prefecture}, #{sp.fieldInfos},
+           #{sp.crmId}, #{sp.modifyTime}, #{sp.contacTtime},
+           #{sp.createTime}, #{sp.lastFollowUserId},
+           #{sp.step}
+           )
+       </foreach>
+
+
+   </insert>
+    
+    <select id="ifStudentPool" parameterType="StudentPool"  resultType="StudentPool">
+        SELECT  *  FROM   t_student_pool  WHERE
+           ID_CARD=#{idCard}   and
+              BATCH=#{batch}    and
+                  STUDY_MODE=#{studyMode}
+    </select>
+
+    <select id="findStudentByOpenId" parameterType="String" resultType="Student">
+        SELECT
+        ID,
+        ID_CARD,
+        BATCH,
+        STUDY_MODE,
+        REQ_EXTENSION_ID,
+        DISTINCT_REQ_ID,
+        REQ_INFO_ID,
+        FOLLOW_USER_ID,
+        GROUP_ID,
+        NAME,
+        EC_CALL,
+        GENDER,
+        BIRTHDAY,
+        IS_LUNAR_BIRTHDAY,
+        TITLE,
+        QQ,
+        MOBILE,
+        PHONE,
+        FAX,
+        EMAIL,
+        COMPANY,
+        COMPANY_URL,
+        COMPANY_ADDRESS,
+        MEMO,
+        VOCATION,
+        CHANNEL,
+        PREFECTURE,
+        FIELD_INFOS,
+        CRM_ID,
+        MODIFY_TIME,
+        CONTAC_TTIME,
+        CREATE_TIME,
+        LAST_FOLLOW_USER_ID,
+        STEP,
+        OPEN_ID,
+        NICK_NAME,
+        UNION_ID
+        FROM t_student_pool
+        WHERE 1 = 1
+        AND OPEN_ID = #{openId}
+    </select>
+
+    <select id="findStudentByWxInfo" parameterType="String" resultType="Student">
+        SELECT
+        stu.ID,
+        stu.ID_CARD,
+        stu.BATCH,
+        stu.STUDY_MODE,
+        stu.REQ_EXTENSION_ID,
+        stu.DISTINCT_REQ_ID,
+        stu.REQ_INFO_ID,
+        stu.FOLLOW_USER_ID,
+        stu.GROUP_ID,
+        stu.NAME,
+        stu.EC_CALL,
+        stu.GENDER,
+        stu.BIRTHDAY,
+        stu.IS_LUNAR_BIRTHDAY,
+        stu.TITLE,
+        stu.QQ,
+        stu.MOBILE,
+        stu.PHONE,
+        stu.FAX,
+        stu.EMAIL,
+        stu.COMPANY,
+        stu.COMPANY_URL,
+        stu.COMPANY_ADDRESS,
+        stu.MEMO,
+        stu.VOCATION,
+        stu.CHANNEL,
+        stu.PREFECTURE,
+        stu.FIELD_INFOS,
+        stu.CRM_ID,
+        stu.MODIFY_TIME,
+        stu.CONTAC_TTIME,
+        stu.CREATE_TIME,
+        stu.LAST_FOLLOW_USER_ID,
+        stu.STEP,
+        stu.OPEN_ID,
+        stu.NICK_NAME,
+        stu.UNION_ID
+        FROM t_student_pool stu
+	    left join t_batch batch on (stu.BATCH = batch.ID)
+	    left join t_dic dic on (stu.STUDY_MODE = dic.ID)
+        WHERE 1 = 1
+        AND batch.BATCH_NAME = #{batch}
+	    AND dic.DETAIL = #{studyMode}
+	    AND stu.ID_CARD = #{idCard}
+	    AND stu.MOBILE = #{mobile}
+    </select>
+
+    <select id="findStudentByWxInfoAndOpenId" parameterType="String" resultType="Student">
+        SELECT
+        stu.ID,
+        stu.ID_CARD,
+        stu.BATCH,
+        stu.STUDY_MODE,
+        stu.REQ_EXTENSION_ID,
+        stu.DISTINCT_REQ_ID,
+        stu.REQ_INFO_ID,
+        stu.FOLLOW_USER_ID,
+        stu.GROUP_ID,
+        stu.NAME,
+        stu.EC_CALL,
+        stu.GENDER,
+        stu.BIRTHDAY,
+        stu.IS_LUNAR_BIRTHDAY,
+        stu.TITLE,
+        stu.QQ,
+        stu.MOBILE,
+        stu.PHONE,
+        stu.FAX,
+        stu.EMAIL,
+        stu.COMPANY,
+        stu.COMPANY_URL,
+        stu.COMPANY_ADDRESS,
+        stu.MEMO,
+        stu.VOCATION,
+        stu.CHANNEL,
+        stu.PREFECTURE,
+        stu.FIELD_INFOS,
+        stu.CRM_ID,
+        stu.MODIFY_TIME,
+        stu.CONTAC_TTIME,
+        stu.CREATE_TIME,
+        stu.LAST_FOLLOW_USER_ID,
+        stu.STEP,
+        stu.OPEN_ID,
+        stu.NICK_NAME,
+        stu.UNION_ID
+        FROM t_student_pool stu
+	    left join t_batch batch on (stu.BATCH = batch.ID)
+	    left join t_dic dic on (stu.STUDY_MODE = dic.ID)
+        WHERE 1 = 1
+        AND batch.BATCH_NAME = #{batch}
+	    AND dic.DETAIL = #{studyMode}
+	    AND stu.ID_CARD = #{idCard}
+	    AND stu.MOBILE = #{mobile}
+	    AND stu.OPEN_ID = #{openId}
+    </select>
+</mapper>

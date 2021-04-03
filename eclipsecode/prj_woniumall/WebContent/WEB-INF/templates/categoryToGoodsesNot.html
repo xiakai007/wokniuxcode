@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+<title>商品类别详情页面</title>
+</head>
+<body>
+	<div th:insert="~{commons::head}"></div>
+	<ul>
+		<li th:each="categoods:${cateGoodsesNot}" class="li">
+			<div class="col-md-7 col-md-3">
+				<div class="thumbnail">
+					<img th:src="${categoods.image}"/>
+						<div class="caption">
+							<h4 class="bookname" th:text="${categoods.name}"></h4>
+								<div class="salesprice" >
+									惊喜价：¥<span style="font-size:large;" th:text="${categoods.salesprice}"></span>
+								</div>
+								<div class="marketprice">
+									市场价：¥<span style="text-decoration:line-through;" th:text="${categoods.marketprice}"></span>
+								</div>
+								<p>
+								<a th:href="@{goods(oper='proDetailHot',id=${categoods.id})}">
+									<font color="deeppink">点击查看详情</font>
+								</a>
+								</p>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	<div th:insert="~{commons::foot}"></div>
+	<script type="text/javascript" th:src="@{/resources/js/jquery-1.12.3.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/resources/js/bootstrap.min.js}"></script>	
+</body>
+</html>

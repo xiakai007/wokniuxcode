@@ -1,0 +1,328 @@
+<div class="layui-fluid layui-anim febs-anim" id="businesses-class" lay-title="班级">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="class-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId" lay-filter="classCboBatch" id="classCboBatch"
+                                                    lay-search="" lay-verify="select">
+                                                <option value="">请选择</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="classCboCollege" lay-filter="classCboCollege">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="levelId" id="classCboLevel" lay-filter="classCboLevel">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="classCboMajor" lay-filter="classCboMajor">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">班主任</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="userId" id="class-cboUser"
+                                                   lay-filter="class-cboUser" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="class-query">
+                                    <i class="layui-icon" title="搜索">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="class-reset">
+                                    <i class="layui-icon" title="刷新">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="class-addClass">
+                                    <i class="layui-icon layui-icon-plus-circle">创建班级</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="class-export">
+                                    <i class="layui-icon layui-icon-export">导出</i>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="classTable" lay-data="{id: 'classTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="class-option">
+    <a lay-event="detail" title="查看详情"><i class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+    <a lay-event="add" title="添加学生"><i class="layui-icon febs-edit-area febs-blue">&#xe7cb;</i></a>
+    <a lay-event="exchange" title="更换班主任"><i class="layui-icon febs-edit-area febs-red">&#xe86f;</i></a>
+    <a lay-event="del" title="删除班级"><i class="layui-icon febs-edit-area febs-red">&#xe7f9;</i></a>
+</script>
+<script type="text/javascript" src="module/treeSelect/treeSelect.js"></script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'treeSelect', 'jquery', 'form', 'table', 'febs'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            treeSelect = layui.treeSelect,
+            form = layui.form,
+            table = layui.table,
+            $view = $('#businesses-class'),
+            $query = $view.find('#class-query'),
+            $export = $view.find('#class-export'),
+            $addClass = $view.find('#class-addClass'),
+            $reset = $view.find('#class-reset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+
+        form.render();
+
+        initTable();
+
+        //操作栏事件监听
+        table.on('tool(classTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('班级信息', 'class/detail/' + data.id, {
+                    area: $(window).width() <= 750 ? ['85%', '95%'] : ['60%', '85%'],
+                    maxmin: true
+                });
+            }
+            if (layEvent === 'add') {
+                febs.modal.view('学生分班', 'class/classGrouping/' + data.id, {
+                    area: $(window).width() <= 750 ? ['85%', '95%'] : ['80%', '90%'],
+                    maxmin: true
+                });
+            }
+            if (layEvent === 'del') {
+                if (data.stuNum == 0) {
+                    febs.modal.confirm('提示', '确定删除该班级？', function () {
+                        deleteClass(data.id);
+                    })
+                } else {
+                    febs.alert.warn('班级人数大于0，不能删除');
+                }
+            }
+            if (layEvent === 'exchange') {
+                febs.modal.open('更换班主任', 'teacher/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : ['50%', '80%'],
+                    btn: ['提交', '取消'],
+                    yes: function () {
+                        febs.modal.confirm('提示', '<span style="color: #f30505" >是否确定更换班主任？</span>', function () {
+                            $('#teacher-update').find('#teacher-update-submit').trigger('click');
+                        })
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+        //查询
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        //重置列表页面
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            $("#classCboLevel").empty();
+            $("#classCboLevel").append(new Option("", ""));
+            $("#classCboMajor").empty();
+            $("#classCboMajor").append(new Option("", ""));
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}});
+        });
+
+        //新增班级
+        $addClass.on('click', function () {
+            var a = 1;
+            febs.modal.open('创建班级', 'class/add', {
+                btn: ['提交', '取消'],
+                area: $(window).width() <= 750 ? '95%' : '50%',
+                yes: function () {
+                    a++;
+                    if (a == 2) {
+                        $('#class-add').find('#classAdd-submit').trigger('click');
+                    }
+                },
+                btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+
+        //导出数据到Excel
+        $export.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+            params.pageNum = $view.find(".layui-laypage-em").next().html();
+            let date = new Date();
+            let dateStr = "" + date.getFullYear() + add0(date.getMonth() + 1) + add0(date.getDate()) + '_' + add0(date.getHours()) + add0(date.getMinutes()) + add0(date.getSeconds());
+            let fileName = '班级信息表' + dateStr + '.xlsx';
+            febs.download(ctx + 'class/excel', params, fileName);
+        });
+
+        //初始化表格
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'classTable',
+                url: ctx + 'class/list',
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'id', title: '编号', width: 80},
+                    {field: 'batchName', title: '批次', width: 100},
+                    {field: 'collegeName', title: '院校', minWidth: 150},
+                    {field: 'levelName', title: '层次', width: 100},
+                    {field: 'majorName', title: '专业', minWidth: 160},
+                    {field: 'className', title: '班级唯一编码', minWidth: 200},
+                    {field: 'userName', title: '班主任', minWidth: 120},
+                    {field: 'stuNum', title: '学生数量', width: 90},
+                    {title: '操作', toolbar: '#class-option', width: 135}
+                ]],
+                width: '100%',
+                done: function (res, curr, count) {
+                    $("table").css("width", "100%");
+                }
+            });
+        }
+
+        //获取表单值
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        //删除班级
+        function deleteClass(classIds) {
+            febs.get(ctx + 'class/delete/' + classIds, null, function () {
+                febs.alert.success('删除班级操作成功');
+                $query.click();
+            });
+        }
+
+        //查询所有有效批次
+        febs.get(ctx + 'college/batchSelect', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                let batch = list[i];
+                $("#classCboBatch").append(new Option(batch.batchName, batch.id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //查询所有院校
+        febs.get(ctx + 'college/collegeSelect', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                let college = list[i];
+                $("#classCboCollege").append(new Option(college.name, college.id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //院校层次联动
+        form.on('select(classCboCollege)', function (data) {
+            let collegeId = data.value;
+            $("#classCboLevel").empty();
+            $("#classCboLevel").append(new Option("", ""));
+            $("#classCboMajor").empty();
+            $("#classCboMajor").append(new Option("", ""));
+            febs.get(ctx + 'college/levelSelect?collegeId=' + collegeId, null, function (data) {
+                let list = data.data;
+                for (let i = 0; i < list.length; i++) {
+                    let level = list[i];
+                    $("#classCboLevel").append(new Option(level.levelName, level.id));
+                }
+                //重新渲染下拉菜单
+                form.render("select");
+            });
+        })
+
+        //院校层次专业联动
+        form.on('select(classCboLevel)', function (data) {
+            let collegeId = $("#classCboCollege").val();
+            let levelId = data.value;
+            $("#classCboMajor").empty();
+            $("#classCboMajor").append(new Option("", ""));
+            febs.get(ctx + 'college/majorSelect?collegeId=' + collegeId + "&levelId=" + levelId, null, function (data) {
+                let list = data.data;
+                for (let i = 0; i < list.length; i++) {
+                    let major = list[i];
+                    $("#classCboMajor").append(new Option(major.fullName, major.id));
+                }
+                //重新渲染下拉菜单
+                form.render("select");
+            });
+        })
+
+        //构建用户树
+        treeSelect.render({
+            // 选择器
+            elem: '#class-cboUser',
+            // 数据
+            data: ctx + 'transferApplication/userDeptTree',
+            // 异步加载方式：get/post，默认get
+            type: 'get',
+            // 占位符
+            placeholder: '请选择',
+            // 是否开启搜索功能：true/false，默认false
+            search: true,
+            style: {
+                folder: { // 父节点图标
+                    enable: true // 是否开启：true/false
+                },
+                line: {
+                    enable: true
+                }
+            },
+            // 点击回调
+            click: function (d) {
+                $("#class-cboUser").val(d.current.id);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+            }
+        });
+
+        //日期补零
+        function add0(param) {
+            return param < 10 ? '0' + param : param;
+        }
+    })
+</script>

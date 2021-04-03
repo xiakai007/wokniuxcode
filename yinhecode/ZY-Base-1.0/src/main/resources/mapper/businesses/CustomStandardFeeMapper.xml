@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.CustomStandardFeeMapper">
+
+    <select id="fingCustomStandardFeeAll" resultType="CustomStandardFee">
+    SELECT
+    t1.ID id,
+    t3.BATCH_NAME batchName,
+    t1.cultivate cultivate,
+    t1.COLLEGE_ID collegeId,
+    t1.STUDY_LEVEL_ID studyLevelId,
+    t1.SUBJECT_CATEGORY_ID subjectCategoryId,
+
+    t2.SIMPLE_NAME majorName,
+    t1.PAYMENT_EXPLAIN paymentExplain,
+    t1.ORIGINAL_PRICE originalPrice
+
+    FROM
+    t_custom_standard_fee t1
+    LEFT JOIN t_major t2 ON t1.MAJOR_ID=t2.ID
+
+    LEFT JOIN t_batch t3 ON t1.BATCH_ID=t3.ID
+    </select>
+
+    <sql id="addcustomStandardFeeSql">
+         INSERT INTO t_custom_standard_fee VALUE (null,#{batchId},#{cultivate},#{collegeId},#{studyLevelId},#{subjectCategoryId},#{majorId},#{paymentExplain},#{originalPrice})
+    </sql>
+
+    <sql id="countCustomStandardFeeDetailSql">
+        SELECT
+        COUNT(1)
+        FROM
+        t_custom_standard_fee T
+        WHERE 1 = 1
+        <if test="customStandardFee.paymentExplain != null and customStandardFee.paymentExplain != ''">
+            AND T.PAYMENT_EXPLAIN=#{customStandardFee.paymentExplain}
+        </if>
+    </sql>
+
+    <sql id="findCustomStandardFeeDetailSql">
+     SELECT
+        T.ID id,
+        T2.BATCH_NAME batchname,
+        T.cultivate cultivate,
+        T.COLLEGE_ID collegeId,
+        T.STUDY_LEVEL_ID studyLevelId,
+        T.SUBJECT_CATEGORY_ID subjectCategoryId,
+        T1.SIMPLE_NAME majorname,
+        T.PAYMENT_EXPLAIN paymentExplain,
+        T.ORIGINAL_PRICE originalPrice,
+        T3.name collegeName,
+        T4.LEVEL_NAME levelName,
+        T5.DETAIL cultivateName,
+        T6.FULL_NAME subjectcategoryName
+
+
+        FROM
+        t_custom_standard_fee T
+        LEFT JOIN t_major T1 ON T.MAJOR_ID=T1.ID
+
+        LEFT JOIN t_batch T2 ON T.BATCH_ID=T2.ID
+
+         LEFT JOIN t_college T3 ON T.COLLEGE_ID=T3.ID
+
+         LEFT JOIN t_level T4 ON T.STUDY_LEVEL_ID=T4.ID
+         LEFT JOIN t_dic T5 ON T.CULTIVATE=T5.ID
+         LEFT JOIN t_subject_category T6 ON T.SUBJECT_CATEGORY_ID=T6.ID
+         LEFT JOIN t_dic T7 ON T.CULTIVATE=T7.ID
+WHERE 1=1
+
+        <if test="customStandardFee.batchId != null and customStandardFee.batchId != 0">
+            AND T.BATCH_ID = #{customStandardFee.batchId}
+        </if>
+        <if test="customStandardFee.cultivate != null and customStandardFee.cultivate != 0">
+            AND T.CULTIVATE = #{customStandardFee.cultivate}
+        </if>
+        <if test="customStandardFee.collegeId != null and customStandardFee.collegeId != 0">
+            AND T.COLLEGE_ID = #{customStandardFee.collegeId}
+        </if>
+        <if test="customStandardFee.studyLevelId != null and customStandardFee.studyLevelId != 0">
+            AND T.STUDY_LEVEL_ID = #{customStandardFee.studyLevelId}
+        </if>
+        <if test="customStandardFee.subjectCategoryId != null and customStandardFee.subjectCategoryId != 0">
+            AND T.SUBJECT_CATEGORY_ID = #{customStandardFee.subjectCategoryId}
+        </if>
+        <if test="customStandardFee.majorId != null and customStandardFee.majorId != 0">
+            AND T.MAJOR_ID = #{customStandardFee.majorId}
+        </if>
+
+    </sql>
+    <select id="countCustomStandardFeeDetail" parameterType="customStandardFee" resultType="long">
+        <include refid="countCustomStandardFeeDetailSql"/>
+    </select>
+
+    <select id="findCustomStandardFeeDetailPage" parameterType="customStandardFee" resultType="customStandardFee">
+        <include refid="findCustomStandardFeeDetailSql"/>
+    </select>
+
+
+       <select id="findById" parameterType="Integer" resultType="customStandardFee">
+      SELECT
+      t1.ID id,
+    t3.BATCH_NAME batchName,
+    t1.cultivate cultivate,
+    t1.COLLEGE_ID collegeId,
+    t1.STUDY_LEVEL_ID studyLevelId,
+    t1.SUBJECT_CATEGORY_ID subjectCategoryId,
+
+    t2.SIMPLE_NAME majorName,
+    t1.PAYMENT_EXPLAIN paymentExplain,
+    t1.ORIGINAL_PRICE originalPrice
+
+    FROM
+    t_custom_standard_fee t1
+    LEFT JOIN t_major t2 ON t1.MAJOR_ID=t2.ID
+
+    LEFT JOIN t_batch t3 ON t1.BATCH_ID=t3.ID
+
+      WHERE 1 = 1
+        AND  t1.id = #{customStandardFeeId}
+    </select>
+
+    <insert id="addCustomStandardFee" parameterType="customStandardFee">
+        <include refid="addcustomStandardFeeSql"/>
+    </insert>
+
+     <select id="batchAll" parameterType="int" resultType="map">
+
+        SELECT t2.ID id,t2.BATCH_NAME  name FROM t_custom_standard_fee t1,t_batch t2 WHERE t1.BATCH_ID=t2.ID GROUP BY t1.BATCH_ID
+
+    </select>
+
+    <select id="collegeAll" parameterType="int" resultType="map">
+
+SELECT t2.id id,t2.name name FROM t_custom_standard_fee t1,t_college t2 WHERE t1.COLLEGE_ID=t2.id
+  <if test="batchId!=null and batchId!=0">
+            AND t1.BATCH_ID=#{batchId}
+
+        </if>
+
+ GROUP BY t2.id
+
+
+    </select>
+    <select id="levelAll" resultType="map">
+
+
+        SELECT t2.ID id,t2.LEVEL_NAME name FROM t_custom_standard_fee t1,t_level t2 WHERE t1.STUDY_LEVEL_ID=t2.ID
+        <if test="batchId!=null and batchId!=0">
+           AND t1.BATCH_ID=#{batchId}
+        </if>
+         <if test="collegeId!=null and collegeId!=0">
+           AND t1.COLLEGE_ID=#{collegeId}
+        </if>
+           GROUP BY t2.ID
+
+    </select>
+    <select id="subjectCategoryAll"  resultType="map">
+
+
+
+        SELECT t2.ID id,t2.FULL_NAME name FROM t_custom_standard_fee t1,t_subject_category t2 WHERE t1.SUBJECT_CATEGORY_ID=t2.ID
+             <if test="batchId!=null and batchId!=0">
+                        AND t1.BATCH_ID=#{batchId}
+            </if>
+          <if test="collegeId!=null and collegeId!=0">
+                        AND t1.COLLEGE_ID=#{collegeId}
+            </if>
+          <if test="levelId!=null and levelId!=0">
+                        AND t1.STUDY_LEVEL_ID=#{levelId}
+            </if>
+ GROUP BY t2.ID
+
+    </select>
+    <select id="majorAll"  resultType="map">
+
+
+
+        SELECT t2.ID id,t2.FULL_NAME name FROM t_custom_standard_fee t1,t_major t2 WHERE t1.MAJOR_ID=t2.ID
+        <if test="batchId!=null and batchId!=0">
+                        AND t1.BATCH_ID=#{batchId}
+            </if>
+          <if test="collegeId!=null and collegeId!=0">
+                        AND t1.COLLEGE_ID=#{collegeId}
+            </if>
+          <if test="levelId!=null and levelId!=0">
+                        AND t1.STUDY_LEVEL_ID=#{levelId}
+            </if>
+              <if test="subjectCategoryId!=null and subjectCategoryId!=0">
+               AND t1.SUBJECT_CATEGORY_ID=#{subjectCategoryId}
+            </if>
+ GROUP BY t2.ID
+
+    </select>
+      <select id="cultivateAll" resultType="map">
+        SELECT ID id,DETAIL cultivateName FROM  t_dic WHERE  NAME ='学习形式'
+    </select>
+    <!--<select id="oldBatchAll" resultType="map">-->
+        <!--SELECT t1.ID id,t1.BATCH_NAME batchName FROM t_batch t1,t_custom_standard_fee t2 WHERE t1.id=t2.BATCH_ID GROUP BY t1.ID-->
+    <!--</select>-->
+
+    <!--<select id="newBatchAll" resultType="map">-->
+        <!--SELECT ID id,BATCH_NAME batchName FROM t_batch-->
+    <!--</select>-->
+    <!--<select id="verify" parameterType="int" resultType="int">-->
+        <!--SELECT COUNT(ID) FROM  t_custom_standard_fee WHERE  BATCH_ID=#{id}-->
+    <!--</select>-->
+    <!--<delete id="delstandardByBatchId" parameterType="int">-->
+        <!--DELETE  FROM  t_custom_standard_fee WHERE  BATCH_ID=#{id}-->
+    <!--</delete>-->
+    <!--<select id="cultivateAll" resultType="map">-->
+        <!--SELECT ID id,DETAIL cultivateName FROM  t_dic WHERE  NAME ='学习形式'-->
+    <!--</select>-->
+
+
+
+</mapper>

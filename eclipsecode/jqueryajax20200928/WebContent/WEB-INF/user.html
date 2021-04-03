@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户管理</title>
+<link href="static/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+   <div style="width:70%;margin:10px auto;">
+     <form class="form-horizontal" method="post" name="search_form">
+       <input type="text" name="user_name" placeholder="请输入用户名" id="search_name"/>
+       <input type="button" value="查询" class="btn btn-info btn-sm" id="search_btn"/>
+     </form>
+   </div>
+   <div style="width:70%;margin:20px auto;text-align:right;">
+     <button class="btn btn-success" type="button" id="supp_add_btn">增加</button>
+     <button class="btn btn-danger" type="button" id="supp_delAll_btn">批量删除</button>
+   </div>
+   <table class="table table-striped table-bordered table-hover" style="width:70%;margin:10px auto;" id="table1">
+      <thead>
+         <tr>
+           <th>用户id</th>
+           <th>用户名</th>
+           <th>状态</th>
+           <th>操作</th>
+         </tr>
+      </thead>
+      <tbody>
+         
+      </tbody>
+   </table>
+   <div style="width:70%;margin:0px auto;">
+     <ul class="pagination pull-right" id="ul1">
+       <li >
+         <a href="" >
+           
+         </a>
+       </li>
+     </ul>
+   </div>
+   
+   <script type="text/javascript" src="static/js/jquery-1.12.3.min.js"></script>
+   <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+   <script type="text/javascript">
+   loadUserList(1);
+   searchUserData();
+     function loadUserList(crtPage){
+    	 $.ajax({
+    		 type:"post",
+    		 url:"user",
+    		 dataType:"json",
+    		 data:{"oper":"userlist","user_name":$("#search_name").val(),"currentPage":crtPage},
+    		 error:function(){
+    			 alert("错误");
+    		 },
+    		 success:function(resp){
+    			 var userArr=resp.pageData;
+    			 var tr="";
+    			 for(var i=0;i<userArr.length;i++){
+    				 var btnStatusClass="";
+    				 var btnStatusValue="";
+    				 if(userArr[i].user_status=="启用"){
+    					 btnStatusClass="btn btn-xs btn-danger";
+    					 btnStatusValue="停用";
+    				 }else{
+    					 btnStatusClass="btn btn-xs btn-success";
+    					 btnStatusValue="启用";
+    				 }
+    				 tr=tr+"<tr>";
+        			 tr=tr+"<td>"+userArr[i].user_id+"</td>";
+        			 tr=tr+"<td>"+userArr[i].user_name+"</td>";
+        			 tr=tr+"<td>"+userArr[i].user_status+"</td>";
+        			 tr=tr+"<td><button name=user_updStatus_btn type=button class='"+btnStatusClass+"'>"+btnStatusValue+"</button>";
+        			 tr=tr+"&nbsp;&nbsp;&nbsp;<button class='btn btn-danger btn-xs' type=button name=user_resetPwd_btn>重置密码</button></td>";
+        			 tr=tr+"</tr>";
+    			 }
+    			 $("#table1 tbody").html(tr);
+    			 var pageStr="<li><a href="+(resp.currentPage-1)+">&laquo;</a></li>";
+    			 for(var i=1;i<=resp.pages;i++){
+    				 if(i==resp.currentPage){
+    					 pageStr=pageStr+"<li class=active><a>"+i+"</a></li>";
+    				 }else{
+    					 pageStr=pageStr+"<li><a href="+i+">"+i+"</a></li>";
+    				 }
+    			 }
+    			 pageStr=pageStr+"<li><a href="+(resp.currentPage+1)+">&raquo;</a></li>";
+    			 $("#ul1").html(pageStr);
+    			 pageClick();
+    			 updStatus();
+    			 resetPwd();
+    		 }
+    	 });
+     }
+     function pageClick(){
+    	 $("#ul1 a").click(function(){
+    		 var crtPage=$(this).attr("href");
+    		 loadUserList(crtPage);
+    		 return false;
+    	 });
+     }
+     function searchUserData(){
+    	 $("#search_btn").click(function(){
+    		 loadUserList(1);
+    	 });
+     }
+     function updStatus(){
+    	 $("button[name=user_updStatus_btn]").click(function(){
+    		 var user_id=$(this).parents("tr").children().first().text();
+    		 var newStatus=$(this).text();
+    		 $.ajax({
+    			 type:"post",
+    			 url:"user",
+    			 data:{"oper":"updStatus","user_id":user_id,"status":newStatus},
+    			 error:function(){
+    				 alert("错误");
+    			 },
+    			 success:function(data){
+    				 alert(data);
+    				 loadUserList(1);
+    			 }
+    		 });
+    	 });
+     }
+     function resetPwd(){
+    	 $("button[name=user_resetPwd_btn]").click(function(){
+    		 var user_id=$(this).parents("tr").children().first().text();
+    		 $.ajax({
+    			 type:"post",
+    			 url:"user",
+    			 data:{"oper":"resetPwd","user_id":user_id},
+    			 error:function(){
+    				 alert("错误");
+    			 },
+    			 success:function(data){
+    				 alert(data);
+    				 loadUserList(1);
+    			 }
+    		 });
+    	 });
+     }
+   </script>
+</body>
+</html>
+
+
+
+
+
+

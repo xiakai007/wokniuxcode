@@ -1,0 +1,441 @@
+<style>
+    .juzhong {
+        text-align: center;
+    }
+</style>
+<body>
+<!--回收站报考详情页-->
+<div class="layui-fluid" id="examinfo-update">
+    <form id="examform" class="layui-form" action="" lay-filter="examinfo-update-form">
+        <input type="hidden" name="id" data-th-value="${student.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">阶段：</label>
+            <div class="layui-input-inline">
+                <select id="stageId" name="stageId" disabled>
+                    <option value="14">考前</option>
+                    <option value="15">在籍</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">报考类型：</label>
+            <div class="layui-input-inline">
+                <select id="studyTypeId" name="studyTypeId" disabled>
+                    <option data-th-each="studyType:${studyType}" data-th-value="${studyType.id} "
+                            data-th-text="${studyType.detail}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">层次：</label>
+            <div class="layui-input-inline">
+                <select id="level" name="level" disabled>
+                    <option value="1">专升本</option>
+                    <option value="2">高起专</option>
+                    <option value="3">高起本</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">批次：</label>
+            <div id="batch" class="layui-input-block"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">报考院校：</label>
+            <div id="college" class="layui-input-block"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业：</label>
+            <div id="major" class="layui-input-block"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">毕业时间：</label>
+            <div class="layui-input-block">
+                <input disabled id="graduDate" type="text" name="graduDate" placeholder="yyyy-MM-dd"
+                       class="layui-input">
+            </div>
+        </div>
+        <!--<div class="layui-col-md12">-->
+            <!--<div class="layui-card">-->
+                <!--<div class="layui-card-body juzhong">-->
+                    <!--<button class="layui-btn" lay-filter="examinfo-update-form-edit" id="edit_ExamInfo">编辑</button>-->
+                    <!--<button class="layui-btn" style="display: none" lay-submit=""-->
+                            <!--lay-filter="examinfo-update-form-submit" id="submit_ExamInfo">提交修改-->
+                    <!--</button>-->
+                    <!--<button class="layui-btn" style="display: none" lay-filter="examinfo-update-form-cancel"-->
+                            <!--id="cancel_ExamInfo">取消-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'xmSelect', 'validate', 'laydate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            student =[[${student}]],
+            graduDateStr =[[${graduDateStr}]] ,
+            validate = layui.validate,
+            laydate = layui.laydate,
+            dataPermissionXmlSelect,
+            eamXmSelect,
+            majorSelect,
+            batchSelect,
+            deptXmlSelect;
+
+        laydate.render({
+            elem: '#graduDate' //指定元素
+        });
+        form.verify(validate);
+        form.render();
+        initExamValue();
+        eamXmSelect1();
+        majorSelect1();
+        batchSelect1();
+
+
+        //编辑按钮
+        $("#edit_ExamInfo").click(function () {
+            seteamXmSelect()
+            setmajorSelect()
+            setbatchSelect()
+            $('#stageId').attr("disabled", false);
+            $('#studyTypeId').attr("disabled", false);
+            $('#level').attr("disabled", false);
+            $('#graduDate').attr("disabled", false);
+            layui.form.render("select");
+            $(this).attr("style", "display:none;");
+            $("#submit_ExamInfo").removeAttr("style");
+            $("#cancel_ExamInfo").removeAttr("style");
+            return false;
+
+        })
+
+        //取消按钮
+        $("#cancel_ExamInfo").click(function () {
+            eamXmSelect1();
+            majorSelect1();
+            batchSelect1();
+            $('#stageId').attr("disabled",true);
+            $('#studyTypeId').attr("disabled",true);
+            $('#level').attr("disabled",true);
+            $('#graduDate').attr("disabled",true);
+            layui.form.render("select");
+            $(this).attr("style", "display:none;");
+            $("#submit_ExamInfo").attr("style", "display:none;");
+            $("#edit_ExamInfo").removeAttr("style");
+            return false;
+        })
+
+
+//院校信息下拉框
+        function seteamXmSelect() {
+            eamXmSelect = xmSelect.render({
+                el: '#college',
+                //toolbar: {show: true},
+                name: 'collegeId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'name',
+                    value: 'id'
+                },
+                data: []
+            });
+
+
+            febs.get('/student/collegeList', null, function (data) {
+                eamXmSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+                console.log("student.collegeId" + student.collegeId);
+                var collegeIds = new Array();
+                collegeIds.push(student.collegeId);
+                eamXmSelect.setValue(collegeIds);
+                //eamXmSelect.setValue("7,1".split(","));
+            });
+        }
+
+        function eamXmSelect1() {
+            eamXmSelect = xmSelect.render({
+                el: '#college',
+                //toolbar: {show: true},
+                disabled: true,
+                name: 'collegeId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'name',
+                    value: 'id'
+                },
+                data: []
+            });
+
+
+            febs.get('/student/collegeList', null, function (data) {
+                eamXmSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+                var collegeIds = new Array();
+                collegeIds.push(student.collegeId);
+                eamXmSelect.setValue(collegeIds);
+                //eamXmSelect.setValue("7,1".split(","));
+            });
+        }
+
+
+
+//专业下拉框
+        function setmajorSelect() {
+            majorSelect = xmSelect.render({
+                el: '#major',
+                // toolbar: {show: true},
+                name: 'majorId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'fullName',
+                    value: 'id'
+                },
+                data: []
+            });
+
+            febs.get('/student/majorList', null, function (data) {
+                majorSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+                var majorId = new Array();
+                majorId.push(student.majorId);
+                majorSelect.setValue(majorId);
+                //console.log("student.majorId"+student.majorId);
+            });
+        }
+
+        function majorSelect1() {
+            majorSelect = xmSelect.render({
+                el: '#major',
+                // toolbar: {show: true},
+                disabled: true,
+                name: 'majorId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'fullName',
+                    value: 'id'
+                },
+                data: []
+            });
+
+            febs.get('/student/majorList', null, function (data) {
+                majorSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+                var majorId = new Array();
+                majorId.push(student.majorId);
+                majorSelect.setValue(majorId);
+                //console.log("student.majorId"+student.majorId);
+            });
+        }
+        //批次下拉框
+        function setbatchSelect() {
+            batchSelect = xmSelect.render({
+                el: '#batch',
+                //toolbar: {show: true},
+                name: 'batchId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'batchName',
+                    value: 'id'
+                },
+                data: []
+            });
+
+            febs.get('/student/batchList', null, function (data) {
+                batchSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+                var batchId = new Array();
+                batchId.push(student.batchId);
+                batchSelect.setValue(batchId);
+                // batchSelect.setValue(student.batchId.split(','));
+                console.log(student.batchId);
+            });
+        }
+
+        function batchSelect1() {
+            batchSelect = xmSelect.render({
+                el: '#batch',
+                // toolbar: {show: true},
+                disabled: true,
+                name: 'batchId',
+                filterable: true,
+                radio: true,
+                theme: {
+                    color: '#32c787',
+                },
+                model: {
+                    label: {
+                        type: 'text',
+                        text: {
+                            //左边拼接的字符
+                            left: '',
+                            //右边拼接的字符
+                            right: '',
+                            //中间的分隔符
+                            separator: ', ',
+                        },
+                    }
+                },
+                prop: {
+                    name: 'batchName',
+                    value: 'id'
+                },
+                data: []
+            });
+
+            febs.get('/student/batchList', null, function (data) {
+                batchSelect.update({
+                    data: data.data,
+                    autoRow: true,
+                })
+                var batchId = new Array();
+                batchId.push(student.batchId);
+                batchSelect.setValue(batchId);
+                // batchSelect.setValue(student.batchId.split(','));
+                console.log(student.batchId);
+            });
+        }
+
+
+        //加载表格
+        function initExamValue() {
+            form.val("examinfo-update-form", {
+                "stageId": student.stageId,
+                "level": student.level,
+                "studyTypeId": student.studyTypeId,
+                "IDENTITY": student.identity,
+                "graduDate": graduDateStr
+
+            });
+
+        }
+
+//提交表单方法
+        form.on('submit(examinfo-update-form-submit)', function (data) {
+            var str = {
+                "id": student.id + '',
+                "stageId": student.stageId + '',
+                "level": student.level + '',
+                "studyTypeId": student.studyTypeId + '',
+                "graduDate": graduDateStr,
+                "collegeId": student.collegeId + '',
+                "batchId": student.batchId + '',
+                "majorId": student.majorId + ''
+            };
+//            console.log(data.field)
+//            console.log(str)
+            if (febs.nativeEqual(data.field, str)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post("/student/updateExamInfo", data.field, function () {
+                //layer.closeAll();
+                febs.alert.success(' 用户数据修改成功');
+                form.render();
+            });
+
+        });
+    });
+</script>
+</body>

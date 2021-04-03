@@ -1,0 +1,63 @@
+<style>
+    #student:visited {
+
+        color:#00FF00;
+
+        text-decoration:none;
+
+    }
+
+    #student:hover {
+
+        color:#000000;
+
+        text-decoration:none;
+
+    }
+
+    #student:active {
+
+        color:#FFFFFF;
+
+        text-decoration:none;
+
+    }
+</style>
+<!--学生公海详情-->
+<div class="layui-tab layui-tab-brief">
+    <input id="poolStuid" type="hidden" data-th-value="${id}">
+    <ul class="layui-tab-title">
+        <li class="layui-this"><a id="poolStudent">个人信息</a></li>
+        <li><a id="poolExam" >报考信息</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show" id="poolShowinfo">
+        </div>
+    </div>
+</div>
+<script data-th-inline="javascript">
+layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+    let $ = layui.$,
+        febs = layui.febs,
+        layer = layui.layer,
+        form = layui.form,
+        xmSelect = layui.xmSelect,
+        user = [[${user}]]
+        ;
+    form.render();
+
+    $(function () {
+        $("#poolShowinfo").load("febs/views/student/poolStudentinfo?id="+$("#poolStuid").val())
+    })
+    $("#poolExam").click(function () {
+        $("#poolShowinfo").load("febs/views/student/poolExaminfo/"+$("#poolStuid").val())
+    });
+    $("#poolStudent").click(function () {
+        $("#poolShowinfo").load("febs/views/student/poolStudentinfo?id="+$("#poolStuid").val())
+    });
+
+
+});
+</script>
+
+

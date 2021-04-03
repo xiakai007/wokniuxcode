@@ -1,0 +1,64 @@
+<style>
+    #college-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="video-sort">
+    <form class="layui-form" action="" lay-filter="video-update-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">排序位置：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" >
+                <input type="hidden" name="sort" >
+                <input type="text" name="sort1"
+                        class="layui-input"  placeholder="请输入要对调位置的数字">
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="video-sort-form-submit" id="submitVideoSort"></button>
+        </div>
+    </form>
+</div>
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            video = [[${video}]],
+            sortList = [[${sortList}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initUserValue();
+
+
+
+
+        function initUserValue() {
+            form.val("video-update-form", {
+                "id": video.id,
+                  "sort":video.sort,
+            });
+        }
+
+        form.on('submit(video-sort-form-submit)', function (data) {
+
+            var val = $("#sort1").val();
+            for (var i = 1; i <=sortList.length; i++) {
+                if(val==sortList[i]){
+                    febs.get(ctx + 'video/updateBySort', data.field, function () {
+                        layer.closeAll();
+                        $('#businesses-video').find('#queryVideo').click();
+                    });
+                }
+            }
+            return false;
+        });
+    });
+</script>
+

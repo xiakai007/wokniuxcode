@@ -1,0 +1,252 @@
+<div class="layui-fluid layui-anim febs-anim" id="businesses-correspondenceCollege" lay-title="函授站点信息">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="correspondenceCollege-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">省</label>
+                                        <div class="layui-input-inline">
+                                            <!--<div class="layui-col-md6">-->
+                                                <select  lay-verify="" lay-filter="province" id="province"
+                                                         name="province" class="layui-input">
+                                                    <option value="">请选择省份</option>
+                                                </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">市</label>
+                                        <div class="layui-input-inline" >
+                                            <!--<div class="layui-col-md6">-->
+                                                <select name="city" lay-verify="" id="city" class="layui-input">
+                                                    <option value="">请选择城市</option>
+                                                </select>
+                                            <!--</div>-->
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">名称</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="txtCollege" autocomplete="off" class="layui-input"
+                                                   lay-verify="char" placeholder="可填写全称或简称">
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area"
+                                         STYLE="float: right">
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain
+                                                    table-action" id="query" title="查询">
+                                            <i class="layui-icon">&#xe848;</i>
+                                        </div>
+                                        <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain
+                                                    table-action" id="reset" title="重置">
+                                            <i class="layui-icon">&#xe79b;</i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain
+                                            table-action" id="btnAdd">
+                                    <i class="layui-icon layui-icon-plus-circle">新增</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain
+                                            table-action" id="btnShowAll">
+                                    <i class="layui-icon layui-icon-plus-circle">显示全部</i>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="correspondenceCollegeTable" lay-data="{id: 'correspondenceCollegeTable'}">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="correspondenceCollege-option">
+    <a lay-event="detail"><i
+            class="layui-icon febs-edit-area febs-green" title="详情">&#xe7a5;</i></a>
+    <a lay-event="edit"><i
+            class="layui-icon febs-edit-area febs-blue" title="编辑">&#xe7a4;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-correspondenceCollege'),
+            $query = $view.find('#query'),
+            $add = $view.find('#btnAdd'),
+            $reset = $view.find('#reset'),
+            $queryAll = $view.find('#btnShowAll'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+
+        form.render();
+
+        initTable();
+
+        table.on('tool(correspondenceCollegeTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('函授站信息', 'correspondence/detail/' + data.id, {
+                    area: $(window).width() <= 750 ? '95%' : '660px'
+                });
+            }
+            if (layEvent === 'edit') {
+                febs.modal.open('修改函授站', 'correspondenceCollege/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : '50%',
+                    btn: ['修改', '取消'],
+                    yes: function (index, layero) {
+                        $('#correspondenceCollege-update').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+        table.on('sort(correspondenceCollegeTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        //显示全部
+        $queryAll.on('click',function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+        //查询省份
+        $.ajax({
+            type:'get',
+            url:'province',
+            success:function(res){
+
+                for(var i=0;i<res.data.length;i++){
+                    let provinces = res.data[i];
+                    $("#province").append(new Option(provinces.provinceName,provinces.id));
+                }
+                layui.form.render("select");
+            }
+        })
+
+        //省市联动
+        form.on('select(province)',function () {
+            var pid = $("#province").val();
+            var c=document.getElementById("city");
+            c.options.length=1;
+            layui.form.render("select");
+            $.ajax({
+                type:'get',
+                url:'city',
+                data:{"pid":pid},
+                success:function(res) {
+                    if(res!=null && res != ''){
+                        for (var i = 0; i < res.data.length; i++) {
+                            let citys = res.data[i];
+                            $("#city").append(new Option(citys.cityName, citys.id));
+                        }
+                        layui.form.render("select");
+                    }
+                }
+            })
+        })
+
+        $add.on('click', function () {
+            febs.modal.open('新增函授站', 'correspondenceCollege/add', {
+                btn: ['保存', '重置'],
+                area: $(window).width() <= 750 ? '95%' : '50%',
+                yes: function (index, layero) {
+                    let fullName = $('#correspondenceCollege-add').find('#fullName').val();
+                    let simpleName = $('#correspondenceCollege-add').find('#simpleName').val();
+                    $.ajax({
+                        type:'get',
+                        url:'correspondenceCollege/isRepetitive',
+                        data:{"fullName":fullName,"simpleName":simpleName},
+                        success:function(res){
+                            if(res){
+                                $('#correspondenceCollege-add').find('#submit').trigger('click');
+                                // 单击之后提交按钮不可选,防止重复提交
+                                var DISABLED = 'layui-btn-disabled';
+                                // 增加样式
+                                $('#correspondenceCollege-add').find('#submit').addClass(DISABLED);
+                                // 增加属性
+                                $('#correspondenceCollege-add').find('#submit').attr('disabled', 'disabled');
+                            }else{
+                                febs.alert.error("输入的名称或简称重复，请检查");
+                            }
+                        }
+                    })
+                },
+                btn2: function () {
+                    $('#correspondenceCollege-add').find('#reset').trigger('click');
+                    return false;
+                }
+            });
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'correspondenceCollegeTable',
+                url: ctx + 'correspondenceCollege/list',
+                cols: [[
+                    {field: 'id',          title: '编号',    maxWidth: 10},
+                    {field: 'fullName',    title: '全称',    minWidth: 100},
+                    {field: 'simpleName',  title: '简称',    minWidth: 80},
+                    {field:'provinceName', title:'省',       minWidth: 100},
+                    {field:'cityName',     title:'市',       minWidth: 100},
+                    {field:'areaName',     title:'区',       minWidth: 100},
+                    {field: 'address',     title: '地址',    minWidth: 200},
+                    {field: 'fixedLine',   title: '办公座机', minWidth: 180},
+                    {title: '操作', toolbar: '#correspondenceCollege-option', minWidth: 140}
+                ]]
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        //按回车搜索
+        $(".layui-input").keydown(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $query.click();
+            }
+        });
+    })
+</script>

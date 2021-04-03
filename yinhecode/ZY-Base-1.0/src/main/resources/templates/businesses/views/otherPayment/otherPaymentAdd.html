@@ -1,0 +1,67 @@
+<style>
+    #standardFee-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="standardFee-update">
+    <form class="layui-form" action="" lay-filter="standardFee-update-form">
+
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">套内缴费id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${student.id}">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">应缴金额：</label>
+            <div class="layui-input-block">
+                <input type="text" name="stuName" minlength="2" maxlength="20"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="standardFee-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            student = [[${student}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initCollegeValue();
+
+        function initCollegeValue() {
+            form.val("standardFee-update-form", {
+
+                "stuName": student.stuName,
+
+            });
+        }
+
+        form.on('submit(standardFee-update-form-submit)', function (data) {
+            console.log("进入提交"+data.id)
+            if (febs.nativeEqual(data.field, standardFee)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'standardFee/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(standardFee.id + ' 院校数据修改成功');
+                $('#businesses-standardFee').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

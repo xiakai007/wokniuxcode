@@ -1,0 +1,104 @@
+<style>
+    #stuMajor-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="stuMajor-update">
+    <form class="layui-form" action="" lay-filter="stuMajor-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">学生id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${student.id}" id="stuMajorUpdate-d">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">i
+            <label class="layui-form-label febs-form-item-require">批次id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="batchId" data-th-value="${student.batchId}" id="stuMajorUpdate-batchId">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">院校id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="collegeId" data-th-value="${student.collegeId}" id="stuMajorUpdate-collegeId">
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">层次id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="level" data-th-value="${student.level}" id="stuMajorUpdate-levelId">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">学生姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="stuName" readonly class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">专业：</label>
+            <div class="layui-input-block">
+                <input type="text" name="oldMajor" readonly class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">新专业：</label>
+            <div class="layui-input-block">
+                <select name="majorId" lay-verify="required" id="stuMajorUpdate-cboMajor">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="stuMajor-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            student = [[${student}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initClassValue();
+
+        function initClassValue() {
+            console.log(student);
+            form.val("stuMajor-update-form", {
+                "oldMajor": student.majorName,
+                "stuName": student.stuName,
+            });
+        }
+
+        let collegeId = $("#stuMajorUpdate-collegeId").val();
+        let levelId = $("#stuMajorUpdate-levelId").val();
+        febs.get(ctx + 'college/majorSelect?collegeId=' + collegeId + "&levelId=" + levelId, null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                let major = list[i];
+                $("#stuMajorUpdate-cboMajor").append(new Option(major.fullName, major.id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        form.on('submit(stuMajor-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, student)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'class/updateStuMajor', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(student.stuName + ' 更换专业成功');
+                $('#recruitbusinesses-student').find('#recruitstuquery').click();
+            });
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>正则表达式练习</title>
+<script type="text/javascript">
+  var phoneTel1="15178659421";
+  var phoneTel2="1517865e421";
+  var phoneTel3="15178652421";
+  var phoneTel4="14178652421";
+  var reg1=/^[1]{1}[35789]{1}[0123456789]{9}$/;
+  var flag1=reg1.test(phoneTel1);
+  alert(flag1);
+  var reg2=/^1[35789][0123456789]{9}$/;
+  var flag2=reg2.test(phoneTel2);
+  alert(flag2);
+  var reg3=/^1[35789][0-9]{9}$/;
+  var flag3=reg3.test(phoneTel3);
+  alert(flag3);
+  var reg4=/^1[35789]\d{9}$/;
+  var flag4=reg4.test(phoneTel4);
+  alert(flag4);
+</script>
+</head>
+<body>
+正则表达式
+</body>
+</html>

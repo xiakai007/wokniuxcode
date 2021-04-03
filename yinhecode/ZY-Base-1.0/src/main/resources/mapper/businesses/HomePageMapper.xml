@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.HomePageMapper">
+
+
+    <sql id="findHomePageBIdSql">
+        SELECT
+            T.TITLE title,
+            T.INTRO intro,
+            T.img_url imgUrl
+        FROM
+            t_home_page T
+        WHERE
+            T.id = #{hom  ePage.id}
+    </sql>
+
+    <sql id="findHomePageDetailSql">
+        SELECT
+            T.IMG_URL imgUrl,
+            T.TYPE type,
+            T.TITLE title,
+            T.INTRO intro,
+            T.ID id
+        FROM
+            t_home_page T
+    </sql>
+
+    <select id="findHomePageDetail" parameterType="homePage" resultType="homePage">
+        <include refid="findHomePageDetailSql"/>
+    </select>
+
+    <select id="findById" parameterType="int" resultType="homePage">
+        <include refid="findHomePageBIdSql"/>
+    </select>
+    
+    <select id="findAllHomePage" parameterType="homePage" resultType="homePage">
+        <include refid="findHomePageDetailSql"/>
+    </select>
+
+</mapper>

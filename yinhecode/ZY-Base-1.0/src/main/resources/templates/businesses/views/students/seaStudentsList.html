@@ -1,0 +1,295 @@
+<!--公海学生列表-->
+<div class="layui-fluid layui-anim febs-anim" id="seabusinesses-student" lay-title="学生公海">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="seabusinesses-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId" id="seabatch" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="seacollege" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="level" id="seaStu-level" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="seamajor" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">招生老师</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="userId" id="txtSeaStudentTeacher"
+                                                   lay-filter="txtSeaStudentTeacher" class="layui-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" autocomplete="off" class="layui-input"
+                                                   id="seastuidstuname">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" autocomplete="off" class="layui-input"
+                                                   id="seastuididentity" maxlength="18" lay-verify="range">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" autocomplete="off" class="layui-input"
+                                                   id="seastuidtel" lay-verify="number|range" maxlength="11">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="seastuquery">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="seastureset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="seamovtorecycle">
+                                    <i class="layui-icon layui-icon-delete">移入回收站</i>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="seastudentTable" lay-data="{id: 'seastudentTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="sea-option">
+    <a lay-event="seadetail" title="查看详情"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+</script>
+<script type="text/javascript" src="module/treeSelect/treeSelect.js"></script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'form', 'table', 'febs', "treeSelect"], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            treeSelect = layui.treeSelect,
+            $view = $('#seabusinesses-student'),
+            $query = $view.find('#seastuquery'),
+            $reset = $view.find('#seastureset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+
+        form.render();
+        initTable();//大列表
+
+        //批次
+        febs.get('/student/batchList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#seabatch").append(new Option(list[i].batchName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //院校
+        febs.get('/student/collegeList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#seacollege").append(new Option(list[i].name, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //层次
+        febs.get('/student/stuLevelList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#seaStu-level").append(new Option(list[i].levelName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //专业
+        febs.get('/student/majorList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#seamajor").append(new Option(list[i].fullName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //招生老师-树形下拉框带搜索
+        treeSelect.render({
+            // 选择器
+            elem: '#txtSeaStudentTeacher',
+            // 数据
+            data: ctx + 'transferApplication/userDeptTree',
+            // 异步加载方式：get/post，默认get
+            type: 'get',
+            // 占位符
+            placeholder: '请选择',
+            // 是否开启搜索功能：true/false，默认false
+            search: true,
+            style: {
+                folder: { // 父节点图标
+                    enable: true // 是否开启：true/false
+                },
+                line: {
+                    enable: true
+                }
+            },
+            // 点击回调
+            click: function (d) {
+                $("#txtSeaStudentTeacher").val(d.current.id);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+            }
+        });
+
+        table.on('tool(seastudentTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'seadetail') {
+                febs.modal.view('院校信息', 'student/poolDetail/' + data.id, {
+                    area: ['70%', '80%'],
+                    tipsMore: true
+                });
+            }
+        });
+
+        table.on('sort(seastudentTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $(".layui-input").keydown(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $query.click();
+            }
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'seastudentTable',
+                toolbar: true,
+                defaultToolbar: ['filter'],
+                url: ctx + 'reqResultExtension/groupingList',
+                done: function (res, curr, count) {
+                    $("table").css("width", "100%");
+                },
+                width:"100%",
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'id', title: '序号', minWidth: 40},
+                    {field: 'stuName', title: '姓名', minWidth: 80},
+                    {field: 'collegeName', title: '院校', minWidth: 80},
+                    {field: 'batchName', title: '批次', minWidth: 80},
+                    {field: 'levelName', title: '层次', minWidth: 80},
+                    {field: 'majorName', title: '专业', minWidth: 80},
+                    {field: 'tel', title: '电话', minWidth: 80},
+                    {field: 'identity', title: '身份证', minWidth: 80},
+                    {title: '操作', toolbar: '#sea-option', minWidth: 140},
+                ]],
+
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        $("#seamovtorecycle").click(function () {
+            let checkStatus = table.checkStatus('seastudentTable');
+            let studentIds = [];
+            layui.each(checkStatus.data, function (key, item) {
+                studentIds.push(item.id)
+            });
+            if (studentIds.length > 0) {
+                febs.modal.confirm('提示', '确定移入回收站吗？', function () {
+                    recycleStudent(studentIds.join(','));
+                });
+            } else {
+                febs.alert.warn('请选择学生!');
+            }
+        });
+
+        function recycleStudent(studentIds) {
+            febs.get(ctx + 'student/moveToRecycle/' + studentIds, null, function () {
+                febs.alert.success('学生回收成功');
+                $query.click();
+            });
+        };
+    });
+</script>

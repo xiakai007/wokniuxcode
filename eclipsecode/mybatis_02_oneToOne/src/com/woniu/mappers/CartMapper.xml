@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.CartMapper">
+	<resultMap type="Cart" id="cartMap">
+		<association property="user" column="userid"
+		select="com.woniu.mappers.UserMapper.selectUserById">
+		</association>
+		<association property="goods" column="goodsid"
+		select="com.woniu.mappers.GoodsMapper.selectGoodsById">
+		</association>
+	</resultMap>
+	<select id="selectAllCart" resultMap="cartMap">
+		SELECT * FROM cart
+	</select>
+</mapper>

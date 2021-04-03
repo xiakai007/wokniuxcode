@@ -1,0 +1,139 @@
+<style>
+    #teachProgra-add {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="teachProgram-add">
+    <form class="layui-form" action="" lay-filter="teachProgram-add-form">
+        <div class="layui-inline" style="padding-top: 20px">
+            <label class="layui-form-label layui-form-label-sm">目标批次</label>
+            <div class="layui-input-inline">
+                <select name="batchName" id="batchId_add" lay-filter="cboBatch">
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline" style="padding-top: 50px">
+            <label class="layui-form-label layui-form-label-sm">新建批次</label>
+            <div class="layui-input-inline">
+                <select name="newBatchId" id="batchId_new" lay-filter="cboNewBatch">
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide" >
+            <button class="layui-btn" lay-submit="" lay-filter="teachProgram-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate','xmSelect','element'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate,
+            batchSelect;
+        form.verify(validate);
+
+//        form.render();
+
+
+
+        //目标批次下拉框遍历
+        $(function () {
+            $.get("teachProgram/batchList", function (obj) {
+
+                // selectIDc=obj.data;
+                var str="<option value=''>请选择</option>";
+                layui.each (obj.data, function (index, item) {
+                    str=str+"<option value='" + this.batchName + "'>" + this.batchName + "</option>";
+
+                });
+
+                $ ("#batchId_add"). html(str);
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+        //下拉框联动
+        form.on("select(cboBatch)", function (obj) {
+            var batchName=obj.value;
+            console.log(obj);
+            $.ajax({
+                type:'get',
+                url:'teachProgram/newBatchList',
+                data:{batchName:batchName},
+                success:function (res) {
+                    console.log(res)
+                    var resp=res.data;
+                    var str="";
+                    layui.each (res.data, function (index, item) {
+                        str=str+"<option value='" + this.id + "'>" + this.batchName + "</option>";
+                        console.log(str)
+
+                    });
+
+                    $ ("#batchId_new"). html(str);
+                    layui.use('form', function () {
+                        var form = layui.form;
+                        form.render();
+                    });
+
+                }
+            })
+        });
+
+        //新建批次下拉框遍历
+//        $(function () {
+//            $.get("teachProgram/newBatchList", function (obj) {
+
+                // selectIDc=obj.data;
+//                var str="<option value=''>全部</option>";
+//                layui.each (obj.data, function (index, item) {
+//                    str=str+"<option value='" + this.id + "'>" + this.batchName + "</option>";
+//
+//                });
+//
+//                $ ("#batchId_new"). html(str);
+//                layui.use('form', function () {
+//                    var form = layui.form;
+//                    form.render();
+//                });
+//            });
+//        });
+//        function initExamValue() {
+//            form.val("teachProgram-add-form", {
+//                "batchId": teachProgram.batchId
+////                "level": student.level,
+////                "studyTypeId": student.studyTypeId,
+////                "IDENTITY": student.identity,
+////                "graduDate": graduDateStr
+//
+//            });
+//        }
+
+
+        form.on('submit(teachProgram-add-form-submit)', function (data) {
+            var data = data.field;
+           console.log(data.batchName)
+            console.log(data)
+            if(data.batchName != null && data.newBatchId != null&&data.batchName != '' && data.newBatchId != ''){
+                febs.get(ctx + 'teachProgram/add', data, function () {
+
+                    layer.closeAll();
+                    febs.alert.success('新增教学计划成功');
+                    $('#businesses-teachProgram').find('#query').click();
+                });
+                return false;
+            }else {
+                febs.alert.warn('请选择批次！');
+            }
+
+        });
+    });
+</script>

@@ -1,0 +1,527 @@
+<style>
+    #businesses-score xm-select {
+        min-height: 30px;
+        line-height: 30px;
+    }
+    #businesses-score xm-select > .xm-label .scroll .label-content {
+        display: flex;
+        padding: 0 30px 0 10px;
+    }
+     body .demo-class .layui-layer-btn0{
+         border-color: #E6E3E6;
+         background-color: #FFF;
+         color: black;
+     }
+    body .demo-class .layui-layer-btn{border-top:1px solid #E9E7E7}
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="businesses-score" lay-title="入学成绩管理">
+
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+
+                            <div class="layui-card-body febs-table-full">
+                                <form class="layui-form layui-table-form" lay-filter="user-table-form">
+                                    <fieldset class="layui-elem-field layui-field-title">
+                                        <legend style="font-size: 15px;font-weight: bolder;">批量查询</legend>
+                                    </fieldset>
+                                    <div class="layui-row">
+                                        <div class="layui-col-md12">
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label layui-form-label-sm">批次</label>
+                                                    <div class="layui-input-inline">
+                                                        <select name="batchId" id="entrance-batchId" lay-filter="cboBatch">
+
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label layui-form-label-sm">院校</label>
+                                                    <div class="layui-input-inline">
+                                                        <select name="collegeId" lay-verify="required" id="cboCollege" lay-filter="cboCollege" lay-search>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label layui-form-label-sm">层次</label>
+                                                    <div class="layui-input-inline">
+                                                        <select name="levelId" id="entrance-levelId" lay-filter="cboLevel">
+                                                            <option value="1">专升本</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label layui-form-label-sm">类别</label>
+                                                    <div class="layui-input-inline">
+                                                        <select name="subtypeId" id="entrance-subtypeId">
+                                                            <option value="1">文史、中医类</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label layui-form-label-sm">考试状态</label>
+                                                    <div class="layui-input-inline">
+                                                        <select name="status">
+                                                            <option value="">全部</option>
+                                                            <option value="1">通过</option>
+                                                            <option value="2">未过</option>
+                                                            <option value="3">缺考</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                                        <legend style="font-size: 15px;font-weight: bolder;">精准查询</legend>
+                                    </fieldset>
+                                    <div class="layui-row">
+                                        <div class="layui-col-md10">
+                                            <div class="layui-form-item">
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label layui-form-label-sm" maxlength="18">姓名</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="stuName" autocomplete="off" class="layui-input">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-inline">
+                                                    <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                                    <div class="layui-input-inline">
+                                                        <input type="text" name="identity" autocomplete="off" class="layui-input" maxlength="18" onkeyup="value=value.replace(/[^\d|^X]/g,'')">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                            <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action" id="entrance-query">
+                                                <i class="layui-icon">&#xe848;</i>
+                                            </div>
+                                            <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action" id="entrance-reset">
+                                                <i class="layui-icon">&#xe79b;</i>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                                        <legend style="font-size: 15px;font-weight: bolder;"></legend>
+                                    </fieldset>
+                                    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                                        <div class="layui-row">
+                                            <div class="layui-col-md10" lay-data="{id: 'control'}">
+                                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action">
+                                                    <i class="layui-icon layui-icon-export" id="entrance-export">导出数据</i>
+                                                </div>
+                                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action">
+                                                    <i class="layui-icon" id="entrance-import">&#xe7aa;导入成绩</i>
+
+                                                </div>
+                                              <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action">
+                                                <i class="layui-icon" id="downloadModel">&#xe82a;下载模板</i>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </blockquote>
+                                </form>
+                                <table id="scoreTable" lay-filter="scoreTable" lay-data="{id: 'scoreTable'}"></table>
+                            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="score-option">
+    <span shiro:lacksPermission="user:view,user:update,user:delete">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="detail" shiro:hasPermission="user:view"><i
+            class="layui-icon febs-edit-area febs-green" title="成绩详情">&#xe7a5;</i>
+    </a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect','element','upload'], function () {
+        var element = layui.element;
+        let $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            upload = layui.upload,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-score'),
+            $query = $view.find('#entrance-query'),
+            $reset = $view.find('#entrance-reset'),
+            $searchForm = $view.find('form'),
+            $export=$view.find('#entrance-export'),
+            $import=$view.find('#entrance-import'),
+            sortObject = {field: 'id', type: null},
+            tableIns,
+            createTimeFrom,
+            createTimeTo,
+            deptXmlSelect;
+
+        form.render();
+
+        var mycols =[];
+
+
+
+
+        laydate.render({
+            elem: '#user-createTime',
+            range: true,
+            trigger: 'click'
+        });
+
+        element.on('click',function (res) {
+            console.log(res);
+        })
+
+
+        table.on('tool(scoreTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            console.log(obj);
+            console.log(layEvent);
+            if (layEvent === 'detail') {
+                febs.modal.view('成绩详情', 'entranceScore/detail/'+data.id, {
+                    btn: ['通过','未过','缺考','其他'],
+                    area: $(window).width() <= 750 ? '100%' : '50%',
+                    btnAlign:'c',
+                    skin: 'demo-class',
+                    maxmin: true,
+                    btn1: function (index, layero) {
+                        $.ajax({
+                            type:'get',
+                            url:'entranceScore/changeStatus',
+                            data:{batchId:data.batchId,identity:data.identity,studyTypeId:data.studyTypeId,status:1},
+                            success:function (res) {
+                                console.log(res);
+                                if (res.code==200){
+                                    febs.alert.success("提交成功");
+                                    let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                                    initTitle();
+                                    tableIns.reload({where: params, page: {curr: 1},cols:[mycols]});
+                                    layer.closeAll();
+                                }else {
+                                    febs.alert.error("修改失败");
+                                }
+                            }
+                        })
+                        console.log("111");
+                        // $('#user-add').find('#submit').trigger('click');
+                    },
+                    btn2: function (index, layero) {
+                        $.ajax({
+                            type:'get',
+                            url:'entranceScore/changeStatus',
+                            data:{batchId:data.batchId,identity:data.identity,studyTypeId:data.studyTypeId,status:2},
+                            success:function (res) {
+                                console.log(res);
+                                if (res.code==200){
+                                    febs.alert.success("提交成功");
+                                    let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                                    initTitle();
+                                    tableIns.reload({where: params, page: {curr: 1},cols:[mycols]});
+                                    layer.closeAll();
+                                }else {
+                                    febs.alert.error("修改失败");
+                                }
+                            }
+                        })
+                    },
+                    btn3: function (index, layero) {
+                        $.ajax({
+                            type:'get',
+                            url:'entranceScore/changeStatus',
+                            data:{batchId:data.batchId,identity:data.identity,studyTypeId:data.studyTypeId,status:3},
+                            success:function (res) {
+
+                                if (res.code==200){
+                                    febs.alert.success("提交成功");
+                                    let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                                    initTitle();
+                                    tableIns.reload({where: params, page: {curr: 1},cols:[mycols]});
+                                    layer.closeAll();
+                                }else {
+                                    febs.alert.success("修改失败");
+                                }
+                            }
+                        })
+                    },
+                    btn4: function (index, layero) {
+                        var remark=$('#score-detail').find('#remark').val();
+                        console.log(remark);
+                        if (remark!=''){
+                            $.ajax({
+                                type:'get',
+                                url:'entranceScore/changeStatus',
+                                data:{batchId:data.batchId,identity:data.identity,studyTypeId:data.studyTypeId,status:4},
+                                success:function (res) {
+                                    // console.log(res);
+                                    if (res.code==200){
+                                        febs.alert.success("提交成功");
+                                        let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                                        initTitle();
+                                        tableIns.reload({where: params, page: {curr: 1},cols:[mycols]});
+                                        layer.closeAll();
+                                    }else {
+                                        febs.alert.warn("修改失败");
+                                    }
+                                }
+                            })
+                        }else {
+                            febs.alert.warn("备注信息不能为空");
+                            return false;
+                        }
+
+                    }
+                });
+            }
+        });
+
+        //院校下拉框遍历
+        $(function () {
+            //付款方式(下拉框)
+            $.get("termScore/collegeList", function (obj) {
+                console.log(obj);
+                // selectIDc=obj.data;
+                $ ("#cboCollege").empty();
+                $ ("#cboCollege").append("<option value=''>输入或选择院校</option>")
+                layui.each (obj. data, function (index, item) {
+                    $ ("#cboCollege"). append ("<option value='" + this.id + "'>" + this.name + "</option>");
+                });
+                //渲染select
+                form.render('select');
+            });
+        });
+
+        form.on("select(cboCollege)", function (obj) {
+            var collegeId=obj.value;
+            console.log(obj);
+            initLevel(collegeId);
+        });
+
+        //层次下拉框
+        function initLevel(id){
+            $.ajax({
+                type:'get',
+                url:'termScore/levelList',
+                data:{collegeId:id},
+                success:function (res) {
+                    console.log(res);
+                    $ ("#entrance-levelId").empty();
+                    // $ ("#levelId").append("<option value=''>全部</option>");
+                    layui.each (res. data, function (index, item) {
+                        $ ("#entrance-levelId"). append ("<option value='" + this.id + "'>" + this.levelName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+        document.onkeydown = function (e) { // 回车提交表单
+// 兼容FF和IE和Opera
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                $query.click();
+            }
+        }
+        //下拉框联动
+        form.on("select(cboLevel)", function (obj) {
+            var levelId=obj.value;
+            console.log(obj);
+            $.ajax({
+                type:'get',
+                url:'entranceScore/subTypeList',
+                data:{levelId:levelId},
+                success:function (res) {
+                    console.log(res);
+                        var resp=res.data;
+                        var str="";
+                        for(var i=0;i<resp.length;i++){
+                            str=str+"<option name='subTypeId' value="+resp[i].id+">"+resp[i].fullName+"</option>";
+                        }
+                        // console.log(str);
+                        $("#entrance-subtypeId").html(str);
+                        form.render();  //重新渲染form表单  否则动态option不生效
+
+                }
+            })
+        });
+
+        //批次下拉框遍历
+        $(function () {
+            //付款方式(下拉框)
+            $.get("entranceScore/batchs", function (obj) {
+
+                // selectIDc=obj.data;
+                var str="<option value=''>全部</option>";
+                layui.each (obj.data, function (index, item) {
+                    str=str+"<option value='" + this.id + "'>" + this.batchName + "</option>";
+
+                });
+                $ ("#entrance-batchId"). html(str);
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+
+        initTitle();
+        initTable();
+        //导入数据
+        upload.render({
+            elem: '#entrance-import',
+            url: ctx + 'entranceScore/import',
+            accept: 'file',
+            exts: 'xlsx', // 只能上传 .xlsx格式
+            size: 5 * 1024, // kb
+            before: function () {
+                febs.view.loadBar.start();
+            },
+            done: function (res) {
+                if (res.message==200){
+                    febs.view.loadBar.finish();
+                    febs.alert.success('导入成功！');
+                    let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+                    initTitle();
+                    tableIns.reload({where: params, page: {curr: 1},cols:[mycols]});
+                }else if (res.message==400){
+
+                    febs.view.loadBar.error();
+                    febs.alert.error('导入失败！');
+// 弹出导入结果
+                    febs.modal.view('错误日志', 'entranceScore/errorResult', {
+                        area: $(window).width() <= 750 ? '95%' : '1000px'
+                    });
+
+                }else {
+                    febs.view.loadBar.error();
+                    febs.alert.error('文件异常！');
+                }
+            }
+        });
+
+        table.on('sort(scoreTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $view.on('click', '#downloadModel', function () {
+            febs.download(ctx + 'entranceScore/template',null, '入学成绩导入模板.xlsx');
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            var level=$('#entrance-levelId').val();
+            console.log(level);
+            if (level!=null&&level!=''){
+                initTitle();
+                tableIns.reload({where: params, page: {curr: 1},cols:[mycols]});
+            }else{
+                febs.alert.warn("请先确定层次和类别");
+            }
+
+        });
+        //导出数据
+        $export.on('click',function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+            params.pageNum = $view.find(".layui-laypage-em").next().html();
+            febs.download(ctx + 'entranceScore/excel', params, '入学成绩表.xlsx');
+        });
+
+        $reset.on('click', function () {
+
+            $searchForm[0].reset();
+            $("#entrance-levelId").empty();
+            $("#entrance-levelId").append("<option value='1'>专升本</option>");
+            $("#entrance-subtypeId").empty();
+            $("#entrance-subtypeId").append("<option value='1'>文史、中医类</option>");
+            initTitle();
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1},cols:[mycols]});
+        });
+
+        function initTitle() {
+            var levelId=$('#entrance-levelId').val();
+
+            var subtypeId=$('#entrance-subtypeId').val();
+
+            mycols =[];
+            $.ajax({
+                async:false,
+                type:'GET',
+                url: 'entranceScore/subjects',
+                data:{levelId:levelId,subtypeId:subtypeId},
+                success:function (res) {
+                    console.log(res);
+                    mycols[0]={field: 'id',type: 'checkbox'};
+                    mycols[1]={field: 'batchName', title: '批次',width:65};
+                    mycols[2]={field:'stuName',title: '姓名',width:70};
+                    mycols[3]={field: 'identity', title: '身份证号',Minwidth:110};
+                    mycols[4]={field: 'collegeName', title: '院校', Minwidth:130};
+                    mycols[5]={field: 'levelName', title: '层次',Minwidth:80};
+                    mycols[6]={field:'fullName',title: '类别',Minwidth:100};
+                    for (let i = 0; i < res.data.length; i++) {
+                        mycols[i+7]={field: res.data[i].alias, title: res.data[i].subject,align:'center',Minwidth: 90};
+                    }
+                    mycols[7+res.data.length]={field:'status',title: '状态',width:80,templet:
+                            function(obj){
+                                if (obj.status==1){
+                                    return '通过';
+                                }else if (obj.status==2){
+                                    return '未过';
+                                }else if (obj.status==3){
+                                    return '缺考';
+                                }else {
+                                    return '其他';
+                                }
+                            }};
+                    mycols[8+res.data.length]={title: '操作', toolbar: '#score-option',width:65};
+                    // console.log(mycols);
+                }
+            });
+        };
+
+        //数据显示
+        function initTable() {
+            var levelId=$('#entrance-levelId').val();
+
+            var subtypeId=$('#entrance-subtypeId').val();
+            console.log(levelId);
+            console.log(subtypeId);
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'scoreTable',
+                url: ctx + 'entranceScore/list',
+                cols: [mycols],
+                // data:{levelId:levelId,subtypeId:subtypeId},
+                // page: {curr: 1},
+                where: getQueryParams(true),
+                page: {curr: 1},
+                done:function (res,curr,count) {
+                    this.cols = []; //（关键代码）将cols初始化，否则表格重载时无法正确重新渲染表头
+                },
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+
+    })
+</script>

@@ -1,0 +1,235 @@
+<style>
+    #correspondenceCollege-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="correspondenceCollege-update">
+    <form class="layui-form" action="" lay-filter="correspondenceCollege-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">院校id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${correspondenceCollege.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">名称：</label>
+            <div  class="layui-input-inline">
+                <input type="text" name="fullName" minlength="2" maxlength="20" lay-verify="range|name|char"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">简称：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="simpleName" minlength="2" maxlength="20" lay-verify="range|name|char"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">地址：</label>
+            <div class="layui-input-inline">
+                <select name="provinceId" id="province_upd" lay-filter="province_upd" lay-verify="required">
+                    <option value="">请选择省</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="cityId" id="city_upd" lay-filter="city_upd" lay-verify="required">
+                    <option value="">请选择市</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="areaId" id="area_upd" lay-verify="required">
+                    <option value="">请选择县/区</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">详细地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="address" minlength="2" maxlength="50" lay-verify="range|name|required|char"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" febs-form-item-require>座机：</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="fixedLine" lay-verify="fixedLine|required" autocomplete="off" class="layui-input">
+            </div>
+            <div style="padding-top: 8px;">
+                <label>示例:029-12345678/0291-1234567</label>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea name="remark" maxlength="200" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="correspondenceCollege-update-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            correspondenceCollege = [[${correspondenceCollege}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+       // getProvince();
+
+        function initCollegeValue() {
+            console.log(correspondenceCollege);
+            form.val("correspondenceCollege-update-form", {
+                "fullName": correspondenceCollege.fullName,
+                "simpleName": correspondenceCollege.simpleName,
+                "address": correspondenceCollege.address,
+                "fixedLine": correspondenceCollege.fixedLine,
+                "remark": correspondenceCollege.remark,
+                "provinceId":correspondenceCollege.provinceId,
+                "cityId":correspondenceCollege.cityId,
+                "areaId":correspondenceCollege.areaId
+
+            });
+        }
+        getProvince();
+        form.on('submit(correspondenceCollege-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, correspondenceCollege)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'correspondenceCollege/update', data.field, function () {
+                console.log(data)
+                layer.closeAll();
+                febs.alert.success(correspondenceCollege.id + ' 院校数据修改成功');
+                $('#businesses-correspondenceCollege').find('#query').click();
+            });
+            return false;
+        });
+
+
+
+        //查询省份
+        function getProvince() {
+            $.ajax({
+                type: 'get',
+                url: 'province',
+                async: false,
+                success: function (res) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        let provinces = res.data[i];
+                        $("#province_upd").append(new Option(provinces.provinceName, provinces.id));
+                        //console.log(provinces.provinceName+"ooooooo")
+                    }
+                    //
+                    selectCityByPid();
+                    layui.form.render("select");
+
+                }
+            });
+        }
+            //省市联动
+            form.on('select(province_upd)',function () {
+                var c=document.getElementById("city_upd");
+                c.options.length=1;
+                var c=document.getElementById("area_upd");
+                c.options.length=1;
+                form.render();
+                var pid = $("#province_upd").val();
+                $.ajax({
+                    type:'get',
+                    url:'city',
+//                    async:false,
+                    data:{"pid":pid},
+                    success:function(res) {
+                        if(res != null && res != ''){
+                            for (var i = 0; i < res.data.length; i++) {
+                                let citys = res.data[i];
+                                $("#city_upd").append(new Option(citys.cityName, citys.id));
+                            }
+                            layui.form.render("select");
+                        }
+                    }
+                })
+            })
+            //市区联动
+            form.on('select(city_upd)',function () {
+                var cid = $("#city_upd").val();
+                var c=document.getElementById("area_upd");
+                c.options.length=1;
+                form.render();
+                $.ajax({
+                    type:'get',
+                    url:'area',
+//                    async:false,
+                    data:{"cid":cid},
+                    success:function(res) {
+                        if(res != null && res != ''){
+                            console.log("市")
+                            for (var i = 0; i < res.data.length; i++) {
+                                let areas = res.data[i];
+                                $("#area_upd").append(new Option(areas.areaName, areas.id));
+                            }
+                            form.render();
+                        }
+
+                    }
+                })
+            })
+
+        //初始化的时候加载市信息
+        function selectCityByPid() {
+            var pid = correspondenceCollege.provinceId;
+            $.ajax({
+                type:'get',
+                url:'city',
+                async:false,
+                data:{"pid":pid},
+                success:function(res) {
+                    var c=document.getElementById("city_upd");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let citys = res.data[i];
+                        $("#city_upd").append(new Option(citys.cityName, citys.id));
+                    }
+                    layui.form.render("select");
+                    selectAreaByCity();
+
+                }
+            })
+        }
+        //初始化的时候加载区信息
+        function selectAreaByCity() {
+            var cid = correspondenceCollege.cityId;
+                $.ajax({
+                    type:'get',
+                    url:'area',
+                    async:false,
+                    data:{"cid":cid},
+                    success:function(res) {
+                        console.log("市")
+                        var c=document.getElementById("area_upd");
+                        c.options.length=1;
+                        for (var i = 0; i < res.data.length; i++) {
+                            let areas = res.data[i];
+                            $("#area_upd").append(new Option(areas.areaName, areas.id));
+                        }
+                        //form.render();
+
+                    }
+                })
+        }
+        initCollegeValue();
+
+
+
+
+
+    });
+</script>

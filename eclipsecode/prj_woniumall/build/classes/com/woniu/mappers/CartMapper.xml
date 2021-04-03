@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.CartMapper">
+	<resultMap type="Cart" id="cartMap">
+		<id property="id" column="id"></id>
+		<association property="goods" column="goodsid"
+		select="com.woniu.mappers.GoodsMapper.selectGoodsById">
+		</association>
+		<association property="user" column="id"
+		select="com.woniu.mappers.UserMapper.selectUserByIdToCart">
+		</association>
+	</resultMap>
+	<insert id="addCart" parameterType="Cart">
+		INSERT INTO mall_cart (userid,goodsid,price,nums,addtime)
+		VALUE(#{userid},#{goodsid},#{price},#{nums},#{addtime})
+	</insert>
+	<select id="selectCartByIdToStep" parameterType="int" resultType="Cart">
+		SELECT * FROM mall_cart WHERE id=#{id}
+	</select>
+	<select id="selectCartByUserid" parameterType="int" resultMap="cartMap">
+		SELECT * FROM mall_cart WHERE userid=#{userid}
+	</select>
+	<select id="selectCartByGoodsid" parameterType="int" resultType="Cart">
+		SELECT * FROM mall_cart WHERE goodsid=#{goodsid}
+	</select>
+	<delete id="deleteCartByGoodsid" parameterType="int">
+		DELETE FROM mall_cart WHERE goodsid=#{goodsid}
+	</delete>
+	<select id="selectCartAll" resultMap="cartMap">
+		SELECT * FROM mall_cart
+	</select>
+	<select id="getCountCartByUserid" resultType="int">
+		SELECT COUNT(*) FROM mall_cart WHERE userid=#{userid}
+	</select>
+	<select id="isCartExit" parameterType="Cart" resultType="Cart">
+		SELECT * FROM mall_cart WHERE userid=#{userid} AND goodsid=#{goodsid}
+	</select>
+	<update id="updateCartByGoodsidAndUserid" parameterType="Cart">
+		UPDATE mall_cart
+		<trim prefix="SET" suffixOverrides="," suffix="WHERE userid=#{userid} AND goodsid=#{goodsid}">
+			<if test="nums!=null and nums!=''">
+				nums=#{nums},
+			</if>
+		</trim>
+	</update>
+</mapper>

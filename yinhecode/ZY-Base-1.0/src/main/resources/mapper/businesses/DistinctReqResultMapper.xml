@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.DistinctReqResultMapper">
+    <insert id="addDistinctReqResultlist" parameterType="list">
+        INSERT INTO t_distinct_req_result VALUES
+          <foreach collection="distinctReqResultlist" index="index" item="item" separator=",">
+              (
+                #{item.id},#{item.reqInfoId},#{item.followUserId},#{item.groupId},#{item.name},
+                #{item.ecCall},#{item.gender},#{item.birthday},#{item.isLunarBirthday},#{item.title},
+                #{item.qq},#{item.mobile},#{item.phone},#{item.fax},#{item.email},#{item.company},
+                #{item.companyUrl},#{item.companyAddress},#{item.memo},#{item.vocation},#{item.channel},
+                #{item.prefecture},#{item.fieldInfos},#{item.crmId},#{item.modifyTime},#{item.contactTime},
+                #{item.createTime},#{item.lastFollowUserId},#{item.step}        )
+          </foreach>
+    </insert>
+
+    <select id="findDistinctReqResultBySome" parameterType="DistinctReqResult" resultType="DistinctReqResult">
+         SELECT ID id,
+                REQ_INFO_ID reqInfoId,
+                FOLLOW_USER_ID followUserId,
+                GROUP_ID groupId,
+                NAME name,
+                EC_CALL ecCall,
+                GENDER gender,
+                BIRTHDAY birthday,
+                IS_LUNAR_BIRTHDAY isLunarBirthday,
+                TITLE title,
+                QQ qq,
+                MOBILE mobile,
+                PHONE phone,
+                FAX fax,
+                EMAIL email,
+                COMPANY company,
+                COMPANY_URL companyUrl,
+                COMPANY_ADDRESS companyAddress,
+                MEMO memo,
+                VOCATION vocation,
+                CHANNEL channel,
+                PREFECTURE prefecture,
+                FIELD_INFOS fieldInfos,
+                CRM_ID crmId,
+                MODIFY_TIME modifyTime,
+                CONTACT_TIME contactTime,
+                CREATE_TIME createTime,
+                LAST_FOLLOW_USER_ID lastFollowUserId,
+                STEP step
+         FROM t_distinct_req_result WHERE FOLLOW_USER_ID=#{followUserId} AND GROUP_ID=#{groupId} AND NAME=#{name} AND gender=#{gender}
+            AND QQ=#{qq} AND MOBILE=#{mobile}AND EMAIL=#{email} AND MODIFY_TIME=#{modifyTime}
+            AND CREATE_TIME=#{createTime} AND LAST_FOLLOW_USER_ID=#{lastFollowUserId} AND STEP=#{step}
+
+    </select>
+</mapper>

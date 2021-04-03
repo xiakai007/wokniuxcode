@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.RecruitStudentMapper">
+    <!--通用组件关联的的表-->
+    <!--通用组件选择用户信息sql,学生表表关联批次表-->
+    <sql id="selectStudentDetailSql">
+        SELECT
+        s.id,
+        s.stu_Name,
+        s.sex_ID,
+        s.tel,
+        s.identity,
+        college.name,
+        level2.level_name,
+        major.full_name,
+        classes2.USERNAME,
+        s.class_ID,
+        batch.BATCH_NAME
+        FROM t_student s
+        LEFT JOIN t_batch batch ON(s.BATCH_ID=batch.ID)
+        LEFT JOIN t_college college ON(s.COLLEGE_ID=college.id)
+        LEFT JOIN t_level level2 ON(s.level=level2.id)
+        LEFT JOIN t_major major ON(s.major_ID=major.id)
+        LEFT JOIN (SELECT DISTINCT clsses1.USER_ID,user1.USERNAME FROM t_classes clsses1 LEFT JOIN t_user user1
+        ON(clsses1.USER_ID=user1.user_id)
+        ) classes2 ON (s.class_ID=classes2.user_id)
+        WHERE 1=1
+        <if test="student.stuName != null and student.stuName != ''">
+            AND s.STU_NAME LIKE CONCAT('%',#{student.stuName},'%')
+        </if>
+        <if test="student.identity != null and student.identity != ''">
+            AND s.identity LIKE CONCAT('%',#{student.identity},'%')
+        </if>
+        <if test="student.tel != null and student.tel != ''">
+            AND s.tel LIKE CONCAT('%',#{student.tel},'%')
+        </if>
+        <if test="student.batchId != null and student.batchId != ''">
+            AND s.BATCH_ID = #{student.batchId}
+        </if>
+        <if test="student.collegeId != null and student.collegeId != ''">
+            AND s.COLLEGE_ID = #{student.collegeId}
+        </if>
+    </sql>
+    <sql id="countStudentDetailSql">
+        SELECT
+        COUNT(1)
+        FROM
+        t_student student
+        LEFT JOIN t_college college ON student.COLLEGE_ID=college.id
+        LEFT JOIN t_classes classes ON student.CLASS_ID=classes.id
+        LEFT JOIN t_level level ON student.LEVEL=level.ID
+        LEFT JOIN t_batch batch ON student.BATCH_ID = batch.ID
+        LEFT JOIN t_major major ON student.MAJOR_ID=major.ID
+        LEFT JOIN t_user u on classes.USER_ID = u.USER_ID
+        WHERE 1 = 1
+        <if test="student.stuName!=null and student.stuName!=''">
+            AND student.STU_NAME LIKE CONCAT('%',#{student.stuName},'%')
+        </if>
+        <if test="student.collegeName!=null and student.collegeName!=''">
+            AND college.name LIKE concat('%',#{student.collegeName},'%')
+        </if>
+        <if test="student.level!=null and student.level!=''">
+            AND student.LEVEL LIKE concat('%',#{student.level},'%')
+        </if>
+        <if test="student.classId!=null and student.classId!=''">
+            AND student.CLASS_ID = #{student.classId}
+        </if>
+        <if test="student.identity!=null and student.identity!=''">
+            AND student.identity LIKE concat('%',#{student.identity},'%')
+        </if>
+        <if test="student.tel!=null and student.tel!=''">
+            AND student.tel LIKE concat('%',#{student.tel},'%')
+        </if>
+        <if test="student.batchId!=null and student.batchId!=''">
+            AND student.BATCH_ID =#{student.batchId}
+        </if>
+        <if test="student.collegeId!=null and student.collegeId!=''">
+            AND student.COLLEGE_ID =#{student.collegeId}
+        </if>
+        <if test="student.majorId!=null and student.majorId!=''">
+            AND student.MAJOR_ID =#{student.majorId}
+        </if>
+        <if test="student.stageId!=null and student.stageId!=''">
+            AND student.STAGE_ID =#{student.stageId}
+        </if>
+        AND student.STATUS_ID =1
+    </sql>
+    <!--通用组件选择用户信息sql，不要分页-->
+    <sql id="selectDetailStudentSql">
+        SELECT
+        s.id,
+        s.stu_Name,
+        s.sex_ID,
+        s.tel,
+        s.identity,
+        college.name,
+        level2.level_name,
+        major.full_name,
+        classes2.USERNAME,
+        s.class_ID,
+        batch.BATCH_NAME
+        FROM t_student s
+        LEFT JOIN t_batch batch ON(s.BATCH_ID=batch.ID)
+        LEFT JOIN t_college college ON(s.COLLEGE_ID=college.id)
+        LEFT JOIN t_level level2 ON(s.level=level2.id)
+        LEFT JOIN t_major major ON(s.major_ID=major.id)
+        LEFT JOIN (SELECT DISTINCT clsses1.USER_ID,user1.USERNAME FROM t_classes clsses1 LEFT JOIN t_user user1
+        ON(clsses1.USER_ID=user1.user_id)
+        ) classes2 ON (s.class_ID=classes2.user_id)
+        WHERE 1=1
+        <if test="student.stuName != null and student.stuName != ''">
+            AND s.STU_NAME LIKE CONCAT('%',#{student.stuName},'%')
+        </if>
+        <if test="student.identity != null and student.identity != ''">
+            AND s.identity LIKE CONCAT('%',#{student.identity},'%')
+        </if>
+        <if test="student.tel != null and student.tel != ''">
+            AND s.tel LIKE CONCAT('%',#{student.tel},'%')
+        </if>
+        <if test="student.batchId != null and student.batchId != ''">
+            AND s.BATCH_ID = #{student.batchId}
+        </if>
+        <if test="student.collegeId != null and student.collegeId != ''">
+            AND s.COLLEGE_ID = #{student.collegeId}
+        </if>
+    </sql>
+
+
+    <!--通用组件选择学生信息所引用的sql-->
+    <select id="selectStudentDetailPage" parameterType="student" resultType="student">
+        <include refid="selectStudentDetailSql"/>
+    </select>
+
+    <select id="countStudentDetail" parameterType="student" resultType="long">
+        <include refid="countStudentDetailSql"/>
+    </select>
+    <!--通用组件选择学生信息所引用的sql，没有分页-->
+    <select id="selectStudentDetail" parameterType="student" resultType="student">
+        <include refid="selectDetailStudentSql"/>
+    </select>
+
+
+    <sql id="findStudentDetailSql">
+        SELECT
+        student.ID,
+        student.STU_NAME stuName,
+        college.name collegeName,
+        student.LEVEL,
+        level.LEVEL_NAME levelname,
+        classes.CLASS_NAME className,
+        batch.BATCH_NAME batchName,
+        major.FULL_NAME majorName,
+        u.USERNAME userName,
+        student.TEL,
+        student.IDENTITY,
+        student.CLASS_ID,
+        student.STAGE_ID
+        FROM
+        t_student student
+        LEFT JOIN t_college college ON student.COLLEGE_ID=college.id
+        LEFT JOIN t_classes classes ON student.CLASS_ID=classes.id
+        LEFT JOIN t_level level ON student.LEVEL=level.ID
+        LEFT JOIN t_batch batch ON student.BATCH_ID = batch.ID
+        LEFT JOIN t_major major ON student.MAJOR_ID=major.ID
+        LEFT JOIN t_user u on classes.USER_ID = u.USER_ID
+        WHERE 1 = 1
+        <if test="student.stuName!=null and student.stuName!=''">
+            AND student.STU_NAME LIKE CONCAT('%',#{student.stuName},'%')
+        </if>
+        <if test="student.collegeName!=null and student.collegeName!=''">
+            AND college.name LIKE concat('%',#{student.collegeName},'%')
+        </if>
+        <if test="student.level!=null and student.level!=''">
+            AND student.LEVEL LIKE concat('%',#{student.level},'%')
+        </if>
+        <if test="student.classId!=null and student.classId!=''">
+            AND student.CLASS_ID = #{student.classId}
+        </if>
+        <if test="student.identity!=null and student.identity!=''">
+            AND student.identity LIKE concat('%',#{student.identity},'%')
+        </if>
+        <if test="student.tel!=null and student.tel!=''">
+            AND student.tel LIKE concat('%',#{student.tel},'%')
+        </if>
+
+        <if test="student.batchId!=null and student.batchId!=''">
+            AND student.BATCH_ID =#{student.batchId}
+        </if>
+        <if test="student.collegeId!=null and student.collegeId!=''">
+            AND student.COLLEGE_ID =#{student.collegeId}
+        </if>
+        <if test="student.majorId!=null and student.majorId!=''">
+            AND student.MAJOR_ID =#{student.majorId}
+        </if>
+        <if test="student.stageId!=null and student.stageId!=''">
+            AND student.STAGE_ID =#{student.stageId}
+        </if>
+        AND student.STATUS_ID =1
+    </sql>
+    <select id="findStudentDetailPage" parameterType="Student" resultType="Student">
+        <include refid="findStudentDetailSql"/>
+    </select>
+    <insert id="testInsert" parameterType="Student">
+        INSERT INTO t_student (
+        IDENTITY,
+        BATCH_ID,
+        STU_NAME,
+        STUDY_TYPE_ID,
+        STATUS_ID
+        ) VALUES (
+         #{identity},#{batchId},#{stuName},#{studyTypeId},#{statusId}
+        )
+    </insert>
+    <insert id="creatStuLabel" parameterType="StuLabel">
+           INSERT INTO t_stu_label(LABEL_NAME,CREATE_USER_ID,CONDITION_CONTENT)
+           VALUES(#{labelName},#{createUserId},#{conditionContent})
+    </insert>
+    <select id="checkYourLabel" parameterType="Long" resultType="StuLabel">
+        SELECT * FROM t_stu_label WHERE #{id} = CREATE_USER_ID
+    </select>
+    <update id="setRecycleStatus" parameterType="int">
+        UPDATE t_student SET STATUS_ID=0 WHERE ID=#{id}
+    </update>
+
+    <insert id="insertIntoRecycle" parameterType="Student">
+      INSERT INTO t_recycle(
+        STU_ID,
+        IDENTITY,
+        LEVEL,
+        STU_NUM,
+        COLLEGE_ID,
+        BATCH_ID,
+        MAJOR_ID,
+        STUDY_TYPE_ID,
+        CLASS_ID,
+        STU_NAME,
+        SEX_ID,
+        NATION,
+        NATIVE_CITY,
+        NATIVE_DISTRICT,
+        NATIVE_PROVINCE,
+        POLITICS_ID,
+        DIPLOMA_NUM,
+        GRADU_DATE,
+        ENROL_DATE,
+        TEL,
+        URGENCY_TEL,
+        EMAIL,
+        ADDRESS,
+        EXAM_LOCATION_ID,
+        IDEN_BEGIN_DATE,
+        IDEC_END_DATE,
+        WX_APP_OPENID,
+        STATUS_ID,
+        STAGE_ID,
+        TRACSACTION,
+        ALLOW_ESSAY,
+        DIPLOMA_IMG_URL,
+        HEAD_IMG_URL,
+        ID_FRONT_IMG_URL,
+        ID_BACK_IMG_URL,
+        EXAM_STU_NUM,
+        EXAM_REGRIT_NUM
+        ) VALUES(#{id},#{identity},#{level},#{stuNum},#{collegeId},#{batchId},#{majorId},#{studyTypeId},#{classId},#{stuName},
+        #{sexId},#{nation},#{nativeCity},#{nativeDistrict},#{nativeProvince},#{politicsId},#{diplomaNum},#{graduDate},#{enrolDate},#{tel},
+        #{urgencyTel},#{email},#{address},#{examLocationId},#{idenBeginDate},#{idecEndDate},#{wxAppOpenid},#{statusId},#{stageId},#{tracsaction},
+        #{allowEssay},#{diplomaImgUrl},#{headImgUrl},#{idFrontImgUrl},#{idBackImgUrl},#{examStuNum},#{examRegritNum})
+    </insert>
+    <select id="selectStuForRecycle" parameterType="int" resultType="Student">
+        SELECT
+        ID,
+        IDENTITY,
+        LEVEL,
+        STU_NUM,
+        COLLEGE_ID,
+        BATCH_ID,
+        MAJOR_ID,
+        STUDY_TYPE_ID,
+        CLASS_ID,
+        STU_NAME,
+        SEX_ID,
+        NATION,
+        NATIVE_CITY,
+        NATIVE_DISTRICT,
+        NATIVE_PROVINCE,
+        POLITICS_ID,
+        DIPLOMA_NUM,
+        GRADU_DATE,
+        ENROL_DATE,
+        TEL,
+        URGENCY_TEL,
+        EMAIL,
+        ADDRESS,
+        EXAM_LOCATION_ID,
+        IDEN_BEGIN_DATE,
+        IDEC_END_DATE,
+        WX_APP_OPENID,
+        STATUS_ID,
+        STAGE_ID,
+        TRACSACTION,
+        ALLOW_ESSAY,
+        DIPLOMA_IMG_URL,
+        HEAD_IMG_URL,
+        ID_FRONT_IMG_URL,
+        ID_BACK_IMG_URL,
+        EXAM_STU_NUM,
+        EXAM_REGRIT_NUM
+        FROM t_student stu WHERE ID=#{id}
+    </select>
+
+    <select id="findById" parameterType="Integer" resultType="Student">
+        SELECT
+        s.ID,
+        s.`IDENTITY`,
+        s.`LEVEL`,
+        s.STU_NUM,
+        s.COLLEGE_ID,
+        s.BATCH_ID,
+        s.MAJOR_ID,
+        s.STUDY_TYPE_ID,
+        s.CLASS_ID,
+        s.STU_NAME,
+        s.SEX_ID,
+        s.NATION,
+        s.NATIVE_CITY,
+        s.NATIVE_DISTRICT,
+        s.NATIVE_PROVINCE,
+        s.POLITICS_ID,
+        s.DIPLOMA_NUM,
+        s.GRADU_DATE,
+        s.ENROL_DATE,
+        s.TEL,
+        s.URGENCY_TEL,
+        s.EMAIL,
+        s.ADDRESS,
+        s.EXAM_LOCATION_ID,
+        s.IDEN_BEGIN_DATE,
+        s.IDEC_END_DATE,
+        s.WX_APP_OPENID,
+        s.STATUS_ID,
+        s.STAGE_ID,
+        s.TRACSACTION,
+        s.ALLOW_ESSAY,
+        s.DIPLOMA_IMG_URL,
+        s.HEAD_IMG_URL,
+        s.ID_FRONT_IMG_URL,
+        s.ID_BACK_IMG_URL,
+        s.EXAM_STU_NUM,
+        s.EXAM_REGRIT_NUM,
+        d.detail as politicsName,
+      concat(g.province_name,'-',f.city_name,'-',e.area_name) as nativeName,
+        h.detail as stageName,
+        i.detail as studyTypeName,
+        j.level_name as levelname,
+        k.batch_name as batchName,
+        l.name as collegeName,
+        m.full_name as majorName,
+         n.nation_name as nationName
+        FROM
+        t_student s
+        LEFT JOIN t_dic d on s.politics_id=d.id
+        LEFT JOIN t_area e on s.NATIVE_DISTRICT=e.id
+        LEFT JOIN t_city f on s.NATIVE_CITY=f.id
+        LEFT JOIN t_PROVINCE g on s.NATIVE_PROVINCE=g.id
+        LEFT join t_dic h on s.stage_id=h.id
+        LEFT join t_dic i on s.study_type_id=i.id
+         LEFT join t_level j on s.level=j.id
+          LEFT join t_batch k on s.batch_id=k.id
+          LEFT join t_college l on s.college_id=l.id
+          LEFT join t_major m on s.major_id=m.id
+          LEFT JOIN t_nation n on s.nation=n.id
+        WHERE
+        1=1
+        AND s.id=#{id}
+    </select>
+    <select id="findTaskByStuidAndType" resultType="Map">
+        SELECT
+        ID,
+        STU_ID,
+        TYPE_ID,
+        FIELD,
+        AFTER_UPDATE,
+        UPDATE_TIME,
+        AUDIT_TIME,
+        STATUS,
+        REMARK
+        FROM
+        T_TASK
+        WHERE
+        STU_ID=#{stuId}
+        AND
+        TYPE_ID=#{typeId}
+        AND
+        status=0
+
+    </select>
+    <select id="findTaskDetailByStuId" resultType="Map" parameterType="int">
+        SELECT
+        s.ID,
+        s.IDENTITY,
+        s.IDEN_BEGIN_DATE,
+        s.IDEC_END_DATE,
+        t.AFTER_UPDATE
+        FROM
+        t_student s
+        LEFT JOIN
+        t_task t
+        ON
+        s.id=t.stu_id
+        WHERE
+        s.id=#{id}
+        AND
+        TYPE_ID=#{typeId}
+        AND
+        STATUS=0
+    </select>
+    <update id="updateTaskStatusByStuId">
+        UPDATE
+        t_task
+        SET
+        STATUS=2,
+        REMARK=#{remark}
+        WHERE
+        stu_id=#{id}
+        AND
+        TYPE_ID=#{typeId}
+        AND
+        STATUS=0
+    </update>
+    <update id="updateStatusByTask" parameterType="int">
+        UPDATE
+        t_task
+        SET
+        STATUS=1
+        WHERE
+        stu_id=#{id}
+        AND
+        TYPE_ID=#{typeId}
+        AND
+        STATUS=0
+    </update>
+    <delete id="delLable" parameterType="int">
+        DELETE FROM t_stu_label WHERE ID=#{id}
+    </delete>
+    <update id="updateStatusById">
+        UPDATE
+        t_task
+        SET
+        STATUS=1
+        WHERE
+        id=#{taskId}
+        AND
+        STATUS=0
+    </update>
+    <update id="updateStatusByIdNoPass">
+        UPDATE
+        t_task
+        SET
+        STATUS=2,
+        REMARK=#{remark}
+        WHERE
+        id=#{taskId}
+        AND
+        STATUS=0
+    </update>
+
+    <update id="updateStudentExamLocation">
+        UPDATE
+        t_student
+        SET
+        EXAM_LOCATION_ID=#{examLocationId}
+        WHERE
+        id=#{id}
+    </update>
+    <select id="selectStuidByClass" resultType="int">
+        SELECT
+        s.ID
+        FROM
+        t_student s,
+        t_task t
+        WHERE
+        s.id=t.STU_ID
+        AND
+        s.CLASS_ID=#{classId}
+        AND
+        t.TYPE_ID=#{typeId}
+        AND
+        t.STATUS=0
+    </select>
+    <update id="updateStudentTransaction" parameterType="Student">
+        UPDATE t_student SET tracsaction = #{student.tracsaction} WHERE id = #{student.id}
+    </update>
+    <insert id="createColumn" parameterType="StuColumn">
+        INSERT INTO t_stu_column (COLUMN_NAME,CREATE_USER_ID,CONDITION_CONTENT)
+        VALUES(#{columnName},#{createUserId},#{conditionContent})
+    </insert>
+    <select id="checkYourColumn" parameterType="Long" resultType="StuColumn">
+        SELECT * FROM t_stu_column WHERE #{id} = CREATE_USER_ID
+    </select>
+    <!--复学相关 start-->
+    <sql id="total_Column_List">
+        ID,IDENTITY,LEVEL,STU_NUM,COLLEGE_ID,BATCH_ID,MAJOR_ID,STUDY_TYPE_ID,
+        CLASS_ID,STU_NAME,SEX_ID,NATION,NATIVE_CITY,NATIVE_DISTRICT,NATIVE_PROVINCE,
+        POLITICS_ID,DIPLOMA_NUM,GRADU_DATE,ENROL_DATE,TEL,URGENCY_TEL,EMAIL,ADDRESS,
+        EXAM_LOCATION_ID,IDEN_BEGIN_DATE,IDEC_END_DATE,WX_APP_OPENID,STATUS_ID,
+        STAGE_ID,TRACSACTION,ALLOW_ESSAY,DIPLOMA_IMG_URL,HEAD_IMG_URL,ID_FRONT_IMG_URL,
+        ID_BACK_IMG_URL,EXAM_STU_NUM,EXAM_REGRIT_NUM
+    </sql>
+
+    <update id="updateStudentForBackCollege" parameterType="int">
+        UPDATE t_student SET TRACSACTION=23,STATUS_ID=50 WHERE ID=#{studentId}
+    </update>
+
+    <insert id="insertStudentBatch">
+        INSERT INTO t_student(
+        <include refid="total_Column_List"></include>
+        ) VALUES
+        <foreach collection="studentList" index="index" item="student" separator=",">
+            (
+            NULL,
+            #{student.identity},
+            #{student.level},
+            #{student.stuNum},
+            #{student.collegeId},
+            #{student.batchId},
+            #{student.majorId},
+            1,
+            #{student.classId},
+            #{student.stuName},
+            #{student.sexId},
+            #{student.nation},
+            #{student.nativeCity},
+            #{student.nativeDistrict},
+            #{student.nativeProvince},
+            #{student.politicsId},
+            #{student.diplomaNum},
+            #{student.graduDate},
+            #{student.enrolDate},
+            #{student.tel},
+            #{student.urgencyTel},
+            #{student.email},
+            #{student.address},
+            #{student.examLocationId},
+            #{student.idenBeginDate},
+            #{student.idecEndDate},
+            #{student.wxAppOpenid},
+            51,
+            #{student.stageId},
+            23,
+            #{student.allowEssay},
+            #{student.diplomaImgUrl},
+            #{student.headImgUrl},
+            #{student.idFrontImgUrl},
+            #{student.idBackImgUrl},
+            #{student.examStuNum},
+            #{student.examRegritNum}
+            )
+        </foreach>
+    </insert>
+    <!--复学相关 end-->
+    <!--应缴费用-->
+    <select id="getShouldPay" resultType="Map">
+        select
+        a.id,a.ORIGINAL_PRICE shouldPay
+        from t_standard_fee a
+        LEFT JOIN t_student b ON b.BATCH_ID=a.BATCH_ID and b.STUDY_TYPE_ID=a.CULTIVATE AND b.`LEVEL`=a.STUDY_LEVEL_ID
+        and b.MAJOR_ID=a.MAJOR_ID
+        where b.id=#{stuId} and a.PAYMEN_EXPLAIN=#{paymenExplain}
+    </select>
+    <!--实缴考试费用和日期-->
+    <select id="getTruePay" resultType="Map">
+    select
+    cost_time ctime,cost_money cost
+    from t_application_cost
+    WHERE STU_POOL_ID=#{stuId}
+    AND STANDARD_FEE_ID=#{id}
+    </select>
+    <!--实缴学费和日期-->
+    <select id="getStudyTruePay" resultType="Map">
+        select
+        cost_time ctime,cost_money cost
+        from t_absentee_cost
+        WHERE STU_ID=#{stuId}
+        AND DATA_ID=#{id}
+        AND COST_TYPE_ID=1
+    </select>
+    <!--优惠金额和活动名称-->
+    <select id="getPayDiscount" resultType="Map">
+        SELECT
+        policy,`NAME` discountName
+        from
+        t_special_offer
+        where STANDARD_FEE_ID=#{id}
+        and #{payDate} BETWEEN
+         START_TIME and  STOP_TIME
+    </select>
+    <update id="overdueSet" parameterType="int">
+        UPDATE t_student SET STAGE_ID=16 WHERE id =#{id};
+    </update>
+    <select id="findStudentStudyYear" parameterType="int" resultType="int">
+        SELECT
+        CASE num
+        WHEN 59 THEN 5
+        WHEN 58 THEN 3
+        END
+        FROM (
+            SELECT DISTINCT  ttp.SCHOOLING_ID AS num
+            FROM t_student stu
+            LEFT JOIN t_teach_program ttp
+            ON stu.`LEVEL` = ttp.LEVEL_ID
+            WHERE stu.ID = #{stuId} and ttp.SCHOOLING_ID is not null
+        )a
+    </select>
+</mapper>

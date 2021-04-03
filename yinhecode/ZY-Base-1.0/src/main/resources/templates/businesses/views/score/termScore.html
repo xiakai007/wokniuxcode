@@ -1,0 +1,519 @@
+<style>
+    #businesses-score xm-select {
+        min-height: 30px;
+        line-height: 30px;
+    }
+
+    #businesses-score xm-select > .xm-label .scroll .label-content {
+        display: flex;
+        padding: 0 30px 0 10px;
+    }
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="businesses-score" lay-title="学期成绩管理">
+
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <!-- 学期成绩 -->
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="user-table-form">
+                        <fieldset class="layui-elem-field layui-field-title">
+                            <legend style="font-size: 15px;font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId" id="batchId">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="cboCollege" lay-verify="required"
+                                                    lay-filter="cboCollege" lay-search>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="levelId" id="cboLevel" lay-filter="cboLevel">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="cboMajor" lay-filter="cboMajor">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">学期</label>
+                                        <div class="layui-input-inline">
+                                            <select name="termId" id="cboTerm" lay-filter="cboTerm">
+                                                <option value="">全部</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">课程</label>
+                                        <div class="layui-input-inline">
+                                            <select name="courseId" id="cboCourse">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">考查形式</label>
+                                        <div class="layui-input-inline">
+                                            <select name="isexam" id="isexam">
+                                                <option value="">全部</option>
+                                                <option value="1">统考</option>
+                                                <option value="2">自助考</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">考试状态</label>
+                                        <div class="layui-input-inline">
+                                            <select name="status">
+                                                <option value="">全部</option>
+                                                <option value="1">通过</option>
+                                                <option value="0">未过</option>
+                                                <option value="0">缺考</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                            <legend style="font-size: 15px;font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="StuName" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" autocomplete="off" class="layui-input" maxlength="18" onkeyup="value=value.replace(/[^\d|^X]/g,'')">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">手机号</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" id="term-tel" autocomplete="off" class="layui-input" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="term-reset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                            <legend style="font-size: 15px;font-weight: bolder;"></legend>
+                        </fieldset>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-col-md10" lay-data="{id: 'control'}">
+                                    <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action">
+                                        <i class="layui-icon layui-icon-export" id="term-export">导出数据</i>
+                                    </div>
+                                    <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action">
+                                        <i class="layui-icon" id="term-import">&#xe7aa;导入成绩</i>
+                                    </div>
+                                  <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action">
+                                    <i class="layui-icon" id="downloadModel">&#xe82a;下载模板</i>
+                                  </div>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table id="scoreTable" lay-filter="scoreTable" lay-data="{id: 'scoreTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="score-option">
+    <span shiro:lacksPermission="user:view,user:update,user:delete">
+        <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+    </span>
+    <a lay-event="detail" shiro:hasPermission="user:view"><i
+            class="layui-icon febs-edit-area febs-green" title="成绩详情">&#xe7a5;</i>
+    </a>
+</script>
+<script type="text/html" id="status">
+    {{#
+    let status = {
+    1: {title: '通过',color: 'green'},
+    2: {title: '未过',color: 'red'},
+    3: {title: '缺考',color: 'gray'}
+    }[d.status];
+    }}
+    <span class="layui-badge febs-bg-{{status.color}}">{{ status.title }}</span>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect', 'element','upload'], function () {
+        var element = layui.element;
+        let $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            upload = layui.upload,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-score'),
+            $query = $view.find('#query'),
+            $reset = $view.find('#term-reset'),
+            $export=$view.find('#term-export'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'id', type: null},
+            tableIns,
+            createTimeFrom,
+            createTimeTo,
+            deptXmlSelect;
+
+        form.render();
+
+        var mycols = [];
+
+
+        initTable();
+
+        laydate.render({
+            elem: '#user-createTime',
+            range: true,
+            trigger: 'click'
+        });
+
+        element.on('click', function (res) {
+            console.log(res);
+        })
+
+
+        table.on('tool(scoreTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            console.log(data);
+            console.log(layEvent);
+            if (layEvent === 'detail') {
+                febs.modal.view('成绩详情', 'entranceScore/detail/' + data.id, {
+                    area: $(window).width() <= 750 ? '95%' : '660px'
+                });
+            }
+        });
+        //批次下拉框遍历
+        $(function () {
+            //付款方式(下拉框)
+            $.get("entranceScore/batchs", function (obj) {
+                // selectIDc=obj.data;
+                var str = "<option value=''>全部</option>";
+                layui.each(obj.data, function (index, item) {
+                    str = str + "<option value='" + this.id + "'>" + this.batchName + "</option>";
+
+                });
+                $("#batchId").html(str);
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+        //院校下拉框遍历
+        $(function () {
+            //付款方式(下拉框)
+            $.get("termScore/collegeList", function (obj) {
+                console.log(obj);
+                // selectIDc=obj.data;
+                $("#cboCollege").empty();
+                $("#cboCollege").append("<option value=''>输入或选择院校</option>")
+                layui.each(obj.data, function (index, item) {
+                    $("#cboCollege").append("<option value='" + this.id + "'>" + this.name + "</option>");
+                });
+                //渲染select
+                form.render('select');
+            });
+        });
+
+        form.on("select(cboCollege)", function (obj) {
+            var collegeId = obj.value;
+            console.log(obj);
+            initLevel(collegeId);
+        });
+
+        //层次下拉框
+        function initLevel(id) {
+            $.ajax({
+                type: 'get',
+                url: 'termScore/levelList',
+                data: {collegeId: id},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboLevel").empty();
+                    $("#cboLevel").append("<option value=''>全部</option>");
+                    layui.each(res.data, function (index, item) {
+                        $("#cboLevel").append("<option value='" + this.id + "'>" + this.levelName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        form.on("select(cboLevel)", function (obj) {
+            var collegeId = $('#cboCollege').val();
+            var levelId = $('#cboLevel').val();
+            console.log(collegeId);
+            initMajor(collegeId, levelId);
+        });
+
+        //专业下拉框
+        function initMajor(id1, id2) {
+            $.ajax({
+                type: 'get',
+                url: 'termScore/majorList',
+                data: {collegeId: id1, levelId: id2},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboMajor").empty();
+                    $("#cboMajor").append("<option value=''>全部</option>")
+                    layui.each(res.data, function (index, item) {
+                        $("#cboMajor").append("<option value='" + this.id + "'>" + this.fullName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        form.on("select(cboMajor)", function (obj) {
+
+            var levelId = $('#cboLevel').val();
+            initTerm(levelId);
+        });
+
+        //学期下拉框
+        function initTerm(id1) {
+            $.ajax({
+                type: 'get',
+                url: 'termScore/termList',
+                data: {levelId: id1},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboTerm").empty();
+                    $("#cboTerm").append("<option value=''>全部</option>")
+                    layui.each(res.data, function (index, item) {
+                        $("#cboTerm").append("<option value='" + this.id + "'>" + this.semesterName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+                }
+            })
+        }
+
+
+        form.on("select(cboTerm)", function (obj) {
+            var collegeId = $('#cboCollege').val();
+            var levelId = $('#cboLevel').val();
+            var majorId = $('#cboMajor').val();
+            var termId = $('#cboTerm').val();
+            console.log(collegeId);
+            initCourse(collegeId, levelId, majorId, termId);
+        });
+
+        //课程下拉框
+        function initCourse(id1, id2, id3, id4) {
+            $.ajax({
+                type: 'get',
+                url: 'termScore/courseList',
+                data: {collegeId: id1, levelId: id2, majorId: id3, termId: id4},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboCourse").empty();
+                    $("#cboCourse").append("<option value=''>全部</option>")
+                    layui.each(res.data, function (index, item) {
+                        $("#cboCourse").append("<option value='" + this.id + "'>" + this.courseName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+
+        table.on('sort(scoreTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            var reg_tel = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;    //11位手机号码正则
+            var tel=$('#term-tel').val();
+            if (tel!=''&&tel!=null){
+                if (!reg_tel.test(tel)){
+                    febs.alert.warn("请填写正确的手机号码");
+                }else {
+                    tableIns.reload({where: params, page: {curr: 1}});
+                }
+            }else {
+                tableIns.reload({where: params, page: {curr: 1}});
+            }
+        });
+
+        document.onkeydown = function (e) { // 回车提交表单
+// 兼容FF和IE和Opera
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                $query.click();
+            }
+        }
+        //导出数据
+        $export.on('click',function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+            params.pageNum = $view.find(".layui-laypage-em").next().html();
+            febs.download(ctx + 'termScore/excel', params, '学期成绩表.xlsx');
+        });
+        //下载模板
+        $view.on('click', '#downloadModel', function () {
+            febs.download(ctx + 'termScore/template',null, '入学成绩导入模板.xlsx');
+        });
+        //导入数据
+        upload.render({
+            elem: '#term-import',
+            url: ctx + 'termScore/import',
+            accept: 'file',
+            exts: 'xlsx', // 只能上传 .xlsx格式
+            size: 5 * 1024, // kb
+            before: function () {
+                febs.view.loadBar.start();
+            },
+            done: function (res) {
+                if (res.message==200){
+                    febs.view.loadBar.finish();
+                    febs.alert.success('导入成功！');
+                    $reset.click();
+                }else if (res.message==400){
+
+                    febs.view.loadBar.error();
+                    febs.alert.error('导入失败！');
+// 弹出导入结果
+                    febs.modal.view('错误日志', 'entranceScore/errorResult', {
+                        area: $(window).width() <= 750 ? '95%' : '1000px'
+                    });
+
+                }else {
+                    febs.view.loadBar.error();
+                    febs.alert.error('文件异常！');
+                }
+            }
+        });
+
+        $reset.on('click', function () {
+            //下拉框重置
+            $("#cboMajor").empty();
+            $("#cboMajor").append("<option value=''>全部</option>");
+            $("#cboLevel").empty();
+            $("#cboLevel").append("<option value=''>全部</option>");
+            $searchForm[0].reset();
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}});
+        });
+
+
+        //数据显示
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'scoreTable',
+                url: ctx + 'termScore/list',
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'batchName', title: '批次', Maxwidth: 60},
+                    {field: 'stuName', title: '姓名', Maxwidth: 80},
+                    {field: 'identity', title: '身份证号', Maxwidth: 150},
+                    {field: 'tel', title: '手机号', Maxwidth: 120},
+                    {field: 'studyType', title: '学习形式', Maxwidth: 100},
+                    {field: 'collegeName', title: '院校', Maxwidth: 130},
+                    {field: 'levelName', title: '层次', Maxwidth: 90},
+                    {field: 'majorName', title: '专业', Maxwidth: 100},
+                    {field: 'courseName', title: '科目', Maxwidth: 100},
+                    {field: 'termName', title: '学期', Maxwidth: 100},
+                    {
+                        field: 'isexam', title: '是否考察课', Maxwidth: 100, templet:
+                            function (obj) {
+                                if (obj.isexam == 1) {
+                                    return '统考';
+                                } else {
+                                    return '自助考';
+                                }
+                            }
+                    },
+                    {field: 'score', title: '成绩', width: 60},
+                    {
+                         title: '状态', Maxwidth: 70, templet:'#status'
+                            // function (obj) {
+                            //     if (obj.status == 1) {
+                            //         return '通过';
+                            //     } else if (obj.status == 0) {
+                            //         return '未过';
+                            //     } else {
+                            //         return '缺考';
+                            //     }
+                            // }
+                    }
+                    // {title: '操作', toolbar: '#college-option', minWidth: 80}
+                ]]
+            });
+
+        }
+
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        /**************************************************************学期成绩******************************************************************/
+
+
+    })
+</script>

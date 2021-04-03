@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.TeacherChangeLogMapper">
+
+    <select id="selectTeacherChangeLogByClassId" parameterType="int" resultType="cc.zy.base.businesses.entity.TeacherChangeLog">
+        SELECT
+            tcl.ID id,
+            u.USERNAME userName,
+            tcl.CHANGE_TIME changeTime,
+            tcl.REMARK remark
+        FROM
+            t_teacher_change_log tcl
+        LEFT JOIN t_user u ON (u.USER_ID=tcl.USER_ID)
+        WHERE tcl.CLASS_ID=#{classId}
+    </select>
+
+    <select id="countTeacherChangeLog" parameterType="int" resultType="java.lang.Long">
+        SELECT count(1) FROM t_teacher_change_log WHERE CLASS_ID=#{classId}
+    </select>
+
+</mapper>

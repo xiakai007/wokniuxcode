@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.StudentGroupMapper">
+    <sql id="countStudentGroupDetailSql" >
+        SELECT
+            COUNT(1)
+        FROM
+            t_student_group T
+        WHERE 1 = 1
+            <if test="studentGroup.groupNo != null and studentGroup.groupNo != ''">
+                AND T.GROUP_NO LIKE CONCAT('%',trim(#{studentGroup.groupNo}),'%')
+            </if>
+            <if test="studentGroup.batchId != null ">
+                AND T.BATCH_ID = #{studentGroup.batchId}
+            </if>
+            <if test="studentGroup.userId != null ">
+                AND T.USER_ID = #{studentGroup.userId}
+            </if>
+
+    </sql>
+
+    <sql id="findStudentGroupDetailSql">
+        SELECT
+            T.ID,
+            T.GROUP_NO,
+            T.BATCH_ID,
+            T.USER_ID,
+            T.CREATE_USER_ID,
+            T.CREATE_TIME,
+            T.REMARK,
+            user1.username userName,
+            user2.username createUsername,
+            batch.BATCH_NAME batchName,
+            ( SELECT COUNT( 1 ) FROM t_student_pool WHERE group_id = T.id ) stuNum
+        FROM
+            t_student_group T
+            LEFT JOIN t_user user1 ON (T.USER_ID = user1.user_id)
+            LEFT JOIN t_user user2 ON (T.CREATE_USER_ID = user2.user_id)
+            LEFT JOIN t_batch batch ON (T.BATCH_ID = batch.ID)
+        WHERE 1 = 1
+            <if test="studentGroup.groupNo != null and studentGroup.groupNo != ''">
+                AND T.GROUP_NO LIKE CONCAT('%',trim(#{studentGroup.groupNo}),'%')
+            </if>
+            <if test="studentGroup.batchId != null ">
+                AND T.BATCH_ID = #{studentGroup.batchId}
+            </if>
+            <if test="studentGroup.userId != null ">
+                AND T.USER_ID = #{studentGroup.userId}
+            </if>
+    </sql>
+
+    <select id="findStudentGroupDetailPage" parameterType="studentGroup" resultType="studentGroup">
+        <include refid="findStudentGroupDetailSql"/>
+    </select>
+
+    <select id="countStudentGroupDetail" parameterType="studentGroup" resultType="long">
+        <include refid="countStudentGroupDetailSql"/>
+    </select>
+
+    <select id="findStudentGroupListNotPage" resultType="cc.zy.base.businesses.entity.StudentGroup">
+        <include refid="findStudentGroupDetailSql"/>
+    </select>
+
+</mapper>

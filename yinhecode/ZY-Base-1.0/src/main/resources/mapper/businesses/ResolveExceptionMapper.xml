@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.ResolveExceptionMapper">
+    <select id="findByResolveException" resultType="ResolveException">
+          SELECT A.ID id,
+                 A.REQ_INFO_ID reqInfoId,
+                 A.EXCEPTION_TIME exceptionTime,
+                 A.REQ_USER_ID reqUserId,
+                 A.TRIGGER_TYPE triggerType,
+                 B.DETAIL detail,
+                 C.USERNAME userName
+            FROM t_resolve_exception A LEFT JOIN t_dic B ON A.TRIGGER_TYPE = B.ID
+            LEFT JOIN t_user C ON A.REQ_USER_ID = C.USER_ID
+          <where>
+              <if test="dtpStartDate!=null and dtpEndDate==null">
+                  AND  A.EXCEPTION_TIME >= #{dtpStartDate}
+              </if>
+              <if test="dtpEndDate!=null and dtpStartDate==null">
+                  AND  #{dtpEndDate} >= A.EXCEPTION_TIME
+              </if>
+              <if test="dtpEndDate !=null and dtpStartDate !=null">
+                  AND A.EXCEPTION_TIME BETWEEN #{dtpStartDate} AND #{dtpEndDate}
+              </if>
+              <if test="cboTriggerType!=null and cboTriggerType!=0">
+                  AND A.TRIGGER_TYPE = #{cboTriggerType}
+              </if>
+              <if test="reqUserId!=null and reqUserId!=-2">
+                  AND A.REQ_USER_ID = #{reqUserId}
+
+              </if>
+          </where>
+    </select>
+
+    <select id="findByResolveExceptionCount" resultType="long">
+        SELECT COUNT (1)
+        FROM t_resolve_exception A LEFT JOIN t_dic B ON A.TRIGGER_TYPE = B.ID
+        LEFT JOIN t_user C ON A.REQ_USER_ID = C.USER_ID
+        <where>
+            <if test="dtpStartDate!=null and dtpEndDate==null">
+                AND  A.EXCEPTION_TIME >= #{dtpStartDate}
+            </if>
+            <if test="dtpEndDate!=null and dtpStartDate==null">
+                AND  #{dtpEndDate} >= A.EXCEPTION_TIME
+            </if>
+            <if test="dtpEndDate !=null and dtpStartDate !=null">
+                AND A.EXCEPTION_TIME BETWEEN #{dtpStartDate} AND #{dtpEndDate}
+            </if>
+            <if test="cboTriggerType!=null and cboTriggerType!=0">
+                AND A.TRIGGER_TYPE = #{cboTriggerType}
+            </if>
+            <if test="reqUserId!=null and reqUserId!=-2">
+                AND A.REQ_USER_ID = #{reqUserId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByResolveExceptions" resultType="ResolveException">
+        SELECT  A.ID id,
+                A.REQ_INFO_ID reqInfoId,
+                A.EXCEPTION_TIME exceptionTime,
+                A.EXCEPTION_INFO exceptionInfo,
+                A.REQ_USER_ID reqUserId,
+                A.TRIGGER_TYPE triggerType,
+                B.DETAIL detail,
+                C.USERNAME userName
+        FROM t_resolve_exception A LEFT JOIN t_dic B ON A.TRIGGER_TYPE = B.ID
+        LEFT JOIN t_user C ON A.REQ_USER_ID = C.USER_ID
+    </select>
+
+    <select id="findByResolveExceptionDicsCount" resultType="long">
+        SELECT  COUNT (1)
+        FROM t_resolve_exception A LEFT JOIN t_dic B ON A.TRIGGER_TYPE = B.ID
+        LEFT JOIN t_user C ON A.REQ_USER_ID = C.USER_ID
+    </select>
+
+    <select id="findById" parameterType="int" resultType="ResolveException">
+        SELECT A.ID id,
+        A.REQ_INFO_ID reqInfoId,
+        A.EXCEPTION_TIME exceptionTime,
+        A.REQ_USER_ID reqUserId,
+        A.TRIGGER_TYPE triggerType,
+        A.EXCEPTION_INFO exceptionInfo,
+        B.DETAIL detail,
+        C.USERNAME userName
+        FROM t_resolve_exception A LEFT JOIN t_dic B ON A.TRIGGER_TYPE = B.ID
+        LEFT JOIN t_user C ON A.REQ_USER_ID = C.USER_ID
+        WHERE A.ID = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.BatchMapper">
+	<select id="selectBatchForSelect" resultType="cc.zy.base.businesses.entity.Batch">
+        SELECT
+            ID,
+            BATCH_NAME
+        FROM
+            t_batch
+        WHERE STATUS='y'
+        ORDER BY ID DESC
+    </select>
+    
+    <select id="findBatchsById" resultType="batch" parameterType="int">
+        SELECT * FROM t_batch WHERE id=#{id}
+    </select>
+
+    <sql id="countBatchDetailSql" >
+        SELECT
+        COUNT(1)
+        FROM
+        t_batch T
+        WHERE
+            1 = 1
+        <if test="batch.batchName != null and batch.batchName != ''">
+            AND T.batch_name LIKE concat('%', #{batch.batchName},'%')
+        </if>
+    </sql>
+
+    <sql id="findBatchDetailSql">
+        SELECT
+            T.ID id,
+            T.BATCH_NAME batchName,
+            T.STATUS status
+        FROM
+            t_batch T
+        WHERE
+            1 = 1
+        <if test="batch.batchName != null and batch.batchName != ''">
+            AND T.batch_name LIKE concat('%', #{batch.batchName},'%')
+        </if>
+        ORDER BY BATCH_NAME DESC
+    </sql>
+
+    <select id="countBatchDetail" parameterType="batch" resultType="long">
+        <include refid="countBatchDetailSql"/>
+    </select>
+
+    <select id="findBatchDetailPage" parameterType="batch" resultType="batch">
+        <include refid="findBatchDetailSql"/>
+    </select>
+
+</mapper>

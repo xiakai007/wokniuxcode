@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.CTypeMapper">
+    <sql id="countCTypeDetailSql" >
+        SELECT
+        COUNT(1)
+        FROM
+        t_Type T
+        WHERE 1 = 1
+        <if test="cType.name != null and cType.name != ''">
+            AND T.name LIKE  CONCAT('%',#{cType.name},'%')
+        </if>
+    </sql>
+    <select id="findCTypeDetail" parameterType="cType" resultType="cType">
+        SELECT
+        ID  id,
+        PID pid,
+        NAME name,
+        SORT1 sort1,
+        SORT2 sort2,
+        INFO info,
+        IMG_URL imgUrl,
+        CREATE_USER_ID createUserId,
+        CREATE_TIME createTime,
+        UPDATE_USER_ID updateUserId,
+        UPDATE_TIME updateTime,
+        STATUS status,
+        (CASE WHEN e.sort2 = 0
+        THEN  e.sort1
+        ELSE CONCAT(e.sort1,' - ',e.sort2)
+        END) sort,
+        userName,
+        updateName
+        FROM(
+        SELECT
+        t1.*, t2.name AS pname,t3.USERNAME as userName,t4.USERNAME as updateName
+        FROM
+        t_type AS t1
+            LEFT JOIN (SELECT * FROM t_type) AS t2 ON (t1.pid = t2.id)
+            LEFT JOIN  t_user as t3 ON  (t3.USER_ID=t1.CREATE_USER_ID)
+            LEFT JOIN  t_user as t4 ON  (t4.USER_ID=t1.UPDATE_USER_ID)
+        WHERE 1 = 1
+        <if test="cType.name != null and cType.name != ''">
+            AND t1.name LIKE CONCAT( '%',#{cType.name},'%')
+        </if>
+        <if test="cType.name != null and cType.name != ''">
+            OR t2.name LIKE CONCAT('%',#{cType.name},'%')
+        </if>
+        )e  ORDER  BY e.sort1,e.sort2
+    </select>
+    <select id="countCTypeDetail" parameterType="cType" resultType="long">
+        <include refid="countCTypeDetailSql"/>
+    </select>
+    <update id="updateByIdStatus">
+        UPDATE t_type SET status=0,update_time=#{updateTime},update_user_id=#{updateUserId} where id=#{id}
+    </update>
+    <update id="updateByIdStatusSon">
+        UPDATE  t_type set status=0,update_time=#{updateTime},update_user_id=#{updateUserId} where pid =#{id}
+    </update>
+    <update id="updateByIdStatusUp">
+        UPDATE t_type SET status=1,update_time=#{updateTime},update_user_id=#{updateUserId} where id=#{id}
+    </update>
+    <select id="findPid" parameterType="int" resultType="int">
+        select pid FROM  t_type WHERE id=#{id}
+    </select>
+    <update id="updateByIdStatusSonDown">
+        UPDATE t_type SET status=0,update_time=#{updateTime},update_user_id=#{updateUserId} where id=#{id}
+    </update>
+    <select id="selectByIdPid" parameterType="int" resultType="integer">
+       SELECT  id FROM  t_type WHERE  sort2=#{sort2} and sort1=#{sort1}
+    </select>
+    <update id="updateByIdSort" parameterType="int">
+        UPDATE  t_type set sort2=#{sort2} where id=#{id}
+    </update>
+    <select id="findById" parameterType="integer" resultType="cc.zy.base.businesses.entity.CType">
+        select
+        ID  id,
+        PID pid,
+        NAME name,
+        SORT1 sort1,
+        SORT2 sort2,
+        INFO info,
+        IMG_URL imgUrl,
+        CREATE_USER_ID createUserId,
+        CREATE_TIME createTime,
+        UPDATE_USER_ID updateUserId,
+        UPDATE_TIME updateTime,
+        STATUS status
+        from t_type where id=#{id}
+    </select>
+    <update id="findStatus"  parameterType="int">
+         UPDATE  t_type set  status=1 WHERE id =#{id}
+    </update>
+    <select id="findCTypeSORT1MAX" resultType="Integer">
+        SELECT ifnull(MAX(sort1),0) from (
+        select ifnull(sort1,0) as sort1 from  t_type ) ctype
+    </select>
+    <select id="findCTypeSort1Now" parameterType="int" resultType="int">
+        select sort1 from t_type WHERE  id=#{ctypeId}
+    </select>
+    <select id="findCTypeSORT2MAX" parameterType="int" resultType="Integer">
+        SELECT  ifnull(max(sort2),0) from t_type where sort1=#{ctypeSort1Id}
+    </select>
+    <select id="selectCTypeList1" resultType="cc.zy.base.businesses.entity.CType">
+        SELECT id,pid,name FROM t_type WHERE pid=0 ORDER  BY CREATE_TIME DESC
+    </select>
+    <select id="selectByVideoId" parameterType="int" resultType="int">
+        SELECT  type_id FROM t_video_type WHERE video_id =#{id}
+    </select>
+    <select id="selectByPid" parameterType="int" resultType="integer">
+        SELECT  id from t_type WHERE  pid=#{id}
+    </select>
+    <select id="selectSort2BySort1" parameterType="int" resultType="integer">
+        select SORT2 from t_type  where sort1 =#{sort1}
+    </select>
+    <select id="selectSort1ByPid" parameterType="int" resultType="integer">
+        select SORT1 from t_type  where id =#{pid}
+    </select>
+    <select id="selectPidById"  parameterType="int" resultType="int">
+        select pid from  t_type  WHERE id=#{id}
+    </select>
+    <select id="selectRootNameLastInsert" resultType="String">
+        SELECT NAME FROM t_type WHERE SORT2 = 0 ORDER BY CREATE_TIME DESC LIMIT 0,1
+    </select>
+
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.WatchMapper">
+    <!-- 插入修改记录<一>-->
+    <insert id="insert" parameterType="Watch">
+        INSERT INTO t_watch (video_id,stu_id,start_Time) VALUES(#{video_id},#{stu_id},#{start_time})
+    </insert>
+    <update id="updateByVideoIdAndStuid" parameterType="Watch" >
+        update t_watch set end_time=#{end_time} where video_id=#{video_id} and stu_id=#{stu_id}
+    </update>
+</mapper>

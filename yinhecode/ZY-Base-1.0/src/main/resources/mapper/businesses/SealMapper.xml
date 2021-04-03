@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.SealMapper">
+
+
+    <select id="findById" parameterType="Integer" resultType="college">
+        SELECT
+        C.id id,
+        C.name name,
+        C.simpleName simplename,
+        C.address address,
+        C.tel tel,
+        C.createUserId createuserid,
+        C.createDate createdate,
+        C.updateUserId updateuserid,
+        C.updateDate updatedate,
+        T.IMG_URL img,
+        C.remark remark
+        FROM
+        t_college C
+        LEFT JOIN t_seal T ON C.ID= T.COLLEGE_ID
+        WHERE 1 = 1
+        AND  C.id = #{id}
+    </select>
+
+
+    <update id="updateSealImgurlById" parameterType="Integer">
+        UPDATE t_seal SET IMG_URL = '' WHERE ID=#{collegeId}
+    </update>
+
+
+    <sql id="countSealDetailSql">
+        SELECT
+        count(1)
+        FROM
+        t_college C
+        LEFT JOIN t_seal T ON C.ID= T.COLLEGE_ID
+        WHERE 1 = 1
+        <if test="college.name != null and college.name != ''">
+            AND C.name LIKE CONCAT('%',#{college.name},'%')
+        </if>
+        <if test="college.simplename != null and college.simplename != ''">
+            AND C.name LIKE CONCAT('%',#{college.simplename},'%')
+        </if>
+    </sql>
+
+
+    <sql id="findSealDetailSql">
+        SELECT
+        C.id id,
+        C.name name,
+        C.simpleName simplename,
+        T.IMG_URL imgurl
+        FROM
+        t_college C
+        LEFT JOIN t_seal T ON C.ID= T.COLLEGE_ID
+        WHERE 1 = 1
+        <if test="college.name != null and college.name != ''">
+            AND C.name LIKE CONCAT('%',#{college.name},'%')
+        </if>
+        <if test="college.simplename != null and college.simplename != ''">
+            AND C.name LIKE CONCAT('%',#{college.simplename},'%')
+        </if>
+    </sql>
+
+    <select id="countSealDetail" parameterType="college" resultType="long">
+        <include refid="countSealDetailSql"/>
+    </select>
+    <select id="findSealDetailPage" parameterType="college" resultType="college">
+        <include refid="findSealDetailSql"/>
+    </select>
+
+
+</mapper>

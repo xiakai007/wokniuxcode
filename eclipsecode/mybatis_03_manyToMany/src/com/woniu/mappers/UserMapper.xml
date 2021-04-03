@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.UserMapper">
+	<resultMap type="User" id="userMap">
+		<id property="id" column="id"/>
+		<collection property="goodses" column="id"
+		select="com.woniu.mappers.GoodsMapper.selectGoodsByUserid">
+		</collection>
+	</resultMap>
+	<select id="selectUserById" parameterType="int" resultMap="userMap">
+		SELECT * FROM user WHERE id=#{id}
+	</select>
+	<select id="selectUserByGoodsid" parameterType="int" resultType="User">
+		SELECT * FROM user WHERE id IN(
+			SELECT userid FROM cart WHERE goodsid=#{goodsid}
+		)
+	</select>
+</mapper>

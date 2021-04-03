@@ -1,0 +1,88 @@
+<style>
+    #seal-add {
+        padding: 20px 25px 25px 0;
+    }
+
+</style>
+<div class="layui-fluid" id="seal-add">
+    <form class="layui-form" action="" lay-filter="seal-add-form">
+        <div class="layui-form-item febs-hide">
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${college.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div><span class="layui-icon layui-icon-form"></span> 院校名称：
+                [[${college.name}]]
+            </div>
+        </div>
+        <label class="layui-form-label febs-form-item-require">样例展示：</label>
+        <div class="layui-input-block">
+            <img style="width: 25rem;margin-right:.5rem" src="/febs/images/receipt/receipt.png" title="收据">
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <div class="layui-upload">
+                <div class="layui-upload-list">
+                    <p id="demoText"></p>
+                </div>
+                <a id="test1">上传图片</a>
+                <h3>tips:上传图片格式需为png格式，且像素满足600*600以上</h3>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="seal-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate','upload'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            upload=layui.upload,
+            validate = layui.validate;
+        form.verify(validate);
+        form.render();
+
+
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: 'https://httpbin.org/post' //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+        form.on('submit(seal-add-form-submit)', function (data) {
+            febs.post(ctx + 'seal/add', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('新增院校成功');
+                $('#businesses-seal').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

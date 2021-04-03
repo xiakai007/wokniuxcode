@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.TaskMapper">
+      <select id="findTotalTaskByStuId" parameterType="int" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM
+          t_task a
+        LEFT JOIN
+            t_student_pool b
+            ON
+            a.stu_id = b.id
+        LEFT JOIN
+            t_req_result_extension extension
+            ON
+            b.REQ_EXTENSION_ID=extension.ID
+        LEFT JOIN
+            t_student_group d
+            ON
+            b.GROUP_ID=d.id
+        LEFT JOIN
+            t_user c
+            ON
+            c.USER_ID=d.USER_ID
+        WHERE
+          1=1
+          AND c.USER_ID=#{userId}
+          AND a.status=0
+      </select>
+
+      <select id="findTotalTaskByUserId" parameterType="UserTask" resultType="UserTask">
+          SELECT
+              f.stuId stuId,
+              f.taskNum taskNum,
+              e.STU_NAME stuName,
+              g.GROUP_ID groupId,
+              h.GROUP_NO groupNo
+          FROM (
+              SELECT
+                  a.stu_id stuId,
+                  extension.stu_name stuName,
+                  COUNT(*) as taskNum
+              FROM
+                t_task a
+              LEFT JOIN
+                t_student_pool b
+                ON
+                a.stu_id = b.id
+              LEFT JOIN
+                t_req_result_extension extension
+                ON
+                b.REQ_EXTENSION_ID=extension.ID
+              LEFT JOIN
+                t_student_group d
+                ON
+                b.GROUP_ID=d.id
+              LEFT JOIN
+                t_user c
+                ON
+                c.user_id=d.USER_ID
+              WHERE
+              1=1
+              <if test="userTask.stuName!=null and userTask.stuName!=''">
+                  AND extension.stu_name like concat('%',#{userTask.stuName},'%')
+              </if>
+              <if test="userTask.groupNo!=null and userTask.groupNo!=''">
+                  AND d.group_no  like concat('%',#{userTask.groupNo},'%')
+              </if>
+              AND `c`.USER_ID=#{userTask.userId}
+              AND a.status=0
+              GROUP BY
+              a.stu_id
+          ) f
+          LEFT JOIN
+            t_student_pool g
+            ON f.stuId=g.ID
+          LEFT JOIN
+            t_req_result_extension e
+            ON
+            g.REQ_EXTENSION_ID=e.ID
+          LEFT JOIN
+            t_student_group h
+            ON g.GROUP_ID=h.ID
+
+      </select>
+
+      <select id="countTotalTaskByStuId" parameterType="UserTask" resultType="int">
+            SELECT
+            count(1) FROM (
+            SELECT
+            a.id
+            FROM
+            t_task a
+            LEFT JOIN
+            t_student_pool b
+            ON
+            a.stu_id = b.id
+            LEFT JOIN
+            t_req_result_extension extension
+            ON
+            b.REQ_EXTENSION_ID=extension.ID
+            LEFT JOIN
+            t_student_group d
+            ON
+            b.GROUP_ID=d.id
+            LEFT JOIN
+            t_user `c`
+            ON
+            `c`.user_id=d.USER_ID
+            WHERE
+              1=1
+              <if test="userTask.stuName!=null and userTask.stuName!=''">
+                  AND extension.stu_name like concat('%',#{userTask.stuName},'%')
+              </if>
+              <if test="userTask.groupNo!=null and userTask.groupNo!=''">
+                  AND d.group_no  like concat('%',#{userTask.groupNo},'%')
+              </if>
+            AND
+              c.USER_ID=#{userTask.userId}
+            AND a.status=0
+            GROUP BY
+              a.stu_id
+            ) F
+      </select>
+      
+      <select id="findExamInfoTaskByStuId" parameterType="int" resultType="Task">
+        SELECT
+          ID,
+          STU_ID,
+          TYPE_ID,
+          FIELD,
+          AFTER_UPDATE,
+          UPDATE_TIME,
+          AUDIT_TIME,
+          STATUS,
+          REMARK
+        FROM
+          t_task
+        WHERE
+          <!-- type_id t_task 类型为报考信息的待办任务 -->
+          TYPE_id=4
+          AND status=0
+          AND stu_id=#{stuId}
+      </select>
+      
+      <select id="findTaskTypeNumByStuId" parameterType="int" resultType="Map">
+            SELECT
+              TYPE_ID typeId,
+              count(*) num
+            FROM
+              t_task
+            WHERE
+              STU_ID=#{stuId}
+              AND STATUS=0
+            GROUP BY
+              TYPE_ID
+      </select>
+</mapper>

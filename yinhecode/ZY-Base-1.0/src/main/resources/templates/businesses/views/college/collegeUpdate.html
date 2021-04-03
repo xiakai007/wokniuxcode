@@ -1,0 +1,92 @@
+<style>
+    #college-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="college-update">
+    <form class="layui-form" action="" lay-filter="college-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">院校id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${college.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">院校名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" minlength="2" maxlength="20" data-th-id="${college.id}"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">院校简称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="simplename" minlength="2" maxlength="20"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">院校地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="address" minlength="4" maxlength="100"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">院校电话：</label>
+            <div class="layui-input-block">
+                <input type="tel" name="tel" lay-verify="phoneNum" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea name="remark" maxlength="100" class="layui-textarea">
+                </textarea>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="college-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            college = [[${college}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initCollegeValue();
+
+        function initCollegeValue() {
+            form.val("college-update-form", {
+                "name": college.name,
+                "simplename": college.simplename,
+                "address": college.address,
+                "tel": college.tel,
+                "remark": college.remark
+            });
+        }
+
+        form.on('submit(college-update-form-submit)', function (data) {
+             console.log("进入修改"+data.field)
+            if (febs.nativeEqual(data.field, college)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'college/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(college.id + ' 院校数据修改成功');
+                $('#businesses-college').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

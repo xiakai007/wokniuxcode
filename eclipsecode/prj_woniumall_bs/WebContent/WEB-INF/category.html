@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link href="static/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+   <div style="width:70%;margin:20px auto;">
+     <form method="post" name="form1">
+       <input type="text" name="name" placeholder="请输入类别名称"/>
+       <input type="text" name="navable" placeholder="请输入类别是否展示"/>
+       <input type="button" value="查询" class="btn btn-info" id="search1"/>
+     </form>
+   </div>
+   <div style="width:70%;margin:20px auto;text-align:right;">
+     <button class="btn btn-success" type="button" id="type_add_btn">增加</button>
+     <button class="btn btn-danger" type="button" id="type_delAll_btn">批量删除</button>
+   </div>
+   <table class="table table-striped table-bordered table-hover" style="width:70%;margin:20px auto;" id="table1">
+      <thead>
+         <tr>
+           <th>
+             <input type="checkbox" name="selectAll"/>
+           </th>
+           <th>类别id</th>
+           <th>类别名称</th>
+           <th>类别状态</th>
+           <th>是否展示</th>
+           <th>操作</th>
+         </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+   </table>
+   <!-- 分页开始 -->
+   <div style="width:70%;margin:0px auto;">
+     <ul class="pagination pull-right" id="ul1">
+       <li >
+         <a href="" >
+           
+         </a>
+       </li>
+     </ul>
+   </div>
+   <!-- 分页结束 -->
+   <!-- 类型增加模态框开始 -->
+   <div class="modal fade" tabindex="-1" role="dialog" id="typeAddModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">增加商品类别</h4>
+	      </div>
+	      <div class="modal-body">
+			 <form class="form-horizontal" method="post" id="typeAddForm"> 
+					<div class="form-group">
+						<label class="col-sm-4 control-label">商品类别名称：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">商品类别状态：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="status">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">商品类别是否展示：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="navable">
+						</div>
+					</div>
+					<input type="hidden" name="oper" value="typeAdd"/>
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" id="type_addsave_btn">保存</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+   <!-- 类型增加模态框结束 -->
+   <!-- 类型修改模态框开始 -->
+   <div class="modal fade" tabindex="-1" role="dialog" id="typeUpdModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">修改商品类别</h4>
+	      </div>
+	      <div class="modal-body">
+			 <form class="form-horizontal" method="post" id="typeUpdForm"> 
+					<div class="form-group">
+						<label class="col-sm-4 control-label">商品类别名称：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">商品类别状态：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="status">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">商品类别是否展示：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="navable">
+						</div>
+					</div>
+					<input type="hidden" name="oper" value="typeUpd"/>
+					<input type="hidden" name="id"/>
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" id="type_updsave_btn">保存</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+   <!-- 类型修改模态框结束 -->
+   <script type="text/javascript" src="static/js/jquery-1.12.3.min.js"></script>
+   <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+   <script type="text/javascript">
+     //加载类型列表
+     loadTypeList(1);
+     //查询
+     searchData();
+     //打开类型增加模态框
+     showTypeAddModal();
+     //保存增加的类型
+     typeSave();
+     //类型增加模态框隐藏时将数据重置
+     typeAddHide();
+     //批量删除类型
+     delAllType();
+     //修改保存
+     updateTypeSave();
+     
+     /*查询功能*/
+     function searchData(){
+    	 $("#search1").click(function(){
+    		 loadTypeList(1);
+    	 });
+     }
+     /*获取类型列表函数*/
+     function loadTypeList(crtPage){
+    	 $.ajax({
+    		 type:"post",
+    		 url:"types",
+    		 dataType:"json",
+    		 data:{"oper":"tplist","name":$(":text[name=name]").val(),"navable":$(":text[name=navable]").val(),"currentPage":crtPage},
+    		 error:function(){
+    			 alert("错误");
+    		 },
+    		 success:function(resp){
+    			 var typeArr=resp.pageData;
+    			 var tr="";
+    			 for(var i=0;i<typeArr.length;i++){
+    				 tr=tr+"<tr>";
+    				 tr=tr+"<td><input type=checkbox name=id value="+typeArr[i].id+" /></td>";
+    				 tr=tr+"<td>"+typeArr[i].id+"</td>";
+    				 tr=tr+"<td>"+typeArr[i].name+"</td>";
+    				 tr=tr+"<td>"+typeArr[i].status+"</td>";
+    				 tr=tr+"<td>"+typeArr[i].navable+"</td>"; 	
+    				 tr=tr+"<td><button type=button class='btn btn-danger btn-xs' name=type_del_btn>删除</button>";
+    				 tr=tr+"&nbsp;&nbsp;&nbsp;<button type=button class='btn btn-info btn-xs' name=type_upd_btn>修改</button></td>";
+    				 tr=tr+"</tr>";
+    			 }
+    			 $("#table1 tbody").html(tr);
+    			 /*分页页签*/
+    			 var pageStr="<li><a href="+(resp.currentPage-1)+">&laquo;</a></li>";
+    			 for(var i=1;i<=resp.pages;i++){
+    				 if(i==resp.currentPage){
+    					 pageStr=pageStr+"<li class=active><a>"+i+"</a></li>";
+    				 }else {
+    					 pageStr=pageStr+"<li><a href="+i+">"+i+"</a></li>";
+    				 }
+    			 }
+    			 pageStr=pageStr+"<li><a href="+(resp.currentPage+1)+">&raquo;</a></li>";
+    			 $("#ul1").html(pageStr);
+    			 //给页签添加单击事件
+    			 pageClick();
+    			 //给删除按钮添加单击事件
+    		     typeDel();
+    		     //给修改按钮添加单击事件
+    			 updateType();
+    		 }
+    	 });
+     }
+     /*页签单击事件*/
+     function pageClick(){
+    	 $("#ul1 a").click(function(){
+    		 var crtPage=$(this).attr("href");
+    		 loadTypeList(crtPage);
+    		 return false;
+    	 });
+     }
+     /*点击增加按钮打开类型增加模态框*/
+     function showTypeAddModal(){
+    	 $("#type_add_btn").click(function(){
+    		 $("#typeAddModal").modal("show");
+    	 });
+     }
+     /*点击保存按钮保存增加的类型*/
+     function typeSave(){
+    	 $("#type_addsave_btn").click(function(){
+    		 $.ajax({
+    			 type:"post",
+    			 url:"types",
+    			 data:$("#typeAddForm").serialize(),
+    		     error:function(){
+    		    	 alert("类型保存报错");
+    		     },
+    		     success:function(data){
+    		    	 alert(data);
+    		    	 $("#typeAddModal").modal("hide");
+    		    	 loadTypeList(1);
+    		     }
+    		 });
+    	 });
+     }
+     /*类型增加模态框隐藏时将数据重置*/
+     function typeAddHide(){
+    	 $("#typeAddModal").on("hidden.bs.modal",function(e){
+    		 $("#typeAddForm")[0].reset();
+    	 });
+     }
+     /*删除类型*/
+     function typeDel(){
+    	 $("button[name=type_del_btn]").click(function(){
+    		 if(confirm("确认删除？")){
+    		 var id=$(this).parents("tr").children().first().next().text();
+    		 $.ajax({
+    			 type:"post",
+    			 url:"types",
+    			 data:{"oper":"del","id":id},
+    			 error:function(){
+    				 alert("类型删除报错");
+    			 },
+    			 success:function(data){
+    				 alert(data);
+    				 loadTypeList(1);
+    			 }
+    		 });
+    		 }
+    	 });
+     }
+     /*批量删除类型*/
+     function delAllType(){
+    	 $("#type_delAll_btn").click(function(){
+    		 if($(":checkbox[name=id]:checked").length>0){
+    			 var typeIdArr=new Array();
+    			 $(":checkbox[name=id]:checked").each(function(){
+    				 typeIdArr.push($(this).val());
+    			 });
+    			 $.ajax({
+    				 type:"post",
+    				 url:"types",
+    				 data:{"oper":"delAll","typeIds":typeIdArr.join(",")},
+    				 error:function(){
+    					 alert("类型批量删除报错");
+    				 },
+    				 success:function(data){
+    					 alert(data);
+    					 loadTypeList(1);
+    				 }
+    			 });
+    		 }else{
+    			 alert("请选择记录");
+    		 }
+    	 });
+     }
+     /*类型修改按钮单击事件*/
+     function updateType(){
+    	 $("button[name=type_upd_btn]").click(function(){
+    		 var id=$(this).parents("tr").find(":checkbox[name=id]").val();
+    		 $.ajax({
+    			 type:"post",
+    			 url:"types",
+    			 data:{"oper":"updUI","id":id},
+    			 dataType:"json",
+    			 error:function(){
+    				 alert("修改报错");
+    			 },
+    			 success:function(data){
+    				 //alert(data);
+    				 $("#typeUpdForm :text[name=name]").val(data.name);
+    				 $("#typeUpdForm :text[name=status]").val(data.status);
+    				 $("#typeUpdForm :text[name=navable]").val(data.navable);
+    				 $("#typeUpdForm :hidden[name=id]").val(data.id);
+    			 }
+    		 });
+    		 $("#typeUpdModal").modal("show");
+    	 });
+     }
+     /*类型修改保存*/
+     function updateTypeSave(){
+    	 $("#type_updsave_btn").click(function(){
+    		 $.ajax({
+    			 type:"post",
+    			 url:"types",
+    			 data:$("#typeUpdForm").serialize(),
+    			 error:function(){
+    				 alert("类型修改保存报错");
+    			 },
+    			 success:function(data){
+    				 alert(data);
+    				 $("#typeUpdModal").modal("hide");
+    				 loadTypeList(1);
+    			 }
+    		 });
+    	 });
+     }
+   </script>
+</body>
+</html>

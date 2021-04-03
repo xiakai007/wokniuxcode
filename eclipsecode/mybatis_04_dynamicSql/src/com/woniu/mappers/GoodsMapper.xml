@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.GoodsMapper">
+	<sql id="sql01">
+		id,name,author,publisher
+	</sql>
+	<sql id="sql02">
+		id,name,author,categoryid
+	</sql>
+	<sql id="sql03">
+		id,name
+	</sql>
+	<resultMap type="Goods" id="goodsMap">
+		<association property="category" column="categoryid"
+		select="com.woniu.mappers.CategoryMapper.selectCategoryById">
+		</association>
+	</resultMap>
+	<!-- 查询中没有使用关联对象，返回使用resultType -->
+	<select id="selectGoodsByDynamicSql" parameterType="String" resultType="Goods">
+		SELECT 
+		<include refid="sql01"></include>
+		FROM mall_goods
+		<where>
+			<if test="name!=null and name!=''">
+				<!-- 使用trim(#{name})可以去掉字符串前后空格 -->
+				<bind name="bname" value="'%'+name+'%'"/>
+				AND name LIKE #{bname}
+			</if>
+			<if test="author!=null and author!=''">
+			    <bind name="bauthor" value="'%'+author+'%'"/>
+				AND author LIKE #{bauthor}
+			</if>
+			<if test="publisher!=null and publisher!=''">
+				AND publisher=#{publisher}
+			</if>
+		</where>
+	</select>
+	<!-- 查询中使用了关联对象，返回使用resultMap -->
+	<select id="selectGoodsByDSqlCategory" parameterType="Goods" resultMap="goodsMap">
+		SELECT * FROM mall_goods
+		<where>
+			<if test="name!=null and name!=''">
+				<bind name="bname" value="'%'+name+'%'"/>
+				AND name LIKE #{bname}
+			</if>
+			<if test="author!=null and author!=''">
+				<bind name="bauthor" value="'%'+author+'%'"/>
+				AND author LIKE #{bauthor}
+			</if>
+			<if test="publisher!=null and publisher!=''">
+				AND publisher=#{publisher}
+			</if>
+			<if test="category!=null">
+				<if test="category.id!=null and category.id!=0">
+					AND categoryid=#{category.id}
+				</if>
+			</if>
+		</where>
+	</select>
+	<select id="selectGoodsByDSWithTrim" parameterType="Goods" resultMap="goodsMap">
+		SELECT * FROM mall_goods
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="name!=null and name!=''">
+				AND name LIKE CONCAT('%',#{name},'%')
+			</if>
+			<if test="author!=null and author!=''">
+				AND author LIKE CONCAT('%',#{author},'%')
+			</if>
+			<if test="publisher!=null and publisher!=''">
+				AND publisher=#{publisher}
+			</if>
+			<if test="category!=null">
+				<if test="category.id!=null and category.id!=0">
+					AND categoryid=#{category.id}
+				</if>
+			</if>
+		</trim>
+	</select>
+	<select id="selectGoodsByIds" parameterType="int" resultType="Goods">
+		SELECT * FROM mall_goods WHERE id IN
+		<foreach collection="array" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</select>
+	<select id="selectGoodsByList" parameterType="int" resultType="Goods">
+		SELECT * FROM mall_goods WHERE id IN
+		<foreach collection="list" item="ids" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</select>
+	<select id="selectGoodsByMap" parameterType="int" resultType="Goods">
+		SELECT * FROM mall_goods WHERE id IN
+		<foreach collection="map" item="mapIds" open="(" separator="," close=")">
+			#{mapIds}
+		</foreach>
+	</select>
+	<update id="updateGoods" parameterType="Goods">
+		UPDATE mall_goods
+		<set>
+			<if test="name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test="goodsno!=null and goodsno!=''">
+				goodsno=#{goodsno},
+			</if>
+			<if test="author!=null and author!=''">
+				author=#{author},
+			</if>
+			<if test="publisher!=null and publisher!=''">
+				publisher=#{publisher},
+			</if>
+			<if test="pubtime!=null and pubtime!=''">
+				pubtime=#{pubtime},
+			</if>
+			<if test="category!=null">
+				<if test="category.id!=null and category.id!=0">
+					categoryid=#{category.id}
+				</if>
+			</if>
+			<if test="description!=null and description!=''">
+				description=#{description},
+			</if>
+			<if test="image!=null and image!=''">
+				image=#{image},
+			</if>
+			<if test="stock!=null and stock!=''">
+				stock=#{stock},
+			</if>
+			<if test="marketprice!=null and marketprice!=''">
+				marketprice=#{marketprice},
+			</if>
+			<if test="salesprice!=null and salesprice!=''">
+				salesprice=#{salesprice},
+			</if>
+			<if test="score!=null and score!=''">
+				score=#{score},
+			</if>
+			<if test="remarknums!=null and remarknums!=''">
+				remarknums=#{remarknums},
+			</if>
+			<if test="uptime!=null and uptime!=''">
+				uptime=#{uptime},
+			</if>
+			<if test="salenums!=null and salenums!=''">
+				salenums=#{salenums},
+			</if>
+			<if test="newest!=null and newest!=''">
+				newest=#{newest},
+			</if>
+			<if test="hot!=null and hot!=''">
+				hot=#{hot},
+			</if>
+			<if test="status!=null and status!=''">
+				status=#{status},
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+	<update id="updateGoodsWithTrim" parameterType="Goods">
+		UPDATE mall_goods
+		<trim prefix="SET" suffixOverrides="," suffix="WHERE id=#{id}">
+			<if test="name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test="goodsno!=null and goodsno!=''">
+				goodsno=#{goodsno},
+			</if>
+			<if test="author!=null and author!=''">
+				author=#{author},
+			</if>
+			<if test="publisher!=null and publisher!=''">
+				publisher=#{publisher},
+			</if>
+			<if test="pubtime!=null and pubtime!=''">
+				pubtime=#{pubtime},
+			</if>
+			<if test="category!=null">
+				<if test="category.id!=null and category.id!=0">
+					categoryid=#{category.id}
+				</if>
+			</if>
+			<if test="description!=null and description!=''">
+				description=#{description},
+			</if>
+			<if test="image!=null and image!=''">
+				image=#{image},
+			</if>
+			<if test="stock!=null and stock!=''">
+				stock=#{stock},
+			</if>
+			<if test="marketprice!=null and marketprice!=''">
+				marketprice=#{marketprice},
+			</if>
+			<if test="salesprice!=null and salesprice!=''">
+				salesprice=#{salesprice},
+			</if>
+			<if test="score!=null and score!=''">
+				score=#{score},
+			</if>
+			<if test="remarknums!=null and remarknums!=''">
+				remarknums=#{remarknums},
+			</if>
+			<if test="uptime!=null and uptime!=''">
+				uptime=#{uptime},
+			</if>
+			<if test="salenums!=null and salenums!=''">
+				salenums=#{salenums},
+			</if>
+			<if test="newest!=null and newest!=''">
+				newest=#{newest},
+			</if>
+			<if test="hot!=null and hot!=''">
+				hot=#{hot},
+			</if>
+			<if test="status!=null and status!=''">
+				status=#{status},
+			</if>
+		</trim>
+	</update>
+</mapper>

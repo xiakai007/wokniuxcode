@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	img{
+		margin:0px auto;
+	}
+	.li{
+		list-style-type:none;
+	}
+	.thumbnail{
+		width:160px;
+		height: 285px;
+		border-radius:10px;
+		box-shadow:5px 5px 5px #888888;
+	}
+	.thumbnail:hover{
+		transform:scale(1.05);
+	}
+	.caption{
+		overflow: hidden;
+	}
+	.bookname{
+		display: inline-block;
+		white-space:nowrap;
+		overflow: hidden;
+		text-overflow:ellipsis;
+	}
+	.salesprice{
+		color:red;
+	}
+	.marketprice{
+		color:gray;
+	}
+	.pagerlist{
+		width:860px;
+		display:flex;
+		justify-content:center;
+		border-radius:5px;
+	}
+	.block{
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		float:left;
+		width: 30px;
+		height:30px;
+		border:1px solid grey;
+		text-align:center;
+		margin-right: 3px;
+		border-radius:8px;
+	}
+	.block1{
+		display:flex;
+		justify-content:center;
+		float:left;
+		width: 60px;
+		height:30px;
+		border:1px solid grey;
+		margin-right: 3px;
+		align-items:center;
+		border-radius:8px;
+		background-color: #357EBD;
+		color:white;
+	}
+	.currentCls{
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		float:left;
+		width: 30px;
+		height:30px;
+		border:1px solid grey;
+		text-align:center;
+		margin-right: 3px;
+		border-radius:8px;
+		background-color: olive;
+	}
+	.currentCls a{
+		color:white;
+	}
+</style>
+<title>最新商品列表</title>
+</head>
+<body>
+	<div th:insert="~{commons::head}"></div>
+	<div class="container" style="margin-top: 20px;">
+			<div class="row">
+				<div class="col-lg-3">
+					<div>
+						<div>
+							<font color="#EC971F" style="font-size: x-large;">畅销榜</font>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-9">
+					<ul>
+						<li th:each="book:${pageBean.data}" th:object="${book}" class="li">
+							<div class="col-md-7 col-md-3">
+								<div class="thumbnail">
+									<img th:src="*{image}"/>
+									<div class="caption">
+										<h4 class="bookname" th:text="*{name}"></h4>
+										<div class="salesprice" >
+											惊喜价：¥<span style="font-size:large;" th:text="*{salesprice}"></span>
+										</div>
+										<div class="marketprice">
+											市场价：¥<span style="text-decoration:line-through;" th:text="*{marketprice}"></span>
+										</div>
+										<p>
+											<a th:href="@{goods(oper='proDetail',id=${book.id})}">
+											<font color="deeppink">点击查看详情</font>
+											</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							</li>
+					</ul>
+					<!-- 分页组件 -->
+					<div class="pagerlist">
+						<div class="block1" th:if="${pageBean.previous}">
+							<a th:href="@{goods(oper='proMoreNew',currentPage=${pageBean.currentPage-1})}">
+								<div style="color:white;">
+									<span class="glyphicon glyphicon-chevron-left"></span>上一页
+								</div>
+							</a>
+						</div>
+						<div class="block" th:each="i:${#numbers.sequence(pageBean.start,pageBean.end)}"
+						th:class="${pageBean.currentPage==i?'currentCls':'block'}">
+							<a th:href="@{goods(oper='proMoreNew',currentPage=${i})}">
+								<div th:text="${i}"></div>
+							</a>
+						</div>
+						<div class="block1" th:if="${pageBean.next}">
+							<a th:href="@{goods(oper='proMoreNew',currentPage=${pageBean.currentPage+1})}">
+								<div style="color:white;">
+									下一页<span class="glyphicon glyphicon-chevron-right"></span>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+	</div>
+	<div th:insert="~{commons::foot}"></div>		
+	<script type="text/javascript" th:src="@{/resources/js/jquery-1.12.3.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<style>
+    #college-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="advert-update">
+    <form class="layui-form" action="" lay-filter="advert-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">广告id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${advert.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">广告标题：</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" minlength="1" maxlength="100" data-th-id="${advert.id}"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">广告状态：</label>
+            <div class="layui-input-block">
+                <select name="statusId" id="advertloop_status">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">广告图片：</label>
+            <div class="layui-input-inline">
+                <input name="imgUrl" type="hidden" id="imgUrl"
+                       autocomplete="off" class="layui-input" style="width: 360px;" readonly>
+            </div>
+            <div class="layui-upload">
+                <button type="button" style="background-color: white;border: 0px solid white;margin-left: 20px;margin-top: 5px;" id="advertimgupload">
+                    <i class="layui-icon febs-edit-area febs-red">&#xe891;</i><span style="color: #0a6aa1">上传图片</span></button>
+            </div>
+            <div class="layui-upload-list">
+                <img  class="layui-upload-img" width="360px";height="235px" id="updateadvertimg"/>
+                <p id="demoText"></p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">广告视频：</label>
+            <div class="layui-input-inline">
+                <input name="videoUrl" type="hidden" id="videoUrl"
+                       autocomplete="off" class="layui-input" style="width: 360px;" readonly>
+            </div>
+            <div class="layui-upload" >
+                <button type="button" style="background-color: white;border: 0px solid white;margin-left: 20px;margin-top: 5px;margin-bottom: 10px;" id="testVideo">
+                    <i class="layui-icon febs-edit-area febs-red">&#xe891;</i><span style="color: #0a6aa1">上传视频</span></button>
+            </div>
+            <div class="layui-input-block">
+                <video class="layui-upload-video" src="" id="updateadvertvideo" controls="controls" width="360px"
+                       height="235px">
+                </video>
+                <p id="videoText"></p >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">广告内容：</label>
+            <div class="layui-input-block">
+                <script type="text/plain" name="content" id="myEditor_update">
+                </script>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="advert-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate','upload'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            upload = layui.upload,
+            advert = [[${advert}]],
+            uedel=UE.delEditor('myEditor_update'),
+            ue = UE.getEditor('myEditor_update'),
+            validate = layui.validate;
+        form.verify(validate);
+        initAdvertSelect();
+        form.render();
+        $("#updateadvertvideo").attr('src',advert.videoUrl);
+        $("#updateadvertimg").attr('src',advert.imgUrl);
+        ue.ready(function () {
+            var con = advert.content;
+            ue.setContent(con);
+        });
+        initCollegeValue();
+        form.render('select');
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#advertimgupload'
+            ,url: ctx+'upload' //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#updateadvertimg').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if (res.code=200){
+                    $('#imgUrl').val(res.url)
+                    return layer.msg("上传成功")
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+        //视频上传
+        var uploadVideo = upload.render({
+            elem: '#testVideo'
+            ,url: ctx+'upload' //改成您自己的上传接口
+            ,method:'post'
+            ,auto:false
+            ,accept:'video'
+            ,exts: 'mp4|avi'
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#updateadvertvideo').attr('src', result);
+                    obj.upload(index, file);
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if(res.code == 200){
+                    layer.msg('上传视频成功');
+                    $("#myvideo").val(res.url);
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#videoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadVideo.upload();
+                });
+            }
+        });
+
+
+        function initAdvertSelect() {
+            var statusId=advert.statusId;
+            var str = "";
+            if (statusId==1){
+                str = str +" <option selected value='1'>上架</option>";
+                str = str +" <option value='2'>下架</option>";
+            }
+            if (statusId==2){
+                str = str +" <option value='1'>上架</option>";
+                str = str +" <option selected value='2'>下架</option>";
+            }
+            if (statusId==3){
+                str = str +" <option selected value='3'>草稿</option>";
+                str = str +" <option value='1'>上架</option>";
+                str = str +" <option value='2'>创建</option>";
+            }
+            $("#advertloop_status").html(str);
+            form.render('select');
+        }
+        function initCollegeValue() {
+            form.val("advert-update-form", {
+                "title": advert.title,
+                "imgUrl": advert.imgUrl,
+                "videoUrl": advert.videoUrl,
+                "content": advert.content
+            });
+        }
+
+        form.on('submit(advert-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, advert)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.modal.confirm('提示', '确定修改该广告？', function () {
+                febs.post(ctx + 'advert/update', data.field, function () {
+                    layer.closeAll();
+                    febs.alert.success(advert.id + ' 广告数据修改成功');
+                    $('#businesses-advert').find('#query').click();
+                });
+            });
+            return false;
+        });
+    });
+</script>

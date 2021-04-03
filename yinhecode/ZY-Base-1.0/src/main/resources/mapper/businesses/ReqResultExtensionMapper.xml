@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.ReqResultExtensionMapper">
+
+    <sql id="BaseClauseGrouping">
+        SELECT
+            extension.ID,
+            extension.IDENTITY,
+            extension.LEVEL,
+            extension.STU_NUM,
+            extension.COLLEGE_ID,
+            extension.BATCH_ID,
+            extension.MAJOR_ID,
+            extension.STUDY_TYPE_ID,
+            extension.CLASS_ID,
+            extension.STU_NAME,
+            extension.SEX_ID,
+            extension.NATION,
+            extension.NATIVE_CITY,
+            extension.NATIVE_DISTRICT,
+            extension.NATIVE_PROVINCE,
+            extension.POLITICS_ID,
+            extension.DIPLOMA_NUM,
+            extension.GRADU_DATE,
+            extension.ENROL_DATE,
+            extension.TEL,
+            extension.URGENCY_TEL,
+            extension.EMAIL,
+            extension.ADDRESS,
+            extension.EXAM_LOCATION_ID,
+            extension.IDEN_BEGIN_DATE,
+            extension.IDEC_END_DATE,
+            extension.WX_APP_OPENID,
+            extension.STATUS_ID,
+            extension.STAGE_ID,
+            extension.TRACSACTION,
+            extension.ALLOW_ESSAY,
+            extension.DIPLOMA_IMG_URL,
+            extension.HEAD_IMG_URL,
+            extension.ID_FRONT_IMG_URL,
+            extension.ID_BACK_IMG_URL,
+            extension.EXAM_STU_NUM,
+            extension.EXAM_REGRIT_NUM,
+            batch.BATCH_NAME batchName,
+            college.`name` collegeName,
+            `level`.LEVEL_NAME levelName,
+            major.FULL_NAME majorName,
+            `user`.USERNAME userName,
+            dic.DETAIL studyTypeName
+        FROM
+            t_student_pool pool
+            LEFT JOIN t_req_result_extension extension ON (pool.REQ_EXTENSION_ID=extension.ID)
+            LEFT JOIN t_batch batch ON (extension.BATCH_ID=batch.ID)
+            LEFT JOIN t_college college ON (extension.COLLEGE_ID=college.id)
+            LEFT JOIN t_level `level` ON (extension.`LEVEL`=`level`.ID)
+            LEFT JOIN t_major major ON (extension.MAJOR_ID=major.ID)
+            LEFT JOIN t_user `user` ON (pool.FOLLOW_USER_ID=`user`.USER_ID)
+            LEFT JOIN t_dic dic ON (extension.STUDY_TYPE_ID=dic.ID)
+    </sql>
+
+    <sql id="WhereClauseGrouping">
+        <where>
+            pool.GROUP_ID IS NULL
+            <if test="reqResultExtension.batchId != null and reqResultExtension.batchId != ''">
+                AND extension.BATCH_ID = #{reqResultExtension.batchId}
+            </if>
+            <if test="reqResultExtension.collegeId != null and reqResultExtension.collegeId != ''">
+                AND extension.COLLEGE_ID = #{reqResultExtension.collegeId}
+            </if>
+            <if test="reqResultExtension.level != null and reqResultExtension.level != ''">
+                AND extension.LEVEL = #{reqResultExtension.level}
+            </if>
+            <if test="reqResultExtension.majorId != null and reqResultExtension.majorId != ''">
+                AND extension.MAJOR_ID = #{reqResultExtension.majorId}
+            </if>
+            <if test="reqResultExtension.studyTypeId != null and reqResultExtension.studyTypeId != ''">
+                AND extension.STUDY_TYPE_ID = #{reqResultExtension.studyTypeId}
+            </if>
+            <if test="reqResultExtension.userId != null and reqResultExtension.userId != ''">
+                AND pool.FOLLOW_USER_ID = #{reqResultExtension.userId}
+            </if>
+            <if test="reqResultExtension.stuName != null and reqResultExtension.stuName != ''">
+                AND extension.STU_NAME LIKE CONCAT('%',trim(#{reqResultExtension.stuName}),'%')
+            </if>
+            <if test="reqResultExtension.identity != null and reqResultExtension.identity != ''">
+                AND extension.IDENTITY LIKE CONCAT('%',trim(#{reqResultExtension.identity}),'%')
+            </if>
+            <if test="reqResultExtension.tel != null and reqResultExtension.tel != ''">
+                AND extension.TEL LIKE CONCAT('%',trim(#{reqResultExtension.tel}),'%')
+            </if>
+        </where>
+    </sql>
+
+    <sql id="BaseClauseGroupingByUId">
+        SELECT
+            extension.ID,
+            extension.IDENTITY,
+            extension.LEVEL,
+            extension.STU_NUM,
+            extension.COLLEGE_ID,
+            extension.BATCH_ID,
+            extension.MAJOR_ID,
+            extension.STUDY_TYPE_ID,
+            extension.CLASS_ID,
+            extension.STU_NAME,
+            extension.SEX_ID,
+            extension.NATION,
+            extension.NATIVE_CITY,
+            extension.NATIVE_DISTRICT,
+            extension.NATIVE_PROVINCE,
+            extension.POLITICS_ID,
+            extension.DIPLOMA_NUM,
+            extension.GRADU_DATE,
+            extension.ENROL_DATE,
+            extension.TEL,
+            extension.URGENCY_TEL,
+            extension.EMAIL,
+            extension.ADDRESS,
+            extension.EXAM_LOCATION_ID,
+            extension.IDEN_BEGIN_DATE,
+            extension.IDEC_END_DATE,
+            extension.WX_APP_OPENID,
+            extension.STATUS_ID,
+            extension.STAGE_ID,
+            extension.TRACSACTION,
+            extension.ALLOW_ESSAY,
+            extension.DIPLOMA_IMG_URL,
+            extension.HEAD_IMG_URL,
+            extension.ID_FRONT_IMG_URL,
+            extension.ID_BACK_IMG_URL,
+            extension.EXAM_STU_NUM,
+            extension.EXAM_REGRIT_NUM,
+            batch.BATCH_NAME batchName,
+            college.`name` collegeName,
+            `level`.LEVEL_NAME levelName,
+            major.FULL_NAME majorName,
+            `user`.USERNAME userName,
+            `group`.GROUP_NO groupNo,
+            nation.NATION_NAME nationName,
+            concat(province.PROVINCE_NAME,'-',city.CITY_NAME,'-',area.AREA_NAME)  nativeName,
+            dic.DETAIL politicsName,
+            dics.DETAIL studyTypeName
+        FROM
+            t_student_pool pool
+            LEFT JOIN t_req_result_extension extension ON (pool.REQ_EXTENSION_ID=extension.ID)
+            LEFT JOIN t_batch batch ON (extension.BATCH_ID=batch.ID)
+            LEFT JOIN t_college college ON (extension.COLLEGE_ID=college.id)
+            LEFT JOIN t_level `level` ON (extension.`LEVEL`=`level`.ID)
+            LEFT JOIN t_major major ON (extension.MAJOR_ID=major.ID)
+            LEFT JOIN t_user `user` ON (pool.FOLLOW_USER_ID=`user`.USER_ID)
+            LEFT JOIN t_student_group `group` ON (`group`.ID=pool.GROUP_ID)
+            LEFT JOIN t_nation nation ON (nation.ID=extension.NATION)
+            LEFT JOIN t_area area on (extension.NATIVE_DISTRICT=area.ID)
+            LEFT JOIN t_city city on (extension.NATIVE_CITY=city.ID)
+            LEFT JOIN t_province province on (extension.NATIVE_PROVINCE=province.ID)
+            LEFT JOIN t_dic dic on (extension.POLITICS_ID=dic.ID)
+            LEFT JOIN t_dic dics on (extension.STUDY_TYPE_ID=dics.ID)
+    </sql>
+
+    <sql id="WhereClauseGroupingByUId">
+        <where>
+            pool.GROUP_ID IS NOT NULL
+            AND `group`.`USER_ID`=#{userId}
+            <if test="reqResultExtension.batchId != null and reqResultExtension.batchId != ''">
+                AND extension.BATCH_ID = #{reqResultExtension.batchId}
+            </if>
+            <if test="reqResultExtension.collegeId != null and reqResultExtension.collegeId != ''">
+                AND extension.COLLEGE_ID = #{reqResultExtension.collegeId}
+            </if>
+            <if test="reqResultExtension.level != null and reqResultExtension.level != ''">
+                AND extension.LEVEL = #{reqResultExtension.level}
+            </if>
+            <if test="reqResultExtension.majorId != null and reqResultExtension.majorId != ''">
+                AND extension.MAJOR_ID = #{reqResultExtension.majorId}
+            </if>
+            <if test="reqResultExtension.userId != null and reqResultExtension.userId != ''">
+                AND pool.FOLLOW_USER_ID = #{reqResultExtension.userId}
+            </if>
+            <if test="reqResultExtension.stuName != null and reqResultExtension.stuName != ''">
+                AND extension.STU_NAME LIKE CONCAT('%',trim(#{reqResultExtension.stuName}),'%')
+            </if>
+            <if test="reqResultExtension.identity != null and reqResultExtension.identity != ''">
+                AND extension.IDENTITY LIKE CONCAT('%',trim(#{reqResultExtension.identity}),'%')
+            </if>
+            <if test="reqResultExtension.tel != null and reqResultExtension.tel != ''">
+                AND extension.TEL LIKE CONCAT('%',trim(#{reqResultExtension.tel}),'%')
+            </if>
+        </where>
+    </sql>
+
+    <sql id="WhereClausePoolByStuId">
+        WHERE pool.ID=#{id}
+    </sql>
+
+    <select id="findStudentInfoForGrouping" resultType="cc.zy.base.businesses.entity.ReqResultExtension">
+        <include refid="BaseClauseGrouping"></include>
+        <include refid="WhereClauseGrouping"></include>
+    </select>
+
+    <select id="findStudentInfoForGroupingByUId" resultType="cc.zy.base.businesses.entity.ReqResultExtension">
+        <include refid="BaseClauseGroupingByUId"></include>
+        <include refid="WhereClauseGroupingByUId"></include>
+    </select>
+
+    <select id="findStudentInfoForPoolByStuId" resultType="cc.zy.base.businesses.entity.ReqResultExtension">
+        <include refid="BaseClauseGroupingByUId"></include>
+        <include refid="WhereClausePoolByStuId"></include>
+    </select>
+
+    <select id="countStudentInfoForGrouping" resultType="java.lang.Long">
+        SELECT
+            COUNT(1)
+        FROM
+            t_student_pool pool
+            LEFT JOIN t_req_result_extension extension ON (pool.REQ_EXTENSION_ID=extension.ID)
+            LEFT JOIN t_batch batch ON (extension.BATCH_ID=batch.ID)
+            LEFT JOIN t_college college ON (extension.COLLEGE_ID=college.id)
+            LEFT JOIN t_level `level` ON (extension.`LEVEL`=`level`.ID)
+            LEFT JOIN t_major major ON (extension.MAJOR_ID=major.ID)
+            LEFT JOIN t_user `user` ON (pool.FOLLOW_USER_ID=`user`.USER_ID)
+        <include refid="WhereClauseGrouping"></include>
+    </select>
+
+    <select id="countStudentInfoForGroupingByUId" resultType="java.lang.Long">
+        SELECT
+        COUNT(1)
+        FROM
+        t_student_pool pool
+        LEFT JOIN t_req_result_extension extension ON (pool.REQ_EXTENSION_ID=extension.ID)
+        LEFT JOIN t_batch batch ON (extension.BATCH_ID=batch.ID)
+        LEFT JOIN t_college college ON (extension.COLLEGE_ID=college.id)
+        LEFT JOIN t_level `level` ON (extension.`LEVEL`=`level`.ID)
+        LEFT JOIN t_major major ON (extension.MAJOR_ID=major.ID)
+        LEFT JOIN t_user `user` ON (pool.FOLLOW_USER_ID=`user`.USER_ID)
+        LEFT JOIN t_student_group `group` ON (`group`.ID=pool.GROUP_ID)
+        <include refid="WhereClauseGroupingByUId"></include>
+    </select>
+
+    <update id="updateGroupId">
+        UPDATE
+            t_student_pool
+        SET
+            GROUP_ID=#{groupId}
+        WHERE
+            REQ_EXTENSION_ID IN
+            <foreach collection="ids" index="index" open="(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+    </update>
+
+    <select id="findIdsByParams" resultType="java.lang.Integer">
+        SELECT
+            extension.ID
+        FROM
+            t_student_pool pool
+            LEFT JOIN t_req_result_extension extension ON (extension.ID=pool.REQ_EXTENSION_ID)
+        <include refid="WhereClauseGrouping"></include>
+    </select>
+
+    <select id="findById" parameterType="Integer" resultType="ReqResultExtension">
+        SELECT  ID id,
+                REQ_INFO_ID reqInfoId,
+                REQ_RESULT_ID reqResultId,
+                IDENTITY identity,
+                LEVEL level,
+                STU_NUM stuNum,
+                COLLEGE_ID collegeId,
+                BATCH_ID batchId,
+                MAJOR_ID majorId,
+                STUDY_TYPE_ID studyTypeId,
+                CLASS_ID classId,
+                STU_NAME stuName,
+                SEX_ID sexId,
+                NATION nation,
+                NATIVE_CITY nativeCity,
+                NATIVE_DISTRICT nativeDistrict,
+                NATIVE_PROVINCE nativeProvince,
+                POLITICS_ID politicsId,
+                DIPLOMA_NUM diplomaNum,
+                GRADU_DATE graduDate,
+                ENROL_DATE enrolDate,
+                TEL tel,
+                URGENCY_TEL urgencyTel,
+                EMAIL email,
+                ADDRESS address,
+                EXAM_LOCATION_ID examLocationId,
+                IDEN_BEGIN_DATE idenBeginDate,
+                IDEC_END_DATE idecEndDate,
+                WX_APP_OPENID wxAppOpenid,
+                STATUS_ID statusId,
+                STAGE_ID stageId,
+                TRACSACTION tracsaction,
+                ALLOW_ESSAY allowEssay,
+                DIPLOMA_IMG_URL diplomaImgUrl,
+                HEAD_IMG_URL headImgUrl,
+                ID_FRONT_IMG_URL idFrontImgUrl,
+                ID_BACK_IMG_URL idBackImgUrl,
+                EXAM_STU_NUM examStuNum,
+                EXAM_REGRIT_NUM examRegritNum,
+                EX1 ex1,
+                EX2 ex2,
+                EX3 ex3,
+                EX4 ex4,
+                EX5 ex5,
+                EX6 ex6,
+                EX7 ex7,
+                EX8 ex8,
+                EX9 ex9,
+                EX10 ex10
+          FROM t_req_result_extension WHERE id = #{id}
+    </select>
+    <update id="updateByStuId">
+        UPDATE
+            t_req_result_extension extension
+        LEFT JOIN t_student_pool pool ON pool.REQ_EXTENSION_ID=extension.ID
+        <set>
+            <if test="reqResultExtension.identity != null and reqResultExtension.identity != ''">
+                extension.IDENTITY=#{reqResultExtension.identity},
+            </if>
+            <if test="reqResultExtension.graduDate != null">
+                extension.GRADU_DATE=#{reqResultExtension.graduDate},
+            </if>
+            <if test="reqResultExtension.diplomaNum != null and reqResultExtension.diplomaNum != ''">
+                extension.DIPLOMA_NUM=#{reqResultExtension.diplomaNum},
+            </if>
+            <if test="reqResultExtension.enrolDate != null">
+                extension.ENROL_DATE=#{reqResultExtension.enrolDate},
+            </if>
+            <if test="reqResultExtension.examLocationId != null and reqResultExtension.examLocationId != ''">
+                extension.EXAM_LOCATION_ID=#{reqResultExtension.examLocationId},
+            </if>
+            <if test="reqResultExtension.idenBeginDate != null">
+                extension.IDEN_BEGIN_DATE=#{reqResultExtension.idenBeginDate},
+            </if>
+            <if test="reqResultExtension.idecEndDate != null">
+                extension.IDEC_END_DATE=#{reqResultExtension.idecEndDate},
+            </if>
+            <if test="reqResultExtension.diplomaImgUrl != null and reqResultExtension.diplomaImgUrl != ''">
+                extension.DIPLOMA_IMG_URL=#{reqResultExtension.diplomaImgUrl},
+            </if>
+            <if test="reqResultExtension.headImgUrl != null and reqResultExtension.headImgUrl != ''">
+                extension.HEAD_IMG_URL=#{reqResultExtension.headImgUrl},
+            </if>
+            <if test="reqResultExtension.idFrontImgUrl != null and reqResultExtension.idFrontImgUrl != ''">
+                extension.ID_FRONT_IMG_URL=#{reqResultExtension.idFrontImgUrl},
+            </if>
+            <if test="reqResultExtension.idBackImgUrl != null and reqResultExtension.idBackImgUrl != ''">
+                extension.ID_BACK_IMG_URL=#{reqResultExtension.idBackImgUrl},
+            </if>
+            <if test="reqResultExtension.examRegritNum != null and reqResultExtension.examRegritNum != ''">
+                extension.EXAM_REGRIT_NUM=#{reqResultExtension.examRegritNum}
+            </if>
+            <if test="reqResultExtension.collegeId != null and reqResultExtension.collegeId != ''">
+                extension.COLLEGE_ID=#{reqResultExtension.collegeId}
+            </if>
+            <if test="reqResultExtension.batchId != null and reqResultExtension.batchId != ''">
+                extension.BATCH_ID=#{reqResultExtension.batchId}
+            </if>
+            <if test="reqResultExtension.level != null and reqResultExtension.level != ''">
+                extension.LEVEL=#{reqResultExtension.level}
+            </if>
+            <if test="reqResultExtension.majorId != null and reqResultExtension.majorId != ''">
+                extension.MAJOR_ID=#{reqResultExtension.majorId}
+            </if>
+            <if test="reqResultExtension.studyTypeId != null and reqResultExtension.studyTypeId != ''">
+                extension.STUDY_TYPE_ID=#{reqResultExtension.studyTypeId}
+            </if>
+            <if test="reqResultExtension.examRegritNum != null and reqResultExtension.examRegritNum != ''">
+                extension.EXAM_REGRIT_NUM=#{reqResultExtension.examRegritNum}
+            </if>
+        </set>
+        WHERE
+            pool.ID=#{id}
+    </update>
+</mapper>

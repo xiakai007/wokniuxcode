@@ -1,0 +1,230 @@
+<style>
+    #recruitlabel-add {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<!--班主任学生管理添加标签页-->
+<div class="layui-fluid" id="recruitlabel-add">
+
+    <form class="layui-form" action="" lay-filter="user-add-form">
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend style="font-size: 15px; font-weight: bolder;">标签名称</legend>
+        </fieldset>
+        <div class="layui-row">
+            <div class="layui-col-md10">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">请起名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="mediaLabelName" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+        </fieldset>
+        <div class="layui-row">
+            <div class="layui-col-md10">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">学院</label>
+                        <div class="layui-input-inline">
+                            <select name="collegeName">
+                                <option value=""></option>
+                                <option value="西安交通大学">西安交通大学</option>
+                                <option value="西安理工大学">西安理工大学</option>
+                                <option value="西安电子科技大学">西安电子科技大学</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                        <div class="layui-input-inline">
+                            <select name="level">
+                                <option value=""></option>
+                                <option value="1">专升本</option>
+                                <option value="2">高起专</option>
+                                <option value="3">高起本</option>
+                            </select>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label layui-form-label-sm">班级编码</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="classId" autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+        </fieldset>
+        <div class="layui-row">
+            <div class="layui-col-md10">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="stuName" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">身份证号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="identity" autocomplete="off" class="layui-input"
+                                   maxlength="18" lay-verify="range">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-label-sm">电话</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="tel" autocomplete="off" class="layui-input"
+                                   lay-verify="number|range" maxlength="11">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="user-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate', 'xmSelect'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            validate = layui.validate,
+            dataPermissionXmlSelect,
+            roleXmSelect,
+            deptXmlSelect;
+
+        form.verify(validate);
+        form.render();
+
+        deptXmlSelect = xmSelect.render({
+            el: '#user-add-dept',
+            model: {label: {type: 'text'}},
+            tree: {
+                show: true,
+                strict: false,
+                showLine: false,
+                clickCheck: true,
+                expandedKeys: [-1],
+            },
+            name: 'deptId',
+            theme: {
+                color: '#52c41a',
+            },
+            prop: {
+                value: 'id'
+            },
+            height: 'auto',
+            on: function (data) {
+                if (data.isAdd) {
+                    return data.change.slice(0, 1)
+                }
+            }
+        });
+
+        dataPermissionXmlSelect = xmSelect.render({
+            el: '#user-add-data-permission',
+            model: {label: {type: 'text'}},
+            tree: {
+                show: true,
+                strict: false,
+                showLine: false,
+                clickCheck: true,
+                expandedKeys: [-1],
+            },
+            name: 'deptIds',
+            theme: {
+                color: '#52c41a',
+            },
+            prop: {
+                value: 'id'
+            },
+            height: 'auto'
+        });
+
+        febs.get(ctx + 'dept/select/tree', null, function (data) {
+            deptXmlSelect.update(data)
+            dataPermissionXmlSelect.update(data)
+        });
+
+        roleXmSelect = xmSelect.render({
+            el: '#user-add-role',
+            toolbar: {show: true},
+            name: 'roleId',
+            theme: {
+                color: '#52c41a',
+            },
+            prop: {
+                name: 'roleName',
+                value: 'roleId'
+            },
+            data: []
+        });
+
+        febs.get(ctx + 'role', null, function (data) {
+            roleXmSelect.update({
+                data: data.data,
+                autoRow: true,
+            })
+        });
+
+        form.on('submit(user-add-form-submit)', function (data) {
+            $.ajax({
+                type: "POST",
+                url: "student/createLabel",
+                data: {
+                    mediaLabelName: data.field.mediaLabelName,
+                    classId: data.field.classId,
+                    collegeName: data.field.collegeName,
+                    identity: data.field.identity,
+                    level: data.field.level,
+                    stuName: data.field.stuName,
+                    tel: data.field.tel
+                },
+                success: function (res) {
+                    console.log(res);
+                    layer.closeAll();
+                    febs.alert.success('标签创建成功');
+                    getStudentLabel();
+                }
+            })
+            // febs.post(ctx + 'student/createLabel', stuLabelContent, function () {
+            //     layer.closeAll();
+            //     febs.alert.success('标签创建成功');
+            //     // $('#febs-user').find('#query').click();
+            // });
+            return false;
+        });
+
+        function getStudentLabel() {
+            var h1 = "";
+            $.ajax({
+                type: "GET",
+                url: "student/checkYourLabel/",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        h1 = $("<div class=\"layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action\">\n" +
+                            "<i class='add_project_student'  name='" + data[i].labelName + "' value='" + data[i].conditionContent + "'>" + data[i].labelName + "</i>" +
+                            "<i> </i><i> </i><i class='del_project_student'  value='" + data[i].id + "'><i class='layui-icon'></i></i>" +
+                            "</div>");
+                        $("#studentLabels").after(h1);
+                    }
+                },
+            });
+        };
+    });
+</script>

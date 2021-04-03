@@ -1,0 +1,135 @@
+<div class="layui-fluid layui-anim febs-anim" id="businesses-advertLog" lay-title="广告日志信息">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="advertLog-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">广告标题</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="title" autocomplete="off" class="layui-input"
+                                                   minlength="0" maxlength="20" lay-verify="txt">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">浏览用户</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" autocomplete="off" class="layui-input"
+                                                   minlength="0" maxlength="10" lay-verify="txt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain
+                                            table-action" id="query">
+                                    <i class="layui-icon" title="查询">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain
+                                            table-action" id="reset">
+                                    <i class="layui-icon" title="重置">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action" id="export_advLog">
+                                    <i class="layui-icon layui-icon-export">导出</i>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="advertLogTable" lay-data="{id: 'advertLogTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            $view = $('#businesses-advertLog'),
+            $query = $view.find('#query'),
+            $export = $view.find('#export_advLog'),
+            $reset = $view.find('#reset'),
+            $searchForm = $view.find('form'),
+            $searchTable = $view.find('advertLogTable'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+
+        form.render();
+
+        initTable();
+
+        table.on('sort(advertLogTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'advertLogTable',
+                url: ctx + 'advertLog/list',
+                done: function (res, curr, count) {
+                    $("table").css("width", "100%");
+                },
+                width:"100%",
+                cols: [[
+                    {field: 'id',           title:'编号',          minWidth:100},
+                    {field: 'title',        title: '广告标题',      minWidth: 200},
+                    {field: 'stuName',      title: '浏览用户',      minWidth: 100},
+                    {field: 'enterTime',    title: '进入时间',      minWidth: 140,      sort: true},
+                    {field: 'exitTime',     title: '退出时间',      minWidth: 140},
+                    {field: 'time',         title: '浏览时长（秒）', minWidth: 140}
+
+                ]]
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            let paramTable = $searchTable.serializeJson();
+            return params;
+        };
+
+        //按回车搜索
+        $(".layui-input").keyup(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $query.click();
+            }
+        });
+
+        //导出方法
+        $export.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            febs.download(ctx + 'advertLog/excel', params, '广告日志信息.xlsx');
+        });
+    })
+</script>

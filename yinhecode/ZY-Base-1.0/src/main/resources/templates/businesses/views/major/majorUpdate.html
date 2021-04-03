@@ -1,0 +1,86 @@
+<style>
+    #major-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="major-update">
+    <form class="layui-form" action="" lay-filter="major-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">专业id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${major.id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">专业全称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="fullName" minlength="2" maxlength="20"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">简称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="simpleName" minlength="2" maxlength="20"
+                       lay-verify="range|name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">简介：</label>
+
+            <div class="layui-input-block">
+                <textarea name="remark" maxlength="200" class="layui-textarea">
+                </textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注：</label>
+
+            <div class="layui-input-block">
+                <textarea name="intro" maxlength="100" class="layui-textarea">
+                </textarea>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="major-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            major = [[${major}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initCollegeValue();
+
+        function initCollegeValue() {
+            form.val("major-update-form", {
+                "fullName": major.fullName,
+                "simpleName": major.simpleName,
+                "remark": major.remark,
+                "intro": major.intro
+            });
+        }
+
+        form.on('submit(major-update-form-submit)', function (data) {
+            if (febs.nativeEqual(data.field, major)) {
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'major/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success(major.id + ' 院校类别数据修改成功');
+                $('#businesses-major').find('#query').click();
+            });
+            return false;
+        });
+    });
+</script>

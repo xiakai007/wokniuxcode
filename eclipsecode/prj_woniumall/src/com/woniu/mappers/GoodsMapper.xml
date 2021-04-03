@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.GoodsMapper">
+	<resultMap type="Goods" id="goodsMap">
+		<id property="id" column="id"></id>
+		<association property="category" column="categoryid"
+		select="com.woniu.mappers.CategoryMapper.selectCategoryById">
+		</association>
+		<association property="remark" column="id"
+		select="com.woniu.mappers.RemarkMapper.selectRemarkById">
+		</association>
+		<association property="cart" column="id"
+		select="com.woniu.mappers.CartMapper.selectCartByIdToStep">
+		</association>
+		<association property="cartList" column="id"
+		select="com.woniu.mappers.CartMapper.selectCartByGoodsid">
+		</association>
+	</resultMap>
+	<select id="selectGoodsByCategoryId" parameterType="int" resultMap="goodsMap">
+		SELECT * FROM mall_goods WHERE categoryid=#{categoryid}
+	</select>
+	<select id="selectAllGoods" resultMap="goodsMap">
+		SELECT * FROM mall_goods
+	</select>
+	<select id="selectGoodsByNewest" resultType="Goods">
+		SELECT * FROM mall_goods WHERE newest='是' ORDER BY pubtime
+	</select>
+	<select id="selectGoodsByHot" resultType="Goods">
+		SELECT * FROM mall_goods WHERE hot='是' ORDER BY salenums DESC
+	</select>
+	<select id="selectGoodsById" parameterType="int" resultType="Goods">
+		SELECT * FROM mall_goods WHERE id=#{id}
+	</select>
+	<select id="selectGoodsByIdToCart" parameterType="int" resultMap="goodsMap">
+		SELECT * FROM mall_goods WHERE id=#{id}
+	</select>
+	<select id="selectHotGoodsById" parameterType="int" resultType="Goods">
+		SELECT * FROM mall_goods WHERE id=#{id}
+	</select>
+	<select id="selectGoodsByIdRmk" parameterType="int" resultMap="goodsMap">
+		SELECT * FROM mall_goods WHERE id=#{id}
+	</select>
+	<select id="getCountGoodsByNewest" resultType="int">
+		SELECT COUNT(*) FROM mall_goods WHERE newest='是' ORDER BY pubtime
+	</select>
+	<select id="getCountGoodsByCategoryid" resultType="int">
+		SELECT COUNT(*) FROM mall_goods WHERE categoryid=#{categoryid}
+	</select>
+	<select id="selectGoodsByName" resultType="Goods" parameterType="String">
+		SELECT * FROM mall_goods
+		<where>
+			<if test="name!=null and name!=''">
+				AND name LIKE CONCAT('%',#{name},'%')
+			</if>
+		</where>
+	</select>
+	<select id="getCountGoodsByName" resultType="int" parameterType="String">
+		SELECT COUNT(*) FROM mall_goods
+		<where>
+			<if test="name!=null and name!=''">
+				AND name LIKE CONCAT('%',#{name},'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectGoodsByUserid" resultType="Goods" parameterType="int">
+		SELECT * FROM mall_goods WHERE id IN(
+			SELECT goodsid FROM mall_cart WHERE userid=#{userid}
+		)
+	</select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.AreaMapper">
+    <sql id="findAreaByCidSql">
+        SELECT
+        ID,
+        AREA_NAME areaname,
+        AID,
+        CID
+        FROM
+        t_area
+        WHERE 1 = 1
+        AND CID = #{cid}
+    </sql>
+    <sql id="findAreaByIdSql">
+        SELECT
+        ID,
+        AREA_NAME areaname
+        FROM
+        t_area
+        WHERE 1 = 1
+        AND ID = #{id}
+    </sql>
+
+    <select id="findAreaByCid" resultType="Area" parameterType="String">
+        <include refid="findAreaByCidSql"></include>
+    </select>
+    <select id="findAreaById" resultType="Area" parameterType="int">
+        <include refid="findAreaByIdSql"></include>
+    </select>
+	<select id="findAllArea" resultType="Area">
+ SELECT
+        ID,
+        AREA_NAME areaname
+        FROM
+        t_area
+        WHERE 1 = 1
+    </select>
+</mapper>

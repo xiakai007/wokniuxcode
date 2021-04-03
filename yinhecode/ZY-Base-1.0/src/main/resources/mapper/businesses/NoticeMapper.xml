@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.NoticeMapper">
+
+    <!--修改,查询信息的数量-->
+    <sql id="countNoticeDetailSql">
+        SELECT count(*) FROM (
+        SELECT
+        (SELECT COUNT(1) FROM t_notice_user T3 WHERE T3.NOTICE_ID = T.ID) countShouldRead,
+        (SELECT COUNT(1) FROM t_notice_user T3 WHERE T3.NOTICE_ID = T.ID AND T3.READ_STATUS_ID = 2) countRead,
+        (T.id) id,
+        (T1.NOTICE_ID) noticId,
+        (T.title) title,
+        (T.create_user_id) createUserId,
+        (T.create_time) createTime,
+        (T.content) content,
+        (T.img_url) imgUrl,
+        (T.video_url) videoUrl,
+        (T.file) file,
+        (T. STATUS) status,
+        (u.username) userName
+        FROM
+        t_notice T
+        LEFT JOIN t_user u ON (T.create_user_id = u.user_id)
+        LEFT JOIN t_notice_user T1 ON (T.ID = T1.NOTICE_ID)
+        WHERE
+        1 = 1
+        <if test="notice.id != null and notice.id != ''">
+            AND T.id = #{notice.id}
+        </if>
+        <if test="notice.title != null and notice.title != ''">
+            AND T.title LIKE CONCAT('%',#{notice.title},'%')
+        </if>
+        <if test="notice.createUserId != null and notice.createUserId != ''">
+            AND T.create_user_id = #{notice.createUserId}
+        </if>
+        <if test="notice.createTime != null and notice.createTime != ''">
+            AND T.createTime = #{notice.createTime}
+        </if>
+        GROUP BY
+        T.ID
+        ) t3
+    </sql>
+    <!--修改，查询通知列表-->
+    <sql id="findNoticeDetailSql">
+        SELECT
+        (SELECT COUNT(1) FROM t_notice_user T3 WHERE T3.NOTICE_ID = T.ID) countShouldRead,
+        (SELECT COUNT(1) FROM t_notice_user T3 WHERE T3.NOTICE_ID = T.ID AND T3.READ_STATUS_ID = 2) countRead,
+        (T.id) id,
+        (T1.NOTICE_ID) noticId,
+        (T.title) title,
+        (T.create_user_id) createUserId,
+        (T.create_time) createTime,
+        (T.content) content,
+        (T.img_url) imgUrl,
+        (T.video_url) videoUrl,
+        (T.file) file,
+        (T. STATUS) status,
+        (u.username) userName
+        FROM
+        t_notice T
+        LEFT JOIN t_user u ON (T.create_user_id = u.user_id)
+        LEFT JOIN t_notice_user T1 ON (T.ID = T1.NOTICE_ID)
+        WHERE
+        1 = 1
+        <if test="notice.id != null and notice.id != ''">
+            AND T.id = #{notice.id}
+        </if>
+        <if test="notice.title != null and notice.title != ''">
+            AND T.title LIKE CONCAT('%',#{notice.title},'%')
+        </if>
+        <if test="notice.createUserId != null and notice.createUserId != ''">
+            AND T.create_user_id = #{notice.createUserId}
+        </if>
+        <if test="notice.createTime != null and notice.createTime != ''">
+            AND T.createTime = #{notice.createTime}
+        </if>
+        GROUP BY
+        T.ID
+        ORDER BY
+        T.create_time desc
+    </sql>
+
+    <select id="countNoticeDetail" parameterType="notice" resultType="long">
+        <include refid="countNoticeDetailSql"/>
+    </select>
+
+    <select id="findNoticeDetailPage" parameterType="notice" resultType="notice">
+        <include refid="findNoticeDetailSql"/>
+    </select>
+
+
+    <select id="findCreatIdByUserId" parameterType="int" resultType="notice">
+        SELECT T.id,
+               tn.user_id userId,
+               tn.id
+        FROM t_notice T
+                 LEFT JOIN t_notice_user tn ON (T.id = tn.notice_id)
+        WHERE T.id = #{noticeId}
+    </select>
+
+    <select id="findUserIdsByUserId" parameterType="int" resultType="Integer">
+        SELECT user_Id
+        FROM t_notice_user
+        WHERE notice_Id = #{noticeId}
+    </select>
+
+    <select id="findNoticeById" resultType="notice" parameterType="int">
+        select T.id,
+               T.title,
+               T.create_user_id createUserId,
+               T.create_time    createTime,
+               T.content,
+               T.img_url        imgUrl,
+               T.video_url      videoUrl,
+               T.file,
+               T.status,
+               u.username       userName
+        FROM t_notice T
+                 LEFT JOIN t_user u ON (T.create_user_id = u.user_id)
+        WHERE T.id = #{noticeId}
+    </select>
+    <!--修改通知-->
+    <update id="UpdateNoticeByidy" parameterType="notice">
+        UPDATE t_notice
+        set title=#{title}
+          , content=#{content}
+          , video_url=#{videoUrl}
+          , img_url=#{imgUrl}
+          , file=#{file}
+        where id = #{id}
+    </update>
+</mapper>

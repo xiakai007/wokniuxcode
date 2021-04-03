@@ -1,0 +1,78 @@
+<style>
+    td{
+        width: 200px;
+        text-align: center;
+    }
+    .th{
+        text-align: center;
+    }
+</style>
+<!--缴费详情-->
+<div class="layui-fluid layui-anim febs-anim" id="businesses-college" lay-title="院校信息">
+<div class="layui-collapse" lay-filter="test">
+    <input type="hidden" id="stuId_payDetail" data-th-value="${student.id}">
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">报名费</h2>
+        <div >
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th style="text-align: center">应缴金额</th>
+                    <th style="text-align: center">活动金额</th>
+                    <th style="text-align: center">活动名称</th>
+                    <th style="text-align: center">实缴金额</th>
+                    <th style="text-align: center">缴费时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td id="shouldPay_payDetail">0</td>
+                    <td id="policy_payDetail">0</td>
+                    <td id="discountName_payDetail">无</td>
+                    <td id="cost_payDetail">0</td>
+                    <td id="ctime_payDetail"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'xmSelect', 'validate', 'laydate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            validate = layui.validate,
+            laydate = layui.laydate
+
+
+        $(function () {
+            $.ajax({
+                type:"get",
+                url:"student/getStuPayDetail",
+                data:{"stuId":$("#stuId_payDetail").val(),"paymenExplain":"报名费"},
+                success:function (res) {
+                    console.log(res.data);
+                  $("#shouldPay_payDetail").text(res.data.originalPrice);
+                  $("#policy_payDetail").text(res.data.policy);
+                  $("#discountName_payDetail").text(res.data.name);
+                  $("#cost_payDetail").text(res.data.costMoney);
+                  $("#ctime_payDetail").text(res.data.costTime);
+                }
+            })
+        })
+
+
+
+});
+</script>

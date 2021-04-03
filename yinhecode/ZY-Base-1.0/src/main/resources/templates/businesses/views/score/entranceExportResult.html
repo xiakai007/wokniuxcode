@@ -1,0 +1,58 @@
+<style>
+    #febs-eximport-result .bold {
+        font-weight: 600;
+    }
+    #febs-eximport-result .layui-card {
+        box-shadow: none;
+    }
+</style>
+<div class="layui-fluid" id="febs-eximport-result" lay-title="错误日志">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-tab layui-tab-brief" lay-filter="result-tab">
+                    <table id="failTable" lay-filter="failTable" lay-data="{id: 'failTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="fail-row">
+    <span>第{{ d.row }}行</span>
+</script>
+<script type="text/html" id="fail-column">
+    <span>第{{ d.cellIndex + 1 }}列</span>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'table', 'upload','febs'], function () {
+        let $ = layui.jquery,
+            table = layui.table,
+            febs = layui.febs,
+            element = layui.element,
+            $view = $('#febs-eximport-result'),
+            result = POPUP_DATA;
+
+        renderFailTable();
+
+        function renderFailTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'failTable',
+                url: ctx + 'entranceScore/errorLogList',
+                page: true,
+                limits: [6, 10, 20, 100],
+                limit: 6,
+                cols: [[
+                    {field: 'id', title: '序号',width:60},
+                    {field: 'createTime', title: '错误时间'},
+                    {field: 'errorColumn',title: '列',width: 60},
+                    {field: 'errorRow',title: '行',width: 60},
+                    {field: 'reason', title: '错误原因'},
+                    {field: 'remark', title: '备注'}
+                ]]
+            });
+        }
+
+
+    });
+</script>

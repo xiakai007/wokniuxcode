@@ -1,0 +1,386 @@
+<style>
+    #teachProgram-update {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="teachProgram-update">
+    <form class="layui-form" action="" lay-filter="teachProgram-update-form" id="teachProgramForm">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">教学计划id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" data-th-value="${teachProgram.id}" id="teachId">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">批次：</label>
+            <div class="layui-input-block">
+
+                <input type="text" name="batchName"  minlength="1" maxlength="100"
+                       lay-verify="range|name" autocomplete="off" class="layui-input"  readonly >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">院校：</label>
+            <div id="college_TeachProgram" name="collegeId" class="layui-input-block" lay-filter="college_TeachProgram"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">层次：</label>
+            <div class="layui-input-inline">
+                <select name="levelId" id="cboLevel_TeachProgram" lay-filter="cboLevel_TeachProgram" >
+                    <option value="1">专升本</option>
+                    <option value="2">高起本</option>
+                    <option value="3">高起专</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label febs-form-item-require" >类别：</label>
+                <div class="layui-input-inline">
+                    <select name="typeId" id="cboType_TeachProgram_add" lay-filter="cboType_TeachProgram_add">
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">专业：</label>
+            <div id="cboMajor_TeachProgram_up" name="majorId" class="layui-input-block" lay-filter="cboMajor_TeachProgram_up"></div>
+        </div>
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">专业：</label>-->
+            <!--<div class="layui-input-inline">-->
+                <!--<select name="majorId" id="cboMajor_TeachProgram" lay-filter="cboMajor_TeachProgram" >-->
+
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">方式：</label>
+            <div class="layui-input-inline">
+                <select name="modeId" id="modeId_TeachProgram" lay-filter="cboMode_TeachProgram" >
+                    <option value="4">函授</option>
+                    <option value="5">业余</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">学制：</label>
+            <div class="layui-input-inline">
+                <select name="schoolingId" id="cboSchool_TeachProgram" lay-filter="cboSchool_TeachProgram" >
+
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">学年：</label>
+            <div class="layui-input-inline">
+                <select name="absoYearId" id="cboYear_TeachProgram_add" lay-filter="cboYear_TeachProgram_add">
+
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">学期：</label>
+            <div class="layui-input-inline">
+                <select name="absoSemId" id="cboTerm_TeachProgram_add" lay-filter="cboTerm_TeachProgram_add" autocomplete="off">
+
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">课程名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="courseName" minlength="2" maxlength="10" lay-verify="range|name"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="teachProgram-update-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form','xmSelect',  'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            eamXmSelect,
+            majorSelect,
+
+            teachProgram = [[${teachProgram}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initTeachProgramValue();
+
+        //院校信息下拉框
+        eamXmSelect = xmSelect.render({
+            el: '#college_TeachProgram',
+//            toolbar: {show: true},
+            name: 'collegeId',
+            filterable:true,
+            radio:true,
+            clickClose: true,
+            theme: {
+                color: '#32c787',
+            },
+            model: {
+                label: {
+                    type: 'text',
+                    text: {
+                        //左边拼接的字符
+                        left: '',
+                        //右边拼接的字符
+                        right: '',
+                        //中间的分隔符
+                        separator: ', ',
+                    },
+                }
+            },
+            prop: {
+                name: 'name',
+                value: 'id'
+            },
+            data: []
+        });
+
+        //专业信息下拉框
+        majorSelect = xmSelect.render({
+            el: '#cboMajor_TeachProgram_up',
+//            toolbar: {show: true},
+            name: 'majorId',
+            filterable:true,
+            radio:true,
+            clickClose: true,
+            theme: {
+                color: '#32c787',
+            },
+            model: {
+                label: {
+                    type: 'text',
+                    text: {
+                        //左边拼接的字符
+                        left: '',
+                        //右边拼接的字符
+                        right: '',
+                        //中间的分隔符
+                        separator: ', ',
+                    },
+                }
+            },
+            prop: {
+                name: 'fullName',
+                value: 'id'
+            },
+            data: []
+        });
+
+        //类别下拉框
+        initSubject();
+        function initSubject() {
+            $.ajax({
+                type: 'get',
+                url: 'teachProgram/subjectCategoryList',
+                success: function (res) {
+                    console.log(res.data[0]);
+                    layui.each(res.data, function (index, item) {
+                        $("#cboType_TeachProgram_add").append("<option value='" + this.id + "'>" + this.fullName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+        form.on("select(cboSchool_TeachProgram)", function (obj) {
+            var absoYearId = $('#cboSchool_TeachProgram').val();
+            console.log(absoYearId)
+            if(absoYearId==59){
+                initYear();
+            }else if(absoYearId==58){
+                initYear2();
+            }
+            form.render('select');
+
+        });
+        function initYear2() {
+            $.ajax({
+                type: 'get',
+                url: 'teachProgram/yearList',
+                success: function (res) {
+                    console.log($('#cboSchool_TeachProgram').val())
+                    var str = '';
+
+                    for(var i = 0; i < 3; i++){
+                        str = str +"<option value='" + res.data[i].id + "'>" + res.data[i].yearName + "</option>";
+                    }
+                    $("#cboYear_TeachProgram_add").empty();
+//                    $("#cboYear_TeachProgram_add").append("");
+                    $("#cboYear_TeachProgram_add").html(str);
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+        initYear3();
+        function initYear() {
+            var absoYearId = teachProgram.absoYearId;
+            var year = teachProgram.year;
+            console.log(teachProgram)
+            $.ajax({
+                type: 'get',
+                url: 'teachProgram/yearList',
+                success: function (res) {
+                    console.log($('#cboSchool_TeachProgram').val())
+    //                    $("#cboYear_TeachProgram_add").empty();
+//                    $("#cboYear_TeachProgram_add").append("<option value=''>请选择</option>");
+
+                    layui.each(res.data, function (index, item) {
+                        $("#cboYear_TeachProgram_add").append("<option value='" + this.id + "'>" + this.yearName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        function initYear3() {
+            var absoYearId = teachProgram.absoYearId;
+            console.log(absoYearId)
+            var year = teachProgram.year;
+            console.log(year)
+            $("#cboYear_TeachProgram_add").append("<option value='" + absoYearId + "'>" + year + "</option>");
+
+        }
+
+
+        febs.get('homework/collegeList', null, function (data) {
+            eamXmSelect.update({
+                data: data.data,
+                autoRow: true,
+            })
+            var collegeId = new Array();
+//            console.log(collegeId)
+            collegeId.push(teachProgram.collegeId);
+            eamXmSelect.setValue(collegeId);
+        });
+
+        febs.get('teachProgram/majorList', null, function (data) {
+            majorSelect.update({
+                data: data.data,
+                autoRow: true,
+            })
+            console.log(data.data)
+            var majorId = new Array();
+//            console.log(majorId)
+            majorId.push(teachProgram.majorId);
+            majorSelect.setValue(majorId);
+        });
+
+        form.on("select(cboLevel_TeachProgram)", function (obj) {
+            var levelId = $('#cboLevel_TeachProgram').val();
+            console.log(levelId)
+            if(levelId==2){
+//                $("#cboSchool_TeachProgram").empty();
+//                $("#cboSchool_TeachProgram").append("<option value=''>请选择</option>");
+                $("#cboSchool_TeachProgram").append("<option value='59'>5年</option>");
+            }else {
+                $("#cboSchool_TeachProgram").empty();
+//                $("#cboSchool_TeachProgram").append("<option value=''>请选择</option>");
+                $("#cboSchool_TeachProgram").append("<option value='58'>2.5年</option>");
+            }
+            form.render('select');
+        });
+
+        $(function () {
+            var levelId = $('#cboLevel_TeachProgram').val();
+//            console.log(obj)
+            if(levelId==2){
+                $("#cboSchool_TeachProgram").empty();
+//                $("#cboSchool_TeachProgram").append("<option value=''>请选择</option>");
+
+                $("#cboSchool_TeachProgram").html("<option value='59'>5年</option>");
+            }else {
+                $("#cboSchool_TeachProgram").empty();
+//                $("#cboSchool_TeachProgram").append("<option value=''>请选择</option>");
+                $("#cboSchool_TeachProgram").html("<option value='58'>2.5年</option>");
+            }
+            form.render('select');
+        });
+
+        function initTeachProgramValue() {
+            form.val("teachProgram-update-form", {
+                "batchId": teachProgram.batchId,
+                "batchName":teachProgram.batchName,
+                "levelId": teachProgram.levelId,
+                "level": teachProgram.level,
+                "collegeId":teachProgram.collegeId,
+                "modeId":teachProgram.modeId,
+                "majorId":teachProgram.majorId,
+                "courseName":teachProgram.courseName
+//                "address": teachProgram.address,
+//                "tel": teachProgram.tel,
+//                "remark": teachProgram.remark
+            });
+        }
+        form.on("select(cboYear_TeachProgram_add)", function (obj) {
+            var absoYearId = obj.value;
+            console.log(obj);
+            initTerm(absoYearId);
+        });
+        initTerm2()
+        function initTerm2() {
+            var absoSemId = teachProgram.absoSemId;
+            var semester = teachProgram.semester;
+            $("#cboTerm_TeachProgram_add").append("<option value='" + absoSemId + "'>" + semester + "</option>");
+
+        }
+        //学期下拉框
+        function initTerm(id) {
+            $.ajax({
+                type: 'get',
+                url: 'teachProgram/termList',
+                data: {absoYearId: id},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboTerm_TeachProgram_add").empty();
+
+                    layui.each(res.data, function (index, item) {
+
+                        $("#cboTerm_TeachProgram_add").append("<option value='" + this.id + "'>" + this.semesterName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        form.on('submit(teachProgram-update-form-submit)', function (data) {
+
+            if (febs.nativeEqual(data.field, teachProgram)) {
+
+                febs.alert.warn('数据未作任何修改！');
+                return false;
+            }
+            febs.post(ctx + 'teachProgram/update', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('计划修改成功');
+                $('#businesses-teachProgram').find('#query').click();
+            });
+            return false;
+        });
+    });
+
+</script>

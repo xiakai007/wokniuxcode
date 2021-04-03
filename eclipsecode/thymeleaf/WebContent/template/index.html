@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:text="${message}"></div>
+<div th:text="${message1}"></div>
+<div th:text="${user.user_name}"></div>
+<div th:text="${user.user_pwd}"></div>
+<div th:object="${session.loginUser}">
+  <div th:text="*{user_name}"></div>
+  <div th:text="*{user_pwd}"></div>
+</div>
+<a href="/template/one.html">go to one.html（失效的超链接）</a>
+<a th:href="@{/template/one.html}">go to one.html</a>
+<div th:text="${#ctx.getVariable('message')}"></div>
+<p th:text="${#response.contentType}"></p>
+<div th:text="${#request.getAttribute('message1')}"></div>
+<div th:text="${#session.getAttribute('loginUser')}"></div>
+<div th:text="${session.loginUser.user_name}"></div>
+<div th:text="${#servletContext.getAttribute('online')}"></div>
+<div th:text="${application.online}"></div>
+<div th:text="${#dates.format(date,'yyyy-MM-dd HH:mm:ss')}"></div>
+<p th:text="'陕西欢迎你'"></p>
+<p th:text="'“陕西欢迎你”'"></p>
+<p th:text="'\'陕西欢迎你\''"></p>
+<p th:text="'\“陕西欢迎你\”'"></p>
+<p th:text="2020-2"></p>
+<p th:text="'welcome to'+${message}+'!'"></p>
+<p th:text="|welcome to ${message} !|"></p>
+<p th:text="${application.online?'在线':'离线'}"></p>
+<p th:utext="${message}"></p>
+<input type="button" name="user_name" th:value="${user.user_name}"/>
+<div th:if="${user.user_name eq 'admin'}" th:text="'aaaaaaaaaa'"></div>
+<table>
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>密码</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="user:${userList}">
+      <td th:text="${user.user_name}"></td>
+      <td th:text="${user.user_pwd}"></td>
+    </tr>
+  </tbody>
+</table>
+<select>
+  <option>请选择</option>
+  <option th:each="user,status:${userList}" th:text="${user.user_name}" th:value="${status.count}"></option>
+</select>
+<select>
+  <option>选择</option>
+  <option th:each="user:${userList}" th:text="${user.user_name}" th:value="${userStat.count}"></option>
+</select>
+<div th:if="${user.user_name=='admin'}" th:text="admin已登陆"></div>
+<div th:unless="${user.user_name!='admin'}" th:text="myadmin已登陆"></div>
+<div th:switch="${user.user_name}">
+  <p th:case="admin">管理员</p>
+  <p th:case="usera">普通用户</p>
+</div>
+</body>
+</html>

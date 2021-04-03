@@ -1,0 +1,214 @@
+<style>
+    #label-add {
+        padding: 20px 25px 25px 0;
+    }
+
+    .layui-form-label.layui-required:after {
+        content: "*";
+        color: red;
+        position: absolute;
+        top: 5px;
+        left: 15px;
+    }
+</style>
+<!--招生学生管理添加标签页-->
+<div class="layui-fluid" id="label-add">
+    <form class="layui-form" action="" lay-filter="user-add-form">
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend style="font-size: 15px; font-weight: bolder;">标签名称</legend>
+        </fieldset>
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label febs-form-item-require">标签名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="mediaLabelName" autocomplete="off" placeholder="请输入标签名称"
+                           class="layui-input" lay-verify="required">
+                </div>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+        </fieldset>
+        <div class="layui-row">
+            <div class="layui-col-sm12">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label layui-form-label-sm">批次：</label>
+                                <div class="layui-input-inline">
+                                    <select name="batchId" id="laddstubatch" lay-search="">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label layui-form-label-sm">院校：</label>
+                                <div class="layui-input-inline">
+                                    <select name="collegeId" id="laddstucollege" lay-search="">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label layui-form-label-sm">层次：</label>
+                                <div class="layui-input-inline">
+                                    <select name="level" id="laddstuidlevel" lay-search="">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label layui-form-label-sm">专业：</label>
+                                <div class="layui-input-inline">
+                                    <select name="majorId" id="laddstumajor" lay-search="">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="">
+            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+        </fieldset>
+        <div class="layui-row">
+            <div class="layui-col-sm12">
+                <div class="layui-form-item">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label layui-form-label-sm">姓名：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="stuName" autocomplete="off" class="layui-input"
+                                       id="stuidstuname">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label layui-form-label-sm">身份证：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="identity" autocomplete="off" class="layui-input"
+                                       id="stuididentity" maxlength="18" lay-verify="range">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label layui-form-label-sm">电话：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="tel" autocomplete="off" class="layui-input"
+                                       id="stuidtel" lay-verify="number|range" maxlength="11">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="user-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate', 'jquery', 'layer'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        //批次
+        febs.get('/student/batchList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#laddstubatch").append(new Option(list[i].batchName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //院校
+        febs.get('/student/collegeList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#laddstucollege").append(new Option(list[i].name, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //层次
+        febs.get('/student/stuLevelList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#laddstuidlevel").append(new Option(list[i].levelName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //专业
+        febs.get('/student/majorList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#laddstumajor").append(new Option(list[i].fullName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        form.on('submit(user-add-form-submit)', function (data) {
+            console.log(data.field.mediaLabelName);
+            if (data.field.mediaLabelName != null && data.field.mediaLabelName != ''
+            ) {
+                $("#studentLabels").nextAll().remove();
+                $.ajax({
+                    type: "POST",
+                    url: "student/createLabel",
+                    data: {
+                        mediaLabelName: data.field.mediaLabelName,
+                        batchId: data.field.batchId,
+                        collegeId: data.field.collegeId,
+                        majorId: data.field.majorId,
+                        level: data.field.level,
+                        stageId: data.field.stuidstage,
+                        stuName: data.field.stuName,
+                        identity: data.field.identity,
+                        tel: data.field.tel,
+                    },
+                    success: function (res) {
+                        console.log(res);
+                        layer.closeAll();
+                        febs.alert.success('标签创建成功');
+                        getStudentLabel();
+                    }
+                });
+                return false;
+            }
+            else {
+                febs.alert.warn('请给标签起名!');
+            }
+        });
+
+        function getStudentLabel() {
+            var h1 = "";
+            $.ajax({
+                type: "GET",
+                url: "student/checkYourLabel/",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        h1 = $("<div class=\"layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action\">\n" +
+                            "<i class='add_project_student'  name='" + data[i].labelName + "' value='" + data[i].conditionContent + "'>" + data[i].labelName + "</i>" +
+                            "<i> </i><i> </i><i class='del_project_student'  value='" + data[i].id + "'><i class='layui-icon'></i></i>" +
+                            "</div>");
+                        $("#studentLabels").after(h1);
+                    }
+                },
+            });
+        };
+    });
+</script>

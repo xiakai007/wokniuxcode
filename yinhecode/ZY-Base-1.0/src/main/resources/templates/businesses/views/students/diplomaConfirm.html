@@ -1,0 +1,210 @@
+<style>
+    .student-diploma{
+        margin: 3px 3px 3px 3px;
+        padding: 2px 2px 2px 2px ;
+    }
+    .diploma-img-body{
+        text-align: center;
+        height: 350px;
+    }
+    .diploma-img{
+        background-repeat: repeat;
+        width: 560px;
+        height: 350px;
+        padding-right: 10px;
+        line-height: 260px;
+    }
+    .img-body{
+        text-align: center;
+    }
+    .btn-exam{
+        text-align: center;
+    }
+    .info-row{
+        margin-left: 10%;
+        text-align: left;
+        border: none;
+        height: 100%;
+        font-size: 180%;
+        line-height: 50px;
+    }
+    .info-row input{
+        text-align: left;
+        color: red;
+        background-color: transparent;
+    }
+
+</style>
+<!--毕业证审核-->
+<div class="layui-fluid">
+    <form class="layui-form student-diploma" action="" lay-filter="student-confirmDiploma-form">
+        <div class="layui-row">
+            <div class="layui-col-md10 layui-col-md-offset1">
+                <div class="grid-demo">
+                    <div class="layui-card">
+                        <div class="layui-card-body img-body"  id="diploma-box">
+                            <div class="diploma-img-body"  id="diploma-small">
+                                <img id="img-diploma-diplomaImg" data-th-src="${diploma}" class="diploma-img"
+                                     alt="毕业证">
+                                <input id="diploma-stuid" name="id" data-th-value="${student.id}" type="hidden">
+                                <input name="diploma" data-th-value="${diploma}" type="hidden">
+                                <input name="remark" id="diploma-disagree" type="hidden">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <div class="layui-col-md10 layui-col-md-offset1">
+                <div class="grid-demo grid-demo-bg1">
+                    <div class="layui-card">
+                        <div class="layui-row info-row" id="dipomaConfirm-diplomaInfo">
+                            <dvi class="layui-col-md5">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" id="diploma-dipnum">毕业证号:</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" name="diplomaNum" maxlength="18"
+                                               lay-verify="number|range" id="diploma-diplomaId" style="width: 216px">
+                                    </div>
+                                </div>
+                            </dvi>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" id="dipdate">毕业证日期:</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" id="diploma-idendate" name="diplomaDate"
+                                               maxlength="10" lay-verify="date" autocomplete="off" style="width: 150px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!--驳回、审批通过表单提交按钮-->
+            <div class="layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body btn-exam">
+                        <button class="layui-btn layui-btn-danger" type="button" lay-submit=""
+                                id="btn-diploma-submitDisagree">驳回</button>
+                        <button class="layui-btn" lay-submit="" type="button" lay-filter="student-agree-form-submit"
+                                id="btn-diploma-submitAgree">审批通过</button>
+                        <button class="layui-btn" type="button" id="btn-diploma-finish">已审核</button>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item febs-hide">
+                <button class="layui-btn" lay-submit="" lay-filter="student-disagree-form-submit"
+                        id="btn-diploma-submit"></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            student = [[${student}]],
+            diploma = [[${diploma}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+        initBtn();
+        initCollegeValue();
+        //毕业证号及日期数据填充
+        function initCollegeValue() {
+            if (diploma != null){
+                form.val("student-confirmDiploma-form", {
+                    "diplomaNum": student.diplomaNum,
+                    "diplomaDate": student.graduDate.substring(0,10)
+                });
+            }
+        }
+
+        //表单提交
+        function initBtn(){
+            //驳回按钮，点击后弹出框填写驳回原因
+            $("#btn-diploma-submitDisagree").click(function () {
+                layer.open({
+                    type: 1
+                    ,title: '驳回原因' //不显示标题栏
+                    ,closeBtn: false
+                    ,area: '300px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['提交', '取消']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="padding:5px;line-height: 22px; color: #fff; font-weight: 300;' +
+                        'text-align: center"><textarea id="disAgreeInfo" name="remark" maxlength="200"' +
+                        ' class="layui-textarea" placeholder="请填写驳回原因"></textarea></div>'
+                    ,success: function(layero){
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').click(function(){
+                            $("#diploma-disagree").val($("#disAgreeInfo").val());
+                            if ($("#diploma-disagree").val()==null||$("#diploma-disagree").val()=="") {
+                                febs.alert.warn('未填写驳回原因！');
+                                return false;
+                            }else {
+                                $("#btn-diploma-submit").click();
+                                $("#showinfo").load("febs/views/student/affirm/diploma?id="+$("#diploma-stuid").val()
+                                    +"&typeId=2");
+                                return false;
+                            }
+
+                        })
+                    }
+                });
+            })
+            //审批通过按钮提交
+            form.on('submit(student-agree-form-submit)', function (data) {
+                febs.post(ctx + 'student/affirm/agreeDiploma?typeId=2',data.field,function () {
+                    febs.alert.success(student.stuName + '的毕业证审核已通过');
+                });
+                $("#btn-diploma-submitAgree").attr("style", "display:none;");
+                $("#btn-diploma-submitDisagree").attr("style", "display:none;");
+                $("#btn-diploma-finish").show();
+                $("#btn-diploma-submitAgree").attr("disabled",true);
+                return false;
+            });
+            //驳回提交事件
+            form.on('submit(student-disagree-form-submit)', function (data) {
+                febs.post(ctx + 'student/affirm/rejectDiploma?typeId=2',data.field,function () {
+                    febs.alert.success(student.stuName + '的毕业证审核已驳回');
+                });
+                $("#btn-diploma-submit").attr("disabled",true);
+                return false;
+            });
+
+            if (student.diplomaImgUrl!=null&&diploma==null){
+                $("#img-diploma-diplomaImg").attr("src",student.diplomaImgUrl);
+                $("#diploma-diplomaId").attr("readonly",true);
+                $("#btn-diploma-submitAgree").attr("style", "display:none;");
+                $("#btn-diploma-submitDisagree").attr("style", "display:none;");
+                $("#diploma-idendate").attr("readonly",true);
+                $("#diploma-idendate").val(student.graduDate.substring(0,10));
+                $("#diploma-diplomaId").val(student.diplomaNum);
+            }else if (student.diplomaImgUrl==null&&diploma!=null){
+                $("#btn-diploma-finish").attr("style", "display:none;");
+            }else if (student.diplomaImgUrl!=null&&diploma!=null){
+                $("#btn-diploma-finish").attr("style", "display:none;");
+            }else if (student.diplomaImgUrl==null&&diploma==null){
+                $("#img-diploma-diplomaImg").replaceWith("<input type='text' style='border: none;" +
+                    "text-align: center;margin-top: 150px;font-size: 200%;' value='未上传'>");
+                $("#btn-diploma-finish").attr("style", "display:none;");
+                $("#btn-diploma-submitAgree").attr("style", "display:none;");
+                $("#btn-diploma-submitDisagree").attr("style", "display:none;");
+                $("#dipomaConfirm-diplomaInfo").attr("style","display:none");
+            }
+        }
+    });
+
+</script>

@@ -1,0 +1,321 @@
+<style>
+    .juzhong {
+        text-align: center;
+    }
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="businesses-college" lay-title="院校信息">
+    <table class="layui-table">
+        <input id="stuIdCheckExamTask" type="hidden" data-th-value="${stuId}">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>类型</td>
+            <td>值</td>
+            <td>变化值</td>
+            <td>操作</td>
+
+        </tr>
+        <tr>
+            <td>报考类型</td>
+            <td id="studyTypeCheckExamTask"></td>
+            <td id="studyTypeValueCheckExamTask"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>层次</td>
+            <td id="levelCheckExamTask">无</td>
+            <td id="levelValueCheckExamTask"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>批次</td>
+            <td id="batchCheckExamTask">无</td>
+            <td id="batchValueCheckExamTask"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>报考院校</td>
+            <td id="collegeCheckExamTask">无</td>
+            <td id="collegeValueCheckExamTask"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>专业</td>
+            <td id="majorCheckExamTask">无</td>
+            <td id="majorValueCheckExamTask"></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-body juzhong">
+                <button class="layui-btn" lay-filter="examinfo-update-form-edit" id="edit_ExamInfo_cxk">去修改报考信息</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-college'),
+            tableIns;
+
+        //去修改学生信息
+        $("#edit_ExamInfo_cxk").click(function () {
+
+            layer.closeAll()
+            febs.modal.open('修改报考信息',"/student/examinfo/"+$("#stuIdCheckExamTask").val(),null, {
+                area: ['50%', '40%'],
+            });
+        })
+//获得学据
+        $.ajax({
+            type: "get",
+            url: "student/getStudentByIdLry?id=" + $("#stuIdCheckExamTask").val(),
+            success: function (res) {
+                var student = res.data;
+                console.log(student);
+                $("#stage").text(res.data.stageName)
+                $("#studyTypeCheckExamTask").text(res.data.studyTypeName)
+                $("#levelCheckExamTask").text(res.data.levelName)
+                $("#batchCheckExamTask").text(res.data.batchName)
+                $("#collegeCheckExamTask").text(res.data.collegeName)
+                $("#majorCheckExamTask").text(res.data.majorName)
+
+            }
+        })
+//获得待办任务数据
+        $.ajax({
+            type: "get",
+            url: "student/getStudentExamTask?stuId=" + $("#stuIdCheckExamTask").val(),
+            success: function (res) {
+                console.log(res.data)
+                for (var i = 0; i < res.data.length; i++) {
+                    var task = res.data[i];
+                    if (task.field == 1) {
+                        console.log(task)
+                        $("#collegeValueCheckExamTask").text(task.jsonParseName)
+                        $("#collegeValueCheckExamTask").attr("class",task.jsonParseInfo)
+                        $("#collegeValueCheckExamTask").attr("style",task.id)
+                        $("#collegeValueCheckExamTask").attr("name",task.stuId)
+                        $("#collegeValueCheckExamTask").next().html("<button class=\"layui-btn layui-btn-success layui-btn-sm\" id=\"modal-success1\">批准</button>\n" +
+                            "                        <button class=\"layui-btn layui-btn-danger layui-btn-sm\" id=\"modal-error1\">驳回</button>"+
+                        " <button class=\"layui-btn layui-btn-disabled layui-btn-sm\" style=\"display: none\" id=\"modal-complete1\">已审核</button>")
+                    }
+                    if (task.field == 2) {
+                        $("#studyTypeValueCheckExamTask").text(task.jsonParseName)
+                        $("#studyTypeValueCheckExamTask").attr("class",task.jsonParseInfo)
+                        $("#studyTypeValueCheckExamTask").attr("style",task.id)
+                        $("#studyTypeValueCheckExamTask").attr("name",task.stuId)
+                        $("#studyTypeValueCheckExamTask").next().html("<button class=\"layui-btn layui-btn-success layui-btn-sm\" id=\"modal-success2\">批准</button>\n" +
+                            "                        <button class=\"layui-btn layui-btn-danger layui-btn-sm\" id=\"modal-error2\">驳回</button>"+
+                            " <button class=\"layui-btn layui-btn-disabled layui-btn-sm\" style=\"display: none\" id=\"modal-complete2\">已审核</button>")
+                    }
+                    if (task.field == 3) {
+                        $("#batchValueCheckExamTask").text(task.jsonParseName)
+                        $("#batchValueCheckExamTask").text(task.jsonParseName)
+                        $("#batchValueCheckExamTask").attr("class",task.jsonParseInfo)
+                        $("#batchValueCheckExamTask").attr("style",task.id)
+                        $("#batchValueCheckExamTask").attr("name",task.stuId)
+                        $("#batchValueCheckExamTask").next().html("<button class=\"layui-btn layui-btn-success layui-btn-sm\" id=\"modal-success3\">批准</button>\n" +
+                            "                        <button class=\"layui-btn layui-btn-danger layui-btn-sm\" id=\"modal-error3\">驳回</button>"+
+                            " <button class=\"layui-btn layui-btn-disabled layui-btn-sm\" style=\"display: none\" id=\"modal-complete3\">已审核</button>")
+
+                    }
+                    if (task.field == 4) {
+                        $("#levelValueCheckExamTask").text(task.jsonParseName)
+                        $("#levelValueCheckExamTask").attr("class",task.jsonParseInfo)
+                        $("#levelValueCheckExamTask").attr("style",task.id)
+                        $("#levelValueCheckExamTask").attr("name",task.stuId)
+                        $("#levelValueCheckExamTask").next().html("<button class=\"layui-btn layui-btn-success layui-btn-sm\" id=\"modal-success4\">批准</button>\n" +
+                            "                        <button class=\"layui-btn layui-btn-danger layui-btn-sm\" id=\"modal-error4\">驳回</button>"+
+                            " <button class=\"layui-btn layui-btn-disabled layui-btn-sm\" style=\"display: none\" id=\"modal-complete4\">已审核</button>")
+                    }
+                    if (task.field == 5) {
+                        $("#majorValueCheckExamTask").text(task.jsonParseName)
+                        $("#majorValueCheckExamTask").attr("class",task.jsonParseInfo)
+                        $("#majorValueCheckExamTask").attr("style",task.id)
+                        $("#majorValueCheckExamTask").attr("name",task.stuId)
+                        $("#majorValueCheckExamTask").next().html("<button class=\"layui-btn layui-btn-success layui-btn-sm\" id=\"modal-success5\">批准</button>\n" +
+                            "                        <button class=\"layui-btn layui-btn-danger layui-btn-sm\" id=\"modal-error5\">驳回</button>"+
+                            " <button class=\"layui-btn layui-btn-disabled layui-btn-sm\" style=\"display: none\" id=\"modal-complete5\">已审核</button>")
+                    }
+                }
+                //院校审核通过
+                $("#modal-success1").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/passExamTask",
+                        data:{"taskId": $("#collegeValueCheckExamTask").attr("style"),"collegeId": $("#collegeValueCheckExamTask").attr("class"),"id": $("#collegeValueCheckExamTask").attr("name")},
+                        success:function () {
+                            $("#modal-error1").attr("style","display:none;");
+                            $("#modal-success1").attr("style","display:none;");
+                            $("#modal-complete1").removeAttr("style");
+                            febs.alert.success('审核通过');
+
+                        }
+                    })
+                })
+
+                //院校审核驳回
+                $("#modal-error1").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/noPassExamTask",
+                        data:{"taskId": $("#collegeValueCheckExamTask").attr("style")},
+                        success:function () {
+                            $("#modal-error1").attr("style","display:none;");
+                            $("#modal-success1").attr("style","display:none;");
+                            $("#modal-complete1").removeAttr("style");
+                            febs.alert.success('驳回成功');
+                            return false;
+                        }
+                    })
+                })
+
+                //学习形式审核通过
+                $("#modal-success2").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/passExamTask",
+                        data:{"taskId": $("#studyTypeValueCheckExamTask").attr("style"),"collegeId": $("#studyTypeValueCheckExamTask").attr("class"),"id": $("#studyTypeValueCheckExamTask").attr("name")},
+                        success:function () {
+                            $("#modal-error2").attr("style","display:none;");
+                            $("#modal-success2").attr("style","display:none;");
+                            $("#modal-complete2").removeAttr("style");
+                            febs.alert.success('审核通过');
+                            return false;
+                        }
+                    })
+                })
+
+                //学习形式审核驳回
+                $("#modal-error2").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/noPassExamTask",
+                        data:{"taskId": $("#studyTypeValueCheckExamTask").attr("style")},
+                        success:function () {
+                            $("#modal-error2").attr("style","display:none;");
+                            $("#modal-success2").attr("style","display:none;");
+                            $("#modal-complete2").removeAttr("style");
+                            febs.alert.success('驳回成功');
+
+                            return false;
+                        }
+                    })
+                })
+
+                //批次审核通过
+                $("#modal-success3").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/passExamTask",
+                        data:{"taskId": $("#batchValueCheckExamTask").attr("style"),"collegeId": $("#batchValueCheckExamTask").attr("class"),"id": $("#batchValueCheckExamTask").attr("name")},
+                        success:function () {
+                            $("#modal-error3").attr("style","display:none;");
+                            $("#modal-success3").attr("style","display:none;");
+                            $("#modal-complete3").removeAttr("style");
+                            febs.alert.success('审核通过');
+                            return false;
+                        }
+                    })
+                })
+
+                //批次审核驳回
+                $("#modal-error3").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/noPassExamTask",
+                        data:{"taskId": $("#batchValueCheckExamTask").attr("style")},
+                        success:function () {
+                            $("#modal-error3").attr("style","display:none;");
+                            $("#modal-success3").attr("style","display:none;");
+                            $("#modal-complete3").removeAttr("style");
+                            febs.alert.success('驳回成功');
+
+                            return false;
+                        }
+                    })
+                })
+
+                //层次审核通过
+                $("#modal-success4").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/passExamTask",
+                        data:{"taskId": $("#levelValueCheckExamTask").attr("style"),"collegeId": $("#levelValueCheckExamTask").attr("class"),"id": $("#levelValueCheckExamTask").attr("name")},
+                        success:function () {
+                            $("#modal-error4").attr("style","display:none;");
+                            $("#modal-success4").attr("style","display:none;");
+                            $("#modal-complete4").removeAttr("style");
+                            febs.alert.success('审核通过');
+                            return false;
+                        }
+                    })
+                })
+
+                //层次审核驳回
+                $("#modal-error4").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/noPassExamTask",
+                        data:{"taskId": $("#levelValueCheckExamTask").attr("style")},
+                        success:function () {
+                            $("#modal-error4").attr("style","display:none;");
+                            $("#modal-success4").attr("style","display:none;");
+                            $("#modal-complete4").removeAttr("style");
+                            febs.alert.success('驳回成功');
+
+                            return false;
+                        }
+                    })
+                })
+
+                //专业审核通过
+                $("#modal-success5").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/passExamTask",
+                        data:{"taskId": $("#majorValueCheckExamTask").attr("style"),"collegeId": $("#majorValueCheckExamTask").attr("class"),"id": $("#majorValueCheckExamTask").attr("name")},
+                        success:function () {
+                            $("#modal-error5").attr("style","display:none;");
+                            $("#modal-success5").attr("style","display:none;");
+                            $("#modal-complete5").removeAttr("style");
+                            febs.alert.success('审核通过');
+                            return false;
+                        }
+                    })
+                })
+
+                //专业审核驳回
+                $("#modal-error5").click(function(){
+                    $.ajax({
+                        type:"post",
+                        url:"student/noPassExamTask",
+                        data:{"taskId": $("#majorValueCheckExamTask").attr("style")},
+                        success:function () {
+                            $("#modal-error5").attr("style","display:none;");
+                            $("#modal-success5").attr("style","display:none;");
+                            $("#modal-complete5").removeAttr("style");
+                            febs.alert.success('驳回成功');
+
+                            return false;
+                        }
+                    })
+                })
+
+
+            }
+        })
+    })
+    </script>

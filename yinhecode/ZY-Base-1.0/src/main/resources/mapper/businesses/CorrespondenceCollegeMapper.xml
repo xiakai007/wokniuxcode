@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.CorrespondenceCollegeMapper">
+
+    <sql id="countCorrespondenceCollegeSql" >
+        SELECT
+        COUNT(1)
+        FROM
+        t_correspondence_college T
+        WHERE 1 = 1
+        <if test="province != null and province != ''">
+            AND T.PROVINCE_ID = #{province}
+        </if>
+        <if test="city != null and city != ''">
+            AND T.CITY_ID = #{city}
+        </if>
+        <if test="name != null and name != ''">
+            AND T.full_name LIKE CONCAT('%',#{name},'%') OR T.SIMPLE_NAME LIKE CONCAT('%',#{name},'%')
+        </if>
+    </sql>
+
+    <sql id="findCorrespondenceCollegeSql">
+        SELECT
+            T.ID,
+            T.FULL_NAME fullname,
+            T.SIMPLE_NAME simplename,
+            T.address,
+            T.CREATE_USER_ID createuserid,
+            T.CREATE_TIME createtime,
+            T.FIXED_LINE fixedline,
+            T.REMARK remark,
+            P.PROVINCE_NAME provinceName,
+            C1.CITY_NAME cityName,
+            A.AREA_NAME areaName,
+            T.PROVINCE_ID provinceid,
+            T.CITY_ID cityid,
+            T.AREA_ID areaid
+        FROM
+            t_correspondence_college T
+            LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.user_id)
+            LEFT JOIN t_province P ON (T.PROVINCE_ID = P.ID)
+            LEFT JOIN t_city C1 ON (T.CITY_ID = C1.ID)
+            LEFT JOIN t_area A ON (T.AREA_ID = A.ID)
+        WHERE
+            1 = 1
+            <if test="province != null and province != ''">
+                AND T.PROVINCE_ID = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                AND T.CITY_ID = #{city}
+            </if>
+            <if test="name != null and name != ''">
+                AND T.full_name LIKE CONCAT('%',#{name},'%') OR T.SIMPLE_NAME LIKE CONCAT('%',#{name},'%')
+            </if>
+        ORDER BY T.CREATE_TIME DESC
+    </sql>
+
+    <sql id="findCorrespondenceCollegeByIdSql">
+        SELECT
+            T.ID,
+            T.FULL_NAME fullname,
+            T.SIMPLE_NAME simplename,
+            T.address,
+            T.CREATE_USER_ID createuserid,
+            T1.USERNAME username,
+            T.CREATE_TIME createtime,
+            T.FIXED_LINE fixedline,
+            T.REMARK remark,
+            P.PROVINCE_NAME provinceName,
+            C1.CITY_NAME cityName,
+            A.AREA_NAME areaName,
+            T.PROVINCE_ID provinceid,
+            T.CITY_ID cityid,
+            T.AREA_ID areaid
+        FROM
+            t_correspondence_college T
+            LEFT JOIN t_user T1 ON (T.CREATE_USER_ID = T1.user_id)
+            LEFT JOIN t_province P ON (T.PROVINCE_ID = P.ID)
+            LEFT JOIN t_city C1 ON (T.CITY_ID = C1.ID)
+            LEFT JOIN t_area A ON (T.AREA_ID = A.ID)
+        WHERE
+            1 = 1
+        AND
+            T.ID = #{id}
+    </sql>
+
+
+    <select id="countCorrespondenceCollege" parameterType="String" resultType="long">
+        <include refid="countCorrespondenceCollegeSql"/>
+    </select>
+
+    <select id="findCorrespondenceCollege" parameterType="String" resultType="CorrespondenceCollege">
+        <include refid="findCorrespondenceCollegeSql"/>
+    </select>
+    
+    <insert id="insertCorrespondenceCollege" parameterType="CorrespondenceCollege">
+        INSERT INTO
+          t_correspondence_college(
+            FULL_NAME,
+            SIMPLE_NAME,
+            CREATE_USER_ID,
+            CREATE_TIME,
+            FIXED_LINE,
+            ADDRESS,
+            REMARK,
+            PROVINCE_ID,
+            CITY_ID,
+            AREA_ID)
+        VALUES (
+            #{fullName},
+            #{simpleName},
+            #{createUserId},
+            NOW(),
+            #{fixedLine},
+            #{address},
+            #{remark},
+            #{provinceId},
+            #{cityId},
+            #{areaId})
+    </insert>
+    
+    <select id="findCorrespondenceCollegeById" resultType="CorrespondenceCollege" parameterType="int">
+        <include refid="findCorrespondenceCollegeByIdSql"></include>
+    </select>
+
+    <update id="updateCorrespondenceCollege" parameterType="CorrespondenceCollege">
+        UPDATE
+          t_correspondence_college
+        SET
+          FULL_NAME = #{fullName},
+          SIMPLE_NAME=#{simpleName},
+          FIXED_LINE=#{fixedLine},
+          ADDRESS=#{address},
+          REMARK=#{remark},
+          PROVINCE_ID=#{provinceId},
+          CITY_ID=#{cityId},
+          AREA_ID=#{areaId}
+        WHERE
+          ID=#{id}
+    </update>
+
+    <select id="isRepetitive" resultType="Integer" parameterType="CorrespondenceCollege">
+        SELECT
+          ID
+        FROM
+          t_correspondence_college
+        WHERE
+          1=1
+          AND
+          FULL_NAME = #{fullName}
+          OR
+          SIMPLE_NAME = #{simpleName}
+    </select>
+</mapper>

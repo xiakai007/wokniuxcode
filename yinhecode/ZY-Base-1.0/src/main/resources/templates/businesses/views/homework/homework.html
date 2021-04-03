@@ -1,0 +1,531 @@
+<style>
+    #businesses-homework xm-select {
+        min-height: 30px;
+        line-height: 30px;
+    }
+
+    #businesses-homework xm-select > .xm-label .scroll .label-content {
+        display: flex;
+        padding: 0 30px 0 10px;
+    }
+</style>
+<div class="layui-fluid layui-anim febs-anim" id="businesses-homework" lay-title="学生作业管理">
+
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <!-- 学生作业 -->
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="user-table-form">
+                        <fieldset class="layui-elem-field layui-field-title">
+                            <legend style="font-size: 15px;font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId" id="cboBatch_homework" lay-filter="cboBatch_homework">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="cboCollege_homework" lay-verify="required"
+                                                    lay-filter="cboCollege_homework" lay-search>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="levelId" id="cboLevel_homework" lay-filter="cboLevel_homework">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="cboMajor_homework" lay-filter="cboMajor_homework">
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">学年</label>
+                                        <div class="layui-input-inline">
+                                            <select name="yearId" id="cboYear_homework" lay-filter="cboYear_homework">
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">学期</label>
+                                        <div class="layui-input-inline">
+                                            <select name="termId" id="cboTerm_homework" lay-filter="cboTerm_homework">
+                                                <option value="">全部</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">课程</label>
+                                        <div class="layui-input-inline">
+                                            <select name="courseId" id="cboCourse_homework" lay-filter="cboCourse_homework">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">作业状态</label>
+                                        <div class="layui-input-inline">
+                                            <select name="ispass">
+                                                <option value="">全部</option>
+                                                <option value="84">通过</option>
+                                                <option value="85">未过</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                            <legend style="font-size: 15px;font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="StuName" autocomplete="off" class="layui-input" maxlength="18">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" autocomplete="off" class="layui-input" maxlength="18" onkeyup="value=value.replace(/[^\d|^Xx]/g,'')">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">手机</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" id="term-tel" autocomplete="off" class="layui-input" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="query">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="reset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+                            <legend style="font-size: 15px;font-weight: bolder;"></legend>
+                        </fieldset>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-col-md10" lay-data="{id: 'control'}">
+
+                                    <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action">
+                                        <i class="layui-icon layui-icon-export" id="export">导出数据</i>
+                                    </div>
+                                    <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action" >
+                                        <i class="layui-icon" id="homework-import">&#xe7aa;导入成绩</i>
+                                    </div>
+                                    <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action" >
+                                        <i class="layui-icon" id="template-download">&#xe82a;下载模板</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table id="homeworkTable" lay-filter="homeworkTable" lay-data="{id: 'homeworkTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="homework-option">
+    <a lay-event="detail"><i class="layui-icon febs-edit-area febs-green" title="作业详情">&#xe7a5;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'laydate', 'form', 'table', 'febs', 'xmSelect', 'element','upload'], function () {
+        var element = layui.element;
+        let $ = layui.jquery,
+            laydate = layui.laydate,
+            febs = layui.febs,
+            form = layui.form,
+            upload = layui.upload,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#businesses-homework'),
+            $query = $view.find('#query'),
+            $export=$view.find('#export'),
+            $reset = $view.find('#reset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'id', type: null},
+            tableIns,
+            createTimeFrom,
+            createTimeTo,
+            deptXmlSelect;
+
+        form.render();
+
+        var mycols = [];
+
+
+        initTable();
+
+        laydate.render({
+            elem: '#user-createTime',
+            range: true,
+            trigger: 'click'
+        });
+
+        element.on('click', function (res) {
+            console.log(res);
+        })
+
+
+        table.on('tool(homeworkTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            console.log(data);
+            console.log(layEvent);
+            if (layEvent === 'detail') {
+
+                febs.modal.view('学生作业信息', 'homework/detail/' + data.id, {
+                    area: $(window).width() <= 750 ? '95%' : '660px'
+                });
+            }
+        });
+        //批次下拉框遍历
+        $(function () {
+            //付款方式(下拉框)
+            $.get("entranceScore/batchs", function (obj) {
+                // selectIDc=obj.data;
+                var str = "<option value=''>全部</option>";
+                layui.each(obj.data, function (index, item) {
+                    str = str + "<option value='" + this.id + "'>" + this.batchName + "</option>";
+
+                });
+                $("#cboBatch_homework").html(str);
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+            });
+        });
+
+        //院校下拉框遍历
+        $(function () {
+            //付款方式(下拉框)
+            $.get("homework/collegeList", function (obj) {
+                console.log(obj);
+                // selectIDc=obj.data;
+                $("#cboCollege_homework").empty();
+                $("#cboCollege_homework").append("<option value=''>全部</option>")
+                layui.each(obj.data, function (index, item) {
+                    $("#cboCollege_homework").append("<option value='" + this.id + "'>" + this.name + "</option>");
+                });
+                //渲染select
+                form.render('select');
+            });
+        });
+
+        form.on("select(cboCollege_homework)", function (obj) {
+            var collegeId = obj.value;
+            console.log(obj);
+            initLevel(collegeId);
+        });
+
+        //层次下拉框
+        function initLevel(id) {
+            $.ajax({
+                type: 'get',
+                url: 'homework/levelList',
+                data: {collegeId: id},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboLevel_homework").empty();
+                    $("#cboLevel_homework").append("<option value=''>全部</option>");
+                    layui.each(res.data, function (index, item) {
+                        $("#cboLevel_homework").append("<option value='" + this.id + "'>" + this.levelName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        form.on("select(cboLevel_homework)", function (obj) {
+            var collegeId = $('#cboCollege_homework').val();
+            var levelId = $('#cboLevel_homework').val();
+            console.log(collegeId);
+            initMajor(collegeId, levelId);
+        });
+
+        //专业下拉框
+        function initMajor(id1, id2) {
+            $.ajax({
+                type: 'get',
+                url: 'homework/majorList',
+                data: {collegeId: id1, levelId: id2},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboMajor_homework").empty();
+                    $("#cboMajor_homework").append("<option value=''>全部</option>")
+                    layui.each(res.data, function (index, item) {
+                        $("#cboMajor_homework").append("<option value='" + this.id + "'>" + this.fullName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        form.on("select(cboMajor_homework)", function (obj) {
+
+            var levelId = $('#cboLevel_homework').val();
+            if (levelId == 1 || levelId == 3) {
+                initYear2(levelId);
+            }else {
+                initYear(levelId);
+            }
+            form.render('select');
+
+        });
+
+
+
+        //学年下拉框
+        function initYear(id1) {
+            $.ajax({
+                type: 'get',
+                url: 'homework/yearList',
+                data: {yearId: id1},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboYear_homework").empty();
+                    $("#cboYear_homework").append("<option value=''>全部</option>")
+                    layui.each(res.data, function (index, item) {
+                        $("#cboYear_homework").append("<option value='" + this.id + "'>" + this.yearName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        function initYear2(id1) {
+            $.ajax({
+                type: 'get',
+                url: 'homework/yearList',
+                success: function (res) {
+                    console.log(res)
+                    var str = '<option value=\'\'>全部</option>';
+
+                    for(var i = 0; i < 3; i++){
+                        str = str +"<option value='" + res.data[i].id + "'>" + res.data[i].yearName + "</option>";
+                    }
+                    $("#cboYear_homework").empty();
+//                    $("#cboYear_TeachProgram_add").append("");
+                    $("#cboYear_homework").html(str);
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        form.on("select(cboYear_homework)", function (obj) {
+            var absoYearId = obj.value;
+            console.log(obj);
+            initTerm(absoYearId);
+        });
+
+        //学期下拉框
+        function initTerm(id) {
+            $.ajax({
+                type: 'get',
+                url: 'teachProgram/termList',
+                data: {absoYearId: id},
+                success: function (res) {
+                    $("#cboTerm_homework").empty();
+                    $("#cboTerm_homework").append("<option value=''>全部</option>")
+                    layui.each(res.data, function (index, item) {
+                        $("#cboTerm_homework").append("<option value='" + this.id + "'>" + this.semesterName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+
+                }
+            })
+        }
+
+        form.on("select(cboTerm_homework)", function (obj) {
+            var collegeId = $('#cboCollege_homework').val();
+            var levelId = $('#cboLevel_homework').val();
+            var majorId = $('#cboMajor_homework').val();
+            var termId = $('#cboTerm_homework').val();
+            console.log(collegeId);
+            initCourse(collegeId, levelId, majorId,termId);
+        });
+
+        //课程下拉框
+        function initCourse(id1, id2, id3, id4) {
+            $.ajax({
+                type: 'get',
+                url: 'homework/courseList',
+                data: {collegeId: id1, levelId: id2, majorId: id3, termId: id4},
+                success: function (res) {
+                    console.log(res);
+                    $("#cboCourse_homework").empty();
+                    $("#cboCourse_homework").append("<option value=''>全部</option>")
+                    layui.each(res.data, function (index, item) {
+                        $("#cboCourse_homework").append("<option value='" + this.id + "'>" + this.courseName + "</option>");
+                    });
+                    //渲染select
+                    form.render('select');
+                }
+            })
+        }
+
+        document.onkeydown = function (e) { // 回车提交表单
+// 兼容FF和IE和Opera
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+
+            if (code == 13) {
+                $query.click();
+            }
+        }
+
+
+        $export.on('click',function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            params.pageSize = $view.find(".layui-laypage-limits option:selected").val();
+            params.pageNum = $view.find(".layui-laypage-em").next().html();
+            febs.download(ctx + 'homework/excel', params, '学生作业信息表.xlsx');
+        });
+
+        $view.on('click', '#template-download', function () {
+            febs.download(ctx + 'homework/template', null, '学生作业信息导入模板.xlsx');
+        });
+
+
+        table.on('sort(homeworkTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+
+            tableIns.reload({where: params, page: {curr: 1}});
+
+        });
+
+        $reset.on('click', function () {
+            //下拉框重置
+            $("#cboMajor").empty();
+            $("#cboMajor").append("<option value=''>全部</option>");
+            $("#cboLevel").empty();
+            $("#cboLevel").append("<option value=''>全部</option>");
+            $searchForm[0].reset();
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}});
+        });
+
+        //导入数据
+        upload.render({
+            elem: '#homework-import',
+            url: ctx + 'homework/import',
+            accept: 'file',
+            exts: 'xlsx', // 只能上传 .xlsx格式
+            size: 5 * 1024, // kb
+            before: function () {
+                febs.view.loadBar.start();
+            },
+            done: function (res) {
+                console.log(res);
+                if (res.message==200){
+                    febs.view.loadBar.finish();
+                    febs.alert.success('导入成功！');
+                    $reset.click();
+                }else if (res.message==400){
+
+                    febs.view.loadBar.error();
+                    febs.alert.error('导入失败！');
+// 弹出导入结果
+                    febs.modal.view('错误日志', 'entranceScore/errorResult', {
+                        area: $(window).width() <= 750 ? '95%' : '1000px'
+                    });
+
+                }else {
+                    febs.view.loadBar.error();
+                    febs.alert.error('文件异常！');
+                }
+            }
+        });
+
+
+        //数据显示
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'homeworkTable',
+                url: ctx + 'homework/list',
+                cols: [[
+                    {field: 'batchName', title: '批次', width: 80},
+                    {field: 'stuName', title: '姓名', Maxwidth: 80},
+                    {field: 'identity', title: '身份证', Maxwidth: 150},
+                    {field: 'tel', title: '手机', Maxwidth: 120},
+                    {field: 'collegeName', title: '院校', width: 130},
+                    {field: 'levelName', title: '层次', Maxwidth: 90},
+                    {field: 'majorName', title: '专业', Maxwidth: 100},
+                    {field: 'courseName', title: '科目', Maxwidth: 100},
+                    {field: 'yearName', title: '学年', Maxwidth: 80},
+                    {field: 'termName', title: '学期', Maxwidth: 80},
+                    {field: 'ispassName', title: '状态', width: 60},
+
+                    {title: '详情', toolbar: '#homework-option', width: 60}
+                ]]
+            });
+
+        }
+
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+
+
+    })
+</script>

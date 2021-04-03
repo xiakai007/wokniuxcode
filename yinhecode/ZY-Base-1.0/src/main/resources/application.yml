@@ -1,0 +1,66 @@
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: utf-8
+  shutdown: graceful
+
+spring:
+  profiles:
+    active: dev,payment
+  thymeleaf:
+    cache: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  aop:
+    proxy-target-class: true
+  config:
+    import: classpath:febs.yml
+  application:
+    name: zy
+    package-time: "@package-time@"
+  web:
+    resources:
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: "/**"
+  servlet:
+    multipart:
+      max-file-size: 5120MB
+      max-request-size: 5120MB
+
+mybatis-plus:
+  type-aliases-package: cc.zy.base.*.entity
+  mapper-locations: classpath:mapper/*/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    banner: false
+    db-config:
+      select-strategy: not_empty
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    keyid: LTAI4G4chupMncBLQnL3ZGM8
+    keysecret: suFLIMYmG3wxJWEWDF1KpxLCNRYZxX
+    bucketname: test-quanwu
+# 微信小程序配置
+wx:
+  miniapp:
+    configs:
+      - appid: wx10b58b8d11db4458
+        secret: f2b4808f784d95d7c9822a5128953db8
+        token:
+        aesKey:
+        msgDataFormat: JSON
+
+#logging:
+#  level:
+#    com:
+#      baomidou:
+#        mybatisplus:
+#          core:
+#            metadata:
+#              TableInfoHelper: error

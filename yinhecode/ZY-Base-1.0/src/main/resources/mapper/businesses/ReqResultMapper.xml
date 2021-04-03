@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.ReqResultMapper">
+    <insert id="addReqResultList" parameterType="list">
+        INSERT INTO t_req_result VALUES
+        <foreach collection="reqResultList" index="index" item="item" separator=",">
+            (
+            #{item.id},#{item.reqInfoId},#{item.followUserId},#{item.groupId},#{item.name},
+            #{item.ecCall},#{item.gender},#{item.birthday},#{item.isLunarBirthday},#{item.title},
+            #{item.qq},#{item.mobile},#{item.phone},#{item.fax},#{item.email},#{item.company},
+            #{item.companyUrl},#{item.companyAddress},#{item.memo},#{item.vocation},#{item.channel},
+            #{item.prefecture},#{item.fieldInfos},#{item.crmId},#{item.modifyTime},#{item.contactTime},
+            #{item.createTime},#{item.lastFollowUserId},#{item.step}
+            )
+        </foreach>
+    </insert>
+
+
+    <insert id="addReqResultGetId" parameterType="ReqResult" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_req_result(
+             REQ_INFO_ID ,
+                FOLLOW_USER_ID ,
+                GROUP_ID ,
+                NAME ,
+                EC_CALL ,
+                GENDER ,
+                BIRTHDAY ,
+                IS_LUNAR_BIRTHDAY ,
+                TITLE ,
+                QQ ,
+                MOBILE ,
+                PHONE ,
+                FAX ,
+                EMAIL ,
+                COMPANY ,
+                COMPANY_URL ,
+                COMPANY_ADDRESS ,
+                MEMO ,
+                VOCATION ,
+                CHANNEL ,
+                PREFECTURE ,
+                FIELD_INFOS ,
+                CRM_ID ,
+                MODIFY_TIME ,
+                CONTACT_TIME ,
+                CREATE_TIME ,
+                LAST_FOLLOW_USER_ID ,
+                STEP
+        ) VALUES
+            (
+            #{reqInfoId},#{followUserId},#{groupId},#{name},
+            #{ecCall},#{gender},#{birthday},#{isLunarBirthday},#{title},
+            #{qq},#{mobile},#{phone},#{fax},#{email},#{company},
+            #{companyUrl},#{companyAddress},#{memo},#{vocation},#{channel},
+            #{prefecture},#{fieldInfos},#{crmId},#{modifyTime},#{contactTime},
+            #{createTime},#{lastFollowUserId},#{step}
+            )
+    </insert>
+</mapper>

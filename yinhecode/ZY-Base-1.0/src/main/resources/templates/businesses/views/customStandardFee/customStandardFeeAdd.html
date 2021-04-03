@@ -1,0 +1,542 @@
+<style>
+    #customStandardFee-add {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="customStandardFee-add">
+
+  <form class="layui-form layui-table-form" lay-filter="customStandardFee-add-table-form">
+       <div class="layui-col-md5" style="">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">学习形式</label>
+                                        <div class="layui-input-inline">
+                                            <select name="cultivate"lay-filter="cultivate3" id="cultivate3">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        <div class="layui-row">
+                            <div class="layui-col-md5">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId"lay-filter="cbuBatch3" id="cbuBatch3">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="layui-col-md5">
+                                <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">费用说明</label>
+                                        <div class="layui-input-inline">
+                                           <input type="text" id="paymentExplain3" name="paymentExplain" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+        <div class="layui-row">
+                            <div class="layui-col-md5">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId"  lay-filter="cbuCollege3" id="cbuCollege3">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="layui-col-md5">
+                                <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">应缴金额</label>
+                                        <div class="layui-input-inline">
+                                          <input type="text" id="originalPrice3" name="originalPrice" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+        <div class="layui-row">
+                            <div class="layui-col-md5">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="studyLevelId"  lay-filter="cbuLevel3" id="cbuLevel3">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="layui-col-md5">
+                                <div class="layui-inline">
+                                        <!--<label class="layui-form-label layui-form-label-sm">第二学年</label>-->
+                                        <div class="layui-input-inline">
+                                           <!--<input type="text" id="m3" name="secondFee" autocomplete="off" class="layui-input">-->
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+        <div class="layui-row">
+                            <div class="layui-col-md5">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">类别</label>
+                                        <div class="layui-input-inline">
+                                            <select name="subjectCategoryId" lay-filter="cbuSubcate3" id="cbuSubcate3">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="layui-col-md5">
+                                <div class="layui-inline">
+                                        <!--<label class="layui-form-label layui-form-label-sm">第三学年</label>-->
+                                        <div class="layui-input-inline">
+                                          <!--<input type="text" id="m4" name="thirdlyFee" autocomplete="off" class="layui-input">-->
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+        <div class="layui-row">
+                            <div class="layui-col-md5">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" lay-filter="cbuMajor3" id="cbuMajor3">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="layui-col-md5">
+                                <div class="layui-inline">
+                                        <div id="div4" class="dis">
+                                            <!--<label class="layui-form-label layui-form-label-sm">第四学年</label>-->
+                                            <div class="layui-input-inline">
+                                               <!--<input type="text" id="m5" name="fourthlyFee" autocomplete="off" class="layui-input">-->
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+        <div class="layui-row">
+                            <div class="layui-col-md5">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <!--<label class="layui-form-label layui-form-label-sm">批次</label>-->
+                                        <div class="layui-input-inline">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="layui-col-md5">
+                                <div class="layui-inline" >
+                                    <div  id="div5" class="dis">
+                                        <!--<label class="layui-form-label layui-form-label-sm">第五学年</label>-->
+                                        <div class="layui-input-inline">
+                                           <!--<input type="text" id="m6" name="fifthFee" autocomplete="off" class="layui-input">-->
+                                        </div>
+                                    </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                            <div class="layui-form-item febs-hide">
+                                    <button class="layui-btn" lay-submit="" lay-filter="customStandardFee-add-form-submit" id="submit"></button>
+                                    <button type="reset" class="layui-btn" id="reset"></button>
+                            </div>
+
+                    </form>
+
+</div>
+<style>
+
+    .dis{
+        display: none;
+    }
+    .show{
+
+    }
+</style>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['febs', 'form', 'validate','dropdown', 'jquery', 'table'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate,
+            table = layui.table,
+            dropdown = layui.dropdown;
+
+ form.verify(validate);
+        form.render();
+
+
+
+ //使用ajax获得下拉菜单中的值
+            //批次下拉菜单
+/******************************************************/
+
+batchAll();
+levelAll(0);
+collegeAll(0);
+subcateAll(0);
+majorAll(0);
+cultivateAll();
+
+
+function  cultivateAll() {
+                    $.ajax({
+                type:"GET",
+                url:"standardFee/cultivatelist",
+
+                success:function (res) {
+                    console.log("res:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let optc1="<option value='0'>请选择学习形式</option>";
+                        for (var i=0;i<data.length;i++){
+                            var cultivate1 = data[i];
+                            if(cultivate1.cultivateName=='成教'){
+                                 optc1=optc1+"<option selected value='"+cultivate1.id+"'>"+cultivate1.cultivateName+"</option>";
+
+                            }
+                            optc1=optc1+"<option value='"+cultivate1.id+"'>"+cultivate1.cultivateName+"</option>";
+
+                        }
+                        $("#cultivate3").html(optc1);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+            }
+
+            function  batchAll() {
+                    $.ajax({
+                type:"GET",
+                url:"standardFee/batchlist",
+
+                success:function (res) {
+                    console.log("res:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let opt="<option value='0'>请选择批次</option>";
+                        for (var i=0;i<data.length;i++){
+                            var batch = data[i];
+                            opt=opt+"<option value='"+batch.id+"'>"+batch.name+"</option>";
+
+                        }
+                        $("#cbuBatch3").html(opt);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+            }
+
+
+            function  cultivateAll() {
+                    $.ajax({
+                type:"GET",
+                url:"standardFee/cultivatelist",
+
+                success:function (res) {
+                    console.log("res:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let optc="<option value='0'>请选择学习形式</option>";
+                        for (var i=0;i<data.length;i++){
+                            var cultivate = data[i];
+                            if(cultivate.cultivateName=='成教'){
+                                 optc=optc+"<option selected value='"+cultivate.id+"'>"+cultivate.cultivateName+"</option>";
+
+                            }
+                            optc=optc+"<option value='"+cultivate.id+"'>"+cultivate.cultivateName+"</option>";
+
+                        }
+                        $("#cultivate3").html(optc);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+            }
+         function  collegeAll(batchId) {
+
+                       $.ajax({
+                type:"GET",
+                url:"standardFee/collegelist",
+                data:{"batchId":batchId},
+                success:function (res) {
+                    console.log("res:"+res)
+                    var data = res.data;
+                    // console.log(data);
+
+
+                    if(data.length>0){
+                        let optc="<option value='0'>请选择院校</option>";
+                        for (var i=0;i<data.length;i++){
+                            var college = data[i];
+                            optc=optc+"<option value='"+college.id+"'>"+college.name+"</option>";
+
+                        }
+                        $("#cbuCollege3").html(optc);
+                    }else {
+                        let optc1="<option >无记录</option>";
+                         $("#cbuCollege3").html(optc1);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+
+         }
+
+         function  levelAll(batchId,collegeId) {
+                   $.ajax({
+                type:"GET",
+                url:"standardFee/levallist",
+                       data:{"batchId":batchId,"collegeId":collegeId},
+                success:function (res) {
+                    console.log("level:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let optl="<option value='0'>请选择层次</option>";
+                        for (var i=0;i<data.length;i++){
+                            var level = data[i];
+                            optl=optl+"<option value='"+level.id+"'>"+level.name+"</option>";
+
+                        }
+                        $("#cbuLevel3").html(optl);
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+         }
+
+
+        function  subcateAll(batchId,collegeId,levelId) {
+                  $.ajax({
+                type:"GET",
+                url:"standardFee/subjectcategorylist",
+                      data:{"batchId":batchId,"collegeId":collegeId,"levelId":levelId},
+                success:function (res) {
+                    console.log("level:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let opts="<option value='0'>请选择类别</option>";
+                        for (var i=0;i<data.length;i++){
+                            var subcate = data[i];
+                            opts=opts+"<option value='"+subcate.id+"'>"+subcate.name+"</option>";
+
+                        }
+                        $("#cbuSubcate3").html(opts);
+                        layui.form.render("select");
+                    }else {
+                         let opts1="<option >无记录</option>";
+                          $("#cbuSubcate3").html(opts1);
+                          layui.form.render("select");
+
+                    }
+
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+
+                }
+            })
+        }
+
+
+
+        function majorAll(batchId,collegeId, levelId,subjectCategoryId) {
+                 $.ajax({
+                type:"GET",
+                url:"standardFee/majorlist",
+                data:{"batchId":batchId,"collegeId":collegeId,"levelId":levelId,"subjectCategoryId":subjectCategoryId},
+                success:function (res) {
+                    console.log("level:"+res)
+                    var data = res.data;
+                    // console.log(data);
+                    if(data.length>0){
+                        let optm="<option value='0'>请选择专业</option>";
+                        for (var i=0;i<data.length;i++){
+                            var major = data[i];
+                            optm=optm+"<option value='"+major.id+"'>"+major.name+"</option>";
+
+                        }
+                        $("#cbuMajor3").html(optm);
+                    }else {
+                        let optm1="<option >无记录</option>";
+                         $("#cbuMajor3").html(optm1);
+
+                    }
+                    //渲染下拉菜单，要不然不会出现下拉菜单
+                    layui.form.render("select");
+                }
+            })
+        }
+
+            form.on("select(cbuBatch3)",function () {
+                var a=$("#cbuBatch3").val();
+                console.log("dianji："+a);
+
+                    collegeAll(a);
+                    subcateAll(a);
+                    levelAll(a);
+                    majorAll(a);
+
+
+
+
+            })
+           form.on("select(cbuCollege3)",function () {
+                 var a=$("#cbuBatch3").val();
+
+                var b=$("#cbuCollege3").val();
+                console.log("dianji："+a);
+
+                    levelAll(a,b);
+                    subcateAll(a,b);
+
+                    majorAll(a,b);
+
+
+
+
+            })
+
+             form.on("select(cbuLevel3)",function () {
+                   var a=$("#cbuBatch3").val();
+
+                var b=$("#cbuCollege3").val();
+                var c=$("#cbuLevel3").val();
+                console.log("dianji："+a);
+
+                   subcateAll(a,b,c);
+
+
+                    majorAll(a,b,c);
+
+
+
+
+            })
+             form.on("select(cbuSubcate3)",function () {
+                  var a=$("#cbuBatch3").val();
+
+                var b=$("#cbuCollege3").val();
+                var c=$("#cbuLevel3").val();
+                var d=$("#cbuSubcate3").val();
+                console.log("dianji："+a);
+
+                    majorAll(a,b,c,d);
+
+
+
+
+            })
+
+
+         /******************************************************/
+
+
+
+
+
+           form.on('submit(customStandardFee-add-form-submit)', function (data) {
+                var v=$("#cbuLevel3").val();
+
+
+
+               if($("#cbuBatch3").val()==0){
+                   layer.alert("请选择批次");
+                   return false;
+
+               }
+               if($("#cbuCollege3").val()==0){
+                   layer.alert("请选择院校");
+                   return false;
+
+               }
+               if($("#cbuLevel3").val()==0){
+                   layer.alert("请选择层次");
+                   return false;
+
+               }
+               if($("#cbuSubcate3").val()==0){
+                   layer.alert("请选择类别");
+                   return false;
+
+               }
+               if($("#cbuMajor3").val()==0){
+                   layer.alert("请选择专业");
+                   return false;
+
+               }
+               if($("#paymentExplain3").val()==''){
+                    layer.alert("请设置费用说明");
+                   return false;
+
+               }
+               let  orig=$("#originalPrice3").val();
+                if($("#originalPrice").val()==''){
+                    layer.alert("请设置应缴金额");
+                   return false;
+
+               }
+
+                var num=/^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
+                if(!num.test(orig)){
+                   layer.alert("设置金额格式不正确");
+                   return false;
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+            febs.post(ctx + 'customStandardFee/add', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('创建成功');
+                $('#businesses-customStandardFee').find('#query').click();
+            });
+            return false;
+        });
+
+
+
+    });
+</script>

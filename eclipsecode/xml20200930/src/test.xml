@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+	<book author="罗贯中">
+		 <id>001</id>
+		 <name>三国演义</name>
+	</book>
+	<book author="曹雪芹">
+		 <id>002</id>
+		 <name>红楼梦</name>
+	</book>
+	<book author="施耐庵">
+		 <id>003</id>
+		 <name>
+		     <![CDATA[水浒传<]]></name>
+	</book>
+</books>

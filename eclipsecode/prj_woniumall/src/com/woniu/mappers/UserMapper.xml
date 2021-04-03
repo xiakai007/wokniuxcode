@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.UserMapper">
+	<resultMap type="User" id="userMap">
+		<id property="id" column="id"></id>
+		<collection property="addressList" column="id"
+		select="com.woniu.mappers.AddressMapper.selectAllAddressByUserid">
+		</collection>
+		<collection property="goodsList" column="id"
+		select="com.woniu.mappers.GoodsMapper.selectGoodsByUserid">
+		</collection>
+		<collection property="cartList" column="id"
+		select="com.woniu.mappers.CartMapper.selectCartByUserid">
+		</collection>
+	</resultMap>
+	<select id="login" parameterType="String" resultType="User">
+		SELECT * FROM mall_user WHERE account=#{account} AND password=#{password}
+	</select>
+	<update id="updateUser" parameterType="User">
+		UPDATE mall_user
+		<trim prefix="SET" suffixOverrides="," suffix="WHERE id=#{id}">
+			<if test="account!=null and account!=''">
+				account=#{account},
+			</if>
+			<if test="password!=null and password!=''">
+				password=#{password},
+			</if>
+			<if test="email!=null and email!=''">
+				email=#{email},
+			</if>
+			<if test="avatar!=null and avatar!=''">
+				avatar=#{avatar},
+			</if>
+			<if test="score!=null and score!=''">
+				score=#{score},
+			</if>
+			<if test="regtime!=null and regtime!=''">
+				regtime=#{regtime},
+			</if>
+			<if test="status!=null and status!=''">
+				status=#{status},
+			</if>
+		</trim>
+	</update>
+	<insert id="register" parameterType="String">
+		INSERT INTO mall_user (account,password) VALUE(#{account},#{password})
+	</insert>
+	<select id="selectUserById" parameterType="int" resultMap="userMap">
+		SELECT * FROM mall_user WHERE id=#{id}
+	</select>
+	<select id="selectUserByIdToCart" parameterType="int" resultType="User">
+		SELECT * FROM mall_user WHERE id=#{id}
+	</select>
+	<select id="selectUserByGoodsid" parameterType="int" resultType="User">
+		SELECT * FROM mall_user WHERE id IN(
+			SELECT userid FROM mall_cart WHERE goodsid=#{goodsid}
+		)
+	</select>
+</mapper>

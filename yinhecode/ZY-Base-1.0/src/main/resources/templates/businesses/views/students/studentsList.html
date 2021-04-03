@@ -1,0 +1,374 @@
+<!--招生学生管理学生列表-->
+<div class="layui-fluid layui-anim febs-anim" id="businesses-student" lay-title="我的学生">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="college-table-form">
+                        <input id="userId" type="hidden" data-th-value="${user.userId}">
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId" id="stubatch" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="stucollege" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="level" id="stu-stuidlevel" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="stumajor" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" autocomplete="off" class="layui-input"
+                                                   id="stuidstuname">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" autocomplete="off" class="layui-input"
+                                                   id="stuididentity" maxlength="18" lay-verify="range">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" autocomplete="off" class="layui-input"
+                                                   id="stuidtel" lay-verify="number|range" maxlength="11">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="stuquery">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="stureset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                >
+                                    <i id="task" class="layui-icon layui-icon-eye">审核信息</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="movtorecycle">
+                                    <i class="layui-icon layui-icon-delete">移入回收站</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="labelLog">
+                                    <i class="layui-icon layui-icon-plus-circle">创建标记</i>
+                                </div>
+                                <div class="layui-inline" id="studentLabels">
+                                    <label class="layui-form-label layui-form-label-sm">你的标签:</label>
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="studentTable" lay-data="{id: 'studentTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="student-option">
+    <a lay-event="detail" title="查看详情"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'form', 'table', 'febs'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            $view = $('#businesses-student'),
+            $query = $view.find('#stuquery'),
+            $reset = $view.find('#stureset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+
+        form.render();
+        initTable();
+        stugetLabel();
+
+        $(".layui-input").keydown(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $query.click();
+            }
+        });
+
+        //批次
+        febs.get('/student/batchList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#stubatch").append(new Option(list[i].batchName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //院校
+        febs.get('/student/collegeList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#stucollege").append(new Option(list[i].name, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //层次
+        febs.get('/student/stuLevelList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#stu-stuidlevel").append(new Option(list[i].levelName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //专业
+        febs.get('/student/majorList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#stumajor").append(new Option(list[i].fullName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        table.on('tool(studentTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('学生信息', 'student/detail/' + data.id, {
+                    area: ['70%', '85%'],
+                    tipsMore: true
+                });
+            }
+        });
+
+        table.on('sort(studentTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'studentTable',
+                url: ctx + 'student/recruitList',
+                done: function (res, curr, count) {
+                    $("table").css("width", "100%");
+                },
+                width:"100%",
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'id', title: '序号', minWidth: 40},
+                    {field: 'stuName', title: '姓名', minWidth: 80},
+                    {field: 'collegeName', title: '院校', minWidth: 80},
+                    {field: 'batchName', title: '批次', minWidth: 80},
+                    {field: 'levelname', title: '层次', minWidth: 80},
+                    {field: 'majorName', title: '专业', minWidth: 80},
+                    {field: 'groupNo', title: '组名称', minWidth: 180},
+                    {field: 'userName', title: '班主任', minWidth: 80},
+                    {field: 'tel', title: '电话', minWidth: 80},
+                    {field: 'identity', title: '身份证', minWidth: 80},
+                    {title: '操作', toolbar: '#student-option', minWidth: 140},
+                ]],
+
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            console.log(params)
+            return params;
+        }
+
+        //待办任务点击
+        $("#task").click(function () {
+            febs.modal.open('审核信息', 'student/goUserTaskList/' + $("#userId").val(), null, {
+                area: ['50%', '30%']
+            });
+
+        })
+
+        $("#movtorecycle").click(function () {
+            let checkStatus = table.checkStatus('studentTable');
+            let studentIds = [];
+            layui.each(checkStatus.data, function (key, item) {
+                studentIds.push(item.id)
+            });
+            if (studentIds.length > 0) {
+                febs.modal.confirm('提示', '确定移入回收站吗？', function () {
+                    recycleStudent(studentIds.join(','));
+                });
+            } else {
+                febs.alert.warn('请选择学生!');
+            }
+        });
+
+        function recycleStudent(studentIds) {
+            febs.get(ctx + 'student/moveToRecycle/' + studentIds, null, function () {
+                febs.alert.success('学生回收成功');
+                $query.click();
+            });
+        };
+
+        $("#overdue").click(function () {
+            let checkStatus = table.checkStatus('studentTable');
+            febs.modal.confirm('提示', '确定让他的状态变为逾期毕业吗？', function () {
+                let studentIds = [];
+                layui.each(checkStatus.data, function (key, item) {
+                    studentIds.push(item.id)
+                });
+                overdueSet(studentIds.join(','));
+                console.log(studentIds);
+            });
+        });
+
+        function overdueSet(studentIds) {
+            febs.get(ctx + 'student/overdueSet/' + studentIds, null, function () {
+                febs.alert.success('让他变为逾期毕业状态成功');
+                $query.click();
+            });
+        };
+
+        $("#labelLog").click(function () {
+            febs.modal.open('创建标记', 'student/label', {
+                btn: ['提交', '重置'],
+                area: $(window).width() <= 400 ? '95%' : ['900px', '600px'],
+                yes: function (index, layero) {
+                    $('#label-add').find('#submit').trigger('click');
+                },
+                btn2: function () {
+                    $('#label-add').find('#reset').trigger('click');
+                    return false;
+                }
+            });
+        });
+
+        function stugetLabel() {
+            var h1 = "";
+            $.ajax({
+                type: "GET",
+                url: "student/checkYourLabel/",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        h1 = $("<div class=\"layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action\">\n" +
+                            "<i class='add_project_student'  name='" + data[i].labelName + "' value='" + data[i].conditionContent + "'>" + data[i].labelName + "</i>" +
+                            "<i> </i><i> </i><i class='del_project_student'  value='" + data[i].id + "'><i class='layui-icon'></i></i>" +
+                            "</div>");
+                        $("#studentLabels").after(h1);
+                    }
+                },
+            });
+        };
+
+        $(document).on("click", ".del_project_student", function () {
+            var labelid = $(this).attr("value");
+            console.log($(this).attr("value"));
+            febs.modal.confirm('提示', '要删除此标签吗？', function () {
+                $.ajax({
+                    type: "DELETE",
+                    url: "student/delLabel/",
+                    data: {id: labelid},
+                    success: function (data) {
+                        febs.alert.success('标签删除成功');
+                        $("#studentLabels").nextAll().remove();
+                        stugetLabel();
+                    },
+                });
+            });
+
+        });
+
+        $(document).on("click", ".add_project_student", function () {
+            var lvalue = $.parseJSON($(this).attr("value"));
+            console.log(lvalue);
+            $("#stubatch").val(lvalue.batchId);
+            $("#stucollege").val(lvalue.collegeId);
+            $("#stu-stuidlevel").val(lvalue.level);
+            $("#stumajor").val(lvalue.majorId);
+            $("#stuidstuname").val(lvalue.stuName);
+            $("#stuididentity").val(lvalue.identity);
+            $("#stuidtel").val(lvalue.tel);
+            layui.form.render("select");//动态选择
+        });
+
+        //获取待办任务数量
+        $(function () {
+            $.ajax({
+                type: "get",
+                url: "/student/getTaskNum",
+                data: {"userId": $("#userId").val()},
+                success: function (res) {
+                    $("#task").text("审核信息(" + res.data + ")")
+                }
+            })
+        })
+
+    });
+</script>

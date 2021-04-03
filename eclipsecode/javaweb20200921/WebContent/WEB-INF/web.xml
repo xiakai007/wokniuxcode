@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>javaweb20200921</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>user</servlet-name>
+    <servlet-class>com.woniu.servlets.UsersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>user</servlet-name>
+    <url-pattern>/login.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>goodsType</servlet-name>
+    <servlet-class>com.woniu.servlets.GoodsTypeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goodsType</servlet-name>
+    <url-pattern>/goodsTypeList.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>goodsTypeAdd</servlet-name>
+    <servlet-class>com.woniu.servlets.GoodsTypeSaveServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goodsTypeAdd</servlet-name>
+    <url-pattern>/goodsTypeSave.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>goodsTypeDel</servlet-name>
+    <servlet-class>com.woniu.servlets.GoodsTypeDelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goodsTypeDel</servlet-name>
+    <url-pattern>/goodsTypeDel.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>supplier</servlet-name>
+    <servlet-class>com.woniu.servlets.SupplierServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>supplier</servlet-name>
+    <url-pattern>/supplierList.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>supplierSave</servlet-name>
+    <servlet-class>com.woniu.servlets.SupplierSaveServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>supplierSave</servlet-name>
+    <url-pattern>/supplierSave.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>supplierDel</servlet-name>
+    <servlet-class>com.woniu.servlets.SupplierDelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>supplierDel</servlet-name>
+    <url-pattern>/supplierDel.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>goods</servlet-name>
+    <servlet-class>com.woniu.servlets.GoodsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goods</servlet-name>
+    <url-pattern>/goodsList.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>goodsSave</servlet-name>
+    <servlet-class>com.woniu.servlets.GoodsSaveServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goodsSave</servlet-name>
+    <url-pattern>/goodsSave.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>goodsDel</servlet-name>
+    <servlet-class>com.woniu.servlets.GoodsDelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goodsDel</servlet-name>
+    <url-pattern>/goodsDel.do</url-pattern>
+  </servlet-mapping>
+  
+</web-app>

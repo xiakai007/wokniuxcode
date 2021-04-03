@@ -1,0 +1,319 @@
+<!--回收站列表页-->
+<div class="layui-fluid layui-anim febs-anim" id="businesses-recycle" lay-title="回收站">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="college-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId" id="recybatch" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="recycollege" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="level" id="recycle-level" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="recymajor" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">阶段</label>
+                                        <div class="layui-input-inline">
+                                            <select name="stageId" id="recycle-stage" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" autocomplete="off" class="layui-input"
+                                                   id="recyidstuname">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" autocomplete="off" class="layui-input"
+                                                   id="recyididentity" maxlength="18" lay-verify="range">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" autocomplete="off" class="layui-input"
+                                                   id="recyidtel" lay-verify="number|range" maxlength="11">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="recquery">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="recreset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table lay-filter="recycleTable" lay-data="{id: 'recycleTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="recycle-option">
+    <a lay-event="detail" title="查看详情"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'form', 'table', 'febs'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            $view = $('#businesses-recycle'),
+            $query = $view.find('#recquery'),
+            $reset = $view.find('#recreset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            tableIns;
+
+        form.render();
+        initTable();//大列表
+        // postValue();//标签放值
+        recgetLabel();//创建标签元素
+
+        //批次
+        febs.get('/student/batchList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recybatch").append(new Option(list[i].batchName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //院校
+        febs.get('/student/collegeList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recycollege").append(new Option(list[i].name, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //层次
+        febs.get('/student/stuLevelList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recycle-level").append(new Option(list[i].levelName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //专业
+        febs.get('/student/majorList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recymajor").append(new Option(list[i].fullName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //学籍状态
+        febs.get('/student/stuStageList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recycle-stage").append(new Option(list[i].detail, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        table.on('tool(recycleTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('院校信息', 'recycle/detail/' + data.id, {
+                    area: ['70%', '80%']
+                });
+            }
+        });
+
+        table.on('sort(recycleTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'recycleTable',
+                url: ctx + 'recycle/list',
+                done: function (res, curr, count) {
+                    $("table").css("width", "100%");
+                },
+                width:"100%",
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'id', title: '序号', minWidth: 80},
+                    {field: 'stuName', title: '姓名', minWidth: 80},
+                    {field: 'collegeName', title: '院校', minWidth: 80},
+                    {field: 'batchName', title: '批次', minWidth: 80},
+                    {field: 'levelname', title: '层次', minWidth: 80},
+                    {
+                        field: 'stageId', title: '阶段', width: 110,
+                        templet: function (obj) {
+                            var exep;
+                            if (obj.stageId == 14) {
+                                exep = '考前';
+                            } else if (obj.stageId == 15) {
+                                exep = '在籍';
+                            } else if (obj.stageId == 16) {
+                                exep = '逾期毕业';
+                            } else if (obj.stageId == 17) {
+                                exep = '已毕业';
+                            }
+                            return exep;
+                        }
+                    },
+                    {field: 'majorName', title: '专业', minWidth: 80},
+                    {field: 'className', title: '班级名称', minWidth: 80},
+                    {field: 'userName', title: '班主任', minWidth: 80},
+                    {field: 'tel', title: '电话', minWidth: 80},
+                    {field: 'identity', title: '身份证', minWidth: 80},
+                    {title: '操作', toolbar: '#recycle-option', minWidth: 140},
+                ]],
+
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        $("#reclabelLog").click(function () {
+            febs.modal.open('创建标记', 'recycle/label', {
+                btn: ['提交', '重置'],
+                area: $(window).width() <= 750 ? '95%' : '50%',
+                yes: function (index, layero) {
+                    $("#recycleLabels").nextAll().remove();
+                    $('#label-add').find('#submit').trigger('click');
+                },
+                btn2: function () {
+                    $('#label-add').find('#reset').trigger('click');
+                    return false;
+                }
+            });
+        });
+
+        function recgetLabel() {
+            var h1 = "";
+            $.ajax({
+                type: "GET",
+                url: "student/checkYourLabel/",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        h1 = $("<div class=\"layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action\">\n" +
+                            "<i class='add_project_recycle'  name='" + data[i].labelName + "' value='" + data[i].conditionContent + "'>" + data[i].labelName + "</i>" +
+                            "<i> </i><i> </i><i class='del_project_recycle'  value='" + data[i].id + "'><i class='layui-icon'></i></i>" +
+                            "</div>");
+                        $("#recycleLabels").after(h1);
+                    }
+                },
+            });
+        };
+
+        $(document).on("click", ".del_project_recycle", function () {
+            var labelid = $(this).attr("value");
+            console.log($(this).attr("value"));
+            $.ajax({
+                type: "DELETE",
+                url: "student/delLabel/",
+                data: {id: labelid},
+                success: function (data) {
+                    console.log(data);
+                    $("#recycleLabels").nextAll().remove();
+                    recgetLabel();
+                },
+            });
+        });
+
+
+        $(document).on("click", ".add_project_recycle", function () {
+            var lvalue = $.parseJSON($(this).attr("value"));
+            console.log(lvalue.collegeName);
+            $("#recidcollege").val(lvalue.collegeName);
+            layui.form.render("select");//动态选择
+            $("#recidlevel").val(lvalue.level);
+            layui.form.render("select");
+            $("#recidclass").val(lvalue.classId);
+            $("#recyidstuname").val(lvalue.stuName);
+            $("#recyididentity").val(lvalue.identity);
+            $("#recyidtel").val(lvalue.tel);
+        });
+    });
+</script>

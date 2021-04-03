@@ -1,0 +1,194 @@
+<style>
+    #cType-update {
+        padding: 20px 25px 25px 0;
+    }
+    img {
+        transition: transform 0.5s;
+    }
+
+    img:hover {
+        -webkit-transform: scale(1.05, 1.05);
+        -moz-transform: scale(1.05, 1.05);
+        -ms-transform: scale(1.05, 1.05);
+        -o-transform: scale(1.05, 1.05);
+        transform: scale(1.05, 1.05);
+    }
+</style>
+<div class="layui-fluid" id="cType-update">
+    <form class="layui-form" action="" lay-filter="cType-update-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label febs-form-item-require">ID：</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级类别：</label>
+            <div class="layui-input-block" id="parent-cTypeUpdate-id">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" autocomplete="off" class="layui-input"
+                       minlength="2" maxlength="30" lay-verify="range|name">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">简介：</label>
+            <div class="layui-input-block">
+                <textarea name="info" maxlength="1000" class="layui-textarea" lay-verify="txt"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">封面：</label>
+            <div class="layui-upload">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1" width="200px" height="150px" >
+                    <input type="hidden" id="imgUrl" name="imgUrl">
+                    <p id="demoText"></p>
+                </div>
+                <span style="padding-left: 110px">(上传的图片大小应小于750*560)</span>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="cType-update-form-submit" id="submitType">
+            </button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.use([  'validate', 'febs',  'layer', 'form', 'xmSelect','upload'], function () {
+        let $ = layui.jquery,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            validate = layui.validate,
+            febs = layui.febs,
+            layer = layui.layer,
+            upload = layui.upload,
+            cType = [[${cType}]],
+            cTypeId=cType.pid,
+            typeXmSelect;
+
+        form.verify(validate);
+        form.render();
+
+        initCtypeValue();
+
+        function initCtypeValue() {
+            if(cType.imgUrl===""){
+                $('#demo1').attr('src', "/febs/images/defaultImg.png");
+            }else {
+                $('#demo1').attr('src', cType.imgUrl);
+            }
+            form.val("cType-update-form", {
+                "id":cType.id,
+                "name": cType.name,
+                "info": cType.info,
+                "imgUrl": cType.imgUrl
+            });
+        }
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#demo1'
+            ,url:  ctx + 'upload'  //改成您自己的上传接口
+            ,method: 'post'
+            ,accept: 'images'
+            ,auto: false  //auto 参数必须设置为false
+            ,exts: 'jpg|png|gif|bmp|jpeg'
+            ,choose: function(obj){
+                //预读本地文件示例，不支持ie8
+                var flag = true;
+                obj.preview(function(index, file, result){
+                    var img = new Image();
+                    img.src = result;
+                    img.onload = function () { //初始化夹在完成后获取上传图片宽高，判断限制上传图片的大小。
+                        if(img.width <=750 && img.height <=560){
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                            obj.upload(index, file); //满足条件调用上传方法
+                        }else{
+                            flag = false;
+                            layer.msg("您上传的小图大小必须小于750*560尺寸！");
+                            return false;
+                        }
+                    }
+                    return flag;
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if (res.code=200){
+                    $('#imgUrl').val(res.url)
+                    return layer.msg("上传成功");
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;padding-left: 110px ">上传失败</span>' +
+                    ' <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+        typeXmSelect = xmSelect.render({
+            el: '#parent-cTypeUpdate-id',
+            radio:true,
+            model: {label: {type: 'text'}},
+            tips: '修改一级目录不选,二级目录请选择一级目录',
+            clickClose: true,
+            tree: {
+                show: true,
+                strict: false,
+                showLine: false,
+                clickCheck: true,
+                expandedKeys: [-1],
+            },
+            name: 'pid',
+            theme: {
+                color: '#52c41a',
+            },
+            prop: {
+                value: 'id',
+            },
+            height: '150px',
+        });
+
+        febs.get(ctx + 'cType/select/tree1', null, function (data) {
+                 typeXmSelect.update(data);
+                 typeXmSelect.setValue([cTypeId]);
+        });
+
+        form.on('submit(cType-update-form-submit)',function (data){
+            if( data.field.pid==""){
+                if(cType.pid==0){
+                    febs.post(ctx + 'cType/update', data.field, function (result) {
+                        layer.closeAll();
+                        febs.alert.success('修改类别成功');
+                        $('#febs-cType').find('#resetType').click();
+                    });
+                    return false;
+                }
+                febs.alert.error('不能选择为空');
+                return false;
+            }else {
+                if(cType.pid==0){
+                    febs.alert.error('同类目录不能操作');
+                    return false;
+                }
+                febs.post(ctx + 'cType/update', data.field, function (result) {
+                    layer.closeAll();
+                    febs.alert.success('修改类别成功');
+                    $('#febs-cType').find('#resetType').click();
+                });
+                return false;
+            }
+
+        });
+    })
+
+</script>

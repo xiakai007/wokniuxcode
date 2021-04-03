@@ -1,0 +1,322 @@
+<style>
+    .btn-exam{
+        text-align: center;
+    }
+</style>
+<!--现场确认-->
+<div class="layui-fluid" id="student-info-show">
+    <form class="layui-form" action="" lay-filter="student-info-form">
+        <fieldset class="layui-elem-field site-demo-button">
+            <legend>户籍所在地</legend>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input style="width: 817px" type="text" name="stuName" minlength="4" maxlength="10"
+                           autocomplete="off" class="layui-input" data-th-value="${student.address}" readonly>
+                    <input name="remark" id="exam-location-disagree" type="hidden">
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field site-demo-button">
+            <legend>考场</legend>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">省:</label>
+                    <div class="layui-input-inline">
+                        <select  name="provinceId" id="province_add" lay-filter="province_add">
+                            <option value="">请选择省</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">市:</label>
+                    <div class="layui-input-inline">
+                        <select  name="city" id="city_add" lay-filter="city_add">
+                            <option value="">请选择市</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">区:</label>
+                    <div class="layui-input-inline">
+                        <select  name="area" id="area_add" lay-filter="area_add">
+                            <option value="">请选择县/区</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">地址:</label>
+                <div class="layui-input-block" style="width: 817px">
+                    <select  name="confirmAddress" id="confirmAddress">
+                        <option value="">请选择地址</option>
+                    </select>
+                </div>
+            </div>
+</fieldset>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body btn-exam">
+                    <button class="layui-btn layui-btn-danger" type="button" lay-submit="" id="exam-location-submitDisagree">驳回</button>
+                    <button class="layui-btn" lay-submit="" lay-filter="student-agree-form-submit" id="exam-location-submitAgree">审批通过</button>
+                    <label id="nocheck" style="display: none">暂无需要审核的内容</label>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="student-disagree-form-submit" id="exam-location-submit"></button>
+        </div>
+</form>
+</div>
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate,
+            student = [[${student}]],
+            check = [[${check}]],
+            taskId = [[${taskId}]],
+            examLocationId = [[${examLocationId}]]
+
+
+        form.verify(validate);
+        form.render();
+        console.log(examLocationId)
+
+        //审核通过方法
+        $("#exam-location-submitAgree").click(function(){
+            $.ajax({
+                type:"post",
+                url:"/student/passExamLocation?taskId="+taskId+"&stuId="+student.id+"&examLocationId="+examLocationId.id+
+                    "&provinceId="+$("#province_add").val()+"&cityId="+$("#city_add").val()+"&areaId="+
+                    $("#area_add").val()+"&confirmAddressId="+$("#confirmAddress").val(),
+
+                success:function () {
+                    febs.alert.success(student.stuName + '的现场确认审核已通过');
+                    return false;
+                }
+            })
+        })
+
+
+        function submitDisAgree(){
+            //审核不通过方法
+            $("#exam-location-submit").click(function(){
+                $("#exam-location-submit").attr("disabled",true);
+                $.ajax({
+                    type:"post",
+                    url:"/student/noPassExamLocation?taskId="+taskId+"&remark="+ $("#exam-location-disagree").val(),
+                    success:function () {
+                        febs.alert.success(student.stuName + '的现场确认审核已驳回');
+                        return false;
+                    }
+                })
+            })
+        }
+
+
+
+
+        $("#exam-location-submitDisagree").click(function () {
+            layer.open({
+                type: 1
+                ,title: false //不显示标题栏
+                ,closeBtn: false
+                ,area: '300px;'
+                ,shade: 0.8
+                ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                ,btn: ['提交', '取消']
+                ,btnAlign: 'c'
+                ,moveType: 1 //拖拽模式，0或者1
+                ,content: '<div style="padding:5px;line-height: 22px; color: #fff; font-weight: 300;text-align: center"><textarea id="exam-location-disAgreeInfo" placeholder="请填写驳回意见" name="remark" maxlength="200" class="layui-textarea"></textarea></div>'
+                ,success: function(layero){
+                    var btn = layero.find('.layui-layer-btn');
+                    btn.find('.layui-layer-btn0').click(function(){
+                        $("#exam-location-disagree").val($("#exam-location-disAgreeInfo").val());
+                        if ($("#exam-location-disagree").val()==null||$("#exam-location-disagree").val()=="") {
+                            febs.alert.warn('未填写驳回原因！');
+                            return false;
+                        }else {
+                            submitDisAgree();
+                            form.render();
+                            return false;
+                        }
+
+                    })
+                }
+            });
+        })
+
+//查询省份
+if(check!=1){
+    $("#exam-location-submitDisagree").attr("style", "display:none;");
+    $("#exam-location-submitAgree").attr("style", "display:none;");
+    $("#nocheck").removeAttr("style");
+    //设置为只读
+    setreadonly()
+}
+        function initCollegeValue() {
+            console.log("confirmAddress.province is "+examLocationId.province)
+            form.val("student-info-form", {
+                "provinceId": examLocationId.province,
+                "city": examLocationId.city,
+                "area": examLocationId.area,
+                "confirmAddress": examLocationId.id,
+                "status": examLocationId.status
+            });
+            form.render();
+        }
+
+        //设置为只读的方法
+        function setreadonly() {
+            $('#province_add').attr("disabled",true);
+            $('#city_add').attr("disabled",true);
+            $('#area_add').attr("disabled",true);
+            $('#confirmAddress').attr("disabled",true);
+        }
+        //查询省份
+        $.ajax({
+            type:'get',
+            url:'province',
+            async: false,
+            success:function(res){
+                for(var i=0;i<res.data.length;i++){
+                    let provinces = res.data[i];
+                    $("#province_add").append(new Option(provinces.provinceName,provinces.id));
+                }
+                selectCityByPid();
+                layui.form.render("select");
+                form.render();
+
+            }
+        });
+
+        //省市联动
+        form.on('select(province_add)',function () {
+            var pid = $("#province_add").val();
+            $.ajax({
+                type:'get',
+                url:'city',
+                data:{"pid":pid},
+                success:function(res) {
+
+                    var c=document.getElementById("city_add");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let citys = res.data[i];
+                        $("#city_add").append(new Option(citys.cityName, citys.id));
+                    }
+
+                    layui.form.render("select");
+                }
+            })
+        })
+
+        //市区联动
+        form.on('select(city_add)',function () {
+            var cid = $("#city_add").val();
+            $.ajax({
+                type:'get',
+                url:'area',
+                data:{"cid":cid},
+                success:function(res) {
+                    console.log("市")
+                    var c=document.getElementById("area_add");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let areas = res.data[i];
+                        $("#area_add").append(new Option(areas.areaName, areas.id));
+                    }
+                    layui.form.render("select");
+                }
+            })
+        })
+
+        //区地址联动
+        form.on('select(area_add)',function () {
+            var area = $("#area_add").val();
+            $.ajax({
+                type:'get',
+                url:'confirmAddress/confirmAddress',
+                data:{"area":area},
+                success:function(res) {
+                    var c=document.getElementById("confirmAddress");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let confirmAddress = res.data[i];
+                        $("#confirmAddress").append(new Option(confirmAddress.specificLocation, confirmAddress.id));
+                    }
+                    layui.form.render("select");
+                }
+            })
+        })
+        //初始化的时候加载市信息
+        function selectCityByPid() {
+            var pid = examLocationId.province;
+            $.ajax({
+                type:'get',
+                url:'city',
+                async:false,
+                data:{"pid":pid},
+                success:function(res) {
+                    var c=document.getElementById("city_add")
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let citys = res.data[i];
+                        $("#city_add").append(new Option(citys.cityName, citys.id));
+                    }
+                    layui.form.render("select");
+                    selectAreaByCity();
+
+                }
+            })
+        }
+        //初始化的时候加载区信息
+        function selectAreaByCity() {
+            var cid = examLocationId.city;
+            $.ajax({
+                type:'get',
+                url:'area',
+                async:false,
+                data:{"cid":cid},
+                success:function(res) {
+                    var c=document.getElementById("area_add");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let areas = res.data[i];
+                        $("#area_add").append(new Option(areas.areaName, areas.id));
+                    }
+                    layui.form.render("select");
+                    selectConfirmAddressByArea();
+                    //form.render();
+                }
+            })
+        }
+        //初始化的时候加载确认地信息
+        function selectConfirmAddressByArea() {
+            var area = examLocationId.area;
+            $.ajax({
+                type:'get',
+                url:'confirmAddress/confirmAddress',
+                async:false,
+                data:{"area":area},
+                success:function(res) {
+                    var c=document.getElementById("confirmAddress");
+                    c.options.length=1;
+                    for (var i = 0; i < res.data.length; i++) {
+                        let confirmAddress = res.data[i];
+                        $("#confirmAddress").append(new Option(confirmAddress.specificLocation, confirmAddress.id));
+                    }
+                    layui.form.render("select");
+                }
+            })
+        }
+        initCollegeValue();
+
+
+    })
+
+
+
+</script>

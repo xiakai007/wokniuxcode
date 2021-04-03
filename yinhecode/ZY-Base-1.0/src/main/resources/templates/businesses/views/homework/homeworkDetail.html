@@ -1,0 +1,208 @@
+<style>
+    #homework-detail .score-info {
+        display: inline-block;
+        margin-left: 15px;
+    }
+
+    #homework-detail #score-info-wrapper {
+        margin: 0 0 1rem 0;
+        display: inline-block;
+    }
+
+    #homework-detail .score-info div {
+        margin: 10px 15px;
+        max-width: 19rem;
+    }
+
+    #homework-detail #options-wrapper a {
+        padding: 4px 6px;
+        color: rgba(0, 0, 0, 0.65);
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+    }
+
+    #homework-detail #options-wrapper a:hover {
+        color: #40a9ff;
+        border-color: #40a9ff;
+    }
+    .homeworkItem {
+        margin-top: 15px;
+        margin-left: 30px;
+    }
+
+</style>
+<div class="layui-fluid" id="homework-detail" lay-title="作业详情">
+    <form class="layui-form" action="" lay-filter="user-add-form">
+        <table>
+            <tr>
+                <td>
+                    <div class="homeworkItem" ><span class="layui-icon layui-icon-user"></span> 姓名：
+                        [[${homework.stuName}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-note"></span> 身份证号：
+                        [[${homework.identity}]]
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-phone"></span> 手机号：
+                        [[${homework.tel}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-home"></span> 院校：
+                        [[${homework.collegeName}]]
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-tag"></span> 层次：
+                        [[${homework.levelName}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-tag"></span> 专业：
+                        [[${homework.majorName}]]
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-tag"></span> 学年：
+                        [[${homework.yearName}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-tag"></span> 学期：
+                        [[${homework.termName}]]
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-tag"></span> 课程：
+                        [[${homework.courseName}]]
+                    </div>
+                </td>
+                <td>
+
+                </td>
+
+            </tr>
+        </table>
+        <table style="padding-top: 40px;margin-top: 15px">
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-play-square"></span> 线上视频总次数：
+                        [[${homework.videoSh}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-play-square"></span> 线上视频已看次数：
+                        [[${homework.videoAl}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-play-square"></span> 线上视频分数：
+                        [[${homework.videoScore}]]
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-read"></span> 课后答题总次数：
+                        [[${homework.testSh}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-read"></span> 课后答题完成次数：
+                        [[${homework.testAl}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-read"></span> 课后答题分数：
+                        [[${homework.testScore}]]
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-book"></span> 纸质作业总次数：
+                        [[${homework.wriSh}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-book"></span> 纸质作业完成次数：
+                        [[${homework.wriAl}]]
+                    </div>
+                </td>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-book"></span> 纸质作业分数：
+                        [[${homework.wriScore}]]
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-tag"></span> 备注：
+                        [[${homework.remark}]]
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="homeworkItem"><span class="layui-icon layui-icon-tag"></span> 状态：
+                        [[${homework.ispassName}]]
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+        <div class="layui-form-item layui-form-text" style="margin-top: 40px">
+
+        </div>
+        <div class="layui-form-item febs-hide" >
+            <button class="layui-btn" lay-submit="" lay-filter="homework-detail-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+        <input type="hidden" name="batchId" id="datail-batchId">
+        <input type="hidden" name="studyTypeId" id="datail-studyTypeId">
+        <input type="hidden" name="identity" id="datail-identity">
+    </form>
+</div>
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form','xmSelect',  'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            homework = [[${homework}]],
+            eamXmSelect,
+            levelSelect;
+        $('#datail-batchId').val(homework.batchId);
+        $('#datail-studyTypeId').val(homework.studyTypeId);
+        $('#datail-identity').val(homework.identity);
+        //学科及成绩遍历
+
+
+        // form.on('submit(entrance-detail-form-submit)', function (data) {
+        //     var data = data.field;
+        //     console.log(data)
+        //         febs.get(ctx + 'entranceScore/', data, function () {
+        //             layer.closeAll();
+        //             febs.alert.success('新增教学计划成功');
+        //             $('#businesses-teachProgram').find('#query').click();
+        //         });
+        //         return false;
+        //
+        //
+        // });
+    })
+</script>

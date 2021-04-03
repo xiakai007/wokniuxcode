@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.OrderitemMapper">
+	<resultMap type="Orderitem" id="odtMap">
+		<association property="orders" column="orderid"
+		select="com.woniu.mappers.OrdersMapper.selectOrdersById">
+		</association>
+		<association property="goods" column="goodsid"
+		select="com.woniu.mappers.GoodsMapper.selectGoodsById">
+		</association>
+	</resultMap>
+	<select id="selectAllOrderitem" resultMap="odtMap">
+		SELECT * FROM orderitem
+	</select>
+</mapper>

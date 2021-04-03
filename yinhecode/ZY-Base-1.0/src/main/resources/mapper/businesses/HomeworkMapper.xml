@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.HomeworkMapper">
+    <select id="getHomeworkList" parameterType="Homework" resultType="Homework">
+        SELECT
+            hom.ID,
+            stu.BATCH_ID AS batchId,
+            bat.BATCH_NAME AS batchName,
+            hom.STUDENT_ID AS studentId,
+            teach.COLLEGE_ID AS collegeId,
+            stu.STU_NAME ,
+            stu.IDENTITY IDENTITY,
+            stu.TEL TEL,
+            coll.`name` AS collegeName,
+            teach.LEVEL_ID levelId,
+            lev.LEVEL_NAME,
+            teach.MAJOR_ID majorId,
+            maj.FULL_NAME AS majorName,
+            collyear.ID yearId,
+            collterm.ID termId,
+            collyear.YEAR_NAME AS yearName,
+            collterm.SEMESTER_NAME AS termName,
+            hom.COURSE_ID courseId,
+            teach.COURSE_NAME AS courseName,
+            hom.VIDEO_SH videoSh,
+            hom.VIDEO_AL videoAl,
+            hom.VIDEO_SCORE videoScore,
+            hom.TEST_SH testSh,
+            hom.TEST_AL testAl,
+            hom.TEST_SCORE testScore,
+            hom.WRI_SH wriSh,
+            hom.WRI_AL wriAl,
+            hom.WRI_SCORE wriScore,
+            hom.ISPASS AS ispass,
+            dic.DETAIL ispassName,
+            hom.REMARK remark
+        FROM
+            t_homework hom,
+            t_student stu,
+            t_college coll,
+            t_level lev,
+            t_major maj,
+            t_college_year collyear,
+            t_college_term collterm,
+            t_batch bat,
+            t_teach_program teach,
+            t_dic dic
+        WHERE
+            hom.STUDENT_ID = stu.ID
+        AND teach.BATCH_ID = bat.ID
+        AND teach.COLLEGE_ID = coll.ID
+        AND teach.LEVEL_ID = lev.ID
+        AND teach.MAJOR_ID = maj.ID
+        AND teach.ABSO_SEM_ID = collterm.ID
+        AND teach.ABSO_YEAR_ID = collyear.ID
+        AND hom.COURSE_ID = teach.ID
+        AND hom.ISPASS = dic.ID
+        <if test="homework.collegeId!=null and homework.collegeId!=''">
+            AND teach.COLLEGE_ID=#{homework.collegeId}
+        </if>
+        <if test="homework.batchId!=null and homework.batchId!=''">
+            AND teach.BATCH_ID=#{homework.batchId}
+        </if>
+        <if test="homework.levelId!=null and homework.levelId!=''">
+            AND teach.LEVEL=#{homework.levelId}
+        </if>
+        <if test="homework.courseId!=null and homework.courseId!=''">
+            AND hom.COURSE_ID=#{homework.courseId}
+        </if>
+        <if test="homework.majorId!=null and homework.majorId!=''">
+            AND maj.ID=#{homework.majorId}
+        </if>
+        <if test="homework.yearId!=null and homework.yearId!=''">
+            AND teach.YEAR_ID=#{homework.yearId}
+        </if>
+        <if test="homework.termId!=null and homework.termId!=''">
+            AND teach.TERM_ID=#{homework.termId}
+        </if>
+        <if test="homework.tel!=null and homework.tel!=''">
+            AND stu.TEL like concat('%',#{homework.tel},'%')
+        </if>
+        <if test="homework.identity!=null and homework.identity!=''">
+            AND a.IDENTITY like concat('%',#{homework.identity},'%')
+        </if>
+        <if test="homework.stuName!=null and homework.stuName!=''">
+            AND stu.STU_NAME like concat('%',#{homework.stuName},'%')
+        </if>
+    </select>
+    <select id="selectTermByStuId" resultType="CollegeTerm" parameterType="int">
+        SELECT
+            c.ID,c.SEMESTER_NAME
+        FROM
+            t_college_term c, t_homework h
+        WHERE
+            h.STUDENT_ID=#{id}
+        AND
+            H.TERM_ID=c.ID
+        ORDER BY
+            ID
+    </select>
+    <select id="selectHomeworkByStuId" parameterType="int" resultType="Homework">
+        SELECT
+            h.COURSE_ID,
+            ttp.COURSE_NAME,
+            h.VIDEO_SH,
+            h.VIDEO_AL,
+            h.VIDEO_SCORE,
+            h.TEST_SH,
+            h.TEST_AL,
+            h.TEST_SCORE,
+            h.WRI_SH,
+            h.WRI_AL,
+            h.WRI_SCORE,
+            h.ISPASS,
+            h.REMARK
+        FROM
+            t_homework h,
+            t_teach_program ttp
+        WHERE
+            h.TERM_ID=#{termId}
+        AND
+            h.STUDENT_ID=#{id}
+        AND
+            h.COURSE_ID=ttp.id
+    </select>
+
+    <select id="countHomeworkDetail" parameterType="Homework" resultType="long">
+        SELECT
+          count( 1 )
+        FROM
+            t_homework hom,
+            t_student stu,
+            t_college coll,
+            t_level lev,
+            t_major maj,
+            t_college_year collyear,
+            t_college_term collterm,
+            t_batch bat,
+            t_teach_program teach,
+            t_dic dic
+        WHERE
+            hom.STUDENT_ID = stu.ID
+        AND teach.BATCH_ID = bat.ID
+        AND teach.COLLEGE_ID = coll.ID
+        AND teach.LEVEL_ID = lev.ID
+        AND teach.MAJOR_ID = maj.ID
+        AND teach.ABSO_SEM_ID = collterm.ID
+        AND teach.ABSO_YEAR_ID = collyear.ID
+        AND hom.COURSE_ID = teach.ID
+        AND hom.ISPASS = dic.ID
+        <if test="homework.collegeId!=null and homework.collegeId!=''">
+            AND teach.COLLEGE_ID=#{homework.collegeId}
+        </if>
+        <if test="homework.batchId!=null and homework.batchId!=''">
+            AND teach.BATCH_ID=#{homework.batchId}
+        </if>
+        <if test="homework.levelId!=null and homework.levelId!=''">
+            AND teach.LEVEL=#{homework.levelId}
+        </if>
+        <if test="homework.courseId!=null and homework.courseId!=''">
+            AND hom.COURSE_ID=#{homework.courseId}
+        </if>
+        <if test="homework.majorId!=null and homework.majorId!=''">
+            AND maj.ID=#{homework.majorId}
+        </if>
+        <if test="homework.yearId!=null and homework.yearId!=''">
+            AND teach.YEAR_ID=#{homework.yearId}
+        </if>
+        <if test="homework.termId!=null and homework.termId!=''">
+            AND teach.TERM_ID=#{homework.termId}
+        </if>
+        <if test="homework.tel!=null and homework.tel!=''">
+            AND stu.TEL like concat('%',#{homework.tel},'%')
+        </if>
+        <if test="homework.identity!=null and homework.identity!=''">
+            AND a.IDENTITY like concat('%',#{homework.identity},'%')
+        </if>
+        <if test="homework.stuName!=null and homework.stuName!=''">
+            AND stu.STU_NAME like concat('%',#{homework.stuName},'%')
+        </if>
+    </select>
+
+    <select id="getLevelListByCollegeId" resultType="Level">
+        SELECT
+        DISTINCT
+            a.LEVEL_ID as ID,
+            b.LEVEL_NAME
+        FROM
+            t_teach_program a,
+            t_level b
+        WHERE
+            a.LEVEL_ID=b.ID
+        AND a.COLLEGE_ID=#{collegeId}
+    </select>
+
+    <select id="getMajorListByIds" resultType="Major">
+        SELECT
+        DISTINCT
+            a.MAJOR_ID as ID,
+            b.FULL_NAME
+        FROM
+            t_teach_program a,
+            t_major b
+        WHERE
+            a.MAJOR_ID=b.ID
+        AND COLLEGE_ID=#{collegeId}
+        AND LEVEL_ID=#{levelId}
+    </select>
+
+    <select id="getCourseNameByIds" resultType="TeachProgram">
+        SELECT
+          ID,
+          COURSE_NAME
+        FROM
+          t_teach_program
+        WHERE
+            COLLEGE_ID=#{collegeId}
+        AND LEVEL_ID=#{levelId}
+        AND MAJOR_ID=#{majorId}
+        AND ABSO_SEM_ID=#{termId}
+    </select>
+
+    <select id="getTermsByLevelId" resultType="CollegeTerm">
+        SELECT ID,SEMESTER_NAME FROM t_college_term
+    </select>
+
+    <select id="getYearByLevelId" resultType="CollegeYear">
+        SELECT ID,YEAR_NAME FROM t_college_year
+    </select>
+    
+    <select id="export" resultType="Homework" parameterType="Homework">
+        SELECT
+            hom.ID,
+            stu.BATCH_ID AS batchId,
+            bat.BATCH_NAME AS batchName,
+            hom.STUDENT_ID AS studentId,
+            teach.COLLEGE_ID AS collegeId,
+            stu.STU_NAME ,
+            stu.IDENTITY IDENTITY,
+            stu.TEL TEL,
+            coll.`name` AS collegeName,
+            teach.LEVEL_ID levelId,
+            lev.LEVEL_NAME,
+            teach.MAJOR_ID majorId,
+            maj.FULL_NAME AS majorName,
+            collyear.ID yearId,
+            collterm.ID termId,
+            collyear.YEAR_NAME AS yearName,
+            collterm.SEMESTER_NAME AS termName,
+            hom.COURSE_ID courseId,
+            teach.COURSE_NAME AS courseName,
+            hom.VIDEO_SH videoSh,
+            hom.VIDEO_AL videoAl,
+            hom.VIDEO_SCORE videoScore,
+            hom.TEST_SH testSh,
+            hom.TEST_AL testAl,
+            hom.TEST_SCORE testScore,
+            hom.WRI_SH wriSh,
+            hom.WRI_AL wriAl,
+            hom.WRI_SCORE wriScore,
+            hom.ISPASS AS ispass,
+            dic.DETAIL ispassName,
+            hom.REMARK remark
+        FROM
+            t_homework hom,
+            t_student stu,
+            t_college coll,
+            t_level lev,
+            t_major maj,
+            t_college_year collyear,
+            t_college_term collterm,
+            t_batch bat,
+            t_teach_program teach,
+            t_dic dic
+        WHERE
+            hom.STUDENT_ID = stu.ID
+        AND teach.BATCH_ID = bat.ID
+        AND teach.COLLEGE_ID = coll.ID
+        AND teach.LEVEL_ID = lev.ID
+        AND teach.MAJOR_ID = maj.ID
+        AND teach.ABSO_SEM_ID = collterm.ID
+        AND teach.ABSO_YEAR_ID = collyear.ID
+        AND hom.COURSE_ID = teach.ID
+        AND hom.ISPASS = dic.ID
+        <if test="homework.collegeId!=null and homework.collegeId!=''">
+            AND teach.COLLEGE_ID=#{homework.collegeId}
+        </if>
+        <if test="homework.batchId!=null and homework.batchId!=''">
+            AND teach.BATCH_ID=#{homework.batchId}
+        </if>
+        <if test="homework.levelId!=null and homework.levelId!=''">
+            AND teach.LEVEL=#{homework.levelId}
+        </if>
+        <if test="homework.courseId!=null and homework.courseId!=''">
+            AND hom.COURSE_ID=#{homework.courseId}
+        </if>
+        <if test="homework.majorId!=null and homework.majorId!=''">
+            AND maj.ID=#{homework.majorId}
+        </if>
+        <if test="homework.yearId!=null and homework.yearId!=''">
+            AND teach.YEAR_ID=#{homework.yearId}
+        </if>
+        <if test="homework.termId!=null and homework.termId!=''">
+            AND teach.TERM_ID=#{homework.termId}
+        </if>
+        <if test="homework.tel!=null and homework.tel!=''">
+            AND stu.TEL like concat('%',#{homework.tel},'%')
+        </if>
+        <if test="homework.identity!=null and homework.identity!=''">
+            AND a.IDENTITY like concat('%',#{homework.identity},'%')
+        </if>
+        <if test="homework.stuName!=null and homework.stuName!=''">
+            AND stu.STU_NAME like concat('%',#{homework.stuName},'%')
+        </if>
+    </select>
+
+    <select id="findHomeworkById" parameterType="Integer" resultType="Homework">
+        SELECT
+            hom.ID,
+            stu.BATCH_ID AS batchId,
+            bat.BATCH_NAME AS batchName,
+            hom.STUDENT_ID AS studentId,
+            teach.COLLEGE_ID AS collegeId,
+            stu.STU_NAME ,
+            stu.IDENTITY IDENTITY,
+            stu.TEL TEL,
+            coll.`name` AS collegeName,
+            teach.LEVEL_ID levelId,
+            lev.LEVEL_NAME,
+            teach.MAJOR_ID majorId,
+            maj.FULL_NAME AS majorName,
+            collyear.ID yearId,
+            collterm.ID termId,
+            collyear.YEAR_NAME AS yearName,
+            collterm.SEMESTER_NAME AS termName,
+            hom.COURSE_ID courseId,
+            teach.COURSE_NAME AS courseName,
+            hom.VIDEO_SH videoSh,
+            hom.VIDEO_AL videoAl,
+            hom.VIDEO_SCORE videoScore,
+            hom.TEST_SH testSh,
+            hom.TEST_AL testAl,
+            hom.TEST_SCORE testScore,
+            hom.WRI_SH wriSh,
+            hom.WRI_AL wriAl,
+            hom.WRI_SCORE wriScore,
+            hom.ISPASS AS ispass,
+            dic.DETAIL ispassName,
+            hom.REMARK remark
+        FROM
+            t_homework hom,
+            t_student stu,
+            t_college coll,
+            t_level lev,
+            t_major maj,
+            t_college_year collyear,
+            t_college_term collterm,
+            t_batch bat,
+            t_teach_program teach,
+            t_dic dic
+        WHERE
+            hom.STUDENT_ID = stu.ID
+        AND teach.BATCH_ID = bat.ID
+        AND teach.COLLEGE_ID = coll.ID
+        AND teach.LEVEL_ID = lev.ID
+        AND teach.MAJOR_ID = maj.ID
+        AND teach.ABSO_SEM_ID = collterm.ID
+        AND teach.ABSO_YEAR_ID = collyear.ID
+        AND hom.COURSE_ID = teach.ID
+        AND hom.ISPASS = dic.ID
+        AND hom.ID=#{id}
+    </select>
+
+    <insert id="addHomeworkList" parameterType="list">
+        INSERT INTO t_homework (STUDENT_ID,YEAR_ID,TERM_ID,COURSE_ID,VIDEO_SH,VIDEO_AL,
+        VIDEO_SCORE,TEST_SH,TEST_AL,TEST_SCORE,WRI_SH,WRI_AL,WRI_SCORE,ISPASS,REMARK) VALUES
+        <foreach collection="homeworkList" index="index" item="item" separator=",">
+            (
+            #{item.studentId},#{item.yearId},#{item.termId},
+            #{item.courseId},#{item.videoSh},#{item.videoAl},#{item.videoScore},#{item.testSh},#{item.testAl},
+            #{item.testScore},#{item.wriSh},#{item.wriAl},#{item.wriScore},#{item.ispass},#{item.remark}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="addErrorLogList" parameterType="list">
+        INSERT INTO t_error_log VALUES
+        <foreach collection="errorLogList" index="index" item="item" separator=",">
+            (
+            null,#{item.errorColumn},#{item.errorRow},#{item.reason},
+            #{item.createTime},#{item.fileName},#{item.remark}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getErrorLogs" resultType="ErrorLog">
+        select * from t_error_log order by CREATE_TIME desc
+    </select>
+
+    <select id="getErrorLogsDetail" resultType="Long">
+        select count(1) from t_error_log order by CREATE_TIME desc
+    </select>
+
+    <delete id="deleteErrorLogs" >
+        delete from t_error_log
+    </delete>
+
+    <select id="getStudentIdByPrimery" parameterType="Homework" resultType="Integer">
+        SELECT stu.ID FROM t_student stu,t_batch bat,t_dic dic
+            WHERE stu.BATCH_ID=bat.ID
+            AND stu.STUDY_TYPE_ID=dic.ID
+            AND bat.BATCH_NAME=#{homework.batchName}
+            AND dic.DETAIL=#{homework.studyType}
+            AND stu.IDENTITY=#{homework.identity}
+    </select>
+
+    <select id="getCourseIdByCourseName" parameterType="Homework" resultType="Integer">
+        SELECT ID FROM t_teach_program
+            WHERE BATCH_ID=#{homework.batchId}
+            AND COLLEGE_ID=#{homework.collegeId}
+            AND MAJOR_ID=#{homework.majorId}
+            AND LEVEL_ID=#{homework.levelId}
+            AND ABSO_SEM_ID=#{homework.termId}
+            AND COURSE_NAME=#{homework.courseName}
+    </select>
+
+    <select id="checkUniqueByHomework" parameterType="Homework" resultType="Homework">
+        SELECT ID FROM t_homework where STUDENT_ID=#{homework.studentId}
+            AND YEAR_ID=#{homework.yearId}
+            AND TERM_ID=#{homework.termId}
+            AND COURSE_ID=#{homework.courseId}
+    </select>
+
+    <select id="getIspassByIspassName" parameterType="String" resultType="Integer">
+        SELECT ID FROM t_dic WHERE TYPE='homework_ispass' AND DETAIL=#{ispassName}
+    </select>
+
+</mapper>

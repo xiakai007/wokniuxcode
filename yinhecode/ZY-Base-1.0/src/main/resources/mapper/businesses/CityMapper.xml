@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.CityMapper">
+    <sql id="findCityByPidSql">
+        SELECT
+          ID,
+          CITY_NAME cityname,
+          PID pid,
+          CID cid
+        FROM
+        t_city
+        WHERE 1 = 1
+        <if test="pid != null and pid != 0">
+            AND PID = #{pid}
+        </if>
+    </sql>
+    <sql id="findCityByidSql">
+       SELECT
+          ID,
+          CITY_NAME cityname,
+          PID pid,
+          CID cid
+        FROM
+        t_city
+        WHERE 1 = 1
+        AND ID = #{id}
+    </sql>
+
+    <select id="findCityByPid" resultType="City" parameterType="String">
+        <include refid="findCityByPidSql"></include>
+    </select>
+    <select id="findCityByid" resultType="city" parameterType="int">
+        <include refid="findCityByidSql"></include>
+    </select>
+	 <select id="findAllCity" resultType="City">
+        SELECT
+          ID,
+          CITY_NAME cityname,
+          PID pid,
+          CID cid
+        FROM
+        t_city
+    </select>
+</mapper>

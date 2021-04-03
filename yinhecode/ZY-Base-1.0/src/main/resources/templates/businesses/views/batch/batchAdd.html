@@ -1,0 +1,58 @@
+<style>
+    #batch-add {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="batch-add">
+    <form class="layui-form" action="" lay-filter="batch-add-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">批次：</label>
+            <div class="layui-input-block" style="width: 400px">
+                <input type="datetime" name="batchName" minlength="4" maxlength="5"
+                       autocomplete="off" class="layui-input"
+                placeholder="批次格式：2020或者2020春/秋">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">状态：</label>
+            <div class="layui-input-inline">
+                <select name="status" id="status">
+                    <option value="">请选择状态</option>
+                    <option value="y">启用</option>
+                    <option value="n">禁用</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="batch-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn " id="reset"></button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        form.on('submit(batch-add-form-submit)', function (data) {
+            febs.post(ctx + 'batch/batch', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('新增批次成功');
+                $('#businesses-batch').find('#query').click();
+            });
+
+        });
+
+    });
+</script>

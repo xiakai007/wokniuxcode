@@ -1,0 +1,353 @@
+<!--班主任学生管理学生列表页-->
+<div class="layui-fluid layui-anim febs-anim" id="recruitbusinesses-student" lay-title="我的学生">
+    <div class="layui-row febs-container">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body febs-table-full">
+                    <form class="layui-form layui-table-form" lay-filter="college-table-form">
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">批量查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">批次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="batchId" id="recbatch" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">院校</label>
+                                        <div class="layui-input-inline">
+                                            <select name="collegeId" id="reccollege" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">层次</label>
+                                        <div class="layui-input-inline">
+                                            <select name="level" id="recruitStu-stuidlevel" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">专业</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="recmajor" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">阶段</label>
+                                        <div class="layui-input-inline">
+                                            <select name="majorId" id="recruitStu-stuidstage" lay-search="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="">
+                            <legend style="font-size: 15px; font-weight: bolder;">精准查询</legend>
+                        </fieldset>
+                        <div class="layui-row">
+                            <div class="layui-col-md10">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="stuName" autocomplete="off" class="layui-input"
+                                                   id="recruitstuidstuname">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">身份证</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="identity" autocomplete="off" class="layui-input"
+                                                   id="recruitstuididentity" maxlength="18" lay-verify="range">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label layui-form-label-sm">电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="tel" autocomplete="off" class="layui-input"
+                                                   id="recruitstuidtel" lay-verify="number|range" maxlength="11">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md2 layui-col-sm12 layui-col-xs12 table-action-area">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="recruitstuquery">
+                                    <i class="layui-icon">&#xe848;</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-green-plain table-action"
+                                     id="recruitstureset">
+                                    <i class="layui-icon">&#xe79b;</i>
+                                </div>
+                            </div>
+                        </div>
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                            <div class="layui-row">
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="recruitmovtorecycle">
+                                    <i class="layui-icon layui-icon-delete">移入回收站</i>
+                                </div>
+                                <div class="layui-btn layui-btn-sm layui-btn-primary febs-button-blue-plain table-action"
+                                     id="recruitoverdue">
+                                    <i class="layui-icon layui-icon-timeout">逾期毕业</i>
+
+                                </div>
+                            </div>
+                        </blockquote>
+                    </form>
+                    <table lay-filter="recruitstudentTable" lay-data="{id: 'recruitstudentTable'}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="recruit-option">
+    <a lay-event="detail" title="查看详情"><i
+            class="layui-icon febs-edit-area febs-green">&#xe7a5;</i></a>
+    <a lay-event="exchange" title="更换专业"><i class="layui-icon febs-edit-area febs-red">&#xe86f;</i></a>
+    <a lay-event="backCollege" title="复学"><i class="layui-icon febs-edit-area febs-red">&#xe892;</i></a>
+</script>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['dropdown', 'jquery', 'form', 'table', 'febs', 'xmSelect'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            form = layui.form,
+            table = layui.table,
+            dropdown = layui.dropdown,
+            $view = $('#recruitbusinesses-student'),
+            $query = $view.find('#recruitstuquery'),
+            $reset = $view.find('#recruitstureset'),
+            $searchForm = $view.find('form'),
+            sortObject = {field: 'createDate', type: null},
+            batchSelect,
+            majorSelect,
+            eamXmSelect,
+            stuidstageSelect,
+            stuidlevelSelect,
+            tableIns;
+
+        form.render();
+        initTable();//大列表
+
+        //批次
+        febs.get('/student/batchList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recbatch").append(new Option(list[i].batchName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //院校
+        febs.get('/student/collegeList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#reccollege").append(new Option(list[i].name, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //层次
+        febs.get('/student/stuLevelList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recruitStu-stuidlevel").append(new Option(list[i].levelName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //专业
+        febs.get('/student/majorList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recmajor").append(new Option(list[i].fullName, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //专业
+        febs.get('/student/stuStageList', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                $("#recruitStu-stuidstage").append(new Option(list[i].detail, list[i].id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        table.on('tool(recruitstudentTable)', function (obj) {
+            let data = obj.data,
+                layEvent = obj.event;
+            if (layEvent === 'detail') {
+                febs.modal.view('学生信息', 'recruitStudent/detail/' + data.id, {
+                    area: ['70%', '80%'],
+                    tipsMore: true
+                });
+            }
+            if (layEvent === 'exchange') {
+                febs.modal.open('更换学生专业', 'stuMajor/update/' + data.id, {
+                    area: $(window).width() <= 750 ? '90%' : ['30%', '60%'],
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        febs.modal.confirm('提示', '是否确定更换专业？', function () {
+                            $('#stuMajor-update').find('#submit').trigger('click');
+                        })
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+            if (layEvent === 'backCollege') {
+                febs.modal.view('复学', 'student/backCollege/' + data.id, {
+                    area: $(window).width() <= 750 ? ['95%', '85%'] : ['40%', '85%'],
+                    btn: ['提交', '取消'],
+                    yes: function (index, layero) {
+                        $('#backCollege').find('#submit').trigger('click');
+                    },
+                    btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+            }
+        });
+
+        table.on('sort(recruitstudentTable)', function (obj) {
+            sortObject = obj;
+            tableIns.reload({
+                initSort: obj,
+                where: $.extend(getQueryParams(), {
+                    field: obj.field,
+                    order: obj.type
+                })
+            });
+        });
+
+        $query.on('click', function () {
+            let params = $.extend(getQueryParams(), {field: sortObject.field, order: sortObject.type});
+            tableIns.reload({where: params, page: {curr: 1}});
+        });
+
+        $(".layui-input").keydown(function (e) {//当按下按键时
+            if (e.which == 13) {//.which属性判断按下的是哪个键，回车键的键位序号为13
+                $query.click();
+            }
+        });
+
+        $reset.on('click', function () {
+            $searchForm[0].reset();
+            sortObject.type = 'null';
+            tableIns.reload({where: getQueryParams(true), page: {curr: 1}, initSort: sortObject});
+        });
+
+        function initTable() {
+            tableIns = febs.table.init({
+                elem: $view.find('table'),
+                id: 'recruitstudentTable',
+                url: ctx + 'recruitStudent/list',
+                done: function (res, curr, count) {
+                    $("table").css("width", "100%");
+                },
+                width:"100%",
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'id', title: '序号', minWidth: 80},
+                    {field: 'stuName', title: '姓名', minWidth: 80},
+                    {field: 'collegeName', title: '院校', minWidth: 80},
+                    {field: 'batchName', title: '批次', minWidth: 80},
+                    {field: 'levelname', title: '层次', minWidth: 80},
+                    {
+                        field: 'stageId', title: '阶段', width: 110,
+                        templet: function (obj) {
+                            var exep;
+                            if (obj.stageId == 14) {
+                                exep = '考前';
+                            } else if (obj.stageId == 15) {
+                                exep = '在籍';
+                            } else if (obj.stageId == 16) {
+                                exep = '逾期毕业';
+                            } else if (obj.stageId == 17) {
+                                exep = '已毕业';
+                            }
+                            return exep;
+                        }
+                    },
+                    {field: 'majorName', title: '专业', minWidth: 80},
+                    {field: 'className', title: '班级名称', minWidth: 80},
+                    {field: 'userName', title: '班主任', minWidth: 80},
+                    {field: 'tel', title: '电话', minWidth: 80},
+                    {field: 'identity', title: '身份证', minWidth: 80},
+                    {title: '操作', toolbar: '#recruit-option', minWidth: 140},
+                ]],
+
+            });
+        }
+
+        function getQueryParams(flag) {
+            let params = $searchForm.serializeJson();
+            return params;
+        }
+
+        $("#recruitmovtorecycle").click(function () {
+            let checkStatus = table.checkStatus('recruitstudentTable');
+            let studentIds = [];
+            layui.each(checkStatus.data, function (key, item) {
+                studentIds.push(item.id)
+            });
+            if (studentIds.length > 0) {
+                febs.modal.confirm('提示', '确定移入回收站吗？', function () {
+                    recycleStudent(studentIds.join(','));
+                });
+            } else {
+                febs.alert.warn('请选择学生!');
+            }
+        });
+
+        function recycleStudent(studentIds) {
+            febs.get(ctx + 'recruitStudent/moveToRecycle/' + studentIds, null, function () {
+                febs.alert.success('学生回收成功');
+                $query.click();
+            });
+        };
+
+        $("#recruitoverdue").click(function () {
+            let checkStatus = table.checkStatus('recruitstudentTable');
+            let studentIds = [];
+            layui.each(checkStatus.data, function (key, item) {
+                studentIds.push(item.id)
+            });
+            if (studentIds.length > 0) {
+                febs.modal.confirm('提示', '确定让其进入“逾期毕业”阶段吗？', function () {
+                    recruitoverdueSet(studentIds.join(','));
+                });
+            } else {
+                febs.alert.warn('请选择学生!');
+            }
+        });
+
+        function recruitoverdueSet(studentIds) {
+            febs.get(ctx + 'recruitStudent/overdueSet/' + studentIds, null, function () {
+                febs.alert.success('让其进入“逾期毕业”阶段成功!');
+                $query.click();
+            });
+        };
+    });
+</script>

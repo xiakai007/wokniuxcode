@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.mappers.StudentMapper">
+	<resultMap type="Student" id="stuMap">
+		<id property="id" column="id"/>
+		<collection property="teachers" column="id"
+		select="com.woniu.mappers.TeacherMapper.selectTeacherBySid">
+		</collection>
+	</resultMap>
+	<select id="selectStudentByTid" parameterType="Integer" resultType="Student">
+		SELECT * FROM student WHERE id IN(
+			SELECT sid FROM tea_stu WHERE tid=#{tid}
+		)
+	</select>
+	<select id="selectStudentBySno" parameterType="String" resultMap="stuMap">
+		SELECT * FROM student WHERE sno=#{sno}
+	</select>
+</mapper>

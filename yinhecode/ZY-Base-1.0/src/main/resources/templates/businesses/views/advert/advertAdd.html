@@ -1,0 +1,334 @@
+<div class="layui-row layui-col-space8 febs-container">
+    <div class="layui-col-md5 layui-col-sm6 layui-col-xs12">
+        <div id="view-phone-advert">
+            <div class="phone">
+                <div class="phone_bg1">
+                    <div class="phone_bg2">
+                        <div class="phone_bg3">
+                            <div class="phone_lh">
+                                <div class="phone_lh_con">
+                                    <div class="lh_tiao"></div>
+                                    <div class="lh_yuan"></div>
+                                </div>
+                            </div>
+                            <span class="date_time">00:00</span>
+                            <div class="states">
+                                <ul class="ul_xinhao">
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+
+                                <div class="wifi1">
+                                    <div class="wifi2">
+                                        <div class="wifi3">
+                                            <div class="wifi4">
+                                                <div class="wifi5">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="dianliang"></div>
+                            </div>
+                            <div id="advert_preview" class="advert_content_phone" >
+                            </div>
+                            <div class="phone_home"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="jingyin"></div>
+                <div class="yl_jia"></div>
+                <div class="yl_jian"></div>
+                <div class="suoping"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md7 layui-col-sm6 layui-col-xs12" style="border-left: 20px solid #FCFCFC;">
+        <div class="layui-fluid" id="advert-add">
+            <form class="layui-form" action="" id="addform" lay-filter="college-add-form">
+                <div class="layui-form-item febs-hide">
+                    <label class="layui-form-label febs-form-item-require">用户id：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="createUserId" data-th-value="${userId}">
+                    </div>
+                </div>
+                <div class="layui-form-item febs-hide">
+                    <label class="layui-form-label febs-form-item-require febs-hide">广告状态：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="statusId" value="3" id="status_Id">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label febs-form-item-require">广告标题：</label>
+                    <div class="layui-input-block">
+                        <input id="add_title" type="text" name="title" minlength="2" maxlength="20"
+                               lay-verify="range|name" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label febs-form-item-require">广告图片：</label>
+                            <div class="layui-inline">
+                                <div class="layui-upload">
+                                    <button type="button" style="background-color: white;border: 0 solid white;margin-left: 20px;margin-top: 5px;" id="advertimgupload">
+                                        <i class="layui-icon febs-edit-area febs-red">&#xe891;</i><span style="color: #0a6aa1">上传图片</span></button>
+                                </div>
+                            </div>
+                            <div class="layui-input-inline">
+                                <input name="imgUrl" type="hidden" id="imgUrl"
+                                       autocomplete="off" class="layui-input" style="width: 360px;" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-upload-list" style="margin-left: 110px;">
+                    <img class="layui-upload-img" id="demo1">
+                    <p id="demoText"></p>
+                </div>
+
+                <div class="layui-row">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">广告视频：</label>
+                            <div class="layui-inline">
+                                <div class="layui-upload">
+                                    <button type="button" style="background-color: white;border: 0 solid white;margin-left: 20px;margin-top: 5px;" id="testVideo">
+                                        <i class="layui-icon febs-edit-area febs-red">&#xe891;</i><span style="color: #0a6aa1">上传视频</span></button>
+                                </div>
+                            </div>
+                            <div class="layui-input-inline">
+                                <input name="videoUrl" type="hidden" id="videoUrl"
+                                       autocomplete="off" class="layui-input" style="width: 360px;" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-left: 110px;">
+                    <div class="layui-upload">
+                        <div class="layui-upload-list">
+                            <video class="layui-upload-video" src="" id="video1" controls="controls" width="360px" height="235px">
+                            </video>
+                            <input type="hidden" id="myvideo" name="videoUrl">
+                            <p id="videoText"></p >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公司：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="company" data-th-value="全务教育" minlength="4" maxlength="100"
+                               autocomplete="off" class="layui-input" readonly>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">创建人：</label>
+                    <div class="layui-input-block">
+                        <input id="add_createUser" type="text" name="username" data-th-value="${username}" minlength="2" maxlength="100"
+                               autocomplete="off" class="layui-input" readonly>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">创建时间：</label>
+                    <div class="layui-input-block">
+                        <input type="text"  disabled="true" name="time" id="currentTime" minlength="4" maxlength="100"
+                               autocomplete="off" class="layui-input" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label febs-form-item-require">广告内容：</label>
+                    <div class="layui-input-block">
+                        <script lay-verify="range|name" type="text/plain" name="content" id="myEditor">
+                        </script>
+                    </div>
+                </div>
+                <div class="layui-form-item febs-hide">
+                    <button class="layui-btn" lay-submit="" lay-filter="college-add-form-submit" id="advert-add-submit"></button>
+                    <button type="reset" class="layui-btn" id="reset"></button>
+                    <button type="button" class="layui-btn" id="reset_time"></button>
+                    <button type="button" id="advert_phone_btn">xxx</button>
+                </div>
+            </form>
+            <input type="hidden" id="cur_date">
+            <input type="hidden" id="cur_time">
+        </div>
+    </div>
+</div>
+<!--&lt;!&ndash; 实例化编辑器 &ndash;&gt;-->
+<!--<script type="text/javascript">-->
+    <!--var ue = UE.getEditor('myEditor');-->
+<!--</script>-->
+
+<script type="text/javascript" >
+    layui.use(['febs', 'form','xmSelect', 'validate','laydate','upload'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            upload = layui.upload,
+            laydate = layui.laydate,
+            validate = layui.validate,
+            ue = UE.getEditor('myEditor');
+
+        let imgView = '';
+
+        form.verify(validate);
+        resettime();
+        form.render();
+        advertviewbtn();
+        function resettime() {
+            $("#reset_time").click(function () {
+                ue.setContent("");
+                $(".date_time").html("00:00");
+                $("#advert_preview").html("");
+                laydate.render({
+                    elem: '#currentTime',
+                    type: 'datetime',
+                    value: new Date() ,
+                    done: function(value, date){}
+                });
+            });
+        }
+        laydate.render({
+            elem: '#currentTime',
+            type: 'datetime',
+            value: new Date() ,
+            done: function(value, date){}
+        });
+        laydate.render({
+            elem: '#cur_date',
+            type: 'date',
+            value: new Date() ,
+            done: function(value, date){}
+        });
+        laydate.render({
+            elem: '#cur_time',
+            type: 'time',
+            format: 'HH:mm',
+            value: new Date() ,
+            done: function(value, date){}
+        });
+
+        //普通图片上传
+        const uploadInst = upload.render({
+            elem: '#advertimgupload'
+            , url: ctx + 'upload' //改成您自己的上传接口
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('width', '360px');
+                    $('#demo1').attr('height', '235px');
+                    imgView = result;
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //上传成功
+                if (res.code = 200) {
+                    $('#imgUrl').val(res.url)
+                    return layer.msg("上传成功")
+                }
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                const demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+        //视频上传
+        const uploadVideo = upload.render({
+            elem: '#testVideo'
+            , url: ctx + 'upload' //改成您自己的上传接口
+            , method: 'post'
+            , auto: false
+            , accept: 'video'
+            , exts: 'mp4|avi'
+            , choose: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#video1').attr('src', result);
+                    obj.upload(index, file);
+                });
+            }
+            , done: function (res) {
+                //上传成功
+                if (res.code == 200) {
+                    layer.msg('上传视频成功');
+                    $("#myvideo").val(res.url);
+                }
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                const demoText = $('#videoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadVideo.upload();
+                });
+            }
+        });
+
+        form.on('submit(college-add-form-submit)', function (data) {
+            if($("#imgUrl").val()==""){
+                febs.alert.warn('未选择广告图片');
+               return false;
+            }
+
+
+            febs.post(ctx + 'advert/add', data.field, function () {
+                layer.closeAll();
+                febs.alert.success('新增广告成功');
+                $('#businesses-advert').find('#query').click();
+            });
+            return false;
+        });
+        function advertviewbtn() {
+            $("#advert_phone_btn").click(function () {
+                previewrender();
+            });
+        }
+
+        //当前时间： HH:mm
+        function currentTime(){
+            laydate.render({
+                elem: '#cur_time',
+                type: 'time',
+                format: 'HH:mm',
+                value: new Date() ,
+                done: function(value, date){}
+            });
+            const time = $("#cur_time").val();
+            $(".date_time").html(time);
+        }
+        //广告预览渲染
+        function previewrender() {
+            let title = $("#add_title").val();
+            if(title==""){
+                febs.alert.warn('广告标题不能为空！');
+                return false;
+            }
+            if(imgView==""){
+                febs.alert.warn('广告图片不能为空！');
+                return false;
+            }
+            let createUser = $("#add_createUser").val();
+            const curdate = $("#cur_date").val();
+            const content = ue.getContent();
+            currentTime();
+            let str = "";
+            str = "<div align='center' style='margin-bottom: 10px;'><span>广告详情</span></div>\n" +
+                "        <div><span style='font-weight: bold;font-size: 20px;'>"+title+"</span></div>\n" +
+                "        <div style='margin-top: 15px;margin-bottom: 5px;'><span style='margin-right: 40px;'>全务教育</span><span style='margin-left: 60px;'>"+createUser+"</span><span style='margin-left: 70px;'>"+curdate+"</span></div>\n" +
+                "        <div align='center'><img src="+imgView+" width='360px;'height='235px;' /></div>\n" +
+                "        <div style='margin-top: 5px;'>"+content+"</div>"
+            $("#advert_preview").html(str);
+        }
+    });
+</script>

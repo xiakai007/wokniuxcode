@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.zy.base.businesses.mapper.TeachProgramMapper">
+
+    <sql id="findLevelNameSql">
+        SELECT DISTINCT
+            c.id,
+            pro.COLLEGE_ID,
+            pro.LEVEL_ID,
+            l.LEVEL_NAME as level
+        FROM
+            t_college c
+                LEFT JOIN t_teach_program pro ON pro.COLLEGE_ID = c.id
+                LEFT JOIN t_level l ON l.id = pro.LEVEL_ID
+        WHERE pro.COLLEGE_ID=#{collegeId}
+    </sql>
+
+    <sql id="findMajorNameSql">
+        SELECT DISTINCT
+            c.id,
+            pro.COLLEGE_ID,
+            pro.LEVEL_ID,
+            l.LEVEL_NAME,
+            pro.MAJOR_ID,
+            m.FULL_NAME AS majorName
+        FROM
+            t_college c
+                LEFT JOIN t_teach_program pro ON pro.COLLEGE_ID = c.id
+                LEFT JOIN t_level l ON l.id = pro.LEVEL_ID
+                LEFT JOIN t_major m ON m.id = pro.MAJOR_ID
+        WHERE
+            pro.COLLEGE_ID = #{collegeId} and pro.LEVEL_ID=#{levelId}
+    </sql>
+    <select id="findLevelName" parameterType="integer" resultType="cc.zy.base.businesses.entity.TeachProgram">
+        <include refid="findLevelNameSql"></include>
+    </select>
+    <select id="getMajorName" parameterType="integer" resultType="cc.zy.base.businesses.entity.TeachProgram">
+        <include refid="findMajorNameSql"></include>
+    </select>
+
+    <sql id="countTeachProgramSql" >
+        SELECT
+        COUNT(1)
+        FROM
+            t_teach_program teach
+        WHERE 1 = 1
+        <if test=" teachProgram.batchId != null and teachProgram.batchId != ''">
+            AND teach.BATCH_ID = #{teachProgram.batchId}
+        </if>
+        <if test="teachProgram.levelId != null and teachProgram.levelId != ''">
+            AND teach.LEVEL_ID = #{teachProgram.levelId}
+        </if>
+        <if test="teachProgram.typeId != null and teachProgram.typeId != ''">
+            AND teach.TYPE_ID = #{teachProgram.typeId}
+        </if>
+        <if test="teachProgram.modeId != null and teachProgram.modeId != ''">
+            AND teach.MODE_ID = #{teachProgram.modeId}
+        </if>
+        <if test="teachProgram.collegeId != null and teachProgram.collegeId != ''">
+            AND teach.COLLEGE_ID = #{teachProgram.collegeId}
+        </if>
+        <if test="teachProgram.majorId != null and teachProgram.majorId != ''">
+            AND teach.MAJOR_ID = #{teachProgram.majorId}
+        </if>
+        <if test="teachProgram.majorId != null and teachProgram.majorId != ''">
+            AND teach.MAJOR_ID = #{teachProgram.majorId}
+        </if>
+        <if test="teachProgram.schoolingId != null and teachProgram.schoolingId != ''">
+            AND teach.SCHOOLING_ID = #{teachProgram.schoolingId}
+        </if>
+        <if test="teachProgram.absoYearId != null and teachProgram.absoYearId != ''">
+            AND teach.ABSO_YEAR_ID = #{teachProgram.absoYearId}
+        </if>
+        <if test="teachProgram.absoSemId != null and teachProgram.absoSemId != ''">
+            AND teach.ABSO_SEM_ID = #{teachProgram.absoSemId}
+        </if>
+        <if test="teachProgram.courseName != null and teachProgram.courseName != ''">
+            AND teach.COURSE_NAME = #{teachProgram.courseName}
+        </if>
+        AND teach.STATUS  = 1
+    </sql>
+
+    <sql id="findTeachProgramDetailSql">
+        SELECT
+            teach.ID id,
+            teach.BATCH_ID batchId,
+            bat.BATCH_NAME batchName,
+            teach.LEVEL_ID levelId,
+            lev.`LEVEL_NAME` level,
+            teach.TYPE_ID typeId,
+            sub.FULL_NAME typeName,
+            teach.MODE_ID modeId,
+            dic1.detail studyMode,
+            teach.COLLEGE_ID collegeId,
+            coll.name collegeName,
+            teach.SCHOOLING_ID schoolingId,
+            dic2.detail school,
+            teach.ABSO_YEAR_ID absoYearId,
+            collyear.YEAR_NAME year,
+            teach.ABSO_SEM_ID absoSemId,
+            collterm.SEMESTER_NAME semester,
+            teach.MAJOR_ID majorId,
+            maj.FULL_NAME majorName,
+            teach.COURSE_NAME courseName,
+            teach.INFO info,
+            bat.STATUS bStatus
+        FROM
+            t_teach_program teach
+        LEFT JOIN t_batch bat ON (teach.BATCH_ID=bat.ID)
+        LEFT JOIN t_level lev ON (teach.LEVEL_ID=lev.ID)
+        LEFT JOIN t_subject_category sub ON (sub.ID=teach.TYPE_ID)
+        LEFT JOIN t_dic dic1 ON (dic1.id=teach.MODE_ID)
+        LEFT JOIN t_college coll ON (coll.id=teach.COLLEGE_ID)
+        LEFT JOIN t_dic dic2 ON (dic2.id=teach.SCHOOLING_ID)
+        LEFT JOIN t_college_year collyear ON (collyear.id=teach.ABSO_YEAR_ID)
+        LEFT JOIN t_college_term collterm ON (collterm.id=teach.ABSO_SEM_ID)
+        LEFT JOIN t_major maj ON (maj.ID=teach.MAJOR_ID)
+        WHERE 1 = 1
+        <if test=" teachProgram.batchId != null and teachProgram.batchId != ''">
+            AND teach.BATCH_ID = #{teachProgram.batchId}
+        </if>
+        <if test="teachProgram.levelId != null and teachProgram.levelId != ''">
+            AND teach.LEVEL_ID = #{teachProgram.levelId}
+        </if>
+        <if test="teachProgram.typeId != null and teachProgram.typeId != ''">
+            AND teach.TYPE_ID = #{teachProgram.typeId}
+        </if>
+        <if test="teachProgram.modeId != null and teachProgram.modeId != ''">
+            AND teach.MODE_ID = #{teachProgram.modeId}
+        </if>
+        <if test="teachProgram.collegeId != null and teachProgram.collegeId != ''">
+            AND teach.COLLEGE_ID = #{teachProgram.collegeId}
+        </if>
+        <if test="teachProgram.majorId != null and teachProgram.majorId != ''">
+            AND teach.MAJOR_ID = #{teachProgram.majorId}
+        </if>
+        <if test="teachProgram.schoolingId != null and teachProgram.schoolingId != ''">
+            AND teach.SCHOOLING_ID = #{teachProgram.schoolingId}
+        </if>
+        <if test="teachProgram.majorId != null and teachProgram.majorId != ''">
+            AND teach.MAJOR_ID = #{teachProgram.majorId}
+        </if>
+        <if test="teachProgram.absoYearId != null and teachProgram.absoYearId != ''">
+            AND teach.ABSO_YEAR_ID = #{teachProgram.absoYearId}
+        </if>
+        <if test="teachProgram.absoSemId != null and teachProgram.absoSemId != ''">
+            AND teach.ABSO_SEM_ID = #{teachProgram.absoSemId}
+        </if>
+        <if test="teachProgram.courseName != null and teachProgram.courseName != ''">
+            AND teach.COURSE_NAME = #{teachProgram.courseName}
+        </if>
+        AND bat.STATUS = 'y'
+        AND teach.STATUS = 1
+    </sql>
+
+    <select id="countTeachProgramDetail" resultType="long">
+        <include refid="countTeachProgramSql"/>
+    </select>
+    <select id="findTeachProgramDetailPage" resultType="teachProgram">
+        <include refid="findTeachProgramDetailSql"/>
+    </select>
+    <select id="findTeachProgramDetail" resultType="teachProgram">
+        <include refid="findTeachProgramDetailSql"/>
+    </select>
+    
+    <update id="updateStatus">
+        UPDATE
+          t_teach_program
+        SET
+          `STATUS`= 0
+        WHERE
+          ID = #{id}
+    </update>
+    
+    <update id="updateTeachPrograms" parameterType="teachProgram">
+        UPDATE
+          t_teach_program
+        SET
+          COLLEGE_ID=#{teachProgram.collegeId},
+          LEVEL_ID=#{teachProgram.levelId},
+          TYPE_ID=#{teachProgram.typeId},
+          MAJOR_ID=#{teachProgram.majorId},
+          MODE_ID=#{teachProgram.modeId},
+          SCHOOLING_ID=#{teachProgram.schoolingId},
+          ABSO_YEAR_ID=#{teachProgram.absoYearId},
+          ABSO_SEM_ID=#{teachProgram.absoSemId},
+          COURSE_NAME=#{teachProgram.courseName},
+          STATUS=1
+        WHERE
+          ID = #{teachProgram.id}
+    </update>
+    
+    <update id="updateInfo">
+        UPDATE
+          t_teach_program
+        SET
+          INFO=#{info}
+        WHERE
+          ID = #{id}
+    </update>
+    
+    <select id="findById" parameterType="Integer" resultType="teachProgram">
+        SELECT
+            teach.ID id,
+            teach.BATCH_ID batchId,
+            bat.BATCH_NAME batchName,
+            teach.LEVEL_ID levelId,
+            lev.`LEVEL_NAME` level,
+            teach.TYPE_ID typeId,
+            sub.FULL_NAME typeName,
+            teach.MODE_ID modeId,
+            dic1.detail studyMode,
+            teach.COLLEGE_ID collegeId,
+            coll.name collegeName,
+            teach.SCHOOLING_ID schoolingId,
+            dic2.detail school,
+            teach.ABSO_YEAR_ID absoYearId,
+            collyear.YEAR_NAME year,
+            teach.ABSO_SEM_ID absoSemId,
+            collterm.SEMESTER_NAME semester,
+            teach.MAJOR_ID majorId,
+            maj.FULL_NAME majorName,
+            teach.COURSE_NAME courseName,
+            teach.INFO info,
+            bat.STATUS bStatus
+        FROM
+            t_teach_program teach
+        LEFT JOIN t_batch bat ON (teach.BATCH_ID=bat.ID)
+        LEFT JOIN t_level lev ON (teach.LEVEL_ID=lev.ID)
+        LEFT JOIN t_subject_category sub ON (sub.ID=teach.TYPE_ID)
+        LEFT JOIN t_dic dic1 ON (dic1.id=teach.MODE_ID)
+        LEFT JOIN t_college coll ON (coll.id=teach.COLLEGE_ID)
+        LEFT JOIN t_dic dic2 ON (dic2.id=teach.SCHOOLING_ID)
+        LEFT JOIN t_college_year collyear ON (collyear.id=teach.ABSO_YEAR_ID)
+        LEFT JOIN t_college_term collterm ON (collterm.id=teach.ABSO_SEM_ID)
+        LEFT JOIN t_major maj ON (maj.ID=teach.MAJOR_ID)
+        WHERE 1 = 1
+        AND teach.ID=#{id}
+    </select>
+
+
+    <select id="selectBatchByBatchId" resultType="teachProgram" parameterType="Integer">
+           SELECT
+            teach.ID id,
+            teach.BATCH_ID batchId,
+            bat.BATCH_NAME batchName,
+            teach.LEVEL_ID levelId,
+            lev.`LEVEL_NAME` level,
+            teach.TYPE_ID typeId,
+            sub.FULL_NAME typeName,
+            teach.MODE_ID modeId,
+            dic1.detail studyMode,
+            teach.COLLEGE_ID collegeId,
+            coll.name collegeName,
+            teach.SCHOOLING_ID schoolingId,
+            dic2.detail school,
+            teach.ABSO_YEAR_ID absoYearId,
+            collyear.YEAR_NAME year,
+            teach.ABSO_SEM_ID absoSemId,
+            collterm.SEMESTER_NAME semester,
+            teach.MAJOR_ID majorId,
+            maj.FULL_NAME majorName,
+            teach.COURSE_NAME courseName,
+            teach.INFO info,
+            bat.STATUS bStatus
+        FROM
+            t_teach_program teach
+        LEFT JOIN t_batch bat ON (teach.BATCH_ID=bat.ID)
+        LEFT JOIN t_level lev ON (teach.LEVEL_ID=lev.ID)
+        LEFT JOIN t_subject_category sub ON (sub.ID=teach.TYPE_ID)
+        LEFT JOIN t_dic dic1 ON (dic1.id=teach.MODE_ID)
+        LEFT JOIN t_college coll ON (coll.id=teach.COLLEGE_ID)
+        LEFT JOIN t_dic dic2 ON (dic2.id=teach.SCHOOLING_ID)
+        LEFT JOIN t_college_year collyear ON (collyear.id=teach.ABSO_YEAR_ID)
+        LEFT JOIN t_college_term collterm ON (collterm.id=teach.ABSO_SEM_ID)
+        LEFT JOIN t_major maj ON (maj.ID=teach.MAJOR_ID)
+        WHERE
+            BATCH_ID = #{batchId}
+    </select>
+
+    <select id="selectBatchByBatchName" resultType="teachProgram" parameterType="String">
+           SELECT
+            teach.ID id,
+            teach.BATCH_ID batchId,
+            bat.BATCH_NAME batchName,
+            teach.LEVEL_ID levelId,
+            lev.`LEVEL_NAME` level,
+            teach.TYPE_ID typeId,
+            sub.FULL_NAME typeName,
+            teach.MODE_ID modeId,
+            dic1.detail studyMode,
+            teach.COLLEGE_ID collegeId,
+            coll.name collegeName,
+            teach.SCHOOLING_ID schoolingId,
+            dic2.detail school,
+            teach.ABSO_YEAR_ID absoYearId,
+            collyear.YEAR_NAME year,
+            teach.ABSO_SEM_ID absoSemId,
+            collterm.SEMESTER_NAME semester,
+            teach.MAJOR_ID majorId,
+            maj.FULL_NAME majorName,
+            teach.COURSE_NAME courseName,
+            teach.INFO info,
+            bat.STATUS bStatus
+        FROM
+            t_teach_program teach
+        LEFT JOIN t_batch bat ON (teach.BATCH_ID=bat.ID)
+        LEFT JOIN t_level lev ON (teach.LEVEL_ID=lev.ID)
+        LEFT JOIN t_subject_category sub ON (sub.ID=teach.TYPE_ID)
+        LEFT JOIN t_dic dic1 ON (dic1.id=teach.MODE_ID)
+        LEFT JOIN t_college coll ON (coll.id=teach.COLLEGE_ID)
+        LEFT JOIN t_dic dic2 ON (dic2.id=teach.SCHOOLING_ID)
+        LEFT JOIN t_college_year collyear ON (collyear.id=teach.ABSO_YEAR_ID)
+        LEFT JOIN t_college_term collterm ON (collterm.id=teach.ABSO_SEM_ID)
+        LEFT JOIN t_major maj ON (maj.ID=teach.MAJOR_ID)
+        WHERE
+        bat.BATCH_NAME = #{batchName}
+    </select>
+
+    
+    <insert id="addNewTeachProgram" keyColumn="id" useGeneratedKeys="false" keyProperty="id">
+        INSERT INTO
+            t_teach_program
+            (
+                BATCH_ID, LEVEL_ID, TYPE_ID,MODE_ID,
+                COLLEGE_ID, MAJOR_ID, SCHOOLING_ID,
+                ABSO_YEAR_ID,ABSO_SEM_ID,
+                COURSE_NAME, STATUS, INFO
+            )
+        VALUES
+            (
+                #{teachProgram.batchId},#{teachProgram.levelId},#{teachProgram.typeId},
+                #{teachProgram.modeId},#{teachProgram.collegeId},#{teachProgram.majorId},
+                #{teachProgram.schoolingId},#{teachProgram.absoYearId},
+                #{teachProgram.absoSemId},#{teachProgram.courseName},1,#{teachProgram.info}
+            )
+    </insert>
+
+
+    <select id="selectBatch" parameterType="String" resultType="batch">
+        SELECT * FROM t_batch WHERE BATCH_NAME=#{batchName}
+    </select>
+    
+    <update id="updateBatchId" parameterType="Integer">
+        UPDATE
+            t_teach_program
+        SET
+            BATCH_ID=#{batchId}
+        WHERE
+            ID = #{id}
+    </update>
+
+    <select id="selectAllBatch" parameterType="batch" resultType="batch">
+        SELECT * FROM t_batch
+    </select>
+    
+    <select id="selectMoreBatch" parameterType="String" resultType="batch">
+      	SELECT * FROM t_batch WHERE BATCH_NAME > #{batchName}
+    </select>
+
+<select id="findCollegeByMajor" resultType="teachProgram" parameterType="string">
+        SELECT
+            t1.id,
+            t1.college_id,
+            t2.name collegeName,
+            t3.full_name majorName
+        FROM
+            t_teach_program as t1
+        LEFT JOIN t_college AS t2 ON (t1.college_id = t2.id)
+        LEFT JOIN t_major AS t3 ON(t1.major_id = t3.id)
+        where
+            t1.college_id = (
+              SELECT id FROM t_college WHERE name = #{collegeName}
+            )
+        GROUP BY
+            t3.full_name
+    </select>
+
+
+    <select id="getMajorList" resultType="Major">
+        SELECT  ID,FULL_NAME FROM t_major
+    </select>
+
+
+    <select id="getTerms" resultType="CollegeTerm">
+        SELECT ID,SEMESTER_NAME FROM t_college_term
+    </select>
+
+    <select id="getYear" resultType="collegeYear">
+        SELECT ID,YEAR_NAME FROM t_college_year
+    </select>
+    
+    <select id="getSubjectCategory" resultType="SubjectCategory">
+        SELECT ID,FULL_NAME FROM t_subject_category
+    </select>
+
+    <select id="getTermsByYearId" resultType="CollegeTerm">
+        SELECT
+            collterm.ID,
+            collterm.SEMESTER_NAME
+        FROM
+            t_college_term collterm,
+            t_college_year collyear
+        WHERE
+            collyear.ID=collterm.YEAR_ID
+        AND collyear.ID=#{absoYearId}
+    </select>
+
+    <select id="selectRepeat" resultType="TeachProgram" parameterType="TeachProgram">
+        SELECT
+            BATCH_ID,
+            LEVEL_ID,
+            TYPE_ID,
+            MODE_ID,
+            COLLEGE_ID,
+            SCHOOLING_ID,
+            ABSO_YEAR_ID,
+            ABSO_SEM_ID,
+            MAJOR_ID,
+            COURSE_NAME,
+            STATUS
+        FROM
+            t_teach_program
+        WHERE
+            BATCH_ID = #{teachProgram.batchId}
+        AND LEVEL_ID = #{teachProgram.levelId}
+        AND TYPE_ID = #{teachProgram.typeId}
+        AND MODE_ID =  #{teachProgram.modeId}
+        AND COLLEGE_ID = #{teachProgram.collegeId}
+        AND MAJOR_ID = #{teachProgram.majorId}
+        AND SCHOOLING_ID = #{teachProgram.schoolingId}
+        AND ABSO_YEAR_ID = #{teachProgram.absoYearId}
+        AND ABSO_SEM_ID = #{teachProgram.absoSemId}
+        AND COURSE_NAME = #{teachProgram.courseName}
+        AND STATUS = 1
+    </select>
+</mapper>

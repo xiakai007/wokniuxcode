@@ -1,0 +1,67 @@
+<style>
+    th{
+        width: 15%;
+    }
+</style>
+<!--班主任学生管理学习详情页-->
+<div class="layui-collapse" lay-filter="test" id="studyDetail-all">
+    <input type="hidden" data-th-value="${student.id}" id="stuId-studyDetail">
+    <div class="layui-colla-item" id="studyDetail-tb" data-th-each="term:${term}">
+        <h2 class="layui-colla-title" data-th-text="${term.semesterName}"></h2>
+        <input type="hidden" data-th-value="${term.id}" id="studyDetail-term-id" >
+        <div class="layui-colla-content">
+            <table class="layui-table tb-studyDetail" lay-filter="tb-studyDetail-semester"
+                    data-th-id="${term.id}">
+                <thead>
+                    <tr>
+                        <th style="width: 40%">课程</th>
+                        <th>视频</th>
+                        <th>线上作业</th>
+                        <th>线下作业</th>
+                        <th>是否通过</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<script data-th-inline="none" type="text/javascript">
+    layui.use(['jquery', 'form', 'table', 'febs', 'element'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            table = layui.table,
+            $view = $('#studyDetail-tb'),
+            element = layui.element,
+            tableIns;
+        initseme();
+        element.render();
+        function initseme() {
+            $.ajax({
+                type: "GET",
+                url: ctx + "recruitStudent/semester?id="+$("#stuId-studyDetail").val(),
+                success: function (data) {
+                    console.log(data.data)
+                    if(data.data.term.length==0){
+                        $("#studyDetail-all").append('<p style="text-align: center;">无数据</p>')
+                    }
+                    for (let i = 0; i < data.data.term.length; i++) {
+                        var study=eval("data.data.study"+""+i);
+                        for (let j = 0; j < study.length; j++) {
+                            var pass=null;
+                            if (study[j].ispass==1){
+                                pass="是";
+                            }else {
+                                pass="否";
+                            }
+                            $("#"+(i+1)).append("<tbody><tr><td>"+study[j].courseName+"</td><td>"+study[j].vodie+"</td><td>"+study[j].testItem+"</td><td>"+study[j].paper+"</td><td>"+pass+"</td></tr></tbody>")
+                        }
+                    }
+                },
+            })
+        }
+        //监听折叠
+        element.on('collapse(test)', function(data){
+            $(this).addClass(data.show);
+        });
+    });
+</script>

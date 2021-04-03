@@ -1,0 +1,87 @@
+<style>
+    #subjectCategory-add {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<div class="layui-fluid" id="subjectCategory-add">
+    <form class="layui-form" action="" lay-filter="subjectCategory-add-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">类别全称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="fullName" minlength="2" maxlength="20" lay-verify="range|name"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">简称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="simpleName" minlength="2" maxlength="10" lay-verify="range|name"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">所属层次：</label>
+            <div class="layui-input-inline">
+                <select name="levelId" id="subtype-levelId" lay-filter="cboLevel">
+                    <option value="1">专升本</option>
+                    <option value="2">高起本</option>
+                    <option value="3">高起专</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">创建人：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="createUserId" data-th-value="${user.userId}">
+                <input type="text"    minlength="2" maxlength="10" readonly  lay-verify="range|name"
+                       autocomplete="off" class="layui-input  "  data-th-value="${user.username}" >
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea name="remark" maxlength="200" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="subjectCategory-add-form-submit" id="submit"></button>
+            <button type="reset" class="layui-btn" id="reset"></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        form.on('submit(subjectCategory-add-form-submit)', function (data) {
+            // 单击之后提交按钮不可选,防止重复提交
+            var DISABLED = 'layui-btn-disabled';
+            // 增加样式
+            $('#subjectCategory-update').find('#submit').addClass(DISABLED);
+            // 增加属性
+            $('#subjectCategory-update').find('#submit').attr('disabled', 'disabled');
+            febs.post(ctx + 'subjectCategory/add', data.field, function (res) {
+
+                if (res.data=='200'){
+                    layer.closeAll();
+                    febs.alert.success('新增类别成功');
+                    $('#businesses-subjectCategory').find('#query').click();
+                }else {
+                    febs.alert.warn('此科目类别已存在');
+                }
+
+
+            });
+            return false;
+        });
+    });
+</script>

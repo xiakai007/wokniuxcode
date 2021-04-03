@@ -1,0 +1,148 @@
+<style>
+    .layui-col-md2 div{
+        height: 30px;
+        line-height: 30px;
+    }
+    .layui-col-md4 div{
+        height: 30px;
+        line-height: 30px;
+    }
+    .layui-col-md10 div{
+        height: 30px;
+        line-height: 30px;
+    }
+</style>
+<div  id="febs-transferApplication-update">
+    <div id="transferApplication-info-wrapper">
+        <div class="layui-row layui-col-space1">
+            <div style="height: 40px;line-height:40px;padding-left: 40px"><h3>复学申请</h3></div>
+            <div class="layui-col-md2" style="text-align: right">
+                <div>姓名：</div>
+                <div>批次：</div>
+                <div>院校简称：</div>
+                <div>层次：</div>
+                <div>专业简称：</div>
+                <div>唯一编码：</div>
+                <div>班主任：</div>
+            </div>
+            <div class="layui-col-md4" style="text-align: left">
+                <div>[[${transferApplication.stuName}]]</div>
+                <div>[[${transferApplication.batchName}]]</div>
+                <div>[[${transferApplication.collegeSimpleName}]]</div>
+                <div>[[${transferApplication.levelName}]]</div>
+                <div>[[${transferApplication.majorSimpleName}]]</div>
+                <div>[[${transferApplication.batchName
+                    +transferApplication.collegeSimpleName
+                    +transferApplication.levelName
+                    +transferApplication.majorSimpleName}]]
+                </div>
+                <div>[[${transferApplication.userName}]]</div>
+            </div>
+            <div class="layui-col-md2" style="text-align: right">
+                <div>手机号：</div>
+                <div>身份证号：</div>
+                <div>入学时间：</div>
+                <div>学习形式：</div>
+                <div>学号：</div>
+                <div>原批次：</div>
+                <div>复学批次：</div>
+            </div>
+            <div class="layui-col-md4" style="text-align: left">
+                <div>[[${transferApplication.tel}]]</div>
+                <div>[[${transferApplication.identity}]]</div>
+                <div>[[${#dates.format(transferApplication.enrolDate,'yyyy-MM-dd')}]]</div>
+                <div>[[${transferApplication.studyType}]]</div>
+                <div>[[${transferApplication.stuNum}]]</div>
+                <div>[[${transferApplication.batchName}]]</div>
+                <div>[[${transferApplication.newBatchName}]]</div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space1">
+            <div class="layui-col-md2" style="text-align: right">
+                <div>原因：</div>
+                <div>其他原因：</div>
+                <div>资料附件：</div>
+            </div>
+            <div class="layui-col-md10" style="text-align: left">
+                <div>[[${transferApplication.applicationReason}]]</div>
+                <div>[[${#strings.defaultString(transferApplication.otherReason,'无')}]]</div>
+                <div id="attachment"></div>
+            </div>
+        </div>
+    </div>
+    <form class="layui-form" action="" lay-filter="transferApplication-update-form">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-col-md2" style="text-align: right"><div>意见：</div></label>
+            <div class="layui-col-md10">
+                <textarea name="opinion" id="opinion" lay-verify="txt" maxlength="100" class="layui-textarea" style="width:85%">
+                </textarea>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="agree-form-submit" id="agree"></button>
+            <button class="layui-btn" lay-submit="" lay-filter="reject-form-submit" id="reject"></button>
+        </div>
+    </form>
+</div>
+<script data-th-inline="javascript" type="text/javascript">
+    layui.use(['febs', 'jquery', 'form', 'validate'], function () {
+        let $ = layui.jquery,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            TransferApplication = [[${transferApplication}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+        init();
+        initTransferApplicationValue();
+        isReadOnly();
+        approvalOperation();
+        function init() {
+            var list = TransferApplication.attachmentList;
+            for (var i = 0; i < list.length; i++) {
+                $("#attachment").append("<a class='layui-icon layui-icon-file-image' target='_blank' href='" + list[i] + "'>" + "附件" + (i + 1) + "; " + "</a>");
+            }
+        }
+        function initTransferApplicationValue() {
+            form.val("transferApplication-update-form", {
+                "opinion": TransferApplication.opinion
+            });
+        }
+        function isReadOnly() {
+            var approvalStatus = TransferApplication.approvalStatusId;
+            if (approvalStatus != 35) {
+                $("#opinion").attr("readOnly", true);
+            }
+        }
+        function approvalOperation() {
+            form.on('submit(agree-form-submit)', function (data) {
+                var transfer = {id: TransferApplication.id, opinion: data.field.opinion, approvalStatusId: "36"};
+                if (febs.nativeEqual(data.field, TransferApplication)) {
+                    febs.alert.warn('未填写意见！');
+                    return false;
+                }
+                febs.post(ctx + 'transferApplication/update', transfer, function () {
+                    layer.closeAll();
+                    febs.alert.success(TransferApplication.id + '异动审批成功');
+                    $('#businesses-transferApplication').find('#businesses-transferApplication-query').click();
+                });
+                return false;
+            });
+            form.on('submit(reject-form-submit)', function (data) {
+                var transfer = {id: TransferApplication.id, opinion: data.field.opinion, approvalStatusId: '37'};
+                if (febs.nativeEqual(data.field, TransferApplication)) {
+                    febs.alert.warn('未填写意见！');
+                    return false;
+                }
+                febs.post(ctx + 'transferApplication/update', transfer, function () {
+                    layer.closeAll();
+                    febs.alert.success(TransferApplication.id + '异动审批成功');
+                    $('#businesses-transferApplication').find('#businesses-transferApplication-query').click();
+                });
+                return false;
+            });
+        }
+    });
+</script>

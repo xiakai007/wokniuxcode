@@ -1,0 +1,59 @@
+<style>
+    .layui-upload {
+        width: 400px;
+        margin: 0px auto;
+        text-align: center;
+    }
+</style>
+<div class="layui-fluid" id="papers-upload">
+    <form class="layui-form" action="" lay-filter="papers-upload-form">
+        <div class="layui-upload" id="papers_son">
+            <button type="button" class="layui-btn layui-btn-normal" id="choose_papers">选择文件</button>
+            <button type="button" class="layui-btn" id="upload_papers">开始上传</button>
+            <input type="hidden" id="savePapers">
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            upload = layui.upload,
+            //跳转页面携带的id
+            id = [[${id}]];
+        //选完文件后不自动上传
+        var papersupload = upload.render({
+            elem: '#choose_papers',
+            url: ctx + 'upload' //改成您自己的上传接口
+            , method: 'post'
+            , accept: 'file'
+            , exts: 'doc|docx'
+            , size: 10240 //限制文件大小，单位 KB
+            , auto: false
+            //,multiple: true
+            , bindAction: '#upload_papers'
+            , done: function (res) {
+                //如果上传失败
+                if (res.code != 200) {
+                    return layer.msg('上传失败');
+                }
+                layer.msg('请点击确定完成上传');
+                console.log(res)
+                let URL = res.url;
+                //把路径放在隐藏域中
+                $('#savePapers').val(URL);
+            }, error: function () {
+                //演示失败状态，并实现重传
+                var savePapers = $('#savePapers');
+                savePapers.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                savePapers.find('.demo-reload').on('click', function () {
+                    papersupload.upload();
+                });
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,132 @@
+<style>
+    #backCollege {
+        padding: 20px 25px 25px 0;
+    }
+
+    #backCollege .layui-form {
+        width: 85%;
+        margin: 0 auto;
+    }
+</style>
+<div class="layui-fluid" id="backCollege">
+    <form class="layui-form" action="" lay-filter="cbo-backCollege-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">学生姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="stuName" readonly class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">批次：</label>
+            <div class="layui-input-block">
+                <input type="text" name="batchName" readonly class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">新批次：</label>
+            <div class="layui-input-block">
+                <select name="newBatchId" id="cboBackCollegeBatch" lay-filter="cboBackCollegeBatch">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">专业：</label>
+            <div class="layui-input-block">
+                <input type="text" name="MajorName" readonly class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label febs-form-item-require">新专业：</label>
+            <div class="layui-input-block">
+                <select name="newMajorId" id="cboBackCollegeMajor" lay-filter="cboBackCollegeMajor">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item febs-hide">
+            <button class="layui-btn" lay-submit="" lay-filter="cbo-backCollege-form-submit" id="submit"></button>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            validate = layui.validate,
+            student = [[${student}]],
+            newBatchName;
+
+        form.verify(validate);
+
+        form.render();
+
+        initClassValue();
+
+        //回填表单控件value
+        function initClassValue() {
+            form.val("cbo-backCollege-form", {
+                "stuName": student.stuName,
+                "batchName": student.batchName,
+                "MajorName": student.majorName
+            });
+        }
+
+        //新批次下拉菜单
+        febs.get(ctx + 'college/batchSelect', null, function (data) {
+            let list = data.data;
+            for (let i = 0; i < list.length; i++) {
+                let batch = list[i];
+                $("#cboBackCollegeBatch").append(new Option(batch.batchName, batch.id));
+            }
+            //重新渲染下拉菜单
+            form.render("select");
+        });
+
+        //监视新批次下拉菜单
+        form.on('select(cboBackCollegeBatch)', function (data) {
+            //新批次名称，用于与旧批次比较 - 新批次应晚于旧批次
+            newBatchName = $("#cboBackCollegeBatch option:selected").text();
+            //根据批次、院校、层次获取专业 - 防止新批次没有当前专业的班级
+            let batchId = data.value,
+                collegeId = student.collegeId,
+                levelId = student.level;
+            console.log(batchId + "-" + collegeId + "-" + levelId);
+            $("#cboBackCollegeMajor").empty();
+            $("#cboBackCollegeMajor").append(new Option("", ""));
+            febs.get(ctx + 'major/majorSelect?batchId=' + batchId + '&collegeId=' + collegeId + "&levelId=" + levelId, null, function (data) {
+                let list = data.data;
+                for (let i = 0; i < list.length; i++) {
+                    let major = list[i];
+                    if (major.id == student.majorId) {
+                        $("#cboBackCollegeMajor").append(new Option(major.fullName, major.id, true, true));
+                    } else {
+                        $("#cboBackCollegeMajor").append(new Option(major.fullName, major.id));
+                    }
+                }
+                //重新渲染下拉菜单
+                form.render("select");
+            });
+        })
+
+        //监视表单提交按钮
+        form.on('submit(cbo-backCollege-form-submit)', function (data) {
+            if (student.batchId >= data.field.newBatchId) {
+                febs.alert.warn('新批次应该晚于原批次！');
+                return false;
+            }
+            student.batchId = data.field.newBatchId;
+            student.majorId = data.field.newMajorId;
+            febs.post(ctx + 'student/reentry', student, function (data) {
+                console.log(data);
+                layer.closeAll();
+                febs.alert.success(student.stuName + ' 复学成功');
+                $('#businesses-student').find('#stuquery').click();
+            });
+            return false;
+        });
+    });
+</script>

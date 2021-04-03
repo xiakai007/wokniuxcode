@@ -1,0 +1,122 @@
+<style>
+    #student-info {
+        padding: 20px 25px 25px 0;
+    }
+</style>
+<!--回收站学生详情页-->
+<div class="layui-fluid" id="student-info-show">
+    <form class="layui-form" action="" lay-filter="student-info-form">
+        <div class="layui-form-item febs-hide">
+            <label class="layui-form-label">学生id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="userId" data-th-value="${student.id}" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="stuName" minlength="4" maxlength="10"
+                       autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label ">性别：</label>
+            <div class="layui-input-block" >
+                <input disabled  type="radio" name="sexId" value="1" title="男性">
+                <input disabled type="radio"  name="sexId" value="2" title="女性">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="identity" lay-verify="identity" maxlength="50" autocomplete="off"
+                       class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">民族：</label>
+            <div class="layui-input-block">
+                <input type="text" name="nationName" lay-verify="identity" maxlength="50" autocomplete="off"
+                       class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">籍贯：</label>
+            <div class="layui-input-block">
+                <input type="text" name="nativeName" lay-verify="native" maxlength="50" autocomplete="off"
+                       class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">政治面貌：</label>
+            <div class="layui-input-block">
+                <input type="text" name="politicsName" lay-verify="politicsName" maxlength="50" autocomplete="off"
+                       class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">毕业证号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="diplomaNum" lay-verify="diplomaNum" maxlength="50" autocomplete="off"
+                       class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机：</label>
+            <div class="layui-input-block">
+                <input type="tel" name="tel" lay-verify="tel" autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">紧急联系：</label>
+            <div class="layui-input-block">
+                <input type="tel" name="urgencyTel" lay-verify="urgencyTel" autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱：</label>
+            <div class="layui-input-block">
+                <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input" readonly>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script data-th-inline="javascript">
+    layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+        let $ = layui.$,
+            febs = layui.febs,
+            layer = layui.layer,
+            form = layui.form,
+            xmSelect = layui.xmSelect,
+            student = [[${student}]],
+            validate = layui.validate;
+
+        form.verify(validate);
+        form.render();
+
+        initStudentInfoValue();
+
+
+
+        function initStudentInfoValue() {
+
+
+            form.val("student-info-form", {
+                "stuName": student.stuName,
+                "id": student.id,
+                "identity": student.identity,
+                "nationName": student.nationName,
+                "sexId": student.sexId,
+                "politicsName": student.politicsName,
+                "diplomaNum": student.diplomaNum,
+                "tel": student.tel,
+                "urgencyTel": student.urgencyTel,
+                "email": student.email,
+                "nativeName":student.nativeName
+
+            });
+        }
+
+    });
+</script>

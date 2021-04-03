@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link href="static/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+   <div style="width:70%;margin:20px auto;">
+     <form method="post" name="form1">
+       <input type="text" name="supp_code" placeholder="请输入供应商编号"/>
+       <input type="text" name="supp_name" placeholder="请输入供应商名称"/>
+       <input type="button" value="查询" class="btn btn-info" id="search1"/>
+     </form>
+   </div>
+   <div style="width:70%;margin:20px auto;text-align:right;">
+     <button class="btn btn-success" type="button" id="supp_add_btn">增加</button>
+     <button class="btn btn-danger" type="button" id="supp_delAll_btn">批量删除</button>
+   </div>
+   <table class="table table-striped table-bordered table-hover" style="width:70%;margin:20px auto;" id="table1">
+      <thead>
+         <tr>
+           <th>
+             <input type="checkbox" name="selectAll"/>
+           </th>
+           <th>供应商id</th>
+           <th>供应商编号</th>
+           <th>供应商名称</th>
+           <th>供应商手机号</th>
+           <th>操作</th>
+         </tr>
+      </thead>
+      <tbody>
+         
+      </tbody>
+   </table>
+   <div style="width:70%;margin:0px auto;">
+     <ul class="pagination pull-right" id="ul1">
+       <li >
+         <a href="" >
+           
+         </a>
+       </li>
+     </ul>
+   </div>
+   <!-- 增加模态框开始 -->
+   <div class="modal fade" tabindex="-1" role="dialog" id="suppAddModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">增加供应商</h4>
+	      </div>
+	      <div class="modal-body">
+			 <form class="form-horizontal" method="post" id="suppAddForm"> 
+					<div class="form-group">
+						<label class="col-sm-4 control-label">供应商编号：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="supp_code">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">供应商名称：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="supp_name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">供应商手机号：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="supp_phone">
+						</div>
+					</div>
+					<input type="hidden" name="oper" value="add"/>
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" id="supp_addsave_btn">保存</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+   <!-- 增加模态框结束 -->
+   <!-- 修改模态框开始 -->
+   <div class="modal fade" tabindex="-1" role="dialog" id="suppUpdModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">修改供应商</h4>
+	      </div>
+	      <div class="modal-body">
+			 <form class="form-horizontal" method="post" id="suppUpdForm"> 
+					<div class="form-group">
+						<label class="col-sm-4 control-label">供应商编号：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="supp_code">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">供应商名称：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="supp_name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">供应商手机号：</label>
+						<div class="col-sm-6 ">
+							<input type="text" class="form-control"  required="required" name="supp_phone">
+						</div>
+					</div>
+					<input type="hidden" name="oper" value="update"/>
+					<input type="hidden" name="supp_id"/>
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" id="supp_updsave_btn">保存</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+   </div><!-- /.modal -->
+   <!-- 修改模态框结束 -->
+   <script type="text/javascript" src="static/js/jquery-1.12.3.min.js"></script>
+   <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+   <script type="text/javascript">
+   //加载供应商列表
+   loadSuppList(1);
+   //打开增加模态框
+   showAddModal();
+   //增加供应商保存
+   suppSave();
+   //查询功能
+   searchData();
+   //增加模态框隐藏时将表单数据重置
+   suppAddHide();
+   //批量删除
+   delAllSupp();
+   //修改供应商保存
+   updateSuppSave();
+   
+   /*查询功能*/
+   function searchData(){
+	   $("#search1").click(function(){
+	    	loadSuppList(1);
+	    });
+   }
+    /*加载供应商列表函数*/
+    function loadSuppList(crtPage){
+     $.ajax({
+    	 type:"post",
+         url:"supp",
+         dataType:"json",
+         data:{"oper":"supplist","supp_code":$(":text[name=supp_code]").val(),"supp_name":$(":text[name=supp_name]").val(),"currentPage":crtPage},
+         error:function(){
+        	 alert("错误");
+         },
+         success:function(resp){
+        	 //alert(data);
+        	 var suppArr=resp.pageData;
+        	 var tr="";
+        	 for(var i=0;i<suppArr.length;i++){
+        		 tr=tr+"<tr>";
+        		 tr=tr+"<td><input type=checkbox name=supp_id value="+suppArr[i].supp_id+" /></td>";
+        		 tr=tr+"<td>"+suppArr[i].supp_id+"</td>";
+        		 tr=tr+"<td>"+suppArr[i].supp_code+"</td>";
+        		 tr=tr+"<td>"+suppArr[i].supp_name+"</td>";
+        		 tr=tr+"<td>"+suppArr[i].supp_phone+"</td>";
+        		 tr=tr+"<td><button type=button class='btn btn-danger btn-xs' name=supp_del_btn>删除</button>";
+        		 tr=tr+"&nbsp;&nbsp;&nbsp;<button type=button class='btn btn-info btn-xs' name=supp_upd_btn>修改</button></td>";
+        		 tr=tr+"</tr>";
+        	 }
+        	 $("#table1 tbody").html(tr);
+        	 /*分页页签*/
+        	 var pageStr="<li><a href="+(resp.currentPage-1)+">&laquo;</a></li>";
+        	 for(var i=1;i<=resp.pages;i++){
+        		 if(i==resp.currentPage){
+        		     pageStr=pageStr+"<li class=active><a>"+i+"</a></li>";
+        		 }else{
+        			 pageStr=pageStr+"<li><a href="+i+">"+i+"</a></li>";
+        		 }
+        	 }
+        	 pageStr=pageStr+"<li><a href="+(resp.currentPage+1)+">&raquo;</a></li>";
+        	 $("#ul1").html(pageStr);
+        	 //给页签添加单击事件
+        	 pageClick();
+        	 //给删除添加单击事件
+        	 suppDel();
+        	 //给修改添加单击事件
+        	 updateSupp();
+         }
+     });
+    }
+    /*给页签添加单击事件*/
+    function pageClick(){
+      $("#ul1 a").click(function(){
+   		 //alert("test");
+   		 var crtPage=$(this).attr("href");
+   		loadSuppList(crtPage);
+   		return false;//阻止超链接的默认行为
+   	  });
+    }
+    /*显示增加模态框*/
+    function showAddModal(){
+    	$("#supp_add_btn").click(function(){
+    		$("#suppAddModal").modal('show');
+    	});
+    }
+    /*保存*/
+    function suppSave(){
+    	$("#supp_addsave_btn").click(function(){
+    		$.ajax({
+    			type:"post",
+    			url:"supp",
+    			data:$("#suppAddForm").serialize(),
+    			error:function(){
+    				alert("供应商保存有错误");
+    			},
+    			success:function(data){
+    				alert(data);
+    				//关闭模态框
+    				$("#suppAddModal").modal('hide');
+    				//重新加载供应商列表中的数据和页码
+    				loadSuppList(1);
+    			}
+    		})
+    	});
+    }
+    /*增加模态框隐藏时将表单数据重置*/
+    function suppAddHide(){
+    	$("#suppAddModal").on("hidden.bs.modal", function (e) {
+    		$("#suppAddForm")[0].reset();
+    	});
+    }
+    /*删除功能*/
+    function suppDel(){
+    	$("button[name=supp_del_btn]").click(function(){
+    		if(confirm("确认删除？")){
+    		var supp_id=$(this).parents("tr").children().first().next().text();
+    		$.ajax({
+    			type:"post",
+    			url:"supp",
+    			data:{"oper":"del","supp_id":supp_id},
+    			error:function(){
+    				alert("删除报错");
+    			},
+    			success:function(data){
+    				alert(data);
+    				loadSuppList(1);
+    			}
+    		});
+    		}
+    	});
+    }
+    /*批量删除功能*/
+    function delAllSupp(){
+    	$("#supp_delAll_btn").click(function(){
+    		if($(":checkbox[name=supp_id]:checked").length>0){
+    		var suppIdArr=new Array();
+    		$(":checkbox[name=supp_id]:checked").each(function(){
+    			suppIdArr.push($(this).val());
+    		});
+    		$.ajax({
+    			type:"post",
+    			url:"supp",
+    			data:{"oper":"delAll","suppIds":suppIdArr.join(",")},
+    			error:function(){
+    				alert("批量删除失败");
+    			},
+    			success:function(data){
+    				alert(data);
+    				loadSuppList(1);
+    			}
+    		});
+    		}else{
+        		alert("请选择记录");
+        	}
+    	});
+    }
+    /*修改-从服务器获取数据*/
+    function updateSupp(){
+    	$("button[name=supp_upd_btn]").click(function(){
+    		var supp_id= $(this).parents("tr").find(":checkbox[name=supp_id]").val();
+    		$.ajax({
+    			type:"post",
+    			url:"supp",
+    			data:{"oper":"updUI","supp_id":supp_id},
+    			dataType:"json",
+    			error:function(){
+    				alert("修改失败");
+    			},
+    			success:function(data){
+    				$("#suppUpdForm :text[name=supp_code]").val(data.supp_code);
+    				$("#suppUpdForm :text[name=supp_name]").val(data.supp_name);
+    				$("#suppUpdForm :text[name=supp_phone]").val(data.supp_phone);
+    				$("#suppUpdForm :hidden[name=supp_id]").val(data.supp_id);
+    			}
+    		});
+    		$("#suppUpdModal").modal("show");
+    	});
+    	
+    }
+    /*修改-保存数据*/
+    function updateSuppSave(){
+    	$("#supp_updsave_btn").click(function(){
+    		$.ajax({
+    			type:"post",
+    			url:"supp",
+    			data:$("#suppUpdForm").serialize(),
+    			error:function(){
+    				alert("修改的保存报错");
+    			},
+    			success:function(data){
+    				alert(data);
+    				$("#suppUpdModal").modal('hide');
+    				loadSuppList(1);
+    			}
+    		});
+    	});
+    }
+   </script>
+</body>
+</html>
+
+
+
+
+
+

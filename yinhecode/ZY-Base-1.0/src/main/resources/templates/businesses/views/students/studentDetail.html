@@ -1,0 +1,85 @@
+<style>
+    #student:visited {
+
+        color:#00FF00;
+
+        text-decoration:none;
+
+    }
+
+    #student:hover {
+
+        color:#000000;
+
+        text-decoration:none;
+
+    }
+
+    #student:active {
+
+        color:#FFFFFF;
+
+        text-decoration:none;
+
+    }
+</style>
+<!--招生学生管理详情页-->
+<div class="layui-tab layui-tab-brief">
+    <input id="stuid" type="hidden" data-th-value="${id}">
+    <ul class="layui-tab-title">
+        <li class="layui-this"><a id="student">个人信息</a></li>
+        <li><a id="exam" >报考信息</a></li>
+        <li><a id="payinfo">缴费信息</a></li>
+        <li><a id="examlocation">现场确认</a></li>
+        <li><a id="identity">身份证确认</a></li>
+        <li><a id="photo">照片确认</a></li>
+        <li><a id="diploma">毕业证确认</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show" id="showinfo">
+        </div>
+    </div>
+</div>
+<script data-th-inline="javascript">
+layui.use(['febs', 'form', 'xmSelect', 'validate'], function () {
+    let $ = layui.$,
+        febs = layui.febs,
+        layer = layui.layer,
+        form = layui.form,
+        xmSelect = layui.xmSelect,
+        user = [[${user}]],
+        validate = layui.validate,
+        dataPermissionXmlSelect,
+        roleXmSelect,
+        deptXmlSelect;
+    form.render();
+
+    $(function () {
+        $("#showinfo").load("febs/views/student/studentinfo?id="+$("#stuid").val())
+    })
+    $("#exam").click(function () {
+        $("#showinfo").load("febs/views/student/examinfo/"+$("#stuid").val())
+    });
+    $("#payinfo").click(function () {
+        $("#showinfo").load("febs/views/student/cost?id="+$("#stuid").val())
+    });
+    $("#identity").click(function () {
+        $("#showinfo").load("febs/views/student/affirm/identity?id="+$("#stuid").val()+"&typeId=1")
+    });
+    $("#student").click(function () {
+        $("#showinfo").load("febs/views/student/studentinfo?id="+$("#stuid").val())
+    });
+    $("#photo").click(function () {
+        $("#showinfo").load("febs/views/student/affirm/photo?id="+$("#stuid").val()+"&typeId=3")
+    })
+    $("#examlocation").click(function () {
+        $("#showinfo").load("febs/views/student/examlocationconfirm?id="+$("#stuid").val())
+    })
+    $("#diploma").click(function () {
+        $("#showinfo").load("febs/views/student/affirm/diploma?id="+$("#stuid").val()+"&typeId=2")
+    });
+
+});
+</script>
+
+
