@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rbac?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    initialSize: 5
+    minIdle: 3
+    maxActive: 20
+    maxWait: 60000
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    cache: false
+    mode: HTML
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: /src/main/java
+mybatis:
+  type-aliases-package: com.woniu.springboot.admin.pojo
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    use-generated-keys: true
+pagehelper:
+  helper-dialect: mysql
+logging:
+  level:
+    com:
+      woniu:
+        springboot:
+          admin: debug
+server:
+  servlet:
+    context-path: /k15admin
+shiro:
+  login-url: /login.html
+  unauthorized-url: /login.html
+  success-url: /goIndex
+  anon-urls:
+  - /login
+  - /resources/**
+  authc-urls:
+  - /**

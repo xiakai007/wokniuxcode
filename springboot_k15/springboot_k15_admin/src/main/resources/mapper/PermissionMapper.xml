@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.springboot.admin.mapper.PermissionMapper">
+    <resultMap id="permissionMap" type="Permission">
+        <id property="id" column="id"></id>
+        <collection property="roleList" column="id"
+        select="com.woniu.mapper.RoleMapper.selectRoleByPerid"></collection>
+    </resultMap>
+    <select id="selectPermissionByRid" parameterType="int" resultType="Permission">
+        SELECT * FROM sys_permission WHERE id IN(
+	      SELECT perid FROM sys_role_permission WHERE rid=#{rid}
+        )
+    </select>
+    <select id="selectPermissionByNAME" parameterType="String" resultMap="permissionMap">
+        SELECT id FROM sys_permission WHERE NAME=#{name}
+    </select>
+    <select id="selectPermissionByUid" parameterType="int" resultType="Permission">
+        SELECT * from sys_permission WHERE id IN(
+	      SELECT DISTINCT perid FROM sys_role_permission WHERE rid IN(
+		    SELECT rid FROM sys_user_role WHERE uid=#{uid}
+	      )
+        )
+    </select>
+    <select id="selectPermissionAll" resultType="Permission">
+        SELECT * FROM sys_permission
+    </select>
+    <select id="selectPercodesByUid" resultType="String" parameterType="int">
+        SELECT percode FROM sys_permission WHERE id IN(
+	      SELECT DISTINCT perid FROM sys_role_permission WHERE rid IN(
+		    SELECT rid from sys_user_role WHERE uid=#{uid}
+	      )
+        ) AND type='permission'
+    </select>
+</mapper>

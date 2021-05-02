@@ -1,0 +1,556 @@
+2020-12-02 11:37:34 |INFO  |main |StartupInfoLogger.java:55 |com.woniu.mymall.MymallApplicationTests |Starting MymallApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 6724 (started by xiakai in D:\ideaprojects\springboot_k15\mymall)
+2020-12-02 11:37:34 |INFO  |main |SpringApplication.java:664 |com.woniu.mymall.MymallApplicationTests |The following profiles are active: dev
+2020-12-02 11:37:41 |INFO  |main |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 11:37:42 |INFO  |main |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 11:37:43 |INFO  |main |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 11:37:43 |INFO  |main |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 11:37:43 |INFO  |main |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 11:37:44 |INFO  |main |StartupInfoLogger.java:61 |com.woniu.mymall.MymallApplicationTests |Started MymallApplicationTests in 12.487 seconds (JVM running for 18.077)
+2020-12-02 11:37:45 |INFO  |main |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 11:37:45 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:218 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-02 11:37:45 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closing ...
+2020-12-02 11:37:45 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2096 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closed
+2020-12-02 11:38:19 |INFO  |main |StartupInfoLogger.java:55 |com.woniu.mymall.MymallApplicationTests |Starting MymallApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 8100 (started by xiakai in D:\ideaprojects\springboot_k15\mymall)
+2020-12-02 11:38:19 |INFO  |main |SpringApplication.java:664 |com.woniu.mymall.MymallApplicationTests |The following profiles are active: dev
+2020-12-02 11:38:22 |INFO  |main |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-0} closing ...
+2020-12-02 11:38:22 |INFO  |main |ConditionEvaluationReportLoggingListener.java:136 |org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener |
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-12-02 11:39:41 |INFO  |main |StartupInfoLogger.java:55 |com.woniu.mymall.MymallApplicationTests |Starting MymallApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 2404 (started by xiakai in D:\ideaprojects\springboot_k15\mymall)
+2020-12-02 11:39:41 |INFO  |main |SpringApplication.java:664 |com.woniu.mymall.MymallApplicationTests |The following profiles are active: dev
+2020-12-02 11:39:46 |INFO  |main |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 11:39:47 |INFO  |main |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 11:39:47 |INFO  |main |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 11:39:48 |INFO  |main |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 11:39:48 |INFO  |main |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 11:39:48 |INFO  |main |StartupInfoLogger.java:61 |com.woniu.mymall.MymallApplicationTests |Started MymallApplicationTests in 8.065 seconds (JVM running for 10.855)
+2020-12-02 11:39:49 |INFO  |main |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |苹果
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |梨
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |葡萄
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |香蕉
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |华为
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |小米
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |中兴
+2020-12-02 11:39:49 |INFO  |main |MymallApplicationTests.java:20 |com.woniu.mymall.MymallApplicationTests |魅族
+2020-12-02 11:39:49 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:218 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-02 11:39:49 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closing ...
+2020-12-02 11:39:49 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2096 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closed
+2020-12-02 11:40:18 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.mymall.MymallApplication |Starting MymallApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 2504 (D:\ideaprojects\springboot_k15\mymall\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 11:40:18 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.mymall.MymallApplication |The following profiles are active: dev
+2020-12-02 11:40:18 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 11:40:18 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 11:40:20 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 11:40:20 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 11:40:20 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 11:40:20 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 11:40:20 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 11:40:20 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 1953 ms
+2020-12-02 11:40:21 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 11:40:21 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 11:40:21 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 11:40:22 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 11:40:22 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 11:40:22 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 11:40:22 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 11:40:22 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 11:40:22 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.mymall.MymallApplication |Started MymallApplication in 5.384 seconds (JVM running for 6.929)
+2020-12-02 11:40:53 |INFO  |http-nio-80-exec-1 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 11:40:53 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 11:40:53 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 0 ms
+2020-12-02 11:40:59 |INFO  |http-nio-80-exec-4 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 12:23:35 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.mymall.MymallApplication |Starting MymallApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 8996 (D:\ideaprojects\springboot_k15\mymall\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 12:23:35 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.mymall.MymallApplication |The following profiles are active: dev
+2020-12-02 12:23:35 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 12:23:35 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 12:23:37 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 12:23:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 12:23:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 12:23:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 12:23:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 12:23:37 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 1959 ms
+2020-12-02 12:23:38 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 12:23:38 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 12:23:38 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 12:23:39 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 12:23:39 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 12:23:39 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 12:23:39 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 12:23:39 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 12:23:39 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.mymall.MymallApplication |Started MymallApplication in 4.875 seconds (JVM running for 6.36)
+2020-12-02 12:24:10 |INFO  |http-nio-80-exec-1 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 12:24:10 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 12:24:10 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 0 ms
+2020-12-02 12:24:10 |INFO  |http-nio-80-exec-1 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 13:54:37 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.mymall.MymallApplication |Starting MymallApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 12452 (D:\ideaprojects\springboot_k15\mymall\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 13:54:37 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.mymall.MymallApplication |The following profiles are active: dev
+2020-12-02 13:54:37 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 13:54:37 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 13:54:39 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 9090 (http)
+2020-12-02 13:54:39 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-9090"]
+2020-12-02 13:54:39 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 13:54:39 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 13:54:39 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 13:54:39 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 1945 ms
+2020-12-02 13:54:40 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 13:54:40 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 13:54:40 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 13:54:40 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-9090"]
+2020-12-02 13:54:40 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 9090 (http) with context path ''
+2020-12-02 13:54:40 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 13:54:40 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 13:54:40 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 13:54:40 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.mymall.MymallApplication |Started MymallApplication in 4.701 seconds (JVM running for 6.746)
+2020-12-02 13:55:06 |INFO  |http-nio-9090-exec-1 |DirectJDKLog.java:175 |org.apache.coyote.http11.Http11Processor |Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x020x000x010x000x010xfc0x030x030xc9mY0x93%_t~A0x020xa7E0x00A0x890xef0xfc0x140x88,90xe20x9cN0xd90x810xd6eo0x910x97v]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:417)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:261)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:745)
+2020-12-02 13:56:22 |INFO  |http-nio-9090-exec-5 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 13:56:22 |INFO  |http-nio-9090-exec-5 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 13:56:22 |INFO  |http-nio-9090-exec-5 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 3 ms
+2020-12-02 13:56:59 |INFO  |http-nio-9090-exec-5 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 15:03:02 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.mymall.MymallApplication |Starting MymallApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 15332 (D:\ideaprojects\springboot_k15\mymall\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 15:03:02 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.mymall.MymallApplication |The following profiles are active: dev
+2020-12-02 15:03:03 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 15:03:03 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 15:03:05 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 9090 (http)
+2020-12-02 15:03:05 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-9090"]
+2020-12-02 15:03:05 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 15:03:05 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 15:03:05 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 15:03:05 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 2662 ms
+2020-12-02 15:03:06 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 15:03:06 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 15:03:06 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 15:03:07 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-9090"]
+2020-12-02 15:03:07 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 9090 (http) with context path ''
+2020-12-02 15:03:07 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 15:03:07 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 15:03:07 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 15:03:07 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.mymall.MymallApplication |Started MymallApplication in 5.682 seconds (JVM running for 7.141)
+2020-12-02 15:03:28 |INFO  |http-nio-9090-exec-1 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 15:03:28 |INFO  |http-nio-9090-exec-1 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 15:03:28 |INFO  |http-nio-9090-exec-1 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 0 ms
+2020-12-02 15:03:28 |INFO  |http-nio-9090-exec-1 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 19:03:01 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Starting SpringbootK15PortalsApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 16460 (D:\ideaprojects\springboot_k15\springboot_k15_portals\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 19:03:01 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |The following profiles are active: dev
+2020-12-02 19:03:01 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 19:03:01 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 19:03:04 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 19:03:04 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 19:03:04 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 19:03:04 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 19:03:04 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 19:03:04 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 2602 ms
+2020-12-02 19:03:05 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 19:03:05 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 19:03:05 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 19:03:05 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 19:03:05 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 19:03:05 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 19:03:05 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 19:03:05 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 19:03:06 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Started SpringbootK15PortalsApplication in 6.134 seconds (JVM running for 7.84)
+2020-12-02 19:04:24 |INFO  |http-nio-80-exec-2 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 19:04:24 |INFO  |http-nio-80-exec-2 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 19:04:24 |INFO  |http-nio-80-exec-2 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 2 ms
+2020-12-02 19:04:24 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:04:24 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:04:24 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:04:24 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:04:53 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:04:53 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:04:53 |INFO  |http-nio-80-exec-1 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 19:05:35 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:05:35 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:05:35 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:05:35 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:05:41 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:05:41 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:05:41 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:05:41 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:05:48 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:05:48 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:05:48 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:05:48 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:06:48 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:06:48 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:07:30 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:07:30 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:07:30 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:07:30 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:08:25 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:08:25 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:08:25 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:08:25 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:10:47 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:10:47 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:10:51 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:10:51 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:10:56 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:10:56 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:11:03 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:11:03 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:11:04 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:11:04 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:12:35 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:12:35 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:12:40 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:12:40 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:32:34 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Starting SpringbootK15PortalsApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 5264 (D:\ideaprojects\springboot_k15\springboot_k15_portals\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 19:32:34 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |The following profiles are active: dev
+2020-12-02 19:32:34 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 19:32:34 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 19:32:37 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 19:32:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 19:32:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 19:32:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 19:32:37 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 19:32:37 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 2797 ms
+2020-12-02 19:32:40 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 19:32:40 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 19:32:40 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 19:32:41 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 19:32:41 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 19:32:41 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 19:32:41 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 19:32:41 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 19:32:41 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Started SpringbootK15PortalsApplication in 9.145 seconds (JVM running for 17.721)
+2020-12-02 19:33:24 |INFO  |http-nio-80-exec-1 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 19:33:24 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 19:33:24 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 0 ms
+2020-12-02 19:33:24 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:33:24 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:33:24 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:33:24 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:34:08 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:34:08 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:34:09 |INFO  |http-nio-80-exec-3 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 19:45:38 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:45:38 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:49:27 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:49:27 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:50:10 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:50:10 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:51:09 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:51:09 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:51:51 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:51:51 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:51:57 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:51:57 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:52:08 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:52:08 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:52:42 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:52:42 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:52:46 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:52:46 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:52:49 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:52:49 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:52:51 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:52:51 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:52:58 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:52:58 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:53:00 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:53:00 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:53:01 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:53:01 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:53:03 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:53:03 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 19:53:09 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 19:53:09 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:21:45 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Starting SpringbootK15PortalsApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 9176 (D:\ideaprojects\springboot_k15\springboot_k15_portals\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 20:21:45 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |The following profiles are active: dev
+2020-12-02 20:21:45 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 20:21:45 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 20:21:48 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 20:21:48 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 20:21:48 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 20:21:48 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 20:21:48 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 20:21:48 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 2252 ms
+2020-12-02 20:21:49 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 20:21:49 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 20:21:49 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 20:21:49 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 20:21:49 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 20:21:49 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 20:21:49 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 20:21:49 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 20:21:50 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Started SpringbootK15PortalsApplication in 5.309 seconds (JVM running for 6.697)
+2020-12-02 20:24:41 |INFO  |http-nio-80-exec-3 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 20:24:41 |INFO  |http-nio-80-exec-3 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 20:24:41 |INFO  |http-nio-80-exec-3 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 4 ms
+2020-12-02 20:24:41 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:24:41 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:24:42 |INFO  |http-nio-80-exec-3 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 20:25:54 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:25:54 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:28:46 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:28:46 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:40:07 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:40:07 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:41:43 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:41:43 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:46:46 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:46:46 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:57:31 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:57:31 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 20:57:46 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 20:57:46 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:01:41 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:01:41 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:01:47 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:01:47 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:01:58 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:01:58 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:02:49 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:02:49 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:04:56 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:04:56 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:04:59 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:04:59 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:05:05 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:05:05 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:06:01 |INFO  |http-nio-80-exec-6 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:06:01 |INFO  |http-nio-80-exec-6 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:06:07 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:06:07 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:06:08 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:06:08 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:06:12 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:06:12 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:06:16 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:06:16 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:06:18 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:06:18 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:08:24 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:08:24 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:08:29 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:08:29 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:08:35 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:08:35 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:08:39 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:08:39 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:08:43 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:08:43 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 21:08:55 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 21:08:55 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:45:52 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Starting SpringbootK15PortalsApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 8812 (D:\ideaprojects\springboot_k15\springboot_k15_portals\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 22:45:52 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |The following profiles are active: dev
+2020-12-02 22:45:52 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 22:45:52 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 22:46:00 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 22:46:00 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 22:46:00 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 22:46:00 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 22:46:01 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 22:46:01 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 8240 ms
+2020-12-02 22:46:04 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 22:46:04 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 22:46:04 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 22:46:05 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 22:46:05 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 22:46:05 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 22:46:06 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 22:46:06 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 22:46:06 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Started SpringbootK15PortalsApplication in 19.543 seconds (JVM running for 39.906)
+2020-12-02 22:47:33 |INFO  |http-nio-80-exec-2 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 22:47:33 |INFO  |http-nio-80-exec-2 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 22:47:33 |INFO  |http-nio-80-exec-2 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 1 ms
+2020-12-02 22:47:34 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:47:34 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:47:36 |INFO  |http-nio-80-exec-2 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 22:47:49 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:47:49 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:48:02 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:48:02 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:48:03 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:48:03 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:51:22 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Starting SpringbootK15PortalsApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 7972 (D:\ideaprojects\springboot_k15\springboot_k15_portals\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 22:51:22 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |The following profiles are active: dev
+2020-12-02 22:51:22 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 22:51:22 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 22:51:24 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 22:51:24 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 22:51:24 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 22:51:24 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 22:51:24 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 22:51:24 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 1941 ms
+2020-12-02 22:51:25 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 22:51:25 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 22:51:25 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 22:51:25 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 22:51:25 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 22:51:25 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 22:51:25 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 22:51:25 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 22:51:25 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Started SpringbootK15PortalsApplication in 5.457 seconds (JVM running for 6.877)
+2020-12-02 22:52:01 |INFO  |http-nio-80-exec-3 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 22:52:01 |INFO  |http-nio-80-exec-3 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 22:52:01 |INFO  |http-nio-80-exec-3 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 9 ms
+2020-12-02 22:52:01 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:52:01 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:52:02 |INFO  |http-nio-80-exec-2 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 22:52:12 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:52:12 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:52:12 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:52:12 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:53:40 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:53:40 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:null
+2020-12-02 22:53:46 |INFO  |http-nio-80-exec-9 |LoginController.java:30 |com.woniu.springboot.portals.controller.LoginController |登录时的sessionId值：B4AAD11B3BBCDDA988F72B205B337F92
+2020-12-02 22:53:51 |INFO  |http-nio-80-exec-10 |LoginController.java:30 |com.woniu.springboot.portals.controller.LoginController |登录时的sessionId值：1C6D4181D444F38A1A989EA9EC8E742A
+2020-12-02 22:53:52 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:53:52 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:53:52 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjI2MzEsImFjY291bnQiOiJxd2UifQ.59YxHeiRxD0NSvy6ciCyUJQATXms-YUhBuy7qpjYpxk
+2020-12-02 22:53:52 |INFO  |http-nio-80-exec-5 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：BE8917FFB1A1895FE4446869AA2398FE
+2020-12-02 22:54:03 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:54:03 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:54:03 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjI2MjYsImFjY291bnQiOiJxd2UifQ.sFelb0Nv5F9ku3skqEidMD4CBK_dr5hJkdi1xolIb4Y
+2020-12-02 22:54:06 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:54:06 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjI2MjYsImFjY291bnQiOiJxd2UifQ.sFelb0Nv5F9ku3skqEidMD4CBK_dr5hJkdi1xolIb4Y
+2020-12-02 22:54:42 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:54:42 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjI2MjYsImFjY291bnQiOiJxd2UifQ.sFelb0Nv5F9ku3skqEidMD4CBK_dr5hJkdi1xolIb4Y
+2020-12-02 22:54:42 |INFO  |http-nio-80-exec-8 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：D0B31B87AE36E56C8583FAF7D10F56D3
+2020-12-02 22:54:42 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:54:42 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 22:54:42 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjI2MjYsImFjY291bnQiOiJxd2UifQ.sFelb0Nv5F9ku3skqEidMD4CBK_dr5hJkdi1xolIb4Y
+2020-12-02 22:54:42 |INFO  |http-nio-80-exec-8 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:3
+2020-12-02 23:17:27 |INFO  |main |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplicationTests |Starting SpringbootK15PortalsApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 7212 (started by xiakai in D:\ideaprojects\springboot_k15\springboot_k15_portals)
+2020-12-02 23:17:27 |INFO  |main |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplicationTests |The following profiles are active: dev
+2020-12-02 23:17:33 |INFO  |main |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 23:17:34 |INFO  |main |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 23:17:35 |INFO  |main |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 23:17:35 |INFO  |main |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 23:17:35 |INFO  |main |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 23:17:36 |INFO  |main |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplicationTests |Started SpringbootK15PortalsApplicationTests in 9.815 seconds (JVM running for 13.832)
+2020-12-02 23:17:37 |INFO  |main |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 23:17:37 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:218 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-02 23:17:37 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closing ...
+2020-12-02 23:17:37 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2096 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closed
+2020-12-02 23:19:46 |INFO  |main |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplicationTests |Starting SpringbootK15PortalsApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 9844 (started by xiakai in D:\ideaprojects\springboot_k15\springboot_k15_portals)
+2020-12-02 23:19:46 |INFO  |main |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplicationTests |The following profiles are active: dev
+2020-12-02 23:19:50 |INFO  |main |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 23:19:51 |INFO  |main |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 23:19:52 |INFO  |main |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 23:19:52 |INFO  |main |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 23:19:52 |INFO  |main |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 23:19:53 |INFO  |main |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplicationTests |Started SpringbootK15PortalsApplicationTests in 7.867 seconds (JVM running for 10.642)
+2020-12-02 23:19:53 |INFO  |main |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 23:19:53 |INFO  |main |SpringbootK15PortalsApplicationTests.java:35 |com.woniu.springboot.portals.SpringbootK15PortalsApplicationTests |牛顿->素养
+2020-12-02 23:19:54 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:218 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-02 23:19:54 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closing ...
+2020-12-02 23:19:54 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2096 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closed
+2020-12-02 23:26:16 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Starting SpringbootK15PortalsApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 7136 (D:\ideaprojects\springboot_k15\springboot_k15_portals\target\classes started by xiakai in D:\ideaprojects\springboot_k15)
+2020-12-02 23:26:16 |INFO  |restartedMain |SpringApplication.java:664 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |The following profiles are active: dev
+2020-12-02 23:26:16 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-02 23:26:16 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-02 23:26:18 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-02 23:26:18 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-02 23:26:18 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-02 23:26:18 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-02 23:26:18 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-02 23:26:18 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 2251 ms
+2020-12-02 23:26:19 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-02 23:26:19 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-02 23:26:19 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-02 23:26:20 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-02 23:26:20 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-02 23:26:20 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-02 23:26:20 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-02 23:26:20 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-02 23:26:20 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniu.springboot.portals.SpringbootK15PortalsApplication |Started SpringbootK15PortalsApplication in 5.428 seconds (JVM running for 6.778)
+2020-12-02 23:26:43 |INFO  |http-nio-80-exec-1 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-02 23:26:43 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-02 23:26:43 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 4 ms
+2020-12-02 23:26:43 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:26:43 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:26:43 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjI2MjYsImFjY291bnQiOiJxd2UifQ.sFelb0Nv5F9ku3skqEidMD4CBK_dr5hJkdi1xolIb4Y
+2020-12-02 23:26:44 |INFO  |http-nio-80-exec-6 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-02 23:26:47 |INFO  |http-nio-80-exec-6 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:26:47 |INFO  |http-nio-80-exec-6 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjI2MjYsImFjY291bnQiOiJxd2UifQ.sFelb0Nv5F9ku3skqEidMD4CBK_dr5hJkdi1xolIb4Y
+2020-12-02 23:26:52 |INFO  |http-nio-80-exec-2 |LoginController.java:30 |com.woniu.springboot.portals.controller.LoginController |登录时的sessionId值：D08B481F90834199FA1F7A9132CE7677
+2020-12-02 23:26:52 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:26:52 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:26:52 |INFO  |http-nio-80-exec-8 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：27C2E8E089078FB5D81AF583797E0964
+2020-12-02 23:27:11 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:11 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:27:11 |INFO  |http-nio-80-exec-1 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：CCBD7D55BA2C8D08131F401B0FD8D731
+2020-12-02 23:27:11 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:11 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:11 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:27:11 |INFO  |http-nio-80-exec-3 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:3
+2020-12-02 23:27:41 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:41 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:27:41 |INFO  |http-nio-80-exec-7 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：480CF4F7E515EA9ECB61CB279FF97F1D
+2020-12-02 23:27:41 |INFO  |http-nio-80-exec-6 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:41 |INFO  |http-nio-80-exec-6 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:27:41 |INFO  |http-nio-80-exec-6 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:3
+2020-12-02 23:27:49 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:49 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:27:49 |INFO  |http-nio-80-exec-10 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：7C9B8B5F9950F653F55055DB79899C10
+2020-12-02 23:27:55 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:55 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:27:55 |INFO  |http-nio-80-exec-4 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：DE95AE65D4AB3CFAD06DDCEAF5778399
+2020-12-02 23:27:55 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:27:55 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:27:55 |INFO  |http-nio-80-exec-3 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:3
+2020-12-02 23:33:13 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:13 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:13 |INFO  |http-nio-80-exec-3 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:3
+2020-12-02 23:33:13 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:13 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:13 |INFO  |http-nio-80-exec-7 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：2700A4126D269FCE69A676825AD7A447
+2020-12-02 23:33:16 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:16 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:16 |INFO  |http-nio-80-exec-9 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:3
+2020-12-02 23:33:16 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:16 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:16 |INFO  |http-nio-80-exec-10 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：9789BEE7DEDB4BD4D31F5E3397C48743
+2020-12-02 23:33:27 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:27 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:27 |INFO  |http-nio-80-exec-3 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：44B2EF1787970747D94A52064E9BD9CE
+2020-12-02 23:33:34 |INFO  |http-nio-80-exec-3 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:34 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:34 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:34 |INFO  |http-nio-80-exec-7 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:2
+2020-12-02 23:33:34 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:34 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:34 |INFO  |http-nio-80-exec-1 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：FD8CC9DDB787C125539A16D906B90DC2
+2020-12-02 23:33:38 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:38 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:38 |INFO  |http-nio-80-exec-10 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：3E3A45A82E689D455974F41EF10ED180
+2020-12-02 23:33:40 |INFO  |http-nio-80-exec-6 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:40 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:40 |INFO  |http-nio-80-exec-8 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:40 |INFO  |http-nio-80-exec-8 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:4
+2020-12-02 23:33:40 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:40 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:40 |INFO  |http-nio-80-exec-5 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：81D61DE3E6A5302DEB7F3C943E9A51F7
+2020-12-02 23:33:43 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:43 |INFO  |http-nio-80-exec-4 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:43 |INFO  |http-nio-80-exec-4 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：1558BACAADEC5A848A929A21C543C1AE
+2020-12-02 23:33:44 |INFO  |http-nio-80-exec-7 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:44 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:44 |INFO  |http-nio-80-exec-1 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:44 |INFO  |http-nio-80-exec-1 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:1
+2020-12-02 23:33:44 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:44 |INFO  |http-nio-80-exec-2 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:44 |INFO  |http-nio-80-exec-2 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：3DF3CA474996237FCCC6E38EB7C46E92
+2020-12-02 23:33:51 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:51 |INFO  |http-nio-80-exec-10 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:51 |INFO  |http-nio-80-exec-10 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：44132830B4CD25A1C9540A464C6838BD
+2020-12-02 23:33:53 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:53 |INFO  |http-nio-80-exec-5 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:53 |INFO  |http-nio-80-exec-5 |TeacherController.java:38 |com.woniu.springboot.portals.controller.TeacherController |id:3
+2020-12-02 23:33:53 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:20 |com.woniu.springboot.portals.interceptor.JwtInterceptor |******preHandle******
+2020-12-02 23:33:53 |INFO  |http-nio-80-exec-9 |JwtInterceptor.java:27 |com.woniu.springboot.portals.interceptor.JwtInterceptor |token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ4aWFrYWkiLCJzdWIiOiJrMTVlZHVjYXRpb24iLCJleHAiOjE2MDY5MjQ2MTIsImFjY291bnQiOiJxd2UifQ.Ca-jvyUhsHolBOIS4a4YIDPEx-qoe1n5EAUiA37aXGs
+2020-12-02 23:33:53 |INFO  |http-nio-80-exec-9 |LoginController.java:41 |com.woniu.springboot.portals.controller.LoginController |获取登录用户信息时的sessionId值：D7D3C24404832209A3B9926417615D87

@@ -1,0 +1,3 @@
+2020-12-03 09:17:38 |WARN  |restartedMain |ThymeleafAutoConfiguration.java:105 |org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration |Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2020-12-03 09:20:33 |WARN  |http-nio-80-exec-3 |AbstractHandlerExceptionResolver.java:207 |org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver |Resolved [K15Exception(code=501, msg=token为空)]
+2020-12-03 09:22:39 |WARN  |http-nio-80-exec-6 |AbstractHandlerExceptionResolver.java:207 |org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver |Resolved [K15Exception(code=501, msg=token为空)]

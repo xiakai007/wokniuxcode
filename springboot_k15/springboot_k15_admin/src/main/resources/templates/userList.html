@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.org/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>用户列表页面</title>
+    <link rel="stylesheet" th:href="@{/resources/layui/css/layui.css}">
+</head>
+<body>
+<script th:src="@{/resources/layui/layui.js}"></script>
+<script th:inline="none">
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form','table'], function(){
+        var layer = layui.layer,
+            form = layui.form,
+            table=layui.table,
+            $=layui.jquery;
+        var tableUser=table.render({
+            elem:'#userTable',
+            height:325,
+            url:'/user/userList',
+            id:'userListTable',
+            page:true,
+            limits:[5,10,15,20],
+            limit:5,
+            done:function(resp){
+                if(resp.code==201||resp.code==402){
+                    layer.msg(resp.message);
+                }
+            },
+            cols:[[
+                {field: 'id', title: '编号',type:"checkbox"},
+                {field: 'telephone', title: '手机号'},
+                {field: 'realname', title: '姓名'},
+                {field: 'birthday', title: '生日'},
+                {field: 'available', title: '状态',templet:function(obj){
+                    return obj.available==1?"正常":"禁用";
+                }},
+                {field: 'dept', title: '部门',templet:function(obj){
+                    return obj.dept.dname;
+                }},
+                {title:'操作',width:240,templet:'#userListBar',fixed:"right",align:"center"}
+            ]]
+        });
+        /*单击表格中的操作选项；
+        *tool 是工具条事件名，userTableList 是 table 原始容器的属性 lay-filter="对应的值"
+        * tool绑定的是table的lay-filter属性值userTableList
+        * */
+        //单击表格中的操作选项；tool绑定的是table的lay-filter属性值userTableList
+        table.on("tool(userTableList)",function (obj) {
+            //获取当前行的数据
+            var data = obj.data;
+            switch (obj.event){
+                case 'grantRole':
+                    var assignRoleIndex=layer.open({
+                        /*type:2,2为iframe层*/
+                        type:2,
+                        title:'角色分配',
+                        content:'/goUserRoles',
+                        area:['500px','300px'],
+                        success:function(layero,index){
+                            /*使用layer.getChildFrame('body',index)方法获取iframe页的DOM
+                            *实现从父窗口向子窗口传值传参
+                            */
+                            var body = layer.getChildFrame('body',index);
+                            /*从父页面向子页面传值*/
+                            body.find("#userId").val(data.id);
+                        },
+                        btn:['确定','取消'],
+                        yes:function (index,layero) {
+                            /*window["layui-layer-iframe"+index].callbackdata()
+                            *callbackdata()为回调函数；
+                            * 使用window["layui-layer-iframe"+index]方法实现
+                            * 从子窗口向父窗口传值传参
+                            */
+                            var res = window["layui-layer-iframe"+index].callbackdata();
+                            var rids = new Array();
+                            for(var i=0;i<res.length;i++){
+                                rids.push(res[i].id);
+                            }
+                            $.ajax({
+                                type:"GET",
+                                url:"/user/assignRole",
+                                data:{uid:data.id,rids:rids},
+                                /*传递数组必须设置traditional属性值为true*/
+                                traditional:true,
+                                success:function(resp){
+                                    if(resp.code==502||resp.code==503){
+                                        layer.msg(resp.message);
+                                        layer.close(assignRoleIndex);
+                                    }
+                                }
+                            });
+                        },
+                        btn2:function (index,layero) {
+                            layer.close(assignRoleIndex);
+                        }
+                    });
+                    break;
+            }
+        });
+        //搜索功能
+        $(".searchBtn").click(function(){
+            var telephone=$("#telephone").val();
+            var realname=$("#realname").val();
+            var deptid=$("#deptid").val();
+            table.reload('userListTable',{url:"/user/userList?telephone="+telephone+"&realname="+realname+"&dept.id="+deptid});
+        });
+        //部门下拉菜单
+        $.ajax({
+            type:"GET",
+            url:"/dept/depts",
+            success:function(resp){
+                //console.log(resp.data.depts);
+                var depts=resp.data.depts;
+                if(depts.length>0){
+                    for(var i=0;i<depts.length;i++){
+                        var dept=depts[i];
+                        $("#deptid").append("<option value='"+dept.id+"'>"+dept.dname+"</option>");
+                    }
+                }
+                //渲染下拉菜单
+                layui.form.render("select");
+            }
+        });
+        //批量删除
+        $("#removeBtn").click(function(){
+            var checkStatus = table.checkStatus("userListTable");
+            var data = checkStatus.data;
+            var ids=new Array();
+            if(data.length==0){
+                layer.msg("请至少选择一条信息")
+            }else{
+                for(var i=0;i<data.length;i++){
+                    ids.push(data[i].id);
+                }
+                layer.confirm('确定删除选中的用户？',{icon:3,title:'提示信息'},function(index){
+                    $.ajax({
+                        type:"post",
+                        url:"/user/removeUser",
+                        data:{ids:ids},
+                        /**
+                         * 使用ajax向后台传递数组必须设置traditional:true!!!！！！
+                         */
+                        traditional:true,
+                        success:function(resp){
+                            console.log(resp);
+                            if(resp.code==401){
+                                //刷新表格
+                                tableUser.reload();
+                                //关闭提示窗口
+                                layer.close(index);
+                            }else if(resp.code==201||resp.code==403){
+                                layer.msg(resp.message);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+        $("#addBtn").click(function(){
+            console.log("***////");
+            //路径：goUserAdd
+            //window.location.href="goUserAdd";
+        });
+    });
+</script>
+<blockquote class="layui-elem-quote quoteBox">
+    <form class="layui-form">
+        <div class="layui-inline">
+            <input type="text" class="layui-input" id="telephone" placeholder="请输入手机号">
+        </div>
+        <div class="layui-inline">
+            <input type="text" class="layui-input" id="realname" placeholder="请输入姓名">
+        </div>
+        <div class="layui-inline">
+            <select id="deptid">
+                <option value="0">请选择部门</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn searchBtn">
+                <i class="layui-icon-search">&#xe615;</i> 搜索
+            </button>
+        </div>
+        <shiro:hasPermission name="user:removeall">
+            <div class="layui-inline">
+                <button type="button" class="layui-btn layui-btn-danger" id="removeBtn">
+                    批量删除
+                </button>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="user:add">
+            <div class="layui-inline">
+                <button type="button" class="layui-btn layui-btn-warm" id="addBtn">
+                    增加用户
+                </button>
+            </div>
+        </shiro:hasPermission>
+    </form>
+</blockquote>
+<table id="userTable" lay-filter="userTableList"></table>
+<!--操作-->
+<script type="text/html" id="userListBar">
+    <shiro:hasPermission name="user:edit">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="user:delete">
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="user:look">
+        <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="look">预览</a>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="user:grant">
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grantRole">分配角色</a>
+    </shiro:hasPermission>
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mall/mall.iml" filepath="$PROJECT_DIR$/mall/mall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mymall/mymall.iml" filepath="$PROJECT_DIR$/mymall/mymall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shiroDemo/shiroDemo.iml" filepath="$PROJECT_DIR$/shiroDemo/shiroDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot_k15.iml" filepath="$PROJECT_DIR$/springboot_k15.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot_k15_admin/springboot_k15_admin.iml" filepath="$PROJECT_DIR$/springboot_k15_admin/springboot_k15_admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot_k15_portals/springboot_k15_portals.iml" filepath="$PROJECT_DIR$/springboot_k15_portals/springboot_k15_portals.iml" />
+    </modules>
+  </component>
+</project>

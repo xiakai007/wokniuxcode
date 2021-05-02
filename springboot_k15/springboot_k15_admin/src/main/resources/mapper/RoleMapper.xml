@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.springboot.admin.mapper.RoleMapper">
+    <resultMap id="roleMap" type="Role">
+        <id property="id" column="id"></id>
+        <collection property="userList" column="id"
+        select="com.woniu.springboot.admin.mapper.UserMapper.selectUserByRid"></collection>
+        <collection property="permissionList" column="id"
+        select="com.woniu.springboot.admin.mapper.PermissionMapper.selectPermissionByRid"></collection>
+    </resultMap>
+    <select id="selectRoleByRolename" parameterType="String" resultMap="roleMap">
+        SELECT * FROM sys_role WHERE rolename=#{rolename}
+    </select>
+    <select id="selectRoleByUid" parameterType="int" resultType="Role">
+        SELECT * FROM sys_role WHERE id IN (
+          SELECT rid FROM sys_user_role WHERE uid=#{uid}
+        )
+    </select>
+    <select id="selectRoleByPerid" parameterType="int" resultType="Role">
+        SELECT * FROM sys_role WHERE id IN(
+        SELECT rid FROM sys_role_permission WHERE perid=#{perid}
+        )
+    </select>
+    <select id="selectRoleAll" resultType="Role">
+        SELECT * FROM sys_role
+    </select>
+    <delete id="deleteRoleAndPermByRid" parameterType="int">
+        DELETE FROM sys_role_permission WHERE rid=#{rid}
+    </delete>
+    <insert id="addRoleAndPerm" parameterType="map">
+        INSERT INTO sys_role_permission (rid,perid)VALUES (#{rid},#{perid})
+    </insert>
+    <select id="selectRolenamesByUid" resultType="String" parameterType="int">
+        SELECT rolename from sys_role WHERE id IN(
+	      SELECT rid FROM sys_user_role WHERE uid=#{uid}
+        )
+    </select>
+</mapper>

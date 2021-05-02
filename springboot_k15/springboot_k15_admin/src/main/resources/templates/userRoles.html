@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>角色页面</title>
+    <link rel="stylesheet" th:href="@{/resources/layui/css/layui.css}">
+</head>
+<body>
+<script th:src="@{/resources/layui/layui.js}"></script>
+<script th:inline="none">
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form','table'], function(){
+        var layer = layui.layer,
+            form = layui.form,
+            table=layui.table,
+            $=layui.jquery;
+        var tableRole=table.render({
+            elem:'#roleTable',
+            height:325,
+            url:'/role/roleList',
+            where:{
+                uid:$("#userId").val()
+            },
+            id:'roleListTable',
+            done:function(resp){
+                if(resp.code==501){
+                    layer.msg(resp.message);
+                }
+            },
+            cols:[[
+                {field: 'id', title: '编号',width:50,type:"checkbox"},
+                {field: 'rolename', title: '角色名称'}
+            ]]
+        });
+    });
+    /*回调函数*/
+    var callbackdata=function(){
+        var checkStatus = layui.table.checkStatus("roleListTable");
+        var rids=checkStatus.data;
+        return rids;
+    }
+</script>
+<input type="hidden" id="userId">
+<table class="layui-hide" id="roleTable" lay-filter="myrole"></table>
+</body>
+</html>

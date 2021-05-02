@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mymall" />
+        <module name="shiroDemo" />
+        <module name="springboot_k15_admin" />
+        <module name="springboot_k15_portals" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mymall" target="1.8" />
+      <module name="shiroDemo" target="1.7" />
+      <module name="springboot_k15" target="1.5" />
+      <module name="springboot_k15_admin" target="1.8" />
+      <module name="springboot_k15_portals" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

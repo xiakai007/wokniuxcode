@@ -1,0 +1,52 @@
+2020-12-07 13:16:31 |INFO  |main |StartupInfoLogger.java:55 |com.woniuxy.caradmin.CaradminApplicationTests |Starting CaradminApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 19116 (started by xiakai in D:\ideaprojects\carmanagement\caradmin)
+2020-12-07 13:16:31 |INFO  |main |SpringApplication.java:664 |com.woniuxy.caradmin.CaradminApplicationTests |The following profiles are active: dev
+2020-12-07 13:16:34 |INFO  |main |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-07 13:16:36 |INFO  |main |StartupInfoLogger.java:61 |com.woniuxy.caradmin.CaradminApplicationTests |Started CaradminApplicationTests in 7.252 seconds (JVM running for 12.595)
+2020-12-07 13:16:37 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:218 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-07 13:16:37 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-0} closing ...
+2020-12-07 13:19:32 |INFO  |main |StartupInfoLogger.java:55 |com.woniuxy.caradmin.CaradminApplicationTests |Starting CaradminApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 19768 (started by xiakai in D:\ideaprojects\carmanagement\caradmin)
+2020-12-07 13:19:32 |INFO  |main |SpringApplication.java:664 |com.woniuxy.caradmin.CaradminApplicationTests |The following profiles are active: dev
+2020-12-07 13:19:37 |INFO  |main |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-07 13:19:37 |INFO  |main |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-07 13:19:38 |INFO  |main |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-07 13:19:38 |INFO  |main |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-07 13:19:39 |INFO  |main |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-07 13:19:39 |INFO  |main |StartupInfoLogger.java:61 |com.woniuxy.caradmin.CaradminApplicationTests |Started CaradminApplicationTests in 7.939 seconds (JVM running for 10.85)
+2020-12-07 13:19:39 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:218 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-07 13:19:39 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-0} closing ...
+2020-12-07 17:19:59 |INFO  |main |StartupInfoLogger.java:55 |com.woniuxy.caradmin.CaradminApplicationTests |Starting CaradminApplicationTests using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 15864 (started by xiakai in D:\ideaprojects\carmanagement\carmanagement\caradmin)
+2020-12-07 17:19:59 |INFO  |main |SpringApplication.java:664 |com.woniuxy.caradmin.CaradminApplicationTests |The following profiles are active: dev
+2020-12-07 17:20:07 |INFO  |main |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-07 17:20:08 |INFO  |main |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-07 17:20:11 |INFO  |main |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-07 17:20:11 |INFO  |main |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-07 17:20:11 |INFO  |main |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-07 17:20:11 |INFO  |main |StartupInfoLogger.java:61 |com.woniuxy.caradmin.CaradminApplicationTests |Started CaradminApplicationTests in 14.12 seconds (JVM running for 21.339)
+2020-12-07 17:20:13 |INFO  |main |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited
+2020-12-07 17:20:13 |INFO  |main |CaradminApplicationTests.java:25 |com.woniuxy.caradmin.CaradminApplicationTests |陕A001
+2020-12-07 17:20:13 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:218 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2020-12-07 17:20:13 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2024 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closing ...
+2020-12-07 17:20:13 |INFO  |SpringContextShutdownHook |DruidDataSource.java:2096 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} closed
+2020-12-07 18:53:08 |INFO  |restartedMain |StartupInfoLogger.java:55 |com.woniuxy.caradmin.CaradminApplication |Starting CaradminApplication using Java 1.8.0_45 on DESKTOP-MPPORRH with PID 14544 (D:\ideaprojects\carmanagement\carmanagement\caradmin\target\classes started by xiakai in D:\ideaprojects\carmanagement\carmanagement)
+2020-12-07 18:53:08 |INFO  |restartedMain |SpringApplication.java:664 |com.woniuxy.caradmin.CaradminApplication |The following profiles are active: dev
+2020-12-07 18:53:08 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-07 18:53:08 |INFO  |restartedMain |DeferredLog.java:255 |org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor |For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-07 18:53:14 |INFO  |restartedMain |TomcatWebServer.java:108 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat initialized with port(s): 80 (http)
+2020-12-07 18:53:14 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Initializing ProtocolHandler ["http-nio-80"]
+2020-12-07 18:53:14 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardService |Starting service [Tomcat]
+2020-12-07 18:53:14 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.StandardEngine |Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-12-07 18:53:14 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring embedded WebApplicationContext
+2020-12-07 18:53:14 |INFO  |restartedMain |ServletWebServerApplicationContext.java:289 |org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext |Root WebApplicationContext: initialization completed in 6362 ms
+2020-12-07 18:53:17 |INFO  |restartedMain |PropertySourcedRequestMappingHandlerMapping.java:69 |springfox.documentation.spring.web.PropertySourcedRequestMappingHandlerMapping |Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-07 18:53:18 |INFO  |restartedMain |ExecutorConfigurationSupport.java:181 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Initializing ExecutorService 'applicationTaskExecutor'
+2020-12-07 18:53:18 |INFO  |restartedMain |OptionalLiveReloadServer.java:58 |org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer |LiveReload server is running on port 35729
+2020-12-07 18:53:18 |INFO  |restartedMain |DirectJDKLog.java:173 |org.apache.coyote.http11.Http11NioProtocol |Starting ProtocolHandler ["http-nio-80"]
+2020-12-07 18:53:18 |INFO  |restartedMain |TomcatWebServer.java:220 |org.springframework.boot.web.embedded.tomcat.TomcatWebServer |Tomcat started on port(s): 80 (http) with context path ''
+2020-12-07 18:53:18 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:160 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Context refreshed
+2020-12-07 18:53:18 |INFO  |restartedMain |DocumentationPluginsBootstrapper.java:163 |springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper |Found 1 custom documentation plugin(s)
+2020-12-07 18:53:18 |INFO  |restartedMain |ApiListingReferenceScanner.java:41 |springfox.documentation.spring.web.scanners.ApiListingReferenceScanner |Scanning for api listing references
+2020-12-07 18:53:19 |INFO  |restartedMain |StartupInfoLogger.java:61 |com.woniuxy.caradmin.CaradminApplication |Started CaradminApplication in 12.369 seconds (JVM running for 15.217)
+2020-12-07 18:53:33 |INFO  |http-nio-80-exec-1 |DirectJDKLog.java:173 |org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] |Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-07 18:53:33 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:525 |org.springframework.web.servlet.DispatcherServlet |Initializing Servlet 'dispatcherServlet'
+2020-12-07 18:53:33 |INFO  |http-nio-80-exec-1 |FrameworkServlet.java:547 |org.springframework.web.servlet.DispatcherServlet |Completed initialization in 3 ms
+2020-12-07 18:53:54 |INFO  |http-nio-80-exec-1 |DruidDataSource.java:983 |com.alibaba.druid.pool.DruidDataSource |{dataSource-1} inited

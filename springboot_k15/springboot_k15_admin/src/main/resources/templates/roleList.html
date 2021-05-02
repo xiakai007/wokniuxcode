@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>用户列表页面</title>
+    <link rel="stylesheet" th:href="@{/resources/layui/css/layui.css}">
+</head>
+<body>
+<script th:src="@{/resources/layui/layui.js}"></script>
+<script th:inline="none">
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form','table'], function(){
+        var layer = layui.layer,
+            form = layui.form,
+            table=layui.table,
+            $=layui.jquery;
+        var tableRole=table.render({
+            elem:'#roleTable',
+            height:325,
+            url:'/role/roleListAll',
+            id:'roleListTable',
+            /*page:true,
+            limits:[5,10,15,20],
+            limit:5,*/
+            done:function(resp){
+                if(resp.code==201||resp.code==501){
+                    layer.msg(resp.message);
+                }
+            },
+            cols:[[
+                {field: 'id', title: '编号',type:"checkbox"},
+                {field: 'rolename', title: '角色名称'},
+                {title:'操作',width:240,templet:'#roleListBar',fixed:"right",align:"center"}
+            ]]
+        });
+        /*单击表格中的操作选项；
+        *tool 是工具条事件名，roleTableList 是 table 原始容器的属性 lay-filter="对应的值"
+        * tool绑定的是table的lay-filter属性值roleTableList
+        * */
+        table.on("tool(roleTableList)",function (obj) {
+            //获取当前行的数据
+            var data = obj.data;
+            switch (obj.event){
+                case 'grantRight':
+                    var assignRightIndex=layer.open({
+                        /*type:2,2为iframe层*/
+                        type:2,
+                        title:'权限分配',
+                        content:'/goRoleRight',
+                        area:['300px','400px'],
+                        success:function(layero,index){
+                            /*使用layer.getChildFrame('body',index)方法获取iframe页的DOM
+                            *实现从父窗口向子窗口传值传参
+                            */
+                            var body = layer.getChildFrame('body',index);
+                            /*从父页面向子页面传值*/
+                            body.find("#roleId").val(data.id);
+                        },
+                        btn:['确定','取消'],
+                        yes:function(index,layero){
+                            var result = window["layui-layer-iframe"+index].callbackdata();
+                            $.ajax({
+                                url:'/permission/assignRight',
+                                data:result,
+                                traditional:true,
+                                success:function(resp){
+                                    if(resp.code==602||resp.code==603){
+                                        layer.msg(resp.message);
+                                        layer.close(assignRightIndex);
+                                    }
+                                }
+                            });
+                        },
+                        btn2:function(index,layero){
+                            layer.close(index);
+                        }
+                    });
+                    break;
+            }
+        });
+        //搜索功能
+        /*$(".searchBtn").click(function(){
+            var telephone=$("#telephone").val();
+            var realname=$("#realname").val();
+            var deptid=$("#deptid").val();
+            table.reload('userListTable',{url:"/user/userList?telephone="+telephone+"&realname="+realname+"&dept.id="+deptid});
+        });*/
+        //部门下拉菜单
+        /*$.ajax({
+            type:"GET",
+            url:"/dept/depts",
+            success:function(resp){
+                //console.log(resp.data.depts);
+                var depts=resp.data.depts;
+                if(depts.length>0){
+                    for(var i=0;i<depts.length;i++){
+                        var dept=depts[i];
+                        $("#deptid").append("<option value='"+dept.id+"'>"+dept.dname+"</option>");
+                    }
+                }
+                //渲染下拉菜单
+                layui.form.render("select");
+            }
+        });*/
+        //批量删除
+//        $("#removeBtn").click(function(){
+//            var checkStatus = table.checkStatus("userListTable");
+//            var data = checkStatus.data;
+//            var ids=new Array();
+//            if(data.length==0){
+//                layer.msg("请至少选择一条信息")
+//            }else{
+//                for(var i=0;i<data.length;i++){
+//                    ids.push(data[i].id);
+//                }
+//                layer.confirm('确定删除选中的用户？',{icon:3,title:'提示信息'},function(index){
+//                    $.ajax({
+//                        type:"post",
+//                        url:"/user/removeUser",
+//                        data:{ids:ids},
+//                        /**
+//                         * 使用ajax向后台传递数组必须设置traditional:true!!!！！！
+//                         */
+//                        traditional:true,
+//                        success:function(resp){
+//                            console.log(resp);
+//                            if(resp.code==401){
+//                                //刷新表格
+//                                tableUser.reload();
+//                                //关闭提示窗口
+//                                layer.close(index);
+//                            }else if(resp.code==201||resp.code==403){
+//                                layer.msg(resp.message);
+//                            }
+//                        }
+//                    });
+//                });
+//            }
+//        });
+        $("#addBtn").click(function(){
+            console.log("***////");
+
+        });
+    });
+</script>
+<blockquote class="layui-elem-quote quoteBox">
+    <form class="layui-form">
+        <div class="layui-inline">
+            <input type="text" class="layui-input" id="rolename" placeholder="请输入角色名称">
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn searchBtn">
+                <i class="layui-icon-search">&#xe615;</i> 搜索
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-danger" id="removeBtn">
+                批量删除
+            </button>
+        </div>
+        <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-warm" id="addBtn">
+                增加角色
+            </button>
+        </div>
+    </form>
+</blockquote>
+<table id="roleTable" lay-filter="roleTableList"></table>
+<!--操作-->
+<script type="text/html" id="roleListBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grantRight">分配权限</a>
+</script>
+</body>
+</html>

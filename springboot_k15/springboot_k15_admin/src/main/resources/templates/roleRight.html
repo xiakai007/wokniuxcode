@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>角色权限分配</title>
+    <link rel="stylesheet" href="/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="/zTree_v3/js/jquery-1.4.4.min.js"> </script>
+    <script type="text/javascript" src="/zTree_v3/js/jquery.ztree.all.js"> </script>
+    <script>
+        var zTreeObj;
+        var setting={
+            data:{
+                simpleData:{
+                    enable:true,
+                    idKey:"id",
+                    pIdKey:"pid"
+                }
+            },
+            check:{
+                chkboxType:{"Y":"","N":""},
+                chkStyle:"checkbox",
+                enable:true
+            },
+            view:{
+                fontCss:{color:"black",fontSize:'12'},
+                showLine:true,
+                dblClickExpand:true,
+                selectedMulti:true
+            }
+        };
+        $(document).ready(function(){
+            $.ajax({
+                url:'/permission/permissionList',
+                success:function(resp){
+                    /*初始化zTreeObj*/
+                    zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, resp.data.permissions);
+                    /*勾选复选框*/
+                    getChecked();
+                }
+            });
+            function getChecked(){
+                $.ajax({
+                    url:'/permission/getChecked',
+                    data:{rid:$("#roleId").val()},
+                    success:function(resp){
+                        var permIds=resp.data.permIds;
+                        if(permIds.length>0){
+                            for(var i=0;i<permIds.length;i++){
+                                var node = zTreeObj.getNodeByParam("id",permIds[i]);
+                                zTreeObj.checkNode(node,true);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        var callbackdata=function(){
+            var checkedNodes = zTreeObj.getCheckedNodes(true);
+            var permIds=new Array();
+            if(checkedNodes!=null&&checkedNodes.length>0){
+                for(var i=0;i<checkedNodes.length;i++){
+                    permIds.push(checkedNodes[i].id);
+                }
+            }
+            return {rid:$("#roleId").val(),permIds:permIds};
+        }
+    </script>
+</head>
+<body>
+<input type="hidden" id="roleId">
+<div id="treeDemo" class="ztree"></div>
+</body>
+</html>

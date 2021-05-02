@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.springboot.admin.mapper.UserMapper">
+    <resultMap id="userMap" type="User">
+        <id property="id" column="id"></id>
+        <association property="dept" column="did"
+        select="com.woniu.springboot.admin.mapper.DeptMapper.selectDeptById"></association>
+        <collection property="roleList" column="id"
+        select="com.woniu.springboot.admin.mapper.RoleMapper.selectRoleByUid"></collection>
+        <collection property="permissionList" column="id"
+        select="com.woniu.springboot.admin.mapper.PermissionMapper.selectPermissionByUid"></collection>
+    </resultMap>
+    <select id="selectUserAll" resultMap="userMap">
+        SELECT * FROM sys_user
+    </select>
+    <select id="selectUserByDid" parameterType="int" resultMap="userMap">
+        SELECT * FROM sys_user WHERE did=#{did}
+    </select>
+    <select id="selectUserByRid" parameterType="int" resultType="User">
+        SELECT * FROM sys_user WHERE id IN(
+	      SELECT uid FROM sys_user_role WHERE rid=#{rid}
+        )
+    </select>
+    <select id="selectUserByRealname" parameterType="String" resultMap="userMap">
+        SELECT id FROM sys_user WHERE realname=#{realname}
+    </select>
+    <select id="selectUserByTelAndPwd" parameterType="String" resultMap="userMap">
+        SELECT * FROM sys_user WHERE telephone=#{telephone} AND PASSWORD=#{password}
+    </select>
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO sys_user(telephone,PASSWORD,realname,birthday,headimg,available,did)values
+        (#{telephone},#{PASSWORD},#{realname},#{birthday},#{headimg},#{available},#{dept.id})
+    </insert>
+    <select id="selectUserByProperty" resultMap="userMap" parameterType="User">
+        SELECT * FROM sys_user WHERE available=1
+            <if test="telephone!=null and telephone!=''">
+                AND telephone LIKE concat('%',#{telephone},'%')
+            </if>
+            <if test="realname!=null and realname!=''">
+                AND  realname LIKE concat('%',#{realname},'%')
+            </if>
+            <if test="dept!=null">
+                <if test="dept.id!=null and dept.id!=0">
+                    AND did=#{dept.id}
+                </if>
+            </if>
+    </select>
+    <delete id="deleteUserById" parameterType="int">
+        DELETE FROM sys_user WHERE id=#{id}
+    </delete>
+    <select id="selectUserById" parameterType="int" resultMap="userMap">
+        SELECT * FROM sys_user WHERE id=#{id}
+    </select>
+    <update id="updateUser" parameterType="User">
+        UPDATE sys_user
+        <trim prefix="SET" suffixOverrides="," suffix="WHERE id=#{id}">
+            <if test="telephone!=null and telephone!=''">
+                telephone=#{telephone},
+            </if>
+            <if test="PASSWORD!=null and PASSWORD!=''">
+                PASSWORD=#{PASSWORD},
+            </if>
+            <if test="realname!=null and realname!=''">
+                realname=#{realname},
+            </if>
+            <!--日期类不能做空字符串判断-->
+            <if test="birthday!=null">
+                birthday=#{birthday},
+            </if>
+            <if test="headimg!=null and headimg!=''">
+                headimg=#{headimg},
+            </if>
+            <if test="available!=null and available!=''">
+                available=#{available},
+            </if>
+            <if test="dept!=null">
+                <if test="dept.id!=null and dept.id!=''">
+                    did=#{dept.id}
+                </if>
+            </if>
+        </trim>
+    </update>
+    <!--软删除，只改变用户available的值-->
+    <update id="removeUser" parameterType="int">
+        UPDATE sys_user SET available=0 WHERE id=#{id}
+    </update>
+    <delete id="deleteUserAndRoleByUid" parameterType="int">
+        DELETE FROM sys_user_role WHERE uid=#{uid}
+    </delete>
+    <insert id="insertUserAndRole" parameterType="int">
+        INSERT INTO sys_user_role(uid,rid)VALUES (#{uid},#{rid})
+    </insert>
+    <select id="selectUserByTel" parameterType="String" resultMap="userMap">
+        SELECT * FROM sys_user WHERE telephone=#{telephone}
+    </select>
+</mapper>
